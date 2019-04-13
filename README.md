@@ -1,2 +1,5 @@
 # tuacm.com
-Website of: University of Tulsa -  Association for Computing Machinery
+University of Tulsa
+ACM (Association for Computing Machinery)
+Student Chapter
+Website
