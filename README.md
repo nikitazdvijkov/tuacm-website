@@ -4,4 +4,4 @@ ACM (Association for Computing Machinery)
 Student Chapter
 Website
 
-Email nikitaz@utulsa.edu
+contact: nikitaz@utulsa.edu
