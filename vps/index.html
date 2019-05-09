@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+      body {
+        padding-bottom: 3em;
+      }
+
+      img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+
+        //width: 90%;
+      }
+      .ss-flat {
+        padding: 37px 0px 70px 0px;
+      }
+      .width-90 {
+        width: 90%;
+      }
+      // notes
+    // style up the imgs so that they are full size
+    // at full screen size
+    // and scale ?
+    // link by id within tutorial
+    </style>
+    
+
+    <title>VPS HOWTO</title>
+  </head>
+  <body>
+
+    <!--
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="../index.html">ACM@TU</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="#">Home</a>
+          <a class="nav-item nav-link" href="#">Events</a>
+          <a class="nav-item nav-link" href="#">Resources</a>
+          <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Support</a>
+        </div>
+      </div>
+    </nav>
+    -->
+
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container"> 
+        <p>
+          <a href="../">
+            &larr; Back To Resources
+          </a>
+        </p>
+        <h1 class="display-4">How To Set Up a VPS</h1>
+        <p class="lead">Posted April 11, 2019
+        </p>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <h2>Step 1 &mdash; Set Up Linux VM for SSH Client</h2>
+      <a href="http://acm.kilt.red/vbox">
+        How To Set Up a Lightweight Linux VM With
+        a Shared Folder in VirtualBox
+      </a>
+
+      <h2>2 &mdash; Create DigitalOcean Account</h2>
+      <p>
+        Affiliate Link:
+        <a href="https://m.do.co/c/ca21213a0ac1">
+          DigitalOcean ~ Get $100 Credit
+        </a>
+      </p>
+
+      <h2>3 &mdash; Create & Upload SSH Public Key</h2>
+      <p>
+        <a href="https://www.digitalocean.com/docs/droplets/how-to/add-ssh-keys/">
+          How to Add SSH Keys to Droplets
+        </a>
+        <br>
+        <a href="https://www.digitalocean.com/docs/droplets/how-to/add-ssh-keys/create-with-openssh/">
+          How to Create SSH Keys with OpenSSH on Linux or macOS
+        </a>
+        <br>
+        <a href="https://www.digitalocean.com/docs/droplets/how-to/add-ssh-keys/to-account/">
+          How to Upload SSH Public Keys to a DigitalOcean Account
+        </a>
+        (use shared folder to transfer public key file)
+      </p>
+      <h2>4 &mdash; Set Up Droplet</h2>
+      <p>
+        <a href="https://www.digitalocean.com/docs/droplets/how-to/create/">
+          How to Create a Droplet from the DigitalOcean Control Panel
+        </a>
+        (choose an easy to remember hostname)
+        <br>
+        <a href="https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-18-04">
+          Initial Server Setup with Ubuntu 18.04
+        </a>
+      </p>
+      <h2>5 &mdash; Make a Website Reachable by IP Address</h2>
+      <a href="https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-18-04">
+        How To Install Nginx on Ubuntu 18.04
+      </a>
+
+      <h2>6 &mdash; Make a Website Reachable by Domain, e.g. YourName.com</h2>
+      <a href="https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-18-04">
+        Buy a Domain from NameCheap
+      </a>
+      <br>
+      <a href="https://www.digitalocean.com/community/tutorials/how-to-point-to-digitalocean-nameservers-from-common-domain-registrars#registrar-namecheap">
+        Make It Work With DigitalOcean
+      </a>
+
+
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
