@@ -1,0 +1,10 @@
+#navbar svg {
+    display: block;
+    height: 40px;
+    width: auto;
+}
+#navbar {
+    color: black;
+    padding: 0px;
+    margin: 0;
+}

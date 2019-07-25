@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="blog.css">
+    <link rel="stylesheet" href="footer.css">
+
+    <!-- Highlight.JS -->
+    <link rel="stylesheet" href="highlight/styles/ir-black.css">
+    <script src="highlight/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Favicon.io -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+
+    <title>TUACM</title>
+  </head>
+  <body>
+
+    <div id="header" class="text-center py-5 mb-5 bg-yellow">
+      <svg id="tuacm-logo" class="mx-auto mb-2" version="1.1" viewBox="0 0 39.053506 7.9375181" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(-41.867 -54.292)">
+        <path d="m41.867 54.293v1.2678h1.412v-1.2678zm2.4642 0v1.2678h3.6011v0.90393h-3.6011v3.1827c0 0.65642 0.15701 1.1424 0.47175 1.4572 0.32374 0.31473 0.78222 0.47172 1.3757 0.47172 0.40467 0 0.75543-0.07599 1.0522-0.22886 0.30575-0.15287 0.5805-0.31987 0.8233-0.49972l0.35073 0.79608c-0.30172 0.24136-0.66277 0.43569-1.0802 0.58616h4.3084c-0.19144-0.094064-0.35728-0.22636-0.49563-0.39763-0.18885-0.2338-0.32832-0.54362-0.41824-0.93027-0.08993-0.39566-0.1342-0.88584-0.1342-1.4703v-2.967h-0.90399v-0.90393h1.9562v3.6552c0 0.36867 0.01337 0.70104 0.04034 0.99778 0.03595 0.28774 0.10279 0.53575 0.20171 0.74257 0.09892 0.19783 0.24338 0.35066 0.43224 0.45855 0.19784 0.09891 0.4584 0.14819 0.78214 0.14819 0.46762 0 0.87265-0.15282 1.2144-0.45855 0.35072-0.30573 0.61546-0.6882 0.79531-1.1468v-3.4931h-0.86283v-0.90393h1.915v4.5995c0 0.44061 0.02757 0.86317 0.08151 1.2678h0.90317v0.80185h2.4115c-0.19546-0.08157-0.37549-0.1816-0.52774-0.31613-0.38668-0.3417-0.58043-0.80934-0.58043-1.4028 0-0.4586 0.09938-0.84106 0.29721-1.1468 0.20684-0.30573 0.49913-0.53955 0.87682-0.70141 0.37769-0.16186 0.83118-0.25622 1.3617-0.2832 0.53956-0.02698 1.1425 0.0089 1.808 0.10785 0.04496-0.41364 0.04911-0.75518 0.01316-1.0249-0.02698-0.27875-0.0988-0.49921-0.2157-0.66107-0.10791-0.16186-0.26492-0.27376-0.47176-0.33671-0.19783-0.07193-0.44586-0.10784-0.74262-0.10785-0.40467 0-0.79134 0.05846-1.16 0.17536-0.3687 0.1079-0.69691 0.21981-0.98467 0.33671l-0.33674-0.78209c0.38668-0.2248 0.82263-0.38681 1.3082-0.48572 0.48561-0.09891 0.96246-0.14819 1.4301-0.14819 0.45863 0 0.83193 0.07182 1.1197 0.21569 0.29676 0.14387 0.52559 0.3326 0.68746 0.5664 0.17086 0.2248 0.2836 0.48535 0.33756 0.78209 0.06295 0.28775 0.09386 0.58002 0.09386 0.87676 0 0.3417-0.0084 0.70579-0.02635 1.0925-0.018 0.38666-0.03136 0.7733-0.04034 1.16 0 0.44961 0.02672 0.87716 0.08069 1.2818h0.90399v0.80185h3.5748c-0.0061-0.0021-0.01286-0.0034-0.01893-0.0058-0.44064-0.17085-0.80976-0.40967-1.1065-0.71541-0.29676-0.31472-0.52141-0.688-0.67429-1.1196-0.15288-0.44061-0.2297-0.9258-0.2297-1.4563 0-0.5665 0.07682-1.0701 0.2297-1.5107 0.16187-0.44061 0.3907-0.80971 0.68746-1.1065 0.29676-0.29674 0.6567-0.52138 1.0794-0.67424 0.42265-0.16186 0.89451-0.24286 1.4161-0.24286 0.66546 0 1.2058 0.05846 1.6194 0.17535 0.42265 0.1169 0.77759 0.24718 1.0654 0.39105l-0.01399 0.04118v1.8745h-0.97068v-1.2818c-0.20683-0.07194-0.43148-0.13039-0.67428-0.17535-0.23381-0.05396-0.46765-0.08068-0.70146-0.08068-0.88128 0-1.5377 0.2071-1.9693 0.62073-0.43165 0.41364-0.64794 1.07-0.64794 1.9692 0 0.39565 0.06346 0.75056 0.18936 1.0653 0.1259 0.30573 0.30546 0.5671 0.53926 0.78291 0.23381 0.21581 0.51274 0.38199 0.83648 0.49889 0.33273 0.1169 0.69685 0.17536 1.0925 0.17536 0.42265 0 0.83187-0.07182 1.2275-0.21569 0.40468-0.14387 0.74207-0.33343 1.0118-0.56722l0.47176 0.78291c-0.1259 0.1079-0.28291 0.21981-0.47176 0.33671-0.18885 0.1169-0.40932 0.22963-0.66111 0.33753-0.09023 0.03676-0.18924 0.06865-0.28816 0.10044h2.7647v-6.6692h0.70145l0.20254 0.82243h0.05351c0.08993-0.13488 0.17594-0.26015 0.25687-0.37705 0.08993-0.12589 0.18848-0.23444 0.29639-0.32436 0.1169-0.08992 0.25219-0.15674 0.40507-0.20169 0.15287-0.05396 0.3458-0.0815 0.57961-0.0815 0.13489 0 0.27436 0.02255 0.41824 0.0675 0.14388 0.03596 0.27416 0.09943 0.39107 0.18935 0.1259 0.08093 0.23363 0.19284 0.32356 0.33671 0.08993 0.14387 0.14839 0.31924 0.17536 0.52606 0.20683-0.35069 0.43648-0.6246 0.68829-0.82243 0.26078-0.19783 0.61572-0.29719 1.0654-0.29719 0.29676 0 0.5356 0.0501 0.71545 0.14901 0.18885 0.09891 0.33249 0.24255 0.43141 0.43139 0.02209 0.0368 0.03608 0.08248 0.05516 0.12267v-1.8087zm32.11 2.0499c-0.30575 0-0.56632 0.12609-0.78214 0.37788-0.20684 0.25178-0.36467 0.5666-0.47258 0.94427v4.5649h1.9562v-4.4168c0-0.18883-0.0092-0.36838-0.02715-0.53923-9e-3 -0.17984-0.04076-0.33767-0.09468-0.47255-0.04496-0.14387-0.11678-0.25578-0.2157-0.33671-0.08993-0.08092-0.21103-0.12184-0.3639-0.12184zm3.0084 0c-0.31474 0-0.58031 0.12609-0.79614 0.37788-0.21583 0.25178-0.37784 0.61169-0.48575 1.0793v4.4299h1.9562v-4.5114c0-0.18883-0.0092-0.3642-0.02719-0.52606-0.018-0.17085-0.05389-0.31867-0.10785-0.44456-0.04496-0.12589-0.11261-0.22526-0.20253-0.2972-0.08093-0.07193-0.19285-0.10785-0.33673-0.10785zm-37.582 0.12184v5.7652h2.8083c-0.21989-0.09578-0.41994-0.22343-0.60019-0.38364-0.2428-0.21581-0.43655-0.49054-0.58043-0.82325-0.14389-0.3417-0.21571-0.74588-0.21571-1.2135v-3.3449zm19.625 2.7241c-0.39568 0-0.73725 0.04509-1.025 0.13501-0.28777 0.08092-0.51324 0.2112-0.67511 0.39104-0.16187 0.17984-0.24205 0.41366-0.24205 0.70141 0 0.29674 0.09855 0.55729 0.29639 0.78209 0.20683 0.21581 0.5484 0.32436 1.025 0.32436 0.25179 0 0.48564-0.04093 0.70146-0.12184 0.21582-0.08093 0.40457-0.18448 0.56643-0.31037 0.16187-0.12589 0.29716-0.26034 0.40507-0.40421 0.10791-0.15287 0.18892-0.2965 0.24287-0.43138v-0.94427c-0.46762-0.08093-0.89938-0.12184-1.2951-0.12184zm-6.2407 1.9692c-0.23381 0.38666-0.54365 0.70148-0.93034 0.94427-0.07715 0.04845-0.1601 0.08882-0.2437 0.12761h1.2662l-0.03785-1.0719zm7.5489 0.13501c-0.05396 0.08093-0.13496 0.18448-0.24287 0.31037s-0.25157 0.25198-0.43141 0.37788c-0.13463 0.0921-0.3017 0.17326-0.48657 0.24862h1.3403l-0.11197-0.93686z" fill="#000000"/>
+        </g>
+      </svg>
+      <h2 class="font-weight-bolder">blog</h2>
+    </div>
+
+
+    <div class="container">
+      <h1>
+        How to Make a Linux Command
+      </h1>
+      <p class="font-weight-bold">
+        Joseph Mellor
+        &ndash;
+        15 June 2019
+      </p>
+      <hr>
+    
+      <p>Although the purpose of a computer
+        is to automate tasks,
+        programmers still have to do some tasks manually.
+        For instance,
+        to set up a c/c++ project on my computer,
+        I would have to create a bunch of directories,
+        copy a Makefile
+        (it's like a project file for c/c++)
+        into the right directory,
+        modify the Makefile to generate the specific program, etc.
+        Doing so requires me to remember
+        both the directories I need to create
+        and where I stored the original Makefile.
+        Furthermore,
+        since I wrote the Makefile specifically for c++ projects,
+        I have to change it for c projects.
+        Lastly, if I mess up any of the steps above,
+        I have to spend even more time to find the error.
+        All in all,
+        it's a waste of time and effort to go through this process
+        to set up a project,
+        especially since I have to follow
+        the same exact steps for every project.
+      </p>
+      <p>I got sick of not having this process automated,
+        and I decided that I would write a script to do everything for me.
+        This method almost worked,
+        except for the fact that I couldn't run the script anywhere.
+        I could either copy the script where I wanted to make the project
+        then delete it
+        or I could call the script by using the full filepath.
+        Neither option sounded pleasant,
+        so I decided to make a command
+        that could run the script from anywhere.
+      </p>
+      <p>In this article, I'm going to discuss what a Linux command is,
+        the basics of how Linux processes commands,
+        and how to make one yourself.
+        I will use the command
+        I made above to help me set up a build system for c/c++ projects,
+        which I called
+        <a href="https://github.com/TheLandfill/minit">minit</a>,
+        as a guide.
+        To run <code>minit</code>,
+        you need to run <code>./install.sh</code>
+        so it can figure out where the specific files are
+        and to make sure it's not overwriting any other commands.
+        To make it a command, we don't necessarily need it to run,
+        but if you do want it to run and use this tutorial,
+        type <code>./install.sh tutorial</code>
+        into your terminal instead of
+        <code>./install.sh</code>.
+        You can also remove the command by running
+        <code>./uninstall.sh</code>
+        and then deleting the whole <code>minit</code> directory.
+        I will assume that the <code>minit.sh</code> script
+        is in the directory <code>~/dev/minit</code>
+        as if you ran
+        <code>git clone https://github.com/TheLandfill/minit</code>
+        while in the directory <code>~/dev</code>.
+      </p>
+
+      <h2>What is a Linux Command?</h2>
+      <p>As with most topics involving computers,
+        there is a distinction between what a command is to the user
+        and what a command is to the computer.
+      </p>
+      <p>To the user, <b>Linux commands are phrases
+        you type into the terminal to do something on your computer</b>.
+        If you have any experience with Linux or bash,
+        you'll already know some standard Linux commands,
+        such as <code>cd</code> (change current directory),
+        <code>mv</code> (move or rename files and directories),
+        and <code>cp</code> (copy files).
+        If you're a little more experienced,
+        you might know about some more complex commands,
+        such as <code>sudo</code>
+        (gives a command temporary root/admin privileges)
+        or <code>python</code> (runs the python interpreter).
+        Because you can't do much in the terminal
+        without these commands
+        and they come on most terminals,
+        people often assume that they're built in.
+        While some commands are
+        (<code>cd</code> is because it's directly related to the terminal),
+        most are not.
+      </p>
+      <p>To the computer, <b>Linux commands are executables
+        in a specific directory, aliases, functions, or builtins</b>.
+        In this article,
+        we'll discuss how to make an executable a command
+        and how to make an alias.
+        In general, you won't be able to write a builtin
+        and functions are usually best used for simple,
+        frequently used commands.
+        You'll see an example of both a builtin and a function later,
+        and we'll go into more detail about the specifics.
+      </p>
+
+      <div class="aside">
+        <p><b>Quick Note on Aliases:</b>
+        You can make an alias out of almost anything
+        you could type on the command line,
+        but aliases have severe limits on what they can do.
+        They also rely on builtins and other Linux commands.
+        We'll discuss how to create an alias
+        <a href="#what-if-i-dont-need-an-entire-executable">
+          later in the article
+        </a>.
+        Since <code>minit</code> is too complex to be an alias,
+        I had to use a script.</p></div>
+
+      <p>You can use the <code>which</code>
+        command to see which executable
+        the computer will run when you type in a command.
+        Commands that are not executables (like <code>cd</code>)
+        won't print out anything when you run <code>which</code>.
+        Instead, you can use the <code>type</code> command
+        to determine what a command is in the general case.
+        Using <code>type -a NAME</code>
+        will display all locations containing
+        an executable named NAME
+        including aliases, builtins, and functions.
+        For example:
+      </p>
+
+      <pre><code class="lang-shell">$ which cd
+$ type -a cd
+cd is a function
+cd ()
+{
+  builtin cd "$@" && chpwd
+}
+cd is a shell builtin
+$ which mv
+/bin/mv
+$ which cp
+/bin/cp
+$ which sudo
+/usr/bin/sudo
+$ which python
+/usr/bin/python</code></pre>
+
+    <p>I got sick of not having this process automated,
+        and I decided that I would write a script to do everything for me.
+        This method almost worked,
+        except for the fact that I couldn't run the script anywhere.
+        I could either copy the script where I wanted to make the project
+        then delete it
+        or I could call the script by using the full filepath.
+        Neither option sounded pleasant,
+        so I decided to make a command
+        that could run the script from anywhere.
+    </p>
+
+    </div>
+
+    <div id="footer" class="mt-5 py-5 text-center px-4"> 
+      <a href="#">Blog</a> <br>
+      <a href="#">Get Involved</a> <br>
+      <a href="http://hacktulsa.com">Hackathon</a> <br>
+      <a href="#">GitHub</a>
+
+      <div id="copyright" class="mt-4">
+        &copy; 2019 TUACM &sdot; <a href="">LICENSE</a>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
