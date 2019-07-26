@@ -1,0 +1,27 @@
+.aside {
+	background: #E0E0E0;
+	color: black;
+	padding: 10px 10px 10px 10px;
+	border-color: #777777;
+	border-width: 0px;
+	border-style: solid;
+	margin-block-end: 1em;
+	border-radius: 8px;
+}
+
+.aside p:last-of-type {
+	margin-bottom: 0;
+}
+
+.aside code {
+	color: #FF0000;
+}
+
+.aside hr {
+	color: #444444;
+	background-color: #444444;
+}
+
+/*.aside a {
+	color: #0000FF
+}*/

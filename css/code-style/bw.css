@@ -1,0 +1,39 @@
+.code-block .hll { background-color: #ffffcc }
+.code-block  { background: #ffffff; }
+.code-block .c { font-style: italic } /* Comment */
+.code-block .err { border: 1px solid #FF0000 } /* Error */
+.code-block .k { font-weight: bold } /* Keyword */
+.code-block .ch { font-style: italic } /* Comment.Hashbang */
+.code-block .cm { font-style: italic } /* Comment.Multiline */
+.code-block .cpf { font-style: italic } /* Comment.PreprocFile */
+.code-block .c1 { font-style: italic } /* Comment.Single */
+.code-block .cs { font-style: italic } /* Comment.Special */
+.code-block .ge { font-style: italic } /* Generic.Emph */
+.code-block .gh { font-weight: bold } /* Generic.Heading */
+.code-block .gp { font-weight: bold } /* Generic.Prompt */
+.code-block .gs { font-weight: bold } /* Generic.Strong */
+.code-block .gu { font-weight: bold } /* Generic.Subheading */
+.code-block .kc { font-weight: bold } /* Keyword.Constant */
+.code-block .kd { font-weight: bold } /* Keyword.Declaration */
+.code-block .kn { font-weight: bold } /* Keyword.Namespace */
+.code-block .kr { font-weight: bold } /* Keyword.Reserved */
+.code-block .s { font-style: italic } /* Literal.String */
+.code-block .nc { font-weight: bold } /* Name.Class */
+.code-block .ni { font-weight: bold } /* Name.Entity */
+.code-block .ne { font-weight: bold } /* Name.Exception */
+.code-block .nn { font-weight: bold } /* Name.Namespace */
+.code-block .nt { font-weight: bold } /* Name.Tag */
+.code-block .ow { font-weight: bold } /* Operator.Word */
+.code-block .sa { font-style: italic } /* Literal.String.Affix */
+.code-block .sb { font-style: italic } /* Literal.String.Backtick */
+.code-block .sc { font-style: italic } /* Literal.String.Char */
+.code-block .dl { font-style: italic } /* Literal.String.Delimiter */
+.code-block .sd { font-style: italic } /* Literal.String.Doc */
+.code-block .s2 { font-style: italic } /* Literal.String.Double */
+.code-block .se { font-weight: bold; font-style: italic } /* Literal.String.Escape */
+.code-block .sh { font-style: italic } /* Literal.String.Heredoc */
+.code-block .si { font-weight: bold; font-style: italic } /* Literal.String.Interpol */
+.code-block .sx { font-style: italic } /* Literal.String.Other */
+.code-block .sr { font-style: italic } /* Literal.String.Regex */
+.code-block .s1 { font-style: italic } /* Literal.String.Single */
+.code-block .ss { font-style: italic } /* Literal.String.Symbol */

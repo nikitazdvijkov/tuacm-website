@@ -1,0 +1,11 @@
+body {
+	font-family: Helvetica,Arial,sans-serif;
+}
+
+code {
+	font-family: "Lucidia Console",monospace,"Courier New";
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-smooth: antialiased;
+	color: #FF0000;
+}

@@ -1,0 +1,138 @@
+#table-of-contents {
+	float: left;
+	width: 200px;
+	position: fixed;
+	left: 0;
+}
+
+#sidenav {
+	float: left;
+	width: 200px;
+	position: fixed;
+	z-index: -1;
+	left: 0;
+	padding-top: 30px;
+	padding-bottom: 20px;
+	overflow-y: hidden;
+}
+
+#sidenav-activator {
+	float: left;
+	width: 200px;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0px;
+	bottom: 0px;
+}
+
+#sidenav:hover {
+	overflow-y: auto;	
+}
+
+/* The navigation menu links */
+#sidenav a {
+	padding: 3px 12px 3px 20px;
+	text-decoration: none;
+	line-height: 1em;
+	width: 180px;
+	font-size: 1em;
+	display: block;
+	color: #FF0000;
+	z-index: -1000;
+/*	border-width: 0px 0px 0px 1px;
+	border-color: #999999;
+	border-style: solid;*/
+}
+
+#sidenav a:last-of-type {
+/*	border-width: 0px;*/
+	padding-bottom: 20px;
+}
+
+/* When you mouse over the navigation links, change their color */
+#sidenav a:hover {
+	color: #b1b1b1;
+}
+
+/* Style page content */
+.article {
+	padding: 26px 0px;
+	position: relative;
+	margin-left: 240px; /* Same as the width of the sidebar */
+	padding-bottom: 6em;
+	width: 81ch;
+}
+
+@media screen and (max-height: 450px) {
+	#sidenav {padding-top: 15px;}
+}
+
+@media screen and (max-width: 1020px) {
+	#sidenav, #sidenav-activator {
+		display: none !important;
+	}
+	.article {
+		padding-left: 100px;
+		width: 760px;
+		margin-left: 0px;
+	}
+}
+
+@media screen and (max-width: 780px) {
+	.article {
+		padding-left: 20px;
+		width: 95%;
+	}
+}
+
+@media screen and (max-width: 820px) {
+	.article {
+		width: 95%;
+	}
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+#article-title h1 {
+	font-size: 3.5rem;
+}
+
+#meta-description {
+	color: #707070;
+	font-size: 1.7em;
+	font-weight: normal;
+	margin-bottom: 0.1em;
+}
+
+#date-and-tags {
+	margin-bottom: 1em;
+}
+
+#author {
+	padding-left: 1ch;
+	padding-right: 2ch;
+	display: inline-block;
+	margin-top: calc((50px - 1em)/2);
+}
+
+#author-image {
+	background-size: auto 50px;
+	width: 50px;
+	height: 50px;
+	overflow: hidden;
+	border-radius: 9999px;
+	margin: 0.5ch;
+	float: left;
+	display: inline-block;
+}
+
+#author-box {
+	background: #E0E0E0;
+	border-radius: 9999px;
+	display: inline-block;
+	margin-bottom: 1em;
+	margin-top: 1em;
+}

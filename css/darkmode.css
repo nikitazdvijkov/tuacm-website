@@ -1,0 +1,25 @@
+.darkmode {
+	background-color: black;
+	color: #DDDDDD;
+}
+
+.darkmode .jumbotron {
+	color: white;
+	background: #333333;
+}
+
+.darkmode #sidenav {
+	background-color: #222222;
+}
+
+.darkmode #sidenav a {
+	color: #AAAAAA;
+}
+
+.darkmode #sidenav a:hover {
+	color: #FFFFFF;
+}
+
+.darkmode .aside code {
+	color: #DD0000;
+}
