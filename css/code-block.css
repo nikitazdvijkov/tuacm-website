@@ -25,6 +25,7 @@
 	border-style: solid;
 	border-radius: 8px;
 	overflow: auto;
+	margin-bottom: 1em;
 }
 
 .code-blocktable {
@@ -34,10 +35,7 @@
 	border-style: solid;
 	border-radius: 8px;
 	background: #D0D0D0;
-}
-
-.code-block-div {
-	margin-bottom: 0px;
+	margin-bottom: 1em;
 }
 
 .code-blocktable .code-block {
@@ -53,7 +51,6 @@
 	position: relative;
 	border-radius: 8px;
 	width: 100%;
-	margin-bottom: 0px;
 }
 
 .code-blocktable table, .code-blocktable thead, .code-blocktable tbody, .code-blocktable th, .code-blocktable td, .code-blocktable tr {
@@ -105,4 +102,5 @@
 	text-align: right;
 	margin-bottom: 0;
 	margin-top: 0;
+	width: 3ch;
 }
