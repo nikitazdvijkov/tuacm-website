@@ -19,50 +19,54 @@
 
 .code-block {
 	padding: 5px 10px 5px 10px;
+	width: 100%;
 	border-width: 3px;
 	border-color: #B0B0B0;
 	border-style: solid;
 	border-radius: 8px;
 	overflow: auto;
-	margin-bottom: 1em;
 }
 
 .code-blocktable {
 	border-width: 3px;
+	width: 100%;
 	border-color: #D0D0D0;
 	border-style: solid;
 	border-radius: 8px;
 	background: #D0D0D0;
-	margin-bottom: 1em;
+}
+
+.code-block-div {
+	margin-bottom: 0px;
 }
 
 .code-blocktable .code-block {
-	width: 734px;
 	border-width: 0px;
-	border-radius: 0px;
 	margin-bottom: 0px;
 	box-shadow: none;
+	width: calc(100% - 3ch);
+	border-radius: 8px;
 }
 
 .code-block table, .code-block thead, .code-block tbody, .code-block th, .code-block td, .code-block tr {
 	display: block;
 	position: relative;
+	border-radius: 8px;
+	width: 100%;
+	margin-bottom: 0px;
 }
 
 .code-blocktable table, .code-blocktable thead, .code-blocktable tbody, .code-blocktable th, .code-blocktable td, .code-blocktable tr {
 	display: block;
 	position: relative;
+	border-radius: 8px;
+	width: 100%;
 }
 
 .code-blocktable .linenos {
 	position: absolute;
 	top: 0px;
 	left: 0px;
-}
-
-.code-blocktable .code-block {
-	width: calc(100% - 3ch);
-	border-radius: 8px;
 }
 
 .code-blocktable .code {
