@@ -1,0 +1,20 @@
+#author-description {
+	background: #E0E0E0;
+}
+
+#author-description-image {
+	float: left;
+	width: 150px;
+	height: auto;
+	border-radius: 100%;
+}
+
+#author-description-text {
+	margin-left: 1ch;
+}
+
+@media screen and (max-width: 500px) {
+	#author-description-image {
+		float: none;
+	}
+}
