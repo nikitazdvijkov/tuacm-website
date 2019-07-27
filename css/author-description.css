@@ -1,4 +1,4 @@
-#author-description {
+#author-description-local {
 	background: #E0E0E0;
 }
 
@@ -7,14 +7,23 @@
 	width: 150px;
 	height: auto;
 	border-radius: 100%;
+	margin: 1ch;
 }
 
 #author-description-text {
-	margin-left: 1ch;
+	padding-left: 1ch;
+	width: calc(100% - 1ch);
+	border-radius: 8px;
 }
 
 @media screen and (max-width: 500px) {
 	#author-description-image {
 		float: none;
 	}
+
+	#author-description-image {
+		margin-left: calc(50% - 75px);
+		margin-top: 0;
+	}
+
 }
