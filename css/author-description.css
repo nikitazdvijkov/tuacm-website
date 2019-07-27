@@ -1,5 +1,7 @@
 #author-description-local {
 	background: #E0E0E0;
+	display: inline-block;
+	border-radius: 8px;
 }
 
 #author-description-image {
@@ -7,23 +9,21 @@
 	width: 150px;
 	height: auto;
 	border-radius: 100%;
+	display: inline-block;
 	margin: 1ch;
 }
 
 #author-description-text {
 	padding-left: 1ch;
-	width: calc(100% - 1ch);
+	margin-top: 1em;
+	width: calc(100% - 2ch);
 	border-radius: 8px;
 }
 
 @media screen and (max-width: 500px) {
 	#author-description-image {
 		float: none;
-	}
-
-	#author-description-image {
 		margin-left: calc(50% - 75px);
-		margin-top: 0;
+		margin-bottom: 0;
 	}
-
 }
