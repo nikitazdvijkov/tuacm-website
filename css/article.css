@@ -30,12 +30,10 @@
 	line-height: 1em;
 	width: 180px;
 	font-size: 1em;
+	font-weight: bold;
 	display: block;
 	color: #DC143C;
 	z-index: -1000;
-/*	border-width: 0px 0px 0px 1px;
-	border-color: #999999;
-	border-style: solid;*/
 }
 
 #sidenav a:last-of-type {
@@ -56,50 +54,14 @@
 	width: 81ch;
 }
 
-@media screen and (max-height: 450px) {
-	#sidenav {padding-top: 15px;}
-}
-
-@media screen and (max-width: 1020px) {
-	#sidenav, #sidenav-activator {
-		display: none !important;
-	}
-	.article {
-		padding-left: 100px;
-		width: 760px;
-		margin-left: 0px;
-	}
-}
-
-@media screen and (max-width: 780px) {
-	.article {
-		padding-left: 20px;
-		width: 95%;
-	}
-}
-
-@media screen and (max-width: 820px) {
-	.article {
-		width: 95%;
-	}
-}
-
-
 #author-description {
 	width: 100%;
 	height: calc(150px + 2ch + 2em);
 }
 
-@media screen and (max-width: 562px) {
-	#author-description {
-		height: calc(150px + 2ch + 10em);
-	}
-}
-
-@media screen and (max-width: 400px) {
-	#author-description {
-		height: calc(150px + 2ch + 12em);
-	}
+#date-and-tags {
+	margin-top: 50px;
+	float: right;
 }
 
 html {
@@ -117,9 +79,6 @@ html {
 	margin-bottom: 0.1em;
 }
 
-#date-and-tags {
-	margin-bottom: 1em;
-}
 
 #author-name {
 	padding-left: 1ch;
@@ -142,5 +101,34 @@ html {
 	background: #E0E0E0;
 	border-radius: 9999px;
 	display: inline-block;
-	margin-bottom: 1em;
+	margin-top: 1em;
+}
+
+@media screen and (max-width: 600px) {
+	#date-and-tags {
+		float: none;
+		margin-top: 0;
+	}
+}
+
+@media screen and (max-height: 450px) {
+	#sidenav {padding-top: 15px;}
+}
+
+@media screen and (max-width: 1020px) {
+	#sidenav, #sidenav-activator {
+		display: none !important;
+	}
+	.article {
+		padding-left: 100px;
+		width: 760px;
+		margin-left: 0px;
+	}
+}
+
+@media screen and (max-width: 815px) {
+	.article {
+		padding-left: 5%;
+		width: 95%;
+	}
 }
