@@ -134,6 +134,7 @@ html {
 @media screen and (max-width: 710px) {
 	#footer-links a {
 		display: table;
+		margin: auto;
 	}
 }
 
