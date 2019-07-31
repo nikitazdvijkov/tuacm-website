@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="robots" content="noindex">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link rel="icon" href="">
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		
+		<title>How to Write a Tutorial</title>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: 50%;">
+			<h2 class="font-weight-bolder" style="color: #DC143C;">blog</h2>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="how-to-write-a-tutorial">How to Write a Tutorial</h1></div>
+				<div id="meta-description">This is just a test to see what it looks like. Since most of these are going to be shorter, I'm going to try a much longer one.</div>
+				<div id="date-and-tags">Posted 30 July 2019 at 10:16 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<h1 id="heading-one">Heading one</h1>
+				<h2 id="heading-two">Heading two</h2>
+				<h3 id="heading-three">Heading three</h3>
+				<h4 id="heading-four">Heading Four</h4>
+				<h5 id="heading-five">Heading Five</h5>
+				<h6 id="heading-six">Heading Six</h6>
+				<h6 id="should-only-go-up-to-six">Should Only Go Up to Six</h6>
+				<p>I just want to see if this works. If it does, that would be great.
+					This line should be in the same paragraph as the last line.
+				</p>
+				<ul>
+					<li>Should be an unordered list.
+						If it's not, I'll be mad.
+					</li>
+					<li>Should only have three elements.
+					</li>
+					<li><h1>TEST</h1>
+						Just for fun.
+					</li>
+				</ul>
+				<p>Just a middle paragraph.
+				</p>
+				<ol>
+					<li>Should be an unordered list.
+						I want to test this out.
+					</li>
+					<li>Should only have three elements.
+					</li>
+					<li>I hope it does OK.
+					</li>
+				</ol>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>nikita@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ echo "test"</span>
+
+test
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>nikita@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ echo "data"</span>
+data
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>nikita@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ cd ../</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>nikita@tutorials</b></span>:<span style="color:#0000FF;"><b>~</b></span>$ pwd</span>
+/home/nikita
+
+#Shouldn't Render as a Heading
+</pre>
+				</div>
+				<p>This line should be in its own paragraph.
+					Testing to see if adding a line adds the number of lines it handles.
+					These next few lines should be in the same paragraph. I think this part will
+					work, but I have no idea how to pull it off.
+					I defined <code>PATH</code> earlier to be rendered as code, so let's see if that works.
+				</p>
+				<div class="aside" >
+					<h4>How to Write an Aside<hr></h4>
+					This should render as an aside box.
+					I should also be able to use <code>PATH</code> inside the aside.
+				</div>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
+<span class="kn">from</span> <span class="nn">html.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="hll">
+</span><span class="hll"><span class="kn">from</span> <span class="nn">pygments</span> <span class="kn">import</span> <span class="n">highlight</span>
+</span><span class="hll"><span class="kn">from</span> <span class="nn">pygments.lexers</span> <span class="kn">import</span> <span class="n">get_lexer_by_name</span>
+</span><span class="kn">from</span> <span class="nn">pygments.formatters</span> <span class="kn">import</span> <span class="n">HtmlFormatter</span>
+
+<span class="n">code_block</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">code_language</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">css_class</span> <span class="o">=</span> <span class="s1">&#39;code-block&#39;</span>
+<span class="n">line_number</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">lines_to_highlight</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">def</span> <span class="nf">open_code_block</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">code_language</span>
+    <span class="n">split_args</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">code_language</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">process_code_block</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">line_data</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">line_number</span>
+    <span class="k">global</span> <span class="n">code_block</span>
+    <span class="k">global</span> <span class="n">lines_to_highlight</span>
+    <span class="n">line_number</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">skip_hl</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">line_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;hl&#39;</span><span class="p">:</span>
+        <span class="n">skip_hl</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">lines_to_highlight</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line_number</span><span class="p">)</span>
+    <span class="n">code_block</span> <span class="o">+=</span> <span class="n">line_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">skip_hl</span><span class="p">:]</span>
+
+<span class="k">def</span> <span class="nf">close_code_block</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">code_block</span>
+    <span class="k">global</span> <span class="n">code_language</span>
+    <span class="n">lexer</span> <span class="o">=</span> <span class="n">get_lexer_by_name</span><span class="p">(</span><span class="n">code_language</span><span class="p">,</span> <span class="n">stripall</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">formatter</span> <span class="o">=</span> <span class="n">HtmlFormatter</span><span class="p">(</span><span class="n">linenos</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">html</span><span class="o">.</span><span class="n">code_style</span><span class="p">,</span> <span class="n">cssclass</span><span class="o">=</span><span class="s1">&#39;code-block&#39;</span><span class="p">)</span>
+    <span class="n">highlight</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">lexer</span><span class="p">,</span> <span class="n">formatter</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="n">html</span><span class="o">.</span><span class="n">out</span><span class="p">)</span>
+    <span class="n">code_block</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="c1"># The next line actually says &#39;print({{name}})&#39; in the tumd file,</span>
+    <span class="c1"># but since {{name}} is a variable, it is completely replaced</span>
+    <span class="c1"># within the code. To display {{name}}, I had to type {{ldb}}name}}</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Joseph Mellor&#39;</span><span class="p">)</span>
+
+<span class="n">context_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;code&#39;</span><span class="p">:</span> <span class="n">Context</span><span class="p">(</span><span class="n">open_code_block</span><span class="p">,</span> <span class="n">process_code_block</span><span class="p">,</span> <span class="n">close_code_block</span><span class="p">,</span> <span class="p">{})</span>
+<span class="p">}</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Successfully imported terminal.&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>				</div>
+				
+				<div class="aside" >
+					<h4>Testing Code Blocks inside an aside</h4>
+					<hr>
+					<p>This should look decent.
+					</p>
+					<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="hll"><span class="n">hlstatus</span>
+</span><span class="n">status</span>
+
+<span class="n">def</span> <span class="n">shouldn</span><span class="err">&#39;</span><span class="n">t</span> <span class="n">be</span> <span class="n">highlighted</span><span class="p">.</span>
+</pre></div>
+</td></tr></table>					</div>
+					
+					<p>If it doesn't, I'll be mad.
+					</p>
+				</div>
+				<div><img src="../../resources/sm_5b321ca7a1ca4.png" alt="Heart icon."></div>
+				<p>Just testing if raw-html expands variables like {{lt}}: &lt;.
+				</p>
+			</div>
+			
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+						</p>
+					</div>
+				</div>
+			</div>
+			
+			<nav id="sidenav">
+				<a href="#how-to-write-a-tutorial" style="padding-left:12px;">How to Write a Tutorial</a>
+				<a href="#heading-one" style="padding-left:24px;">Heading one</a>
+				<a href="#heading-two" style="padding-left:36px;">Heading two</a>
+				<a href="#heading-three" style="padding-left:48px;">Heading three</a>
+				<a href="#heading-four" style="padding-left:60px;">Heading Four</a>
+				<a href="#heading-five" style="padding-left:72px;">Heading Five</a>
+				<a href="#heading-six" style="padding-left:84px;">Heading Six</a>
+				<a href="#should-only-go-up-to-six" style="padding-left:84px;">Should Only Go Up to Six</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+			
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+			<div id="copyright" class="mt-4">
+				&copy; 2019 TUACM &sdot; <a href="">LICENSE</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+		
+	</body>
+</html>
