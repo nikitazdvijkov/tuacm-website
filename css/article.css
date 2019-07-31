@@ -110,12 +110,13 @@ html {
 
 #footer a {
 	color: #DC143C;
-	font-size: 2em;
-	margin-bottom: 1em;
 }
 
-#copyright a {
-	font-size: 1em;
+#footer-links a {
+	font-size: 2em;
+	margin-left: 1ch;
+	margin-right: 1ch;
+	margin-bottom: 1em;
 }
 
 #copyright {
@@ -127,6 +128,12 @@ html {
 	#date-and-tags {
 		float: none;
 		margin-top: 0;
+	}
+}
+
+@media screen and (max-width: 710px) {
+	#footer-links a {
+		display: table;
 	}
 }
 
