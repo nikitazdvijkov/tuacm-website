@@ -25,7 +25,7 @@
 			<div class="article">
 				<div id="article-title"><h1 id="how-to-make-a-command-on-linux-or-mac">How to Make a Command on Linux or Mac</h1></div>
 				<div id="meta-description">What is your computer doing when you type a command in the terminal?</div>
-				<div id="date-and-tags">Posted 30 July 2019 at 8:55 PM </div>
+				<div id="date-and-tags">Posted 30 July 2019 at 9:05 PM </div>
 				<div id="author-box">
 					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
 					<div id="author-name">By Joseph Mellor</div>
@@ -538,7 +538,7 @@ hello-world is /usr/local/games/hello-world
 				<h1 id="a-better-way">A Better Way?</h1>
 				<p>As you can see, none of the methods above will satisfy all the criteria I
 					suggested.
-					Unfortunately, there is no way to make an executable a Linux command unless the
+					Unfortunately, there is no way to make an executable a command unless the
 					executable is in one of the directories in <code>PATH</code>.
 					Reviewing the problems with the proposed solutions and the criteria, we can come
 					up with our ideal solution:
@@ -555,7 +555,7 @@ hello-world is /usr/local/games/hello-world
 					</li>
 					<li><code>minit</code> shouldn't waste space.
 					</li>
-					<li>Making <code>minit</code> shouldn't rely on anything unique to a specific Linux distro.
+					<li>Making <code>minit</code> shouldn't rely on anything unique to a specific Linux distro or Mac version.
 					</li>
 				</ul>
 				<h2 id="symlinks">Symlinks</h2>
@@ -600,8 +600,8 @@ hello-world is /usr/local/games/hello-world
 					Unix terminal: you have to cycle through them and there's one open at a time.
 					<code>vim</code> can open them in tabs (like a modern text editor) if you use <code>vim -p</code> on
 					the command line.
-					Since I strongly prefer using tabs as opposed to the old Unix style, I wanted to
-					make a Linux command that would work as if I had typed <code>vim -p</code>.
+					Since I strongly prefer using tabs as opposed to the old Unix style, I wanted
+					to make a command that would work as if I had typed <code>vim -p</code>.
 					If I were to write a bash script, it would have one line of code.
 					In this case, I would use an <b>alias</b>.
 				</p>
@@ -610,8 +610,8 @@ hello-world is /usr/local/games/hello-world
 <div class="code-block"><pre><span></span><span class="nb">alias</span> <span class="nv">vip</span><span class="o">=</span><span class="s2">&quot;vim -p&quot;</span>
 </pre></div>
 				
-				<p>This line will create a Linux command called <code>vip</code> that will run <code>vim -p</code>
-					whenever you call it.
+				<p>This line will create a command called <code>vip</code> that will run <code>vim -p</code> whenever
+					you call it.
 					Since I want it to stay across login sessions, I needed to put it in one of
 					those scripts that run when you login or create a new terminal.
 					On my computer, my <code>~/.bashrc</code> would run all the commands in the file
@@ -673,8 +673,8 @@ hello-world is /usr/local/games/hello-world
 				</p>
 				<h1 id="summary">Summary</h1>
 				<ul>
-					<li>Linux commands are generally executables in one of the directories defined in
-						<code>PATH</code>, aliases, or shell builtins.
+					<li>Linux and Mac commands are generally executables in one of the directories
+						defined in <code>PATH</code>, aliases, or shell builtins.
 					</li>
 					<li>Creating your own command generally means adding an alias or putting an
 						executable in <code>PATH</code>.
@@ -688,7 +688,7 @@ hello-world is /usr/local/games/hello-world
 					</li>
 					<li>Symlinks are files that point to other files.
 					</li>
-					<li>Symlinks will allow us to achieve all the criteria we made for Linux commands.
+					<li>Symlinks will allow us to achieve all the criteria we made for commands.
 					</li>
 					<li>Use aliases when your command is simple.
 					</li>
