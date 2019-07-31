@@ -9,12 +9,11 @@
 	width: 150px;
 	height: auto;
 	border-radius: 100%;
-	display: inline-block;
 	margin: 1ch;
 }
 
 #author-description-text {
-	padding-left: 1ch;
+	padding-left: calc(150px + 2ch);
 	margin-top: 1em;
 	width: calc(100% - 2ch);
 	border-radius: 8px;
@@ -25,5 +24,10 @@
 		float: none;
 		margin-left: calc(50% - 75px);
 		margin-bottom: 0;
+	}
+	#author-description-text {
+		padding-left: 2ch;
+		padding-bottom: 1em;
+		width: 95%;
 	}
 }
