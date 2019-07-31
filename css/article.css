@@ -104,6 +104,20 @@ html {
 	margin-top: 1em;
 }
 
+#footer {
+	background: #000000;
+}
+
+#footer a {
+	color: #DC143C;
+	font-size: 2em;
+	margin-bottom: 1em;
+}
+
+#copyright {
+	color: #FFFFFF;
+}
+
 @media screen and (max-width: 600px) {
 	#date-and-tags {
 		float: none;
