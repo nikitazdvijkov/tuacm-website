@@ -114,8 +114,13 @@ html {
 	margin-bottom: 1em;
 }
 
+#copyright a {
+	font-size: 1em;
+}
+
 #copyright {
 	color: #FFFFFF;
+	font-size: 1.5em;
 }
 
 @media screen and (max-width: 600px) {
