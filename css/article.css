@@ -54,6 +54,10 @@
 	width: 81ch;
 }
 
+.intro {
+	margin-bottom: 1em;
+}
+
 #author-description {
 	width: 100%;
 	height: calc(150px + 2ch + 2em);
