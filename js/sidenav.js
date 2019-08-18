@@ -22,6 +22,9 @@ function debounce(f, t) {
 window.onscroll = sidenav_height_adj;
 
 function sidenav_height_adj() {
+	jumbotron_height = document.getElementById("webpage-header").clientHeight;
+	footer_position = document.getElementById("footer").offsetTop;
+	bottom_of_sidenav = window_height - footer_position;
 	var scroll_location = document.documentElement.scrollTop;
 	var amount_of_visible_footer = scroll_location + bottom_of_sidenav;
 	if (scroll_location >= jumbotron_height || amount_of_visible_footer <= 0) {
@@ -49,13 +52,9 @@ function sidenav_height_adj() {
 }
 
 window.onresize = debounce(change_max_height, 50);
-window.setInterval(change_max_height, 5000)
 
 function change_max_height() {
 	window_height = window.innerHeight;
-	jumbotron_height = document.getElementById("webpage-header").clientHeight;
-	footer_position = document.getElementById("footer").offsetTop;
-	bottom_of_sidenav = window_height - footer_position;
 	max_height = document.documentElement.clientHeight;
 	scale_vh = 100 / max_height;
 	sidenav_height_adj();
