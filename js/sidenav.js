@@ -49,7 +49,7 @@ function sidenav_height_adj() {
 }
 
 window.onresize = debounce(change_max_height, 50);
-window.setInterval(change_max_height, 500)
+window.setInterval(change_max_height, 5000)
 
 function change_max_height() {
 	window_height = window.innerHeight;
