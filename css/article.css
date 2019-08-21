@@ -20,7 +20,7 @@
 }
 
 #sidenav:hover {
-	overflow-y: auto;	
+	overflow-y: auto;
 }
 
 /* The navigation menu links */
@@ -68,10 +68,6 @@
 	float: right;
 }
 
-html {
-	scroll-behavior: smooth;
-}
-
 #article-title h1 {
 	font-size: 3.5rem;
 }
@@ -108,37 +104,10 @@ html {
 	margin-top: 1em;
 }
 
-#footer {
-	background: #000000;
-}
-
-#footer a {
-	color: #DC143C;
-}
-
-#footer-links a {
-	font-size: 2em;
-	margin-left: 1ch;
-	margin-right: 1ch;
-	margin-bottom: 1em;
-}
-
-#copyright {
-	color: #FFFFFF;
-	font-size: 1.5em;
-}
-
 @media screen and (max-width: 600px) {
 	#date-and-tags {
 		float: none;
 		margin-top: 0;
-	}
-}
-
-@media screen and (max-width: 710px) {
-	#footer-links a {
-		display: table;
-		margin: auto;
 	}
 }
 

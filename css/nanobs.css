@@ -8,7 +8,6 @@ ol,ul{margin-top:0;margin-bottom:1rem;}
 b{font-weight:bolder;}
 a{color:#007bff;text-decoration:none;background-color:transparent;}
 a:hover{color:#0056b3;text-decoration:underline;}
-code,pre{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;}
 pre{margin-top:0;margin-bottom:1rem;overflow:auto;}
 img{vertical-align:middle;border-style:none;}
 h1,h2,h3,h4{margin-bottom:.5rem;font-weight:500;line-height:1.2;}
