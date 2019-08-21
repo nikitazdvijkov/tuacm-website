@@ -1,0 +1,56 @@
+/* Extra small devices (portrait phones, less than 576px) */
+/* No media query for `xs` since this is the default in Bootstrap */
+
+#intro {
+    border: 2em solid black;
+    min-height: 100vh;
+}
+
+#intro p {
+    padding: 0;
+    margin: 0;
+}
+
+#intro .container {
+    padding: 1em;
+}
+
+#intro a {
+    color: #DC143C;
+    padding: 1px;
+    text-decoration: none;
+}
+
+@media (min-height: 415px) {
+
+    /* Small devices (landscape phones, 576px and up) */
+    @media (min-width: 576px) {
+        #intro .container {
+            max-width: 530px;
+            padding: 0 3em;
+
+            /* .center-vertically */
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+        }
+
+        #intro {
+            min-height: 100vh;
+        }
+    }
+    /* Medium devices (tablets, 768px and up) */
+    @media (min-width: 768px) {
+        #intro .container {
+            max-width: 730px;
+        }
+    }
+    /* Large devices (desktops, 992px and up) */
+    @media (min-width: 992px) {}
+    /* Extra large devices (large desktops, 1200px and up) */
+    @media (min-width: 1200px) {}
+
+}
