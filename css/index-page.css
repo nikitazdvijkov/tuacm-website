@@ -45,6 +45,8 @@
 	width: 81ch;
 	margin: 0 auto;
 	min-height: calc(50vh - 100px)
+	padding-bottom: 20px;
+	margin-bottom: 7em;
 }
 
 @media screen and (max-width: 1020px) {
