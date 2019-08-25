@@ -1,0 +1,9 @@
+index-page
+Topic:		POSIX
+Import:
+Scripts:
+
+The Portable Operating System Interface (POSIX) refers to a group of IEEE
+standards for making programs work consistently between Unix-based operating
+systems, which include Linux and MacOS but not Windows.
+Articles in this section consist of things you can do both on Mac and Linux.
