@@ -2,6 +2,8 @@
 	padding: 10px;
 	border-radius: 8px;
 	border: 1px solid #B0B0B0;
+	transform: translate(-3px, -3px);
+	box-shadow: 6px 6px #B0B0B0;
 	margin-bottom: 1em;
 	color: #777777;
 	display: block;
