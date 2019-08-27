@@ -1,2 +1,3 @@
 User-agent: *
 Disallow: /tests/
+Sitemap: https://tuacm.com/sitemap.xml
