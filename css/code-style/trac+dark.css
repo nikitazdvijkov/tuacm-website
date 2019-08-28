@@ -1,6 +1,7 @@
 .code-block .hll { background-color: #333333 }
-.code-block pre { color: #3333CC; } 
+.code-block pre { color: #3333CC; }
 .code-block  { background: #000000; }
+.code-block .p { font-weight: bold; }
 .code-block .c { color: #999988; font-style: italic } /* Comment */
 .code-block .err { color: #a61717; background-color: #e3d2d2 } /* Error */
 .code-block .k { font-weight: bold } /* Keyword */
