@@ -6,6 +6,10 @@ code {
 	color: #DC143C;
 }
 
+a code {
+	color: inherit;
+}
+
 html {
 	scroll-behavior: smooth;
 }
