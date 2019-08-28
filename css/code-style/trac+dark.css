@@ -1,5 +1,5 @@
 .code-block .hll { background-color: #333333 }
-.code-block pre { color: #3333CC; }
+.code-block pre { color: #3355DD; }
 .code-block  { background: #000000; }
 .code-block .p { font-weight: bold; }
 .code-block .c { color: #999988; font-style: italic } /* Comment */
@@ -27,7 +27,7 @@
 .code-block .kn { font-weight: bold } /* Keyword.Namespace */
 .code-block .kp { font-weight: bold } /* Keyword.Pseudo */
 .code-block .kr { font-weight: bold } /* Keyword.Reserved */
-.code-block .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.code-block .kt { color: #AA55CC; font-weight: bold } /* Keyword.Type */
 .code-block .m { color: #009999 } /* Literal.Number */
 .code-block .s { color: #FF66DD } /* Literal.String */
 .code-block .n { color: #FF3737; }
