@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<style>
+			table {
+				margin-bottom: 1em;
+			}
+			.c-type-list {
+				overflow: auto;
+				margin: 0 auto;
+				margin-bottom: 1em;
+			}
+			.c-type-list th, .c-type-list td {
+				padding: 0 1ch 0 1ch;
+			}
+		</style>
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>The Memory Hierarchy</title>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="the-memory-hierarchy">The Memory Hierarchy</h1></div>
+				<div id="meta-description">Picking the best algorithm for the task will make your code run fast. Using memory properly will make it even faster.</div>
+				<div id="date-and-tags">Posted 29 August 2019 at 1:46 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>In this article, we're going to explain how your computer uses memory and how
+					you can work with your computer to write code that runs fast.
+					To be clear, using memory properly will not make poorly written code easy to
+					understand nor will it make a bad algorithm a good algorithm.
+					Understanding how memory works, however, will help you find potential
+					bottlenecks in your program and give you a way to solve them.</i>
+				</p>
+				<p>I once had to clean up some poorly written code for a job I had.
+					When I say poorly written, I don't mean something minor like it didn't use my
+					preferred coding style or even that it was poorly organized.
+					I mean that there were significant parts of the code would just do the wrong
+					thing, other parts that were redundant to the point of hiding bugs, etc.
+					I once replaced around seventy-five lines of dense code with a single line of
+					code because I understood how ASCII worked and because I was able to decouple
+					some nested conditionals (specifically some poorly used switch statements).
+					Before I fixed the code, the program took hours.
+					After I fixed the code, the program took around ten minutes.
+				</p>
+				<p>I used a lot of tricks (most were variations on using the language properly) to
+					speed up the code, but two tricks in particular might sound weird because they
+					wouldn't seem to do anything.
+				</p>
+				<p>First, I had a large matrix of numbers (about 10 000 rows by 100 000 columns, I
+					think), but I only ever used two columns of the matrix at a time, so I got rid
+					of the large matrix and replaced it with just the last two columns.
+					Second, I had another large matrix of numbers of the same size as the first
+					matrix, and I noticed that the numbers never went too far above 300.
+					In fact, I was able to guarantee that the numbers would be around 10 000 at an
+					absolute maximum.
+					At the time, I was using four bytes to represent each of the numbers, but you
+					only need two bytes to represent numbers less than 65 536, so I switched the
+					numbers from four bytes to two bytes.
+				</p>
+				<p>In total, these two operations reduced the memory to a quarter of what I was
+					using <b><i>and made the program run about four times as fast</i></b>.
+				</p>
+				<div class="aside" >
+					<h4>Amdahl's Law in my Program</h4>
+					<hr>
+					<p>Let's say you're doing three tasks: one task takes five minutes, another task
+						takes five minutes, and the last task takes fifty minutes.
+						The total time it takes to complete all three tasks is an hour.
+						Now, let's say you can reduce the last task to take only twenty minutes, meaning
+						that it now only takes you half an hour to complete all three tasks.
+						By making the longest part of the program take 40% of the time, you made the
+						entire process take half the time.
+					</p>
+					<p>Now, let's say instead of making the fifty minute task take 40% of the time, you
+						make one of the five minute tasks take 40% of the time.
+						In this case, you would only shave three minutes off the time, meaning the
+						process still takes fifty seven minutes.
+					</p>
+					<p>The idea that the net speedup of the program depends on the speedup of an
+						individual part and how much time the program spends on that part is known as <a
+						href="https://en.wikipedia.org/wiki/Amdahl%27s_law">Amdahl's Law</a>.
+						If you want, try coming up with the math equations for what I wrote above.
+					</p>
+					<p>In the program I'm discussing, the two matrices took up around 99% of the
+						program, so any speedup here sped up the entire program by just under the same
+						amount.
+					</p>
+				</div>
+				<p>How would using a fourth of the memory make the program run about four times as
+					fast?
+				</p>
+				<h1 id="the-allegory-of-the-professor">The Allegory of the Professor</h1>
+				<p>I won't try to dumb down how your computer manages memory, but I think the
+					allegory I'm about to tell should prime your mind for the explanation.
+				</p>
+				<h2 id="the-professor-arrives">The Professor Arrives</h2>
+				<p>After earning her bachelor's degree, a woman decided to become a professor at
+					her alma mater to help pay for grad school.
+					The university offered her a job and a small office, which she gladly accepted.
+					She, being methodical, organized everything in her office into boxes and shelves
+					with specific labels.
+					She then put a list of all the labels she was using on the wall along with where
+					she could find it.
+					For example, her markers were on the second shelf from the top.
+					Nothing strange happened until her first day teaching.
+				</p>
+				<h2 id="the-first-day-of-class">The First Day of Class</h2>
+				<p>Just as she was about to leave her office, she realized that she had forgotten
+					to buy a new backpack, as her old one fell apart on her last day of classes.
+					She was going to be late to class if she didn't leave immediately, so she
+					figured that she would just go to class without anything and run back to her
+					office to pick up whatever she needed.
+					Because she couldn't trust herself to remember to pick up things she had put
+					down and she didn't want to lose anything she brought to class, she decided that
+					she wouldn't put anything down anywhere except in her office.
+					Since she had to keep her labels consistent, she would have to either put her
+					stuff back where the label said she could find it or she would have to change
+					the label.
+				</p>
+				<p>With the rules she had set up, she left for the classroom.
+					When she entered the classroom, she gave a brief introduction to the students
+					and then told them that she was going to discuss the syllabus with them.
+					Just as she was about to hand out the syllabus, she realized that she had left
+					the syllabus back in her office.
+					About five minutes later, she was back at the classroom with copies of the
+					syllabus for everyone.
+					Having distributed the syllabus out to everyone, she started reading off her
+					copy when she felt that it would be good to write something on the board, but
+					her markers were back at the office.
+					Another five minutes passed before she returned to the classroom with the
+					markers, but since she couldn't carry both the markers and the syllabus (her
+					dress didn't have any pockets), she had to leave the syllabus back at her
+					office.
+					A few minutes later, she needed to refer to the syllabus again, and, not wanting
+					to steal any syllabus from the students, she decided to go back to her office.
+				</p>
+				<p>She then came back with the syllabus and started discussing the textbook, which
+					was back in her office, so she went back to her office to get the textbook so
+					she could read a few example problems.
+					Once she read a problem, she wanted to show the class how to read the problem,
+					which required a marker, so she went back to her office to get the markers.
+					After coming back, she started writing down the problem, but because she didn't
+					have the textbook, she kept having to go back to her office to get the textbook.
+					Before she had finished writing down the first problem, class ended, and she
+					felt terrible.
+					She immediately went out to buy a backpack before her second class started.
+				</p>
+				<h2 id="the-second-class">The Second Class</h2>
+				<p>Now that the professor had her backpack, she realized that she wouldn't lose
+					anything she brought to class if she put it in her backpack immediately after
+					she finished using it, so she updated her old rule of only putting things down
+					in her office to the new rule of either putting things down in her office or
+					putting things in her backpack when she stopped using them.
+				</p>
+				<p>She also updated her labeling scheme, where she had a list of everything in her
+					backpack and where she could find it in her backpack.
+					If she took something from her backpack out, she would have to either put it
+					back where her list said it was or change the list.
+					If she took something from her backpack and put it in her office, she would
+					remove it from the list.
+				</p>
+				<p>First, she reasoned that putting everything in her office into her backpack
+					would be efficient since she would never have to go back to her office, but then
+					she realized that she wasn't a forklift and trying to lift her entire office
+					would probably injure her.
+					Plus, it's not like she could fit everything into her backpack anyway.
+					She had to get a small backpack since larger backpacks cost way more than
+					smaller backpacks.
+					And even if she could fit everything into her backpack and carry everything to
+					the classroom, finding anything in the backpack would be a nightmare.
+				</p>
+				<p>Anyway, she decided that she would pack everything she needed for her next two
+					classes since she could fit everything she needed in her backpack with a little
+					room to spare.
+					If she forgot anything, she would go back to her office and get it.
+				</p>
+				<p>Her second class went much better than her first class.
+					She got through the entire syllabus, but she knew that she could be more
+					efficient with her time.
+					For example, because she didn't want to lose anything, she kept having to go
+					back to her backpack to switch between different colors of markers.
+					When she wanted to switch between the textbook and the syllabus, she had to go
+					back to her backpack.
+				</p>
+				<h2 id="the-third-class">The Third Class</h2>
+				<p>For the last class of the day, she decided that she would go buy a few magnets
+					for the board so she could stick anything light like a syllabus on the board.
+					She also bought a magnetic marker tray so she could keep all her markers in a
+					little basket on the board for easy access (She didn't use their marker trays
+					since they were covered with markers of varying quality.).
+					When she finished using a marker, she would put them back in the marker tray,
+					and when she finished using anything she had put on the board, she would put it
+					right back where she took it from.
+					Since she had reached her allotted budget for her classes, she decided she
+					would buy nothing else.
+					Since she would have to erase the board at the end of class, she would certainly
+					remember to pick up her belongings, so she could now leave things in her office,
+					in her backpack, and on the board.
+				</p>
+				<p>Her third class finished in half the time of her second class.
+					Once she took all the markers and her syllabus out of the backpack, the only
+					time she ever needed to go into her backpack was to take out the textbook.
+				</p>
+				<h2 id="after-her-first-day">After Her First Day</h2>
+				<p>As she got more and more stuff, she eventually had to move some stuff out of her
+					office and into her home.
+					Just as she couldn't fit everything in her office into her backpack, she
+					couldn't fit everything she owned into her office, so she decided that she would
+					make sure that her office had everything it needed for the week.
+					And if she needed something that wasn't in her office, she could drive home,
+					pick it up, and bring it to the office.
+				</p>
+				<p>From then on, she continued to teach efficiently, much to the delight of her
+					students, who often got out of class five minutes early.
+				</p>
+				<h1 id="explaining-the-allegory">Explaining the Allegory</h1>
+				<p>Designing how your computer manages memory is almost exactly like figuring out
+					an efficient way to have everything you need for a class.
+					I'm going to list all the analogous concepts between the allegory and the
+					computer, and then I'm going to explain them immediately.
+					If you're confused by the computer terms, think entirely in terms of the
+					allegory, then just replace the allegory terms with the computer terms one step
+					at a time.
+				</p>
+				<table class="c-type-list">
+					<tr style="border-bottom: 1px solid #000000; text-align: center;">
+						<th>Allegory</th>
+						<th>Computer</th>
+					</tr>
+					<tr style="background: #E0E0E0;">
+						<td>The Professor</td>
+						<td>CPU</td>
+					</tr>
+					<tr>
+						<td>Her hands</td>
+						<td>Registers</td>
+					</tr>
+					<tr style="background: #E0E0E0;">
+						<td>Classes</td>
+						<td>Programs</td>
+					</tr>
+					<tr>
+						<td>Labels and Labeling System</td>
+						<td>Memory Addresses</td>
+					</tr>
+					<tr style="background: #E0E0E0;">
+						<td>Her Office</td>
+						<td>RAM</td>
+					</tr>
+					<tr>
+						<td>Her Backpack</td>
+						<td>L2 Cache</td>
+					</tr>
+					<tr style="background: #E0E0E0;">
+						<td>The Magnets and Marker Basket</td>
+						<td>L1 Cache</td>
+					</tr>
+					<tr style="background: #E0E0E0; border-bottom: 1px solid #000000;">
+						<td>Her House</td>
+						<td>Secondary Storage</td>
+					</tr>
+				</table>
+				<h2 id="cpu">CPU</h2>
+				<p>The <b>Central Processing Unit</b> (<b>CPU</b> for short) is the brain of a
+					computer.
+					It decides what to do next, how to organize things, etc.
+					I could say a lot about it, but treat it just like the professor.
+				</p>
+				<h2 id="registers">Registers</h2>
+				<p>Let's say you want to make a computer.
+					First, to do anything on the computer, you have to have some data stored inside
+					the CPU itself, otherwise the CPU can't interact with data at all.
+					Just as the professor needed some way to interact with what she brought to
+					class, so your computer needs some way to interact with its data.
+					You decide that you're going to give the CPU some <b>registers</b>, each of
+					which consists of a few bytes of memory.
+					Accessing memory from registers is almost instantaneous, but you can't have too
+					many registers for reasons involving the specifics hardware.
+					In general, you will have anywhere from four to sixty four (or some other power
+					of two) registers.
+				</p>
+				<h2 id="programs">Programs</h2>
+				<p>The actual content of the classes determines what stuff you'll need to bring to
+					each class, just as a program determines what the CPU needs to do.
+				</p>
+				<h2 id="memory-addresses">Memory Addresses</h2>
+				<p>You'll also need a way to identify which data you want, so you need to come up
+					with a labeling scheme like the professor.
+					The labeling scheme should consist of a list of what you want to find and where
+					it is.
+					To keep track of where it is, you use a <b>memory address</b>.
+					A memory address is a number that corresponds to a specific location in memory.
+					On a computer, each memory address is a specific number that uniquely identifies
+					a byte of memory.
+				</p>
+				<h2 id="ram">RAM</h2>
+				<p>Now, you can't store an entire program in the registers alone in the same way
+					the professor couldn't just hold everything she owned in her hands, so you need
+					to make a place to store information such as files and the values of variables.
+					You decide to make a component of the computer that can store a lot of memory,
+					which you call <b>Random Access Memory</b> or <b>RAM</b> for short.
+					Since computers have to be way more organized than an office, you're going to
+					make RAM one continuous list of bytes and use a memory address to access
+					specific bytes.
+				</p>
+				<div class="aside" >
+					<h4>Random Access?</h4>
+					<hr>
+					<p>In STEM, <b>random means you cannot tell me with certainty what's going to
+						happen next</b>.
+						For example, if I flip a coin, you cannot tell me if it's going to be heads or
+						tails, even if you could tell me the likelihood of each outcome.
+						In another example, if I were to roll two dice, I can tell you that the sum will
+						be seven one out of every six rolls, but I can't tell you what the next roll
+						will be.
+					</p>
+					<p>The term <b>Random Access X</b> just means that the computer does not know what
+						element of <b>X</b> will be accessed next.
+						<b>Random Access Memory</b> means that the computer doesn't know what memory
+						address you're going to read from or write to next.
+					</p>
+				</div>
+				<p>The earliest modern computers just had registers and RAM for memory.
+					In fact, a lot of computers like calculators (at least up to the TI-89 Titanium)
+					and early video games just had RAM, which meant that you would lose your data if
+					you turned them off.
+					Old games like <i>Metroid</i> used to have passwords that would indicate your
+					progress specifically because they couldn't save the data (<i>The Legend of
+					Zelda</i> was an early exception because it had save files.).
+				</p>
+				<h2 id="the-caches">The Caches</h2>
+				<p>The biggest problem with RAM is that it's slow.
+					Just like going to the office to get something took a while for the professor,
+					getting data from RAM takes a while (for computers, anyway).
+					If you think back to the allegory, her original problem was that she had nowhere
+					to store things she had already taken from the office, so she decided that she
+					would create a place to store it that would have faster access at the expense of
+					not being able to store everything.
+				</p>
+				<p>In computer science, a <b>cache</b> consists of a place where you store things
+					you've already fetched from a larger and slower source of data.
+				</p>
+				<p>In terms of real world experience, say you're working on a project or a paper or
+					something else that requires you to do research.
+					Now, you will end up making a bunch of searches that don't get you anything
+					useful, but say you find a source that you really like.
+					You know that you're probably going to refer back to it later, so you'll want to
+					somehow save a reference to it, whether it includes bookmarking the page,
+					copying the link, or whatever.
+					In saving something you have already fetched from a larger (the internet has
+					way more memory than your computer) and slower (compare all the time you spent
+					searching for the source to the time it takes to find it in a list of bookmarks)
+					source of data, you have <b>cached</b> the source.
+				</p>
+				<p>For a CS example, let's say you're running Twitter and you notice that a lot of
+					people are searching for a specific hashtag, <span style="color: #0056b3">#memoryhierarchy</span> for instance.
+					Instead of having each user searching for <span style="color: #0056b3">#memoryhierarchy</span> send a request to go through
+					all your servers searching for tweets with <span style="color: #0056b3">#memoryhierarchy</span>, have one user do it, store
+					the results of that search on a bunch of servers, then whenever someone searches
+					for <span style="color: #0056b3">#memoryhierarchy</span>, just send them the results you've already found without going back
+					through all the servers.
+					Don't waste time finding something that's already been found or doing something
+					that's already been done.
+				</p>
+				<p>In the example, the backpack and the magnets were two different levels of cache.
+					Getting stuff you need from the backpack takes less time than getting stuff from
+					the office, but the backpack can't hold nearly as much as the office.
+					Likewise, getting stuff you need from the magnets takes less time than getting
+					stuff from the backpack, but the magnets can't hold nearly as much as the
+					backpack.
+				</p>
+				<p>Accessing memory from the <b>L1 Cache</b> is faster than accessing memory from
+					the <b>L2 Cache</b>, but you can't store as much in the <b>L1 Cache</b>.
+					Likewise, accessing memory from the <b>L2 Cache</b> is faster than accessing
+					memory from <b>RAM</b>, but you can't store as much in the <b>L2 Cache</b>.
+					On modern computers, you often have an <b>L3 Cache</b> between the <b>L2
+					Cache</b> and <b>RAM</b>, which follows the same pattern of having more memory
+					than the <b>L2 Cache</b> but with a slower access time.
+				</p>
+				<p>People have already written articles about <a
+					href="https://medium.com/software-design/why-software-developers-should-care-about-cpu-caches-8da04355bb8a">caches
+					and performance</a>
+					that contain more specific information, so I'll just link an article for you to
+					read.
+					I would focus on the relative speed of the different levels of memory in that
+					article in particular.
+				</p>
+				<h2 id="secondary-storage">Secondary Storage</h2>
+				<p>What's the only type of memory I haven't mentioned yet?
+					That's right, your hard drive or solid state drive.
+					RAM consists of data that your program has requested and your secondary storage
+					consists of data that your program <i>might</i> request in the future, such as
+					essays you've written, textbooks that you downloaded legally, pictures, etc.
+					If it's a file on your computer, it's in secondary storage.
+					Technically, we can extend the idea of secondary storage to anything that isn't
+					RAM, caches, or registers such as a server, but you get the idea.
+					Anyway, secondary storage corresponds to the professor's house or anywhere else
+					she might store stuff that she could bring to her office but won't for sake of
+					space.
+				</p>
+				<h1 id="why-have-a-memory-hierarchy">Why Have a Memory Hierarchy?</h1>
+				<p>I hope at this point you see the general pattern: more memory means less speed.
+					Of course, the memory-speed trade-off isn't a fundamental law of nature, but
+					then your computer would be way more expensive since faster memory is more
+					expensive (time is money, after all).
+					The memory hierarchy is a nice compromise between cost, memory, and speed.
+					If you write good programs that use the memory hierarchy to your advantage, you
+					can effectively simulate having a lot of high speed memory.
+				</p>
+				<h2 id="how-to-use-the-cache">How to Use the Cache</h2>
+				<p>As a programmer, you do not move things back and forth between caches and RAM,
+					your computer handles that for you.
+					The computer, however, does it in a reliable way that you can use to your
+					advantage.
+					In the following subsections, we're going to discuss the three ways you can
+					optimize your cache use.
+				</p>
+				<p>These next two principles are known as <a
+					href="https://en.wikipedia.org/wiki/Locality_of_reference">the Principles of
+					Locality</a>.
+				</p>
+				<h3 id="temporal-locality">Temporal Locality</h3>
+				<p>Let's go back to the allegory before the professor bought her backpack.
+					She spent most of her time going back and forth between her office because she
+					kept switching between things she needed.
+					She used the syllabus first, then her markers, then the syllabus, then the
+					textbook, then the markers, then she kept switching back and forth between the
+					markers and the textbook until her class ended.
+					We can come up with a way she could have sped up her class by adding another
+					rule: once she takes something from her office, she cannot use anything else
+					until she has completely finished using what she currently has.
+					In her case, she could have discussed the syllabus in its entirety without
+					stopping to draw anything on the board, then gone back to her office to trade
+					the syllabus with the textbook, then discussed everything relevant from the
+					textbook, then gone back to her office to get the markers, then used the
+					markers.
+					If she had, she would have only gone back to her office twice, meaning she would
+					have only wasted ten minutes.
+				</p>
+				<p>In the same way, using the cache to your advantage is quite simple: <b>once you
+					access some data, do everything you can with the data before getting new
+					data</b>.
+				</p>
+				<p>Now, you might come up with the reasonable objection that she probably would
+					have needed to switch more often than just when she finished using something.
+					I have assumed that she could do what she needed to do with her markers without
+					having to refer back to the syllabus or the textbook and vice versa.
+					The general principle of doing everything you can with what you have still
+					applies, but it just turns out that she couldn't do everything she needed to do
+					with a resource until she finished.
+					If you as a programmer just had registers and RAM, you would also probably need
+					to switch between resources.
+					Since we have more than just RAM and registers, let's add the cache into the
+					mix.
+				</p>
+				<p>Whenever you access data, the computer will copy it into the fastest memory it
+					can because it thinks you're probably going to use it again in the future, which
+					is known as <b>Temporal Locality</b>.
+					For example, if you're calculating an average value, you'll want the memory for
+					the running total to be accessed quickly, so you'll probably store it in either
+					a register or the L1 cache.
+					Once you're done calculating the average, you might not need the total anymore,
+					so your computer is going to leave it in the L1 cache until the program needs
+					the space for something more important.
+					It will then demote the data for the total down to the L2 cache.
+					If the running total gets used again, it will move back into the L1 cache,
+					otherwise, it will stay in the L2 cache until the program needs the space for
+					something more important.
+					It will then move the data for the total down to the L3 cache and so on until it
+					reaches RAM, where it will either be used again and moved back up to the L1
+					cache or the program will tell the computer it's done using the memory.
+				</p>
+				<p>In other words, if you use data once, it will be in the high speed memory until
+					something else replaces it, meaning you will pay no speed penalty if you use the
+					data soon after.
+				</p>
+				<h3 id="spatial-locality">Spatial Locality</h3>
+				<p>When the professor first started with her labeling scheme, she originally didn't
+					organize her office at all.
+					For example, to find everything she needed for her third class, she would have
+					to check in the leftmost drawer under her desk for her markers, take the third
+					book from the left on the top shelf of her bookshelf, take her computer off her
+					desk, and then get the documents from her class from the fifth binder from the
+					top of her pile of binders.
+					Her other classes had similar requirements.
+					Since she was quite descriptive, it wasn't hard for her to find everything that
+					she needed, but it still took a while to find out where to go in her office,
+					getting what she needed, and put it in her backpack for each resource.
+					Since she wanted to speed up the process of going to class, she decided that she
+					would group together all the resources she needed by class, not by type.
+					She decided to put her documents, the textbook, and anything else she needed for
+					each class next to each other in a box so that she could pick up the box, move
+					it next to her backpack, then take what she needed from the box and put it into
+					her backpack.
+				</p>
+				<p>Of course, this system wasn't perfect.
+					Sometimes, different classes needed different resources but she couldn't put
+					them in both boxes at the same time, so she decided to put the resource into the
+					box for the class that used the resource most often.
+					For example, her third class used her computer way more often than her other two
+					classes, so she put it in the box for her third class.
+					Other times, she had to put some resources for different classes into the same
+					box to save space.
+					All things considered though, the boxes made her more efficient.
+				</p>
+				<p>The computer uses the same exact idea to make sure the memory you want to use is
+					in the cache: if you load in some memory, it will try to load in the neighboring
+					memory too in what is known as a <a
+					href="https://stackoverflow.com/q/3928995">cache line</a>, which means that if
+					you want to use the cache to your advantage, <b>keep related data together</b>.
+					A typical cache line is 64 bytes.
+				</p>
+				<p>In my description of the professor and her boxes, I modified slightly what the
+					computer does to make the allegory make sense.
+					Your computer will not look through the boxes and figure out what you need to
+					put in the cache.
+					Instead, it would put the entire box into the backpack regardless of whether the
+					professor needed everything in the box.
+					Knowing this fact, you should make sure that you fill your boxes with exactly
+					what you need.
+				</p>
+				<h3 id="finite-amount-of-memory">Finite Amount of Memory</h3>
+				<p>For the professor, she should try to fill the box with smaller objects like
+					thinner binders and excerpts from the textbook.
+				</p>
+				<p>Lastly, the computer can only fit so much in the cache, so <b>reducing the
+					amount of memory you use means you can fit more useful memory in the cache</b>.
+					This last principle is just "Don't waste fast memory on irrelevant data".
+				</p>
+				<h2 id="swap-memory">Swap Memory</h2>
+				<p>What happens when the professor can't keep everything she needs for the day in
+					her office?
+					She has to store some of the stuff in her home, so she decides to store the
+					stuff she won't use for now back at home and pick it up later when she needs it.
+					Since she doesn't want her job to be spread out all over the house and waste
+					time finding it, she assigns one room of her house near the door to let her pick
+					up what she needs to pick up quickly.
+				</p>
+				<p>On you computer, you have <b>swap memory</b>, which functions just like the room
+					in the professor's house near the door.
+					It's pretty much auxiliary RAM that's way slower to use.
+					If you ever require more memory than your RAM has space for, you will end up
+					using swap memory.
+					Your computer is smart about using swap, meaning it will only put things in swap
+					that you're barely using (such as tabs in your browse that you haven't looked at
+					in a week) and it will only use swap when it runs out of RAM.
+				</p>
+				<h3 id="what-happens-if-i-run-out-of-swap">What Happens if I Run Out of Swap?</h3>
+				<p>Don't.
+				</p>
+				<h3 id="seriously-what-happens-if-i-run-out-of-swap">Seriously, What Happens if I Run Out of Swap?</h3>
+				<p>In general, your computer screen will probably freeze since the computer is
+					spending all its processing power on whatever you're doing, so it will stop
+					caring about trivial things like changing the pixels of the screen or processing
+					input.
+					Your two options are to wait until it finishes or shut off the computer by
+					holding the power button, as you can't shut down the computer the normal way.
+				</p>
+				<p>The answer is still "Don't" because you would have to intentionally try to run
+					out of swap or deal with such massive amounts of memory that you can expect to
+					run out of swap.
+					For example, the entire human genome needs about 3 GB of memory to store all the
+					base pairs (technically less, but whatever), meaning you could load the entire
+					human genome into memory and still not even run out of RAM.
+					The only practical way to run out of swap is to have way more programs running
+					at the same time as your computer.
+				</p>
+				<p>In terms of the professor, running out of swap means she's hoarding and needs an
+					intervention.
+				</p>
+				<h1 id="how-did-you-get-a-4x-speedup">How Did You Get a 4x Speedup?</h1>
+				<p>If you remember the beginning of the article, I said I was able to achieve a
+					massive speedup by first reducing one of the large matrices to just the last two
+					columns then by using two bytes to represent the numbers instead of four bytes,
+					reducing the memory the program used to about a quarter of what it was.
+					In doing so, I was able to fit more numbers into the cache, which made my code
+					faster.
+					Plus, by halving the size of each individual number, the computer could store
+					twice as many numbers in a single cache line, meaning it only had to fetch
+					memory half as often.
+				</p>
+				<p>I also guarantee that I did everything with the data I could before getting new
+					data throughout the program, but I would have to make this article even longer,
+					so I'll pass on the example.
+				</p>
+				<h1 id="summary">Summary</h1>
+				<ul>
+					<li>Your computer has a memory hierarchy consisting of
+						<ol>
+							<li>Registers
+							</li>
+							<li>Caches
+							</li>
+							<li>RAM
+							</li>
+							<li>Secondary Storage
+							</li>
+						</ol>
+						where registers are the fastest type of memory and secondary storage is the
+						slowest type of memory.
+					</li>
+					<li>The faster the memory, the less of it you'll find on your computer.
+					</li>
+					<li>The memory hierarchy will allow you to simulate having a large amount of fast
+						memory.
+					</li>
+					<li>The computer will cache memory that you've recently accessed and memory that's
+						nearby.
+					</li>
+					<li>Writing efficient programs means trying to maximize your use of high speed
+						memory by
+						<ul>
+							<li>doing as much as you can with data you've already accessed before trying to
+								access more data
+							</li>
+							<li>keeping related data together
+							</li>
+							<li>using as little memory as possible
+							</li>
+						</ul>
+					</li>
+					<li>Swap memory exists and you can only run out of it if you try.
+					</li>
+				</ul>
+				<p>Once again, it's up to you to find out what's making your program slow and make
+					that part faster.
+					Furthermore, using memory properly will not make poorly written code easy to
+					understand nor will it make a bad algorithm a good algorithm.
+					Using memory properly, however, will make a good program into a great program.
+				</p>
+				<p>If you're coming from the <i>Making Sense of C</i> series, the next article in
+					the series is <a href="../../c-language/05-types/index.html">Types in C</a>, but
+					feel free to make a detour to <a
+					href="../../binary/integers/index.html">Representing Integers in Binary</a> if
+					you haven't already read it.
+				</p>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#the-memory-hierarchy" style="padding-left:12px;">The Memory Hierarchy</a>
+				<a href="#the-allegory-of-the-professor" style="padding-left:24px;">The Allegory of the Professor</a>
+				<a href="#the-professor-arrives" style="padding-left:36px;">The Professor Arrives</a>
+				<a href="#the-first-day-of-class" style="padding-left:36px;">The First Day of Class</a>
+				<a href="#the-second-class" style="padding-left:36px;">The Second Class</a>
+				<a href="#the-third-class" style="padding-left:36px;">The Third Class</a>
+				<a href="#after-her-first-day" style="padding-left:36px;">After Her First Day</a>
+				<a href="#explaining-the-allegory" style="padding-left:24px;">Explaining the Allegory</a>
+				<a href="#cpu" style="padding-left:36px;">CPU</a>
+				<a href="#registers" style="padding-left:36px;">Registers</a>
+				<a href="#programs" style="padding-left:36px;">Programs</a>
+				<a href="#memory-addresses" style="padding-left:36px;">Memory Addresses</a>
+				<a href="#ram" style="padding-left:36px;">RAM</a>
+				<a href="#the-caches" style="padding-left:36px;">The Caches</a>
+				<a href="#secondary-storage" style="padding-left:36px;">Secondary Storage</a>
+				<a href="#why-have-a-memory-hierarchy" style="padding-left:24px;">Why Have a Memory Hierarchy?</a>
+				<a href="#how-to-use-the-cache" style="padding-left:36px;">How to Use the Cache</a>
+				<a href="#temporal-locality" style="padding-left:48px;">Temporal Locality</a>
+				<a href="#spatial-locality" style="padding-left:48px;">Spatial Locality</a>
+				<a href="#finite-amount-of-memory" style="padding-left:48px;">Finite Amount of Memory</a>
+				<a href="#swap-memory" style="padding-left:36px;">Swap Memory</a>
+				<a href="#what-happens-if-i-run-out-of-swap" style="padding-left:48px;">What Happens if I Run Out of Swap?</a>
+				<a href="#seriously-what-happens-if-i-run-out-of-swap" style="padding-left:48px;">Seriously, What Happens if I Run Out of Swap?</a>
+				<a href="#how-did-you-get-a-4x-speedup" style="padding-left:24px;">How Did You Get a 4x Speedup?</a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+			<div id="copyright" class="mt-4">
+				&copy; 2019 TUACM &sdot; <a href="">LICENSE</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>
