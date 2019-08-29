@@ -10,6 +10,15 @@
 		<loc>https://tuacm.com/blog/posix/</loc>
 	</url>
 	<url>
+		<loc>https://tuacm.com/blog/hardware/</loc>
+	</url>
+	<url>
+		<loc>https://tuacm.com/blog/hardware/memory-hierarchy/</loc>
+	</url>
+	<url>
+		<loc>https://tuacm.com/blog/hardware/integers/</loc>
+	</url>
+	<url>
 		<loc>https://tuacm.com/blog/posix/commands/</loc>
 	</url>
 </urlset>
