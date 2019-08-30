@@ -1,0 +1,1 @@
+In this article, we figure out the best way for computers to represent integers, a.k.a. two's compliment.

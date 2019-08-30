@@ -8,10 +8,11 @@ Scripts:
 
 <i>Since both Linux and Mac are based off Unix, the methods in this tutorial
 will work for both.
-Since I'm not a Windows user anymore and I never used the terminal on Windows, I
-cannot provide a good explanation of <a
-href="https://www.instructables.com/id/How-to-Create-your-own-Commands-with-Batch/">how
-to make a command on Windows</a>.</i>
+Since I'm not a Windows user anymore and I never used the command prompt on
+Windows, I cannot provide a good explanation of <a
+href="https://www.instructables.com/id/How-to-Create-your-own-Commands-with-Batch/"
+title="An article on how to make a command on Windows.">how to make a command on
+Windows</a>, though it's similar to making a command on Linux and Mac.</i>
 
 Although the purpose of a computer is to automate tasks, programmers still have
 to do some tasks manually.
@@ -33,7 +34,8 @@ Since I was typing in the same bash commands over and over again, I decided to
 write a script that would execute the bash commands for me whenever I ran it.
 Since I wanted to be able to use the script from any directory, I decided to
 make the script into the Linux command, which I called <a
-href="https://github.com/TheLandfill/minit">minit</a>.
+href="https://github.com/TheLandfill/minit" title="The github repo for
+minit.">minit</a>.
 
 In this article, I'm going to discuss what a command is, the basics of how the
 terminal processes commands, and how to make one yourself.
@@ -120,8 +122,8 @@ more detail about the specifics.
 You can make an alias out of almost anything you could type on the command line,
 but aliases have severe limits on what they can do.
 They also rely on builtins and other bash commands.
-We'll discuss <a href="#what-if-i-dont-need-an-entire-executable">how to create
-an alias</a> later in the article.
+We'll discuss <a href="#what-if-i-dont-need-an-entire-executable" title="Skip to
+a later part of the article.">how to create an alias</a> later in the article.
 Since {minit} is too complex to be an alias, I had to use a script.
 
 \{{\aside}}
@@ -161,22 +163,24 @@ cd is a shell builtin
 <hr>
 
 I had to write a function that modified the behavior of {cd} slightly so that my
-prompt <a href="https://unix.stackexchange.com/a/217097">displays the current
-and parent directories</a>, but it doesn't matter for the tutorial.
+prompt <a href="https://unix.stackexchange.com/a/217097" title="This Stack
+Exchange answer discusses how I made my terminal print out just the current and
+parent directory.">displays the current and parent directories</a>, but it
+doesn't matter for the tutorial.
 On most computers, {cd} will be a shell builtin.
 Since the only way to write a shell builtin is to write or modify a shell, we
 aren't going to deal with that here.
 Since I use cd frequently, the actual function is simple (it calls the builtin
 {cd} and then runs another function if the builtin {cd} ran properly), and I
 need to call it instead of the builtin {cd} (see the <a
-href="#more-directories-means-more-to-search">command hierarchy</a> I describe
-later in the article for more info), I had to make it a function.
+href="#more-directories-means-more-to-search" title="You'll find a description
+of the order in which your terminal will search for a given command.">command
+hierarchy</a> I describe later in the article for more info), I had to make it a
+function.
 If you want more information on when to use a function, alias, or script to make
-a command, see <a href="https://unix.stackexchange.com/a/30964">this answer</a>
-on StackOverflow.
-<a href="https://unix.stackexchange.com/a/30964">This answer on
-StackOverflow</a> gives some reasons for why you would choose to use a function,
-alias, or script.
+a command, see <a href="https://unix.stackexchange.com/a/30964" title="An answer
+on Stack Overflow that describes the pros and cons of each type of
+command.">this answer on StackOverflow</a>.
 
 Also, notice that it prints out both that {cd is a function} and {cd is a shell
 builtin}.
@@ -210,9 +214,11 @@ The {chmod} command allows you to set who can read, write, and execute a file.
 In most cases, you can use {chmod 755 exe}, which will allow anyone to execute
 {exe} and allow the user to modify it.
 This <a
-href="https://askubuntu.com/questions/932713/what-is-the-difference-between-chmod-x-and-chmod-755">
-article on chmod</a> and the man page for chmod (which you can see by typing
-{man chmod} in the terminal) contain more information about the {chmod} command.
+href="https://askubuntu.com/questions/932713/what-is-the-difference-between-chmod-x-and-chmod-755"
+title="An article specifically on the difference between 'chmod +x' and 'chmod
+755' but also describes chmod well."> article on chmod</a> and the man page for
+chmod (which you can see by typing {man chmod} in the terminal) contain more
+information about the {chmod} command.
 
 ## Absolute vs. Relative Paths
 
@@ -256,8 +262,9 @@ The method we use to create a command should
 \{{ul}}
 
 look like a standard bash command, since <a
-href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment">that's what
-people expect</a>.
+href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment"
+title="Wikipedia article for the Principle of Least
+Astonishment/Surprise.">that's what people expect</a>.
 
 not create extraneous commands.
 

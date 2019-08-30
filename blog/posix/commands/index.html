@@ -18,7 +18,7 @@
 		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
 		<script>
 			window.dataLayer = window.dataLayer || [];
-			function gtag()<code>dataLayer.push(arguments);</code>
+			function gtag(){dataLayer.push(arguments);}
 			gtag('js', new Date());
 			gtag('config', 'UA-146716017-1');
 		</script>
@@ -34,7 +34,7 @@
 			<div class="article">
 				<div id="article-title"><h1 id="how-to-make-a-command-on-linux-or-mac">How to Make a Command on Linux or Mac</h1></div>
 				<div id="meta-description">What is your computer doing when you type a command in the terminal?</div>
-				<div id="date-and-tags">Posted 29 August 2019 at 3:16 PM </div>
+				<div id="date-and-tags">Posted 29 August 2019 at 7:06 PM </div>
 				<div id="author-box">
 					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
 					<div id="author-name">By Joseph Mellor</div>
@@ -42,10 +42,11 @@
 				<hr style="border: 3px solid black;">
 				<p><i>Since both Linux and Mac are based off Unix, the methods in this tutorial
 					will work for both.
-					Since I'm not a Windows user anymore and I never used the terminal on Windows, I
-					cannot provide a good explanation of <a
-					href="https://www.instructables.com/id/How-to-Create-your-own-Commands-with-Batch/">how
-					to make a command on Windows</a>.</i>
+					Since I'm not a Windows user anymore and I never used the command prompt on
+					Windows, I cannot provide a good explanation of <a
+					href="https://www.instructables.com/id/How-to-Create-your-own-Commands-with-Batch/"
+					title="An article on how to make a command on Windows.">how to make a command on
+					Windows</a>, though it's similar to making a command on Linux and Mac.</i>
 				</p>
 				<p>Although the purpose of a computer is to automate tasks, programmers still have
 					to do some tasks manually.
@@ -67,7 +68,8 @@
 					write a script that would execute the bash commands for me whenever I ran it.
 					Since I wanted to be able to use the script from any directory, I decided to
 					make the script into the Linux command, which I called <a
-					href="https://github.com/TheLandfill/minit">minit</a>.
+					href="https://github.com/TheLandfill/minit" title="The github repo for
+					minit.">minit</a>.
 				</p>
 				<p>In this article, I'm going to discuss what a command is, the basics of how the
 					terminal processes commands, and how to make one yourself.
@@ -150,8 +152,8 @@
 					<p>You can make an alias out of almost anything you could type on the command line,
 						but aliases have severe limits on what they can do.
 						They also rely on builtins and other bash commands.
-						We'll discuss <a href="#what-if-i-dont-need-an-entire-executable">how to create
-						an alias</a> later in the article.
+						We'll discuss <a href="#what-if-i-dont-need-an-entire-executable" title="Skip to
+						a later part of the article.">how to create an alias</a> later in the article.
 						Since <code>minit</code> is too complex to be an alias, I had to use a script.
 					</p>
 				</div>
@@ -187,22 +189,24 @@ cd is a shell builtin
 					<h4>Why is <code>cd</code> a Function?</h4>
 					<hr>
 					<p>I had to write a function that modified the behavior of <code>cd</code> slightly so that my
-						prompt <a href="https://unix.stackexchange.com/a/217097">displays the current
-						and parent directories</a>, but it doesn't matter for the tutorial.
+						prompt <a href="https://unix.stackexchange.com/a/217097" title="This Stack
+						Exchange answer discusses how I made my terminal print out just the current and
+						parent directory.">displays the current and parent directories</a>, but it
+						doesn't matter for the tutorial.
 						On most computers, <code>cd</code> will be a shell builtin.
 						Since the only way to write a shell builtin is to write or modify a shell, we
 						aren't going to deal with that here.
 						Since I use cd frequently, the actual function is simple (it calls the builtin
 						<code>cd</code> and then runs another function if the builtin <code>cd</code> ran properly), and I
 						need to call it instead of the builtin <code>cd</code> (see the <a
-						href="#more-directories-means-more-to-search">command hierarchy</a> I describe
-						later in the article for more info), I had to make it a function.
+						href="#more-directories-means-more-to-search" title="You'll find a description
+						of the order in which your terminal will search for a given command.">command
+						hierarchy</a> I describe later in the article for more info), I had to make it a
+						function.
 						If you want more information on when to use a function, alias, or script to make
-						a command, see <a href="https://unix.stackexchange.com/a/30964">this answer</a>
-						on StackOverflow.
-						<a href="https://unix.stackexchange.com/a/30964">This answer on
-						StackOverflow</a> gives some reasons for why you would choose to use a function,
-						alias, or script.
+						a command, see <a href="https://unix.stackexchange.com/a/30964" title="An answer
+						on Stack Overflow that describes the pros and cons of each type of
+						command.">this answer on StackOverflow</a>.
 					</p>
 					<p>Also, notice that it prints out both that <code>cd is a function</code> and <code>cd is a shell
 						builtin</code>.
@@ -233,9 +237,11 @@ cd is a shell builtin
 					In most cases, you can use <code>chmod 755 exe</code>, which will allow anyone to execute
 					<code>exe</code> and allow the user to modify it.
 					This <a
-					href="https://askubuntu.com/questions/932713/what-is-the-difference-between-chmod-x-and-chmod-755">
-					article on chmod</a> and the man page for chmod (which you can see by typing
-					<code>man chmod</code> in the terminal) contain more information about the <code>chmod</code> command.
+					href="https://askubuntu.com/questions/932713/what-is-the-difference-between-chmod-x-and-chmod-755"
+					title="An article specifically on the difference between 'chmod +x' and 'chmod
+					755' but also describes chmod well."> article on chmod</a> and the man page for
+					chmod (which you can see by typing <code>man chmod</code> in the terminal) contain more
+					information about the <code>chmod</code> command.
 				</p>
 				<h2 id="absolute-vs-relative-paths">Absolute vs. Relative Paths</h2>
 				<p>An absolute filepath starts from either your root directory, <code>/</code>, or your home
@@ -274,8 +280,9 @@ cd is a shell builtin
 				</p>
 				<ul>
 					<li>look like a standard bash command, since <a
-						href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment">that's what
-						people expect</a>.
+						href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment"
+						title="Wikipedia article for the Principle of Least
+						Astonishment/Surprise.">that's what people expect</a>.
 					</li>
 					<li>not create extraneous commands.
 					</li>
@@ -618,7 +625,7 @@ hello-world is /usr/local/games/hello-world
 				</p>
 <div class="code-block"><pre><span></span><span class="nb">alias</span> <span class="nv">vip</span><span class="o">=</span><span class="s2">&quot;vim -p&quot;</span>
 </pre></div>
-
+				
 				<p>This line will create a command called <code>vip</code> that will run <code>vim -p</code> whenever
 					you call it.
 					Since I want it to stay across login sessions, I needed to put it in one of

@@ -1,0 +1,1 @@
+In this article, we'll discuss how the computer uses the memory hierarchy and caching to improve the speed of programs.
