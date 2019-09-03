@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<style>
+			@media screen and (max-width: 420px) {
+				#string-array-image {
+					width: 100%;
+				}
+			}
+		</style>
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>Memory Addresses in C</title>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="memory-addresses-in-c">Memory Addresses in C</h1></div>
+				<div id="meta-description">How does the computer know which bits to use for what?</div>
+				<div id="date-and-tags">Posted 28 August 2019 at 2:09 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>This is the eighth article in the </i>Making Sense of C<i> series.
+					In this article, we're going to discuss how the computer works with memory in
+					order to figure out how to keep track of where a list starts and how we can use
+					memory addresses to make a list.
+					Once we can make a list, we can make a string easily.
+					Plus, a list is just a good tool to have.</i>
+				</p>
+				<p>Since we've done a lot up to this point, I'm just going to use a list to make it
+					easier to read.
+					So far, we've
+				</p>
+				<ul>
+					<li>determined that we're going to give the compiler a file with a bunch of
+						statements ending in semicolons,
+					</li>
+					<li>established that we can use comments with <code>//</code> for single line comments and <code>/*</code>
+						and <code>*/</code> for multiline comments,
+					</li>
+					<li>reserved the symbols <code>+-*/%</code> for arithmetic,
+					</li>
+					<li>set up variables <code>[type] [variable] = [expression]</code> which will allow us to store
+						values for later use,
+					</li>
+					<li>come up with the integral types (<code>char</code>, <code>short</code>, <code>int</code>, and <code>long long</code>) and
+						the floating point types (<code>float</code> and <code>double</code>),
+					</li>
+					<li>figured out a way to represent characters using the <code>char</code> type and invented the
+						<code>NULL</code> character, which indicates that we're ending a string,
+					</li>
+					<li>and decided to use single quotes around a character to represent the ASCII value
+						for that <code>char</code>.
+					</li>
+				</ul>
+				<p>Although we can represent individual characters, we need to string them together
+					so that we can represent actual text.
+					We decided to solve the problem by putting characters in a list, specifying the
+					beginning of the list, then telling the computer to keep reading the list until
+					it reaches a special character we call the <code>NULL</code> character, which we represent
+					with a <code>'\0'</code>.
+				</p>
+				<h1 id="what-exactly-is-a-list">What Exactly is a List?</h1>
+				<p>There are a lot of terms that we know them when we see them, but we have a hard
+					time defining them in a concrete, meaningful way.
+					To make sure we have a clear goal, we're going to come up with a formal
+					definition of a list.
+				</p>
+				<p>In computer science, a list has a few properties:
+				</p>
+				<ul>
+					<li>It has some sense of order, meaning it makes sense to ask questions like "What
+						is the second element of the list?" and "What is the next element in the list?".
+					</li>
+					<li>The same value can show up multiple times in the list, such as the letter 't' in
+						the string "typewriter".
+					</li>
+					<li>It has a finite number of elements.
+					</li>
+				</ul>
+				<p>Since we neither have infinite RAM nor time, the last property is satisfied, but
+					we're going to have to implement the other properties.
+					<b>If we know the first element and we know how to access the next element in
+					the sequence, we will have an implementation of a list</b>.
+				</p>
+				<h1 id="a-problem-weve-been-putting-off">A Problem We've Been Putting Off</h1>
+				<p>Locating an element of a list is actually related to another problem that we've
+					put off, namely how does something like <code>int a = 84;</code> get converted into
+					something the machine can read?
+					Up to this point, we've been working almost entirely from what we, as
+					programmers, will see.
+					We deal with variables and arithmetic and types, but the computer just sees ones
+					and zeros.
+					Since computers have no concept of a variable, how can we actually implement a
+					variable?
+				</p>
+				<h2 id="variables-in-machine-code">Variables in Machine Code</h2>
+				<p>Remember that a variable stores a value for later use, and the only way we can
+					store data for later use is by using memory.
+					In essence, when your computer sees something like <code>int a = 84;</code>, it will first
+					tell the operating system to give it four bytes (<code>int</code>s need four bytes for
+					representation) somewhere in memory, then it will store <code>84</code> in a register, then
+					it will store the value in the register into the four bytes allocated for <code>a</code>.
+					When the computer later sees a statement like <code>a += 17;</code>, it will load the value
+					stored in <code>a</code> from memory into a register, add <code>17</code> to the value in the
+					register, then write the value in the register back to wherever <code>a</code> was stored.
+				</p>
+				<p>In assembly (the human version of machine code), this process would look
+					something like this:
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="c1">; Assembly generally uses &#39;;&#39; for comments like how C uses //</span>
+<span class="c1">; This part will first load 84 into register 8 (It doesn&#39;t matter</span>
+<span class="c1">; which register I pick, so I just picked one), then store the value</span>
+<span class="c1">; in register 8 into the memory for a, which is 28($29).</span>
+<span class="c1">; I know 28($29) is some weird syntax, but it will make more sense</span>
+<span class="c1">; once we finish the article.</span>
+<span class="nf">li</span>      <span class="kc">$</span><span class="mi">8</span><span class="p">,</span>     <span class="mi">84</span>
+<span class="nf">sw</span>      <span class="kc">$</span><span class="mi">8</span><span class="p">,</span>     <span class="mi">28</span><span class="p">(</span><span class="kc">$</span><span class="mi">29</span><span class="p">)</span>
+
+<span class="c1">; Other stuff.</span>
+
+<span class="c1">; This part will then load the value for a into register 14 (Once</span>
+<span class="c1">; again, I just picked a valid register at random.), then add 17 to</span>
+<span class="c1">; the value in register 14, then store it back into the memory for a.</span>
+<span class="nf">lw</span>      <span class="kc">$</span><span class="mi">14</span><span class="p">,</span>    <span class="mi">28</span><span class="p">(</span><span class="kc">$</span><span class="mi">29</span><span class="p">)</span>
+<span class="nf">addiu</span>   <span class="kc">$</span><span class="mi">14</span><span class="p">,</span>    <span class="kc">$</span><span class="mi">14</span><span class="p">,</span>    <span class="mi">17</span>
+<span class="nf">sw</span>      <span class="kc">$</span><span class="mi">14</span><span class="p">,</span>    <span class="mi">28</span><span class="p">(</span><span class="kc">$</span><span class="mi">29</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>In short, <b>the computer uses memory addresses to identify which bits of memory
+					to change</b>.
+				</p>
+				<div class="aside" >
+					<h4>Lvalues and Rvalues</h4>
+					<hr>
+					<p>If you remember back in the <a href="../04-variables/index.html">variables and
+						basic arithmetic</a> article in this series, I defined rvalues as expressions
+						that <b>cannot appear on the left of an assignment operator</b> and lvalues as
+						expressions that <b>can appear on the left side of an assignment operator</b>,
+						which is an accurate definition, but since I'm bringing up memory addresses, I
+						want to mention that the technical definition of an lvalue is a value with a
+						memory address and an rvalue is a value without a memory address.
+						For example, variables have memory addresses, but a constant like <code>5</code> does not.
+					</p>
+				</div>
+				<h1 id="how-can-memory-addresses-help-us-with-strings">How Can Memory Addresses Help Us With Strings?</h1>
+				<p>When we started this article, we had two problems to solve: how to specify the
+					beginning of a list and how to implement a list.
+					Memory addresses will let us solve both of our problems.
+					Specifying the beginning of a list is trivial, since we can just give the
+					computer the memory address of the first character, but how can we specify the
+					next character in the list?
+					We can either somehow group together every character with the memory address of
+					the next character in what is known as a <a
+					href="https://en.wikipedia.org/wiki/Linked_list">linked list</a> or we can come
+					up with a way that the computer can figure out what character to access next
+					based on the current character and its memory address.
+				</p>
+				<h2 id="what-if-we-used-a-linked-list">What if We Used a Linked List?</h2>
+				<p>Here's what that would look like:
+				</p>
+				<div class="text-center" style="margin-bottom: 1em; background: #FFFFFF; border-radius: 8px;">
+					<img src="string-as-a-linked-list-in-c.png" style="width: 100%; max-width: 420px;" alt="An image of a linked list of characters in C.">
+				</div>
+				<p>Each arrow represents a memory address that points to the next character in the
+					string that we have to store with the current character.
+					The memory addresses are basically random numbers I picked because the memory
+					addresses you will get from the computer will seem to be random to you.
+					Notice that none of them are anywhere near each other in memory, and they don't
+					have to be either.
+					Furthermore, to find the fifth element, you have to start with the first
+					element, then go through each element until you get to the end.
+				</p>
+				<p>Because linked lists require five or nine times as much memory to store a
+					character and the memory address, they have no sense of <a
+					href="../../memory/">cache locality</a>, and you have to go through the entire
+					list to see the last element, we're going to use an algorithm to find the next
+					character.
+				</p>
+				<h2 id="using-an-algorithm-to-find-the-next-character">Using an Algorithm to Find the Next Character</h2>
+				<p>While there are probably many different algorithms we could implement to figure
+					out the next character from the current character, the simplest algorithm is to
+					put all the characters in a block of memory in order and tell the computer to
+					access the character that comes next in the block of memory.
+					As with the linked list, here's what that would look like:
+				</p>
+				<div class="text-center" style="margin-bottom: 1em; background: #FFFFFF; border-radius: 8px;">
+					<img id="string-array-image" src="string-as-an-array-in-c.png" alt="An image of an array of characters in C">
+				</div>
+				<p>Every single character is right next to the other character and to access the
+					string requires only the memory address of the first one, since we just have to
+					add one to the memory address of the current character to get the memory address
+					of the next character.
+					If we want to process strings, we can then find some way to loop through the
+					characters until we see the null character, <code>\0</code>.
+				</p>
+				<p>In terms of speed, we can generally get around 64 characters into the cache at a
+					time, meaning we only have to move something into the cache one sixty-fourth of
+					the time.
+				</p>
+				<h1 id="implementing-the-list">Implementing the List</h1>
+				<p>We now have a few things to implement:
+				</p>
+				<ul>
+					<li>a way to access the memory address of some variable
+					</li>
+					<li>a way to access the value stored in a memory address
+					</li>
+					<li>a way to store the memory address in some variable
+					</li>
+					<li>a way to tell the computer to give us a block of memory
+					</li>
+				</ul>
+				<h2 id="accessing-the-memory-address-of-some-variable">Accessing the Memory Address of Some Variable</h2>
+				<p>Since it's going to happen often, we should try to make accessing the memory
+					address of some variable something short so you don't have to type as much.
+					To get the memory address of a variable, we need to know what variable we're
+					accessing, so we're going to have something of the format <code>&bull;[variable]</code>,
+					where <code>&bull;</code> is some character on the keyboard.
+				</p>
+				<p>Well, we can't use any letters or numbers, and <a
+					href="https://softwareengineering.stackexchange.com/q/252023">address sounds
+					like ampersand</a>, so let's use <code>&amp;</code>.
+					We've decided that <code>&amp;a</code> will return the memory address of <code>a</code>.
+				</p>
+				<h2 id="accessing-a-value-stored-in-a-memory-address">Accessing A Value Stored in a Memory Address</h2>
+				<p>Same as accessing the memory address of a variable, we want something of the
+					format <code>&bull;[variable]</code> where <code>&bull;</code> is some character on the keyboard.
+					Assembly used <code>*</code> to access values at memory addresses, so let's keep it.
+					We've decided that <code>*[memory_address]</code> will return the value at
+					<code>[memory_address]</code>.
+					You can think of <code>*</code> as undoing <code>&amp;</code>, meaning <code>*(&amp;a)</code> is exactly
+					equivalent to <code>a</code>.
+				</p>
+				<p>The act of getting the value stored at a memory address is known as
+					<b>dereferencing</b> the variable.
+				</p>
+				<h2 id="storing-the-memory-address-of-some-variable">Storing the Memory Address of Some Variable</h2>
+				<p>Since memory addresses shouldn't be treated like any of our existing types and
+					we need to know what type the memory address represents, we need to come up with
+					some new types, which we'll call <b>pointers</b> because they point to locations
+					in memory.
+					Since we're already using <code>*</code> for dereferencing, let's use it in our types.
+					The syntax for a pointer variable is <code>[type] * [variable_name];</code>.
+					Like normal variables, we can assign them on the same line using the syntax
+					<code>[type] * [variable_name] = [memory_address];</code>.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">48</span><span class="p">;</span>             <span class="c1">// a is a normal variable</span>
+<span class="kt">int</span> <span class="o">*</span> <span class="n">b</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">;</span>     <span class="c1">// b is a pointer to a, meaning it contains the</span>
+                        <span class="c1">// memory address of a</span>
+<span class="kt">float</span> <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">48</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">;</span> <span class="c1">// c is a normal variable</span>
+<span class="kt">float</span> <span class="o">*</span> <span class="n">d</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">;</span>   <span class="c1">// d is a pointer to c, meaning it contains the</span>
+                        <span class="c1">// memory address of c</span>
+</pre></div>
+				
+				<p>Remember that <code>*(&amp;a)</code> is exactly equivalent to <code>a</code>.
+					Since <code>b</code> is <code>&amp;a</code>, <code>*b</code>&rArr;<code>*(&amp;a)</code>&rArr;<code>a</code>, which means <code>*b =
+					17</code>&rArr;<code>a = 17</code>.
+					In other words, <b>dereferencing a pointer allows us to set the memory it's
+					pointing at</b>.
+				</p>
+				<h2 id="getting-a-block-of-memory">Getting A Block of Memory</h2>
+				<p>In <code>C</code>, blocks of memory are known as <b>arrays</b> (or <b>buffers</b> in some
+					contexts).
+					There are actually two different ways to get a block of memory in <code>C</code>, but for
+					now, we're just going to get a block of memory in the simpler way (using the
+					stack) without really explaining it.
+				</p>
+				<p>To get a block of memory, we need to tell the computer three things:
+				</p>
+				<ul>
+					<li>the number of elements in the array,
+					</li>
+					<li>the type of the elements in the array,
+					</li>
+					<li>and the name of the array.
+					</li>
+				</ul>
+				<p>Let's keep the type and the name in the same spot as we usually do but add the
+					number of elements in the array somewhere in the declaration.
+					In <code>C</code>, the syntax to declare an array is <code>type
+					variable_name[number_of_elements];</code>.
+					I had to abandon my usual practice of putting the general name for things in
+					square brackets since arrays have square brackets in them.
+				</p>
+				<p>Let's declare a bunch of arrays in <code>C</code> of different types so you get the idea:
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">array_of_ints</span><span class="p">[</span><span class="mi">14</span><span class="p">];</span>      <span class="c1">// Creates an array of fourteen ints</span>
+<span class="kt">float</span> <span class="n">array_of_floats</span><span class="p">[</span><span class="mi">50</span><span class="p">];</span>  <span class="c1">// Creates an array of fifty floats</span>
+<span class="kt">double</span> <span class="n">array_of_doubles</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>    <span class="c1">// Creates an array of 64 doubles</span>
+<span class="kt">char</span> <span class="n">string</span><span class="p">[</span><span class="mi">30</span><span class="p">];</span>            <span class="c1">// Creates an array of 30 chars</span>
+</pre></div>
+				
+				<h1 id="bringing-it-all-together">Bringing it All Together</h1>
+				<p>We're almost there.
+				</p>
+				<p>Remember that I said that we were going to use memory addresses to implement a
+					list, but arrays don't look like they have anything to do with memory addresses
+					besides the fact that we know arrays put a bunch of the same things next to each
+					other in memory.
+					What gives?
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">char</span> <span class="n">string</span><span class="p">[</span><span class="mi">30</span><span class="p">];</span>
+<span class="kt">char</span> <span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="n">string</span><span class="p">;</span>
+</pre></div>
+				
+				<p>The previous line of code is entirely valid because <code>string</code> is a <code>char *</code> that
+					points to the first character in the array of thirty characters.
+					In fact, if you wanted to right now, you could set the first character of the
+					string using
+				</p>
+<div class="code-block"><pre><span></span><span class="o">*</span><span class="n">string</span> <span class="o">=</span> <span class="sc">&#39;H&#39;</span><span class="p">;</span>
+
+<span class="c1">// OR</span>
+
+<span class="o">*</span><span class="n">str</span> <span class="o">=</span> <span class="sc">&#39;H&#39;</span><span class="p">;</span>
+</pre></div>
+				
+				<p>Remember that both <code>string</code> and <code>str</code> contain the same memory address, so
+					dereferencing it gets the same exact memory.
+					That's all well and good, but how do we access the next character in the string?
+				</p>
+<div class="code-block"><pre><span></span><span class="o">*</span><span class="p">(</span><span class="n">string</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="sc">&#39;e&#39;</span><span class="p">;</span>
+
+<span class="c1">// OR</span>
+
+<span class="o">*</span><span class="p">(</span><span class="n">str</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="sc">&#39;e&#39;</span><span class="p">;</span>
+</pre></div>
+				
+				<p>What about the next character?
+				</p>
+<div class="code-block"><pre><span></span><span class="o">*</span><span class="p">(</span><span class="n">string</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="sc">&#39;l&#39;</span><span class="p">;</span>
+</pre></div>
+				
+				<p>We could keep going, but we're wasting time typing everything out.
+					It would be nice if we could just give it a list of characters on one line when
+					we started so we didn't have to worry about it.
+				</p>
+				<h2 id="initializer-lists">Initializer Lists</h2>
+<div class="code-block"><pre><span></span><span class="c1">// This is actually two lines, but remember that C doesn&#39;t care about</span>
+<span class="c1">// whitespace or newlines. There&#39;s still only one semicolon, so it&#39;s one</span>
+<span class="c1">// statement.</span>
+<span class="kt">char</span> <span class="n">string</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="sc">&#39;H&#39;</span><span class="p">,</span> <span class="sc">&#39;e&#39;</span><span class="p">,</span> <span class="sc">&#39;l&#39;</span><span class="p">,</span> <span class="sc">&#39;l&#39;</span><span class="p">,</span> <span class="sc">&#39;o&#39;</span><span class="p">,</span> <span class="sc">&#39;,&#39;</span><span class="p">,</span> <span class="sc">&#39; &#39;</span><span class="p">,</span>
+    <span class="sc">&#39;W&#39;</span><span class="p">,</span> <span class="sc">&#39;o&#39;</span><span class="p">,</span> <span class="sc">&#39;r&#39;</span><span class="p">,</span> <span class="sc">&#39;l&#39;</span><span class="p">,</span> <span class="sc">&#39;d&#39;</span><span class="p">,</span> <span class="sc">&#39;!&#39;</span><span class="p">,</span> <span class="sc">&#39;\0&#39;</span> <span class="p">};</span>
+
+<span class="kt">int</span> <span class="n">list_of_ints</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">86</span><span class="p">,</span> <span class="mi">24</span> <span class="p">}</span>
+</pre></div>
+				
+				<p>Everything after the last element in the list will be set to zero (<b>the null
+					character IS zero</b>, which is why we denote it with <code>'\0'</code>).
+				</p>
+				<p>Typing out a bunch of <code>int</code>s isn't too bad, but typing out all these characters
+					with all the single quotes is giving me a nightmare.
+					Plus, what if I forget the <code>'\0'</code> character?
+					There should be a way to represent a string without having to type out the
+					single quotes, commas, and the null character, so let's make one.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">char</span> <span class="n">string</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>
+</pre></div>
+				
+				<p>We chose double quotes since normal code is what the computer is thinking and
+					text is going to be how it communicates with us.
+					We also chose single quotes earlier for <code>char</code>s like <code>'A'</code> because of how they
+					relate to strings.
+				</p>
+				<h3 id="do-we-have-to-specify-the-number-of-elements-if-were-initializing-it">Do We Have to Specify the Number of Elements If We're Initializing It?</h3>
+				<p>For either an array of <code>int</code>s or a string, we would probably want the array to
+					be exactly large enough to store all the elements, so we shouldn't have to
+					specify the number of elements.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">char</span> <span class="n">string</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">list_of_ints</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">86</span><span class="p">,</span> <span class="mi">24</span> <span class="p">};</span>
+</pre></div>
+				
+				<p>The compiler will figure what number it needs to put in the square brackets for
+					us.
+				</p>
+				<h2 id="modifying-an-array-after-initialization">Modifying an Array After Initialization</h2>
+				<p>What if we want to change the array after initializing it?
+				</p>
+<div class="code-block"><pre><span></span><span class="n">string</span> <span class="o">=</span> <span class="s">&quot;Hello, Other World!&quot;</span><span class="p">;</span>     <span class="c1">// Your compiler will print out &quot;error:</span>
+                                    <span class="c1">// Expected expression before &#39;{&#39; token&quot; or</span>
+                                    <span class="c1">// something like it.</span>
+<span class="n">string</span> <span class="o">=</span> <span class="p">{</span> <span class="sc">&#39;T&#39;</span><span class="p">,</span> <span class="sc">&#39;e&#39;</span><span class="p">,</span> <span class="sc">&#39;s&#39;</span><span class="p">,</span> <span class="sc">&#39;t&#39;</span><span class="p">,</span> <span class="sc">&#39;\0&#39;</span> <span class="p">};</span>  <span class="c1">// Same error</span>
+<span class="n">list_of_ints</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">};</span>    <span class="c1">// Same error</span>
+</pre></div>
+				
+				<p>Once you've initialized an array, you can't reinitialize it later.
+					You can, however, change what a pointer points to like so
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">char</span> <span class="n">string</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>
+<span class="kt">char</span> <span class="n">other_string</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Hello, Other World!&quot;</span><span class="p">;</span>
+<span class="kt">char</span> <span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="n">string</span><span class="p">;</span>
+<span class="n">str</span> <span class="o">=</span> <span class="n">other_string</span><span class="p">;</span>
+</pre></div>
+				
+				<p>You can also change individual elements of an array using
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">char</span> <span class="n">string</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>
+<span class="o">*</span><span class="p">(</span><span class="n">string</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">=</span> <span class="sc">&#39;0&#39;</span><span class="p">;</span>    <span class="c1">// string is now &quot;Hell0, World!&quot;</span>
+<span class="o">*</span><span class="p">(</span><span class="n">list_of_ints</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="mi">75</span><span class="p">;</span>   <span class="c1">// list_of_ints is now { 23, 52, 75, 5, 86, 24 }</span>
+</pre></div>
+				
+				<p>That syntax works, but it's way too verbose.
+					To make some new syntax, we'll need to know the name of the array and the
+					offset, so let's give it the syntax <code>variable[offset]</code>.
+				</p>
+<div class="code-block"><pre><span></span><span class="n">string</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;?&#39;</span><span class="p">;</span>   <span class="c1">// string is now &quot;Hell0, World?&quot;</span>
+<span class="n">list_of_ints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>    <span class="c1">// list_of_ints is now { 6, 52, 75, 5, 86, 24 }</span>
+</pre></div>
+				
+				<p>Remember that the first element of an array is zero because <code>array[offset]</code>
+					becomes <code>*(array + offset)</code> and <code>array</code> is a pointer to the first element of the
+					array, so <code>array[0]</code>&rArr;<code>*(array + 0)</code>&rArr;<code>*array</code>.
+				</p>
+				<h1 id="summary">Summary</h1>
+				<p>In this article, we
+				</p>
+				<ul>
+					<li>explained how the program uses memory addresses to identify variables,
+					</li>
+					<li>came up with a way to access the memory address of a variable using the <b>
+						address of</b> operator (<code>&amp;</code>),
+					</li>
+					<li>came up with a way to access the value stored at a memory address using the
+						<b>dereference</b> operator (<code>*</code>),
+					</li>
+					<li>created <b>pointer</b> variables to allow us to store memory addresses using the
+						syntax <code>type * variable_name;</code>,
+					</li>
+					<li>came up with a way to tell the computer to get us a block of memory (a.k.a. an
+						<b>array</b> or <b>buffer</b>) using the syntax <code>type
+						variable_name[number_of_elements];</code>,
+					</li>
+					<li>came up with a way to initialize an array with an <b>initializer list</b>,
+					</li>
+					<li>came up with a way to initialize a <code>char</code> array using double quotes
+						(<code>"Hello!"</code>),
+					</li>
+					<li>and came up with a way to access elements of an array using the syntax
+						<code>variable_name[offset]</code>.
+					</li>
+				</ul>
+				<p>This article introduced a lot of new syntax, so feel free to read it over.
+					Our file should now look like
+				</p>
+<div class="code-block"><pre><span></span><span class="c1">// Initializing an array of characters (a.k.a., a string)</span>
+<span class="kt">char</span> <span class="n">president_23</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;funny valentine&quot;</span><span class="p">;</span>
+<span class="n">president_23</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;F&#39;</span><span class="p">;</span>      <span class="c1">// president_23 is now &quot;Funny valentine&quot;</span>
+<span class="n">president_23</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;V&#39;</span><span class="p">;</span>      <span class="c1">// president_23 is now &quot;Funny Valentine&quot;</span>
+
+<span class="n">other</span> <span class="n">statement</span><span class="p">;</span>        <span class="c1">// We&#39;ve almost covered most of the statements we can</span>
+                        <span class="c1">// make.</span>
+
+<span class="c1">// We can make a list of numbers</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">profits_per_state</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">15294</span><span class="p">,</span> <span class="mi">3232</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">5943</span><span class="p">,</span> <span class="mi">57243</span> <span class="p">};</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">tristate_totals</span> <span class="o">=</span> <span class="n">totals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">totals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">totals</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="kt">double</span> <span class="n">conversion_rate</span> <span class="o">=</span> <span class="mf">106.382830532840</span><span class="p">;</span>
+
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">tristate_totals_in_yen</span> <span class="o">=</span> <span class="n">conversion_rate</span> <span class="o">*</span> <span class="n">tristate_totals</span><span class="p">;</span>
+</pre></div>
+				
+				<div class="aside" style="border-width: 8px; border-radius: 12px;">
+					<h4 style="color: red; text-align: center;">WARNING</h4><hr>
+					<p><b>By allowing you to directly interact with memory, <code>C</code> introduces several
+						security vulnerabilities that mainly consist of accessing memory outside of a
+						buffer</b>.
+					</p>
+					<p>In other words,
+					</p>
+<div class="code-block"><pre><span></span><span class="kt">float</span> <span class="n">example</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+<span class="n">example</span><span class="p">[</span><span class="mi">1000</span><span class="p">]</span> <span class="o">=</span> <span class="n">example</span><span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">];</span>    <span class="c1">// VALID C CODE</span>
+</pre></div>
+					
+					<p>will compile and run.
+						It might crash the program and exit safely or it could run another program with
+						the ability to access and modify your secure data.
+					</p>
+					<p>As a programmer, you must do everything in your power to keep your code safe.
+						Obviously, if someone just gives out a password, there's nothing you can do, but
+						if you have a security vulnerability that allows other users to read your
+						passwords, that's on you.
+					</p>
+					<p>As of right now, we neither have the capability to allow or prevent a malicious
+						user from accessing memory outside of a buffer, so we'll save that for a later
+						article.
+					</p>
+				</div>
+				<p>We have a bit of a problem, though.
+					For our program to work properly, we have to know how many elements will be in a
+					list before we compile the code.
+					If we're reading some text, for instance, and we want to make a list of all the
+					unique words, we have no way of knowing all the unique words beforehand.
+					We'll have to allocate a huge block of memory that's large enough to store all
+					the unique words <b>in every possible text</b>, which would end up wasting
+					massive amounts for any shorter text.
+					What we want, therefore, is a way of getting a variable amount of memory so that
+					we can get more memory when we need it and less memory when we don't.
+				</p>
+				<p>We're going to neglect getting a variable amount of memory, since our
+					first program to count the number of times a word the user specifies will not
+					require it and because we need to introduce a few more concepts before we can
+					understand why we can't just request a variable amount of memory using the
+					method we introduced in this article.
+				</p>
+				<div class="aside" style="border-width: 8px; border-radius: 12px;">
+					<h4 style="color: red; text-align: center">WARNING</h4><hr>
+					<p>For now, we're just going to assume that every word is less than <code>1024</code>
+						characters, which could be exploited if someone gives us a "word" longer than
+						<code>1024</code> characters (i.e., a string of alphabetic characters without a newline,
+						space, or any punctuation).
+						I'm also going to assume that you aren't going to try to break your computer, so
+						it's fine here, but you should make no assumptions about the input unless you
+						yourself generated the input completely independently from anything the user can
+						do, and even then, you should still be careful.
+					</p>
+				</div>
+				<p>Anyway, if we're going to count the number of times a word shows up in some
+					text, we're going to need some way to tell if two strings have the same
+					characters, which means we're going to need some way to check a bunch of
+					characters in a string and some way to add to the count if we find that the two
+					words match.
+				</p>
+				<p>In the next article, we're going to introduce <a
+					href="../08-control-flow/index.html">Control Flow in C</a>, which will be our
+					first step in making our program do different things given different input.
+				</p>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#memory-addresses-in-c" style="padding-left:12px;">Memory Addresses in C</a>
+				<a href="#what-exactly-is-a-list" style="padding-left:24px;">What Exactly is a List?</a>
+				<a href="#a-problem-weve-been-putting-off" style="padding-left:24px;">A Problem We've Been Putting Off</a>
+				<a href="#variables-in-machine-code" style="padding-left:36px;">Variables in Machine Code</a>
+				<a href="#how-can-memory-addresses-help-us-with-strings" style="padding-left:24px;">How Can Memory Addresses Help Us With Strings?</a>
+				<a href="#what-if-we-used-a-linked-list" style="padding-left:36px;">What if We Used a Linked List?</a>
+				<a href="#using-an-algorithm-to-find-the-next-character" style="padding-left:36px;">Using an Algorithm to Find the Next Character</a>
+				<a href="#implementing-the-list" style="padding-left:24px;">Implementing the List</a>
+				<a href="#accessing-the-memory-address-of-some-variable" style="padding-left:36px;">Accessing the Memory Address of Some Variable</a>
+				<a href="#accessing-a-value-stored-in-a-memory-address" style="padding-left:36px;">Accessing A Value Stored in a Memory Address</a>
+				<a href="#storing-the-memory-address-of-some-variable" style="padding-left:36px;">Storing the Memory Address of Some Variable</a>
+				<a href="#getting-a-block-of-memory" style="padding-left:36px;">Getting A Block of Memory</a>
+				<a href="#bringing-it-all-together" style="padding-left:24px;">Bringing it All Together</a>
+				<a href="#initializer-lists" style="padding-left:36px;">Initializer Lists</a>
+				<a href="#do-we-have-to-specify-the-number-of-elements-if-were-initializing-it" style="padding-left:48px;">Do We Have to Specify the Number of Elements If We're Initializing It?</a>
+				<a href="#modifying-an-array-after-initialization" style="padding-left:36px;">Modifying an Array After Initialization</a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+			<div id="copyright" class="mt-4">
+				&copy; 2019 TUACM &sdot; <a href="">LICENSE</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>

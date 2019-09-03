@@ -1,0 +1,618 @@
+article
+Title:		Making Sense of C
+Author:		Joseph Mellor
+Tagline:	A C tutorial for everyone.
+Code Style:	trac+dark
+Import:		aside code-block
+Scripts:
+
+<i>This article is the first article in the </i>Making Sense of C<i> series.</i>
+
+Most programming tutorials seem to take three approaches:
+
+\{{ol}}
+
+<b>The Dictionary Approach:</b> Here are all the keywords in a language and
+here's what they do, and here are some syntax rules.
+We'll also provide some minimal examples.
+
+<b>The One-Off Approach:</b> Here's how to implement a specific data structure
+or algorithm in a programming language.
+We'll assume that you already know the language since we are writing for people
+who already know the language.
+
+<b>The Toy Approach:</b> Here's how to use a toy module within the language
+that you will never use once you finish this tutorial.
+(I'm thinking of <a
+href="https://docs.python.org/3.3/library/turtle.html?highlight=turtle">Python's
+turtle module</a>, which is what my high school CS class taught.)
+
+\{{\ol}}
+
+While these tutorials have their use, none of these approaches will teach you
+how to program.
+To see why, forget programming for a second and consider what a tutorial for
+learning a foreign language would look like if it tried to teach the language
+like a programming tutorial.
+
+\{{ol}}
+
+<b>The Dictionary Approach:</b> Here are all the words in Spanish and here's
+what they mean.
+Also, here are some rules you need to follow to write a <a
+href="https://en.wikipedia.org/wiki/Colorless_green_ideas_sleep_furiously">grammatically
+valid sentence</a>.
+We'll also include a few simple, but extremely contrived sample sentences.
+
+<b>The One-Off Approach:</b> Here's a book in Japanese with a few annotations in
+your native language.
+
+<b>The Toy Approach:</b> Here's an imaginary restaurant with specific rules on
+how to order that we made up to teach you Swedish.
+To eat at this restaurant, you have to ask for food with grammatically correct
+sentences that use words we made up for this scenario.
+Most of these words you must use are not part of the language.
+
+\{{\ol}}
+
+I personally learned from working on several projects, using the <b>Dictionary
+Approach</b> when I needed to know about a specific feature and the <b>One-Off
+Approach</b> to expose me to a new thing to learn.
+I also went through the <b>Toy Approach</b>, but I didn't learn much from it.
+Plus, I can only name one tutorial or class that used the <b>Toy Approach</b>,
+so I won't focus on it.
+I can't speak for everyone, but given that I was unable to find any tutorials
+for {C} in the first two pages of Google's search results that didn't follow
+these approaches, I don't think I'm an exception.
+
+Now, experienced programmers know of an exception to the approaches I listed
+for tutorials on the {C} programming language: Brian Kernighan and Dennis
+Ritchie's book <a
+href="https://en.wikipedia.org/wiki/The_C_Programming_Language"><i>The C
+Programming Language</i></a>.
+This book, written by the creators of {C} themselves, is a good resource for
+{C} programming.
+
+\{{aside}}
+#### Historical Accuracy
+<hr>
+
+<b>This tutorial does not intend to be a history lesson</b>, but I will make it
+clear when I'm making a historically incorrect claim with an explanation off to
+the side.
+My goal with this tutorial is to help you understand {C}, which may mean
+simplifying the history of {C}.
+For example, {C}'s direct predecessor, {B}, had plenty of influence on the syntax
+of {C}, as did several other languages.
+However, {B}'s influence on {C} isn't necessary to understand the design
+decisions of {C}, so I probably won't mention it that often.
+
+In fact, I'm going to present the historical development of {C} as a linear
+progression of
+
+\{{ol}}
+
+Machine code/pure binary instructions.
+
+Assembly language.
+
+The {C} programming language.
+
+\{{\ol}}
+
+Once again, there are tons of programming languages that had an influence on
+{C} ({B}, {BCPL}, {CPL}, and the {ALGOL} family) and there were previous
+programming languages that had little to do with {C} ({FORTRAN}).
+
+If you do want to read about the history of {C}, check out Dennis Ritchie's <a
+href="https://www.bell-labs.com/usr/dmr/www/chist.html">paper on the evolution
+of {C}</a>.
+It also does a good job of explaining design choices for the language.
+
+\{{\aside}}
+
+# The Problems {C} Needs to Solve
+
+Since I neither want to write yet another {C} dictionary nor rehash <i>The C
+Programming Language</i>, this tutorial will explain why {C} is the way it is by
+looking at the problems Ritchie et al faced when designing the {C} language
+and how {C} solved them.
+In other words, we're not just going to list all the syntax in {C}, we're going
+to build the language from the ground up.
+
+This tutorial will also:
+
+\{{ul}}
+
+present topics in {C} in such a way that you only need to read the previous
+articles in the series to understand the article.
+
+describe good general programming practices, but with a specific emphasis on
+{C}.
+
+discuss how to safely program in {C}.
+
+\{{\ul}}
+
+At the end of this tutorial, you shouldn't just know the features and syntax of
+{C}, but how you should use them to write good {C} code.
+
+## Why Not Use Machine Code?
+
+First, let's talk about a program from the computer's perspective.
+Most, if not all computers use a <a
+href="https://en.wikipedia.org/wiki/Von_Neumann_architecture">von Neumann
+architecture</a>, which means, when given a program, it will:
+
+\{{ol}}
+
+Fetch current instruction from memory.
+
+Perform current instruction.
+
+Move to next instruction.
+
+Repeat.
+
+\{{\ol}}
+
+where instructions are basic operations (like addition or fetching memory) that
+are performed directly by the CPU, ALU, or GPU.
+
+\{{aside}}
+
+Check out <a href="https://youtu.be/Z5JC9Ve1sfI">Tom Scott's video on what your
+computer actually does</a> for a more in depth explanation.
+
+\{{\aside}}
+
+Of course, it gets a little more complicated once you introduce stuff like
+threads, vectorized instructions, and other forms of parallelism, but it's
+still the same basic process.
+To actually get a program running, it needs to be in machine code, so why not
+just write our programs in machine code?
+
+### Machine Code is Completely Unintelligible
+
+To see why programming in machine code was painful, consider the following
+example that I pulled from David A. Patterson and John L. Hennessy's
+<i>Computer Organization and Design: The Hardware/Software Interface</i>, Fifth
+Edition (p. A-5):
+
+\{{code-block python}}
+
+0010 0111 1011 1101 1111 1111 1110 0000
+1010 1111 1011 1111 0000 0000 0001 0100
+1010 1111 1010 0100 0000 0000 0010 0000
+1010 1111 1010 0101 0000 0000 0010 0100
+1010 1111 1010 0000 0000 0000 0001 1000
+1010 1111 1010 0000 0000 0000 0001 1100
+1000 1111 1010 1110 0000 0000 0001 1100
+1000 1111 1011 1000 0000 0000 0001 1000
+0000 0001 1100 1110 0000 0000 0001 1001
+0010 0101 1100 1000 0000 0000 0000 0001
+0010 1001 0000 0001 0000 0000 0110 0101
+1010 1111 1010 1000 0000 0000 0001 1100
+0000 0000 0000 0000 0111 1000 0001 0010
+0000 0011 0000 1111 1100 1000 0010 0001
+0001 0100 0010 0000 1111 1111 1111 0111
+1010 1111 1011 1001 0000 0000 0001 1000
+0011 1100 0000 0100 0001 0000 0000 0000
+1000 1111 1010 0101 0000 0000 0001 1000
+0000 1100 0001 0000 0000 0000 1110 1100
+0010 0100 1000 0100 0000 0100 0011 0000
+1000 1111 1011 1111 0000 0000 0001 0100
+0010 0111 1011 1101 0000 0000 0010 0000
+0000 0011 1110 0000 0000 0000 0000 1000
+0000 0000 0000 0000 0001 0000 0010 0001
+
+\{{\code-block}}
+
+Unless you've written a MIPS assembler, you will not be able to tell me what
+the program does.
+Also, you probably wouldn't be able to write the program like this, as every
+eight bits would be a byte (basically, a character) and there would be no
+spaces or newlines.
+If you really wanted to, you could <a
+href="https://opencores.org/projects/plasma/opcodes">convert the instructions
+into an assembly language</a>.
+
+\{{aside}}
+#### Programming the First Computers
+<hr>
+
+Fortunately, memory and register size on these early computers was small and
+they could only perform a few operations, meaning each of these instructions
+would have been between one and two bytes.
+Unfortunately, rendering text to the screen would have been too computationally
+inefficient for you to program in, so you would have to set all the memory in
+your program manually by flipping switches or using punch cards.
+
+If you want to see a video on what that would look like, Ben Eater made a <a
+href="https://youtu.be/a73ZXDJtU48">video</a> on it where he made a simple
+computer with sixteen bytes of memory and programmed it to calculate the
+Fibonacci numbers less than 256.
+He made a slight logic error in his code where it prints out before it
+calculates the next number, meaning it will calculate 233, but it will reset
+before it prints it out.
+
+\{{\aside}}
+
+### Assembly: A Step Above Machine Code
+
+As computers got more powerful, <a
+href="https://medium.com/a-computer-of-ones-own/kathleen-booth-machine-learning-pioneer-7cb8b2ed70c8">Kathleen
+Booth</a> figured that, instead of remembering all the binary instructions off
+the top of her head, she would write her code using keywords related to the
+instruction she wanted to run.
+For example, she would type something like {add $1, $2, $3} instead of typing
+some string of ones and zeros.
+She would then have to write a program to convert her code into machine
+language.
+In doing so, she wrote the first assembler for the first assembly language.
+
+To see the improvement, let's look at the bare bones MIPS version that directly
+converts to the program above:
+
+\{{code-block nasm}}
+
+addiu   $29,    $29,    -32
+sw      $31,    20($29)
+sw      $4,     32($29)
+sw      $5,     36($29)
+sw      $0,     24($29)
+sw      $0,     28($29)
+lw      $14,    28($29)
+lw      $24,    24($29)
+multu   $14,    $14
+addiu   $8,     $14,    1
+slti    $1,     $8,     101
+sw      $8,     28($29)
+mflo    $15
+addu    $25,    $24,    $15
+bne     $1,     $0,     -9
+sw      $25,    24($29)
+lui     $4,     4096
+lw      $5,     24($29)
+jal     1048812
+addiu   $4,     $4,     1072
+lw      $31,    20($29)
+addiu   $29,    $29,    32
+jr      $31
+move    $2,     $0
+
+\{{\code-block}}
+
+This program can be converted into machine code quite easily, as each line has
+a one-to-one conversion rule.
+Assembly languages are much easier to follow than the machine code ({add-} does
+addition, {mult-} does multiplications, {j-} jumps around in the code, {s-}
+stores values in memory, {l-} loads values from memory, {$n} refers to register
+{n}, {stli} checks if the value is less than the other value, {b-} is a
+conditional branch a.k.a. an {if} statement, etc.), but it's still hard to
+read.
+The highlighted lines, for example, say "Set the value at the memory location
+{28($29)}, get the value at {28($29)}, increment it by one, check if it's less
+than 101, store the new value back in the specified memory location, jump
+backwards 9 lines from the next line to line 7 if it is, and go to the next
+line if it isn't."
+If you have any experience with programming, you may recognize this as a {for}
+loop with the iteration variable being the memory at {28($29)}.
+While you can improve assembly with stuff like macros, labels, ASCII text, and
+named registers instead of numbers, assembly languages suffer from a few
+fundamental flaws.
+
+## Why Not Use Assembly?
+
+From the code snippet provided, it's easy to see several problems with writing
+code in assembly:
+
+\{{ul}}
+
+To properly implement a loop that goes through a range of numbers, you need six
+instructions on six lines, minimum.
+To make matters worse, you need to write these lines whenever you want to make
+a for loop.
+
+You'll need to keep track of what's at which memory location, since you don't
+have identifiable variables.
+
+You'll need to manage which register holds what.
+
+If you were to add any code between line 7 and line 15, you would need to
+change the {-9} part of line 15 so that it goes to the proper line or use
+labels.
+
+\{{\ul}}
+
+There are several other issues with assembly languages, such as the use of <a
+href="http://david.tribble.com/text/goto.html">goto or jump</a> statements,
+which lead to what is known as <a
+href="https://www.docsity.com/en/news/programming-2/programming-pasta-spaghetti-lasagna-ravioli-macaroni-code/">spaghetti
+code</a>, code that is characterized by a bunch of nonlocal and nonlinear jumps
+throughout a program such that the control flow of the program is almost
+impossible to follow.
+If you were to draw the logical program flow of spaghetti code, you would get
+something that looks like a plate of spaghetti, hence the name.
+Spaghetti code is sometimes used as a general pejorative for bad code, but not
+all bad code is spaghetti code.
+
+\{{aside}}
+#### What's the Deal with Spaghetti Code?
+<hr>
+
+<b>Spaghetti code strips lines of code from their context.</b>
+If you run your code and you get an error on line 27, you won't be able to tell
+me what caused the error without diving deep into the code and following the
+execution from beginning to end.
+You also won't have any semblance of a call stack because you've turned the
+unit of execution into individual lines of code.
+Lastly, there's no semblance of what data each line of code can modify, so you
+end up with global variables.
+
+Ravioli code, on the other hand, uses functions to break code into separate
+modules that interact through well-defined interfaces, usually argument passing
+or some sort of shared state like in object oriented programming.
+Doing so leads to a linear program flow with only local jumps and local
+variables.
+
+\{{\aside}}
+
+All the tasks listed are menial tasks that you should be able to automate, but
+there's still one huge problem with writing code in assembly: it won't work on
+any CPU that does not accept the instruction set you wrote it in.
+The code provided will run on any system with the MIPS architecture, which
+doesn't include Intel, AMD, or any CPU you would find on a smartphone.
+Furthermore, you actually have <a
+href="https://en.wikipedia.org/wiki/X86_instruction_listings">different
+instructions available for different CPUs within the same architecture</a>,
+though most of the code is still similar.
+You just want to loop through a range of numbers, but you're going to have to
+learn multiple instruction sets to implement the same program.
+
+Ideally, you would like the computer to take care of these menial, but easy to
+automate tasks so that you can deal with the higher level algorithms and data
+organization.
+
+## The Purpose of Programming Languages
+
+Just as Booth came up with the idea of using a program to convert something
+intelligible to machine code, people like <a
+href="https://scientificwomen.net/women/hopper-grace-45">Grace Hopper</a> came
+up with the idea of writing code in a more intelligible language, and then using
+a different program to convert it into assembly (or directly into machine
+code).
+In doing so, these people developed some of the first programming languages.
+Since they couldn't have a programming language without a compiler or
+interpreter, they also made compilers or interpreters for their language.  If
+you want to be able to use the language on a specific architecture, you can
+write your own compiler or modify your interpreter.
+
+\{{aside}}
+#### Compiled vs. Interpreted Language
+<hr>
+
+A <b>compiled language</b> uses a compiler to convert source code into machine
+code, producing a whole new executable file.
+When you run the executable, you give the generated machine code directly to
+the operating system.
+You <b>do not need</b> the compiler to run the generated executable.
+
+An <b>interpreted language</b> uses an interpreter to read source code and the
+interpreter generates the proper machine code line by line.
+When you run the executable, you give the original source code to the
+interpreter, which then converts it line by line into machine code, which then
+gets sent to the operating system.
+You <b>do need</b> the interpreter to run the program, though you can almost
+always generate a standalone executable that comes with the interpreter built
+in.
+
+Since {C} is a compiled language, we will completely ignore interpreters and
+only talk about compilers, even if the claim we're making about compilers
+applies to interpreters.
+
+\{{\aside}}
+
+<b>For a programming language to be useful, it has to distribute the work
+fairly between the compiler and the programmer.</b>
+The programmer should give the compiler enough information for it to generate
+the proper code and nothing more.
+
+## Slow Computers with Little Memory
+
+The first iteration of {C} was implemented on the <a
+href="https://en.wikipedia.org/wiki/PDP-7">PDP-11</a> system, which had 24 KB
+of memory with 12 KB reserved for the Unix operating system.
+At best, you could get around 300,000 instructions per second.
+To put that into perspective, my low-end Intel i-5 laptop has an <a
+href="https://medium.com/software-design/why-software-developers-should-care-about-cpu-caches-8da04355bb8a">L1
+cache</a>, <b>1.5</b> times larger than the entire available memory of the
+PDP-11.
+In other words, the high speed memory built into the chip of my computer is
+large enough for me to simulate the entirety of the PDP-11.
+It can also handle around <a
+href="https://wikivisually.com/wiki/Instructions_per_second">53,000,000,000
+instructions per second</a>, which is around 180,000 times faster.
+
+If you want a programming language on the PDP-11, it has to be close to the
+metal and simple enough for the compiler itself to run on the machine.
+Neither the compiler nor the program itself can take up a ton of memory or
+time.
+
+In the modern era, most code doesn't run on the PDP-11, but instead advanced
+computers hundreds of thousands of times faster with multithreaded, multicore
+processors and around six orders of magnitude more RAM.
+{C} still has the low level access to memory and almost direct conversion into
+machine code that it did when it ran on the PDP-11, meaning it takes little
+memory and runs incredibly fast compared to many other languages.
+If you don't believe me, check out <a
+href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/">the
+benchmarks for different programming languages</a> for yourself.
+
+If you're programming embedded software, however, you're almost guaranteed to
+use either {C} or an assembly language because {C} was made for computers with
+little memory.
+
+## Explicit Types are More Efficient than Text
+
+Types with defined rules are easier for the compiler to convert into machine
+code.
+For example, there are only 128 possible ASCII characters, (though there are
+extensions), so it would make sense to only use a byte for each character.
+Ten ASCII characters should take up ten bytes and a thousand characters should
+take up a thousand bytes.
+Integers and floating point numbers, however, require more memory.
+
+## A Standard Library
+
+There is a lot of basic functionality (such as printing things to a terminal or
+reading from a file) that everyone should be able to use if they need to use it
+without having to write the code themselves.
+While some wheels should be reinvented, printing stuff to the terminal should
+not.
+Furthermore, if your goal is to write code that can be compiled on any computer,
+you should take care of anything that could differ from computer to computer.
+
+# Summary
+
+For {C} to be a good programming language, it must
+
+\{{ul}}
+
+implement common programming patterns, such as looping through a set of values,
+looping until a condition is satisfied, and conditional branching.
+
+take care of menial tasks such as assigning memory locations to variables,
+managing which register performs which task, finding out where the program
+should get its next instruction (e.g. the {-9} in line 15 of the MIPS program).
+
+allow the user to define functions to help avoid spaghetti code.
+
+require the programmer to write as little as possible to get the job done.
+
+be simple enough for a programmer to learn.
+
+be simple enough to compile quickly with minimal memory usage.
+
+generate machine code that runs quickly with minimal memory usage.
+
+implement a standard library
+
+\{{\ul}}
+
+# What's Next
+
+We didn't actually discuss any specific features, design choices, or syntax of
+the {C} language in this article, but we did set up the ground work for what we
+need to accomplish to make the {C} language a good language.
+The rest of the articles in this series will discuss these topics in the order
+established below:
+
+\{{ol}}
+
+How the Compiler Reads Your Code
+
+Comments
+
+Basic Value Manipulation in {C}
+
+\{{comment}}
+Explain how variables, basic operators, and scope works.
+\{{\comment}}
+
+Types
+
+\{{comment}}
+Include explanations of the different memory types and the sizeof operator.
+Also include type casting and explain bitwise operators.
+Also, struct and typedef.
+\{{\comment}}
+
+Memory Management
+
+\{{comment}}
+Include explanations of the difference between the stack and the heap, how to
+safely manage dynamic memory, how pointers work, how arrays work, etc.
+Also how memory addresses work.
+\{{\comment}}
+
+Text/Strings
+
+\{{comment}}
+Include explanations of how c strings work.
+\{{\comment}}
+
+Control Flow
+
+\{{comment}}
+Include for, if, else, while, do, switch, continue, break.
+\{{\comment}}
+
+Functions
+
+\{{comment}}
+Include declaration, definition, return type, arguments, etc.
+\{{\comment}}
+
+Macros and the Preprocessor
+
+\{{comment}}
+Basic explanation of how the preprocessor uses text substitution and handles
+stuff like string literal concatenation.
+\{{\comment}}
+
+The Compiler and Linker
+
+\{{comment}}
+Explain the benefits of separate compilation and why header files are a good
+idea.
+\{{\comment}}
+
+Build Systems
+
+\{{comment}}
+Explain how Makefiles work and modern alternatives to Makefiles.
+\{{\comment}}
+
+Common Features in the Standard Library
+
+\{{comment}}
+Include explanations of printf, fprintf, FILE *, sprintf, snprintf, safely
+getting input, math and complex headers, stdlib.h, string.h, etc.
+\{{\comment}}
+
+\{{\ol}}
+
+Some of these topics may take an article or two and some of these topics may be
+merged into other topics, depending on how much I need to say about it and
+whether it fits in with another topic.
+
+Each topic will set the ground work for future topics.
+Every article will only require you to have read the previous articles to fully
+understand the topics in the article, though I might mention future topics in
+passing.
+
+# Complete List of Articles in the Series
+
+\{{ul}}
+
+<a href="../01-compiler-reads-code/index.html">The Basics of C</a>
+
+<a href="../02-comments/index.html">Comments in C</a>
+
+<a href="../03-first-programs/index.html">Coming Up with Our First Program in
+C</a>
+
+<a href="../04-variables/index.html">Variables and Basic Arithmetic</a>
+
+<a href="../../hardware/memory-hierarchy/index.html">The Memory Hierarchy</a>
+
+<a href="../../binary/integers/index.html">Representing Integers in Binary</a>
+
+<a href="../05-types/index.html">Types in C</a>
+
+<a href="../06-strings/index.html">Representing Text in C</a>
+
+<a href="../07-memory-addresses/index.html">Memory Addresses in C</a>
+
+\{{\ul}}

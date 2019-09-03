@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>Variables and Basic Arithmetic</title>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="variables-and-basic-arithmetic">Variables and Basic Arithmetic</h1></div>
+				<div id="meta-description">We're going to learn how to play around with values in this article.</div>
+				<div id="date-and-tags">Posted 28 August 2019 at 2:09 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>This is the fifth article in the </i>Making Sense of C<i> series.</i>
+				</p>
+				<p>So far, we've determined that we're going to talk to the compiler by telling it
+					the name of the file we want it to read and we've determined how to tell the
+					compiler to ignore parts of the file we don't want it to read.
+					We've also established that our code is going to consist of a bunch of
+					statements, but we've never established what a valid statement should look like.
+					In this article, we're going to discuss the most basic statements in <code>C</code>:
+					variables and basic arithmetic.
+				</p>
+				<h1 id="topics-covered">Topics Covered</h1>
+				<ul>
+					<li><b>Variables</b>
+					</li>
+					<li><b>Arithmetic Operators:</b> <code>+</code>, <code>-</code>, <code>/</code>, <code>*</code>, <code>%</code>
+					</li>
+					<li><b>Assignment Operators:</b> <code>=</code>, <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code>
+					</li>
+					<li><b>Operator Precedence:</b> How <code>C</code> handles operators and <code>()</code>
+					</li>
+				</ul>
+				<h2 id="value-manipulation">Value Manipulation</h2>
+				<p>For <code>C</code> to be a programming language, you'll need to be able to write more than
+					comments.
+					While there are some complicated things you should be able to do in any
+					programming language, we'll focus on the simplest thing we can do: arithmetic.
+					You should also be able to store values for later use, otherwise you would have
+					to type the entire expression on one line, even if you repeat things.
+					In this section, we're going to discuss how to manipulate values using some of
+					the basic operators in <code>C</code>, how to store the results in variables, and how to
+					use those results later on.
+				</p>
+				<h3 id="variables">Variables</h3>
+				<p>Variables store values for later use.
+					To access a variable, we need some way of identifying it, so we'll need to give
+					it a name.
+					Since explicit types are more efficient than variables, we also need to specify
+					the type.
+					Since we don't need to specify anything besides the type and the name, our
+					statement to declare a variable should just be the name of the variable and its
+					type.
+				</p>
+				<p>We will use the syntax <code>[type] [variable_name];</code> to declare a variable.
+					I will discuss types more later in the series, but for now we're just going to
+					use one: <code>int</code>, which represents an signed integer (positive whole numbers,
+					negative whole numbers, and zero).
+					Since we're only dealing with <code>int</code>s, our variable declarations will look like
+					<code>int a;</code>.
+					You can only use a variable after it's declared (remember that the compiler
+					reads your code top to bottom, left to right) and you can only declare a
+					variable once.
+					Once a variable is defined, it cannot change its type for reasons we'll specify
+					later.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">a</span><span class="p">;</span>          <span class="c1">// ERROR: redeclaration of a</span>
+</pre></div>
+				
+				<p>You can also declare multiple variables of the same type on one line.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">;</span>
+</pre></div>
+				
+				<h4 id="naming-variables">Naming Variables</h4>
+				<p>We can't use a semicolon, <code>/*</code>, <code>*/</code>, <code>//</code>, or a space since they're already
+					reserved.
+					For now, let's just say that we can use any letters or digits to name a
+					variable.
+					Since we also might want spaces, we can use the underscore (<code>_</code>) to represent a
+					space.
+					Lastly, we don't want numbers at the beginning of variables, since someone could
+					see something like <code>4x</code> and think that <code>x</code> is the variable and it's getting
+					multiplied by four, so the first character can't be a number.
+				</p>
+				<p>Here are a list of valid variables names:
+				</p>
+				<ul>
+					<li><code>number_of_apples</code>
+					</li>
+					<li><code>distance_from_sun</code>
+					</li>
+					<li><code>sum_of_squares</code>
+					</li>
+					<li><code>numberOfApples</code>
+					</li>
+					<li><code>x3</code>
+					</li>
+					<li><code>fsadlj</code>
+					</li>
+					<li><code>FSAD324jds</code>
+					</li>
+				</ul>
+				<div class="aside" >
+					<h4>Naming Conventions</h4>
+					<hr>
+					<p>In general, I use <b>snake_case</b> when I name my variables, meaning each word
+						is separated with underscores, like in the first three examples above.
+						A lot of people prefer to not use underscores because it's extra typing, so they
+						use <b>camelCase</b>, in which the first letter of every word except the first
+						is capitalized and every variable only contains letters.
+					</p>
+					<p>I find <b>snake_case</b> easier to read, so I use it.
+					</p>
+				</div>
+				<p><b>You should make sure to always give anything you can name a descriptive name,
+					including variables</b>.
+					For example, what do you think the first four variables store in the list above?
+					What if you see something in your code that looks like <code>number_of_apples +
+					distance_from_sun</code>?
+					Would it make sense to add those variables?
+					On the other hand, what if you saw <code>fsadlj + x3</code>?
+					Does it make sense to add those variables?
+					How could you tell?
+				</p>
+				<p>Giving things descriptive names will save you a lot of headache in the future.
+					Of course, there is a balance between descriptiveness and verboseness.
+					For example, I could have called <code>sum_of_squares</code>,
+					<code>sum_of_the_first_one_hundred_squares_counting_one_hundred_squared</code>, but that's
+					way too much to type and all I need to know to not confuse it with other
+					variables or to recognize when I'm using it when I shouldn't is that the
+					variable stores a sum of squares.
+				</p>
+				<h3 id="arithmetic-operators">Arithmetic Operators</h3>
+				<p>Since you're programming, you probably want to do some math operations like
+					addition, subtraction, etc., so let's just reserve the normal math symbols for
+					these basic operations right off the bat.
+				</p>
+				<ul>
+					<li><code>+</code>:&emsp;Adds two values.
+					</li>
+					<li><code>-</code>:&emsp;Subtracts two values.
+					</li>
+					<li><code>/</code>:&emsp;Divides two values (<span id="integer-division">Ignores the
+						fractional part for whole number/integral operands and you can't divide by
+						zero</span>).
+					</li>
+					<li><code>*</code>:&emsp;Multiplies two values.
+					</li>
+				</ul>
+				<p>and they all have the syntax <code>15 &bull; 12</code>, where <code>&bull;</code> is one of the
+					arithmetic operators.
+				</p>
+				<p>You probably also want to be able to use negative numbers, so let's say that if
+					a <code>-</code> shows up before a number, we'll make the number negative.
+					The <code>-</code> also functions just like a negative sign does in normal math, where <code>-13
+					* 5</code>&rArr;<code>-65</code>.
+				</p>
+				<p>The last basic arithmetic operation you'll likely need is the ability to get the
+					remainder of a division.
+					Remember that we're looking for unused, unpaired (parentheses, curly brackets,
+					less than, greater than, and square brackets are out) printable characters that
+					will be on everyone's keyboards.
+					After assigning everything else, we find that our only choices to represent the
+					remainder division are <code>@</code> and <code>%</code>.
+					Since <code>%</code> is more related to arithmetic than an <code>@</code> symbol, we'll use <code>%</code>.
+				</p>
+				<p>The <code>%</code> operator is specifically defined so that, for any two whole numbers, <code>(a
+					/ b) * b + (a % b)</code> must equal <code>a</code>.
+					Since the remainder is only defined for integer division, <code>%</code> only works on
+					whole numbers.
+					For example:
+				</p>
+				<ul>
+					<li><code>17 % 4</code>&rArr;<code>1</code>
+					</li>
+					<li><code>32 % 10</code>&rArr;<code>2</code>
+					</li>
+					<li><code>1.2 % 3</code> won't compile because <code>1.2</code> isn't an integer.
+					</li>
+					<li><code>4 % 1.3</code> also won't compile because <code>1.3</code> isn't an integer
+					</li>
+					<li><code>1000 % 13</code>&rArr;<code>12</code>
+					</li>
+					<li><code>(-1000) % 13</code>&rArr;<code>-12</code>
+					</li>
+					<li><code>1000 % (-13)</code>&rArr;<code>12</code>
+					</li>
+					<li><code>(-1000) % (-13)</code>&rArr;<code>-12</code>
+					</li>
+				</ul>
+				<p>From the last four, we can see that the remainder has the same sign as what
+					comes before the <code>%</code> regardless of the sign of what comes after <code>%</code>.
+				</p>
+				<p>Now that you can do some basic arithmetic in <code>C</code>, let's look into how to store
+					the results.
+				</p>
+				<h3 id="assignment-operators">Assignment Operators</h3>
+				<p>First and foremost, <code>=</code> stores the value on the right in the variable on the
+					left.
+					Things that can be assigned in <code>C</code> are called <b>lvalues</b> (<b><i>l</i></b>eft
+					<b><i>values</i></b>) and thing that cannot be assigned in <code>C</code> are called
+					<b>rvalues</b> (<b><i>r</i></b>ight <b><i>values</i></b>) because <b>rvalues
+					<i>cannot appear</i> on the left side of an assignment operator</b> and
+					<b>lvalues <i>can appear</i> on the left side of an assignment operator</b>.
+				</p>
+				<p>For example:
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>              <span class="c1">// a now contains 7</span>
+
+<span class="c1">// You can also declare and use = on the same line, like so</span>
+<span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">3</span><span class="p">;</span>      <span class="c1">// b now contains 6</span>
+<span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>      <span class="c1">// a is replaced with 7 and b is replaced with 6, so now</span>
+                    <span class="c1">// c contains 13</span>
+                    <span class="c1">// Notice that variables (lvalues) can show up on the right</span>
+                    <span class="c1">// side of an assignment operator</span>
+
+<span class="mi">6</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>              <span class="c1">// Throws an error and won&#39;t compile</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>             <span class="c1">// a now contains 15, c still contains 13</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">c</span> <span class="o">*</span> <span class="mi">10</span><span class="p">;</span>         <span class="c1">// c contains 130</span>
+</pre></div>
+				
+				<p>The last line can be shortened to <code>c *= 10;</code>.
+				</p>
+				<p>In fact, all the other assignment operators work identically.
+					<code>a &bull;= [rvalue];</code> is exactly equivalent to <code>a = a &bull; ([rvalue]);</code>, where
+					<code>a</code> is a variable, <code>&bull;</code> is <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, or <code>%</code>, and [rvalue] is any
+					expression that results in a number.
+					It's just a little <a
+					href="https://en.wikipedia.org/wiki/Syntactic_sugar">syntactic sugar</a> to save
+					you some typing.
+				</p>
+				<p>The last thing to note is that <code>[lvalue] &bull; [rvalue]</code> (where <code>&bull;</code>
+					represents one of the assignment operators) actually returns the <code>[rvalue]</code>, so
+					you could write something like
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">;</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">7</span> <span class="o">+</span> <span class="p">(</span><span class="n">b</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>        <span class="c1">// b is set to 6, then (b = 6) is replaced with 6,</span>
+                            <span class="c1">// so the right hand side becomes 7 + 6</span>
+</pre></div>
+				
+				<div class="aside" >
+					<h4>Just Because You Can Doesn't Mean You Should</h4>
+					<hr>
+					<p>When you write code, you aren't just writing code for the computer, you're
+						writing code for everyone who reads your code, including yourself.
+						You should write code that you'll be able to understand a year from now, which
+						generally means that you shouldn't write bad code that uses obscure or
+						surprising features of the language just to be clever.
+					</p>
+					<p>Using clever tricks in your code is like using big words.
+						If you use them because using anything else would be more inefficient, more
+						complicated, or impossible, then using them is fine.
+						If you use them because you want to impress people, then you're going to look
+						like an idiot when you mess up and people won't want to interact with you.
+					</p>
+					<p>In the case of using the fact that <code>a = b</code> returns <code>b</code>, I wouldn't recommend
+						using it.
+					</p>
+				</div>
+				<h2 id="operator-precedence">Operator Precedence</h2>
+				<p>Say that you have this code:
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">17</span><span class="p">;</span>
+<span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">30</span> <span class="o">/</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">50</span><span class="p">;</span>
+</pre></div>
+				
+				<p>To determine the value of <code>a</code>, we need to have some sort of order in which to do
+					the operations.
+					For example, we could do the operations left to right, but then we would
+					calculate <code>1 + 30 / 3</code> as <code>(1 + 30) / 3</code> &rArr; <code>31 / 3</code> &rArr; <code>10</code> (it gets
+					rounded to zero because we're using <a href="#integer-division"
+					onclick="highlight_link(this, '#EEBBBB')">integer division</a>).
+					If we were using the regular order of operations, we would evaluate <code>1 + 30 /
+					3</code> as <code>1 + (30 / 3)</code> &rArr; <code>1 + 10</code> &rArr; <code>11</code>.
+					In <code>C</code>, there is a strict order of operations listed <a
+					href="https://en.cppreference.com/w/c/language/operator_precedence">here</a>.
+				</p>
+				<p>In practice:
+				</p>
+				<ul>
+					<li>I only remember that anything in parenthesis gets done before anything outside
+						the parentheses, the normal PEMDAS rules, and the assignment operators go last.
+					</li>
+					<li>I only ever have assignment operators as the leftmost elements and they're
+						evaluated last.
+					</li>
+					<li>Everything else goes in parentheses.
+						It's a little bit more to type, but it helps prevent errors.
+					</li>
+					<li>I split up expressions into multiple lines by concepts and by similar
+						operations (i.e. anything you can read from left to right without understanding
+						operator precedence).
+					</li>
+				</ul>
+				<p>The less energy you have to spend on figuring out the result of an expression,
+					the better.
+				</p>
+				<h1 id="summary">Summary</h1>
+				<p>Up to this point, we've established that we're going to give our compiler a file
+					with a series of statements without giving examples of these statements.
+					In this article, we've established what some statements will look like.
+					Our file should now look like
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">a</span><span class="p">;</span>                  <span class="c1">// I could have combined these lines into &quot;int a = 7;&quot;</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">a_cubed</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">;</span>    <span class="c1">// Just some basic multiplication</span>
+
+<span class="n">other</span> <span class="n">statement</span><span class="p">;</span>        <span class="c1">// We still haven&#39;t established what other statements</span>
+                        <span class="c1">// would look like.</span>
+<span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mi">7</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span><span class="p">;</span>
+<span class="n">b</span> <span class="o">/=</span> <span class="o">-</span><span class="mi">6</span><span class="p">;</span>
+
+<span class="n">other</span> <span class="n">statement</span><span class="p">;</span>
+</pre></div>
+				
+				<h1 id="whats-next">What's Next</h1>
+				<p>Before we go onto the next topic in <code>C</code>, we need to take a detour to explain
+					how computers handle memory, as we're going to introduce types that won't
+					appear to have any use cases unless you understand <a
+					href="../../hardware/memory-hierarchy/index.html">how your computer
+					handles memory</a>.
+					I strongly recommend that you read the article before moving on.
+				</p>
+				<p>We also can also discuss <a href="../../binary/integers/index.html">how
+					computers represent integral types</a> and <a
+					href="../../binary/floating-point/index.html">how computers represent floating point
+					types</a>, but knowing how to represent them isn't as important for
+					understanding <code>C</code>.
+					Without the knowledge about how computers represent numbers, you're just going
+					to have to accept that the language is the way it is without any explanation
+					why.
+				</p>
+				<p>Once we've covered those two detours, we'll move on to dealing with the <a
+					href="../05-types/index.html">fundamental types in <code>C</code></a>.
+				</p>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#variables-and-basic-arithmetic" style="padding-left:12px;">Variables and Basic Arithmetic</a>
+				<a href="#topics-covered" style="padding-left:24px;">Topics Covered</a>
+				<a href="#value-manipulation" style="padding-left:36px;">Value Manipulation</a>
+				<a href="#variables" style="padding-left:48px;">Variables</a>
+				<a href="#naming-variables" style="padding-left:60px;">Naming Variables</a>
+				<a href="#arithmetic-operators" style="padding-left:48px;">Arithmetic Operators</a>
+				<a href="#assignment-operators" style="padding-left:48px;">Assignment Operators</a>
+				<a href="#operator-precedence" style="padding-left:36px;">Operator Precedence</a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
+				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+			<div id="copyright" class="mt-4">
+				&copy; 2019 TUACM &sdot; <a href="">LICENSE</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+		<script src="https://tuacm.com/js/highlight-internal-link.js"></script>
+	</body>
+</html>

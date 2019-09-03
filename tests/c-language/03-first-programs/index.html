@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>Coming Up with Our First Program in C</title>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="coming-up-with-our-first-program-in-c">Coming Up with Our First Program in C</h1></div>
+				<div id="meta-description">Before we can figure out what we want C to do, we need to figure out what we want to do.</div>
+				<div id="date-and-tags">Posted 28 August 2019 at 2:09 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>This is the fourth article in the </i>Making Sense of C<i> series.
+					In this article, we're going to come up with the requirements for a basic
+					program so that we can figure out what features we need to implement in C.
+					This article will serve as an intermission of sorts, so it's not going to be too
+					long or cover as many topics.
+					</i>
+				</p>
+				<p>As always, there's a (sort of) relevant xkcd for our situation.
+				</p>
+				<div class="text-center">
+					<a href="https://xkcd.com/1425/">
+						<img src="https://imgs.xkcd.com/comics/tasks.png" alt="The xkcd comic 'Tasks'.">
+					</a>
+				</div>
+				<p>In our case, a lot of the difficulty will come from a difference between what we
+					as humans consider easy and what computers consider easy.
+					For example, reading a million books is almost impossible for humans to do in a
+					reasonable amount of time, but trivial for computers.
+					Understanding a single sentence, however, is trivial for humans and extremely
+					hard for computers to do.
+					Likewise, recognizing elements in a picture or finding patterns in data are
+					difficult for computers, but easy for humans.
+				</p>
+				<p>Anyway, the point of this whole discussion is to emphasize that programs you
+					might think will be easy to write may be way harder than you would expect.
+					For example, making a game, even a small one, is an insanely huge task.
+					In fact, it's such a huge task that almost all game development tutorials will
+					tell you to use a game engine, or at least a rendering engine.
+					I know of exactly one <a
+					href="https://www.youtube.com/playlist?list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT">in-depth
+					tutorial on how to make a game engine</a>, and even then it requires that you
+					know <a
+					href="https://www.youtube.com/playlist?list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb"><code>C++</code></a>
+					and <a
+					href="https://www.youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2">OpenGL</a>.
+					Luckily, TheChernoProject has tutorials for all three.
+					Besides the actual code, you'll have to do all the artwork, sound design, etc.
+					on your own.
+				</p>
+				<p>Of course, companies make games all the time after writing all their own code,
+					but you have to remember that these companies have millions of dollars to pay
+					multiple teams of experienced developers, artists, actors, etc. to make a game.
+					As a novice programmer in <code>C</code>, you don't want to bite off more than you can
+					chew, so we're going to try to come up with a program simple enough for you to
+					write without understanding linear algebra, physics, collision detection
+					algorithms, networking, etc., but complex enough to where you need to come up
+					with features you would need in <code>C</code>.
+				</p>
+				<h1 id="projects-we-wont-do-for-now">Projects We Won't Do (For Now!)</h1>
+				<p>First, anything to do with graphics, images, or audio is out.
+					While most graphical and audio software is written in <code>C</code> or <code>C++</code> in one way or
+					another (even if it's written in <code>python</code>, it still uses <code>C</code> or <code>C++</code> under the
+					hood through the libraries used and the interpreter), graphics processing
+					requires you to, at the very least, understand the format of different file
+					types, know how to use the GPU, understand shaders, linear algebra, etc., while
+					audio processing would require you to learn stuff like Fourier Transforms if you
+					wanted to do anything cool.
+				</p>
+				<p>Once again, most software involving graphics uses <code>C</code> or <code>C++</code>, it's just that
+					you as a beginner would have a hard time trying to make any graphical software.
+				</p>
+				<p>Second, anything specific to an operating system is out for now (though we might
+					try to implement platform specific software in a cross-platform way later in the
+					series) because I don't want anyone reading this tutorial to end up unable to go
+					any further.
+				</p>
+				<p>Third, anything involving a computer understanding a natural language like
+					English or Spanish is out because natural language processing is still an active
+					area of research.
+					We can still read English text, we just can't require it to understand why the
+					sentence <a
+					href="https://en.wikipedia.org/wiki/Colorless_green_ideas_sleep_furiously">Colorless
+					green ideas sleep furiously</a> is meaningless.
+				</p>
+				<p>Rudimentary text-based games would not fall into the previous category, but we
+					still shouldn't do them for now because a full text-based game might be too
+					large for a beginner.
+				</p>
+				<p>Lastly, anything involving a ton of math or theory (AI, Machine Learning,
+					Statistics, Numerical Methods, etc.) is out.
+					While you should learn a lot of relevant math and CS theory if you want to be a
+					great programmer, we have to take things one step at a time.
+				</p>
+				<h1 id="what-projects-can-we-do">What Projects Can We Do?</h1>
+				<p>I have four related projects that I think are simple enough for us to implement
+					but require us to set up the features of the language.
+				</p>
+				<ul>
+					<li>Given some text and a word, count the number of times the word shows up in the
+						text.
+					</li>
+					<li>Given some text and a word, print out every line containing that word and the
+						line number.
+					</li>
+					<li>Given some text, print out every word and the number of times it occurs in the
+						text.
+					</li>
+					<li>Given some text, print out the probability that a word follows another word
+						(calculating the actual probability is pretty easy).
+					</li>
+				</ul>
+				<p>For example, if the first program is given the text "The quick brown fox jumps
+					over the lazy dog." and the word "the", it should print out <code>2</code>.
+					If the second program is given the text (Gettysburg Address) below
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></div></td><td class="code"><div class="code-block"><pre><span></span>Fourscore and seven years ago our fathers brought forth, on this continent, a
+new nation, conceived in liberty, and dedicated to the proposition that all men
+are created equal. Now we are engaged in a great civil war, testing whether that
+nation, or any nation so conceived, and so dedicated, can long endure. We are
+met on a great battle-field of that war. We have come to dedicate a portion of
+that field, as a final resting-place for those who here gave their lives, that
+that nation might live. It is altogether fitting and proper that we should do
+this. But, in a larger sense, we cannot dedicate, we cannot consecrate—we cannot
+hallow—this ground. The brave men, living and dead, who struggled here, have
+consecrated it far above our poor power to add or detract. The world will little
+note, nor long remember what we say here, but it can never forget what they did
+here. It is for us the living, rather, to be dedicated here to the unfinished
+work which they who fought here have thus far so nobly advanced. It is rather
+for us to be here dedicated to the great task remaining before us—that from
+these honored dead we take increased devotion to that cause for which they here
+gave the last full measure of devotion—that we here highly resolve that these
+dead shall not have died in vain—that this nation, under God, shall have a new
+birth of freedom, and that government of the people, by the people, for the
+people, shall not perish from the earth.
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>and told to search for the word "the", it should print out:
+				</p>
+<div class="code-block"><pre><span></span>2:new nation, conceived in liberty, and dedicated to the proposition that all men
+9:hallow—this ground. The brave men, living and dead, who struggled here, have
+10:consecrated it far above our poor power to add or detract. The world will little
+12:here. It is for us the living, rather, to be dedicated here to the unfinished
+14:for us to be here dedicated to the great task remaining before us—that from
+16:gave the last full measure of devotion—that we here highly resolve that these
+18:birth of freedom, and that government of the people, by the people, for the
+19:people, shall not perish from the earth.
+</pre></div>
+				
+				<p>The third program, when given the same text, should print out something
+					like
+				</p>
+<div class="code-block"><pre><span></span>13	that
+11	the
+10	we
+9	here
+8	to
+7	a
+6	and
+5	of
+5	nation
+5	it
+5	have
+5	for
+4	this
+4	in
+4	dedicated
+3	who
+3	us
+3	they
+3	so
+3	shall
+3	people
+...
+</pre></div>
+				
+				<p>Finally, the last program, when given the same text, should print out something
+					like
+				</p>
+<div class="code-block"><pre><span></span>the people: 0.272727272,3
+the proposition: 0.090909090,1
+the earth: 0.090909090,1
+the great: 0.090909090,1
+...
+that nation: 0.153846153,2
+that all: 0.076923076,2
+...
+</pre></div>
+				
+				<p>where each line follows the format <code>[first word] [second word]: [probability
+					that second word comes after first word],&#8203;[number of times second
+					word follows first word]</code>.
+				</p>
+				<h1 id="why-choose-these-projects">Why Choose These Projects?</h1>
+				<p>I'm in a weird situation where I don't want to come up with any contrived usage
+					for features in <code>C</code>, but I still want to bring in features from <code>C</code>.
+					I think this project strikes the right balance is simple enough for a beginner
+					to do but still useful enough for anyone who wants to do things like machine
+					learning for natural language processing.
+				</p>
+				<h1 id="coming-up-with-the-features-we-need">Coming Up With the Features We Need</h1>
+				<p>Now that we've decided what we want to do, we need to come up with the features
+					we need for each project.
+					Once we've come up with the features we need, we can then start discussing how
+					we can implement them.
+				</p>
+				<h2 id="first-project">First Project</h2>
+				<p>For the first project, we need to be able to count, so we're going to need some
+					basic arithmetic and some way of storing the count.
+					We're also going to need a way to print our results to the screen and read from
+					a file.
+					We'll also need some way of changing what words and what files we use.
+					Finally, we'll also need to come up with some way to get individual words from
+					text, which means we'll have to write our own basic parsing algorithm.
+				</p>
+				<h2 id="second-project">Second Project</h2>
+				<p>We'll need everything from the first project and we'll need to expand our
+					printing capabilities to more than just numbers.
+					Lastly, since we don't want to fill up the screen with text, we'll need some way
+					to write data to files.
+				</p>
+				<h2 id="third-project">Third Project</h2>
+				<p>This project is similar to the first project, except we'll need to do the first
+					project for every word.
+					While we could do this project inefficiently by writing a program that finds all
+					the words in the file and then runs the first project for every word, we're
+					going to introduce and implement a <b>hash table</b>, which will organize our
+					data in such a way that we can efficiently read and write it.
+				</p>
+				<h2 id="fourth-project">Fourth Project</h2>
+				<p>This last project will require everything from the third project plus floating
+					point numbers to represent a probability.
+					We'll also have to change up our algorithm a bit.
+				</p>
+				<h2 id="other-features">Other Features</h2>
+				<p>In implementing these features, we're going to end up needing other features
+					from the language, but <a
+					href="https://malaphors.com/2013/01/17/well-burn-that-bridge-when-we-come-to-it/">we'll
+					burn those bridges when we come to it</a>.
+				</p>
+				<h1 id="summary">Summary</h1>
+				<p>Up to this point, we've decided that we're going to put our code into a file and
+					give compiler the name of the file so it can turn it into machine code.
+					We've also established that we can use comments with <code>//</code> or <code>/*</code> and <code>*/</code> to
+					tell the compiler to ignore sections of the file and that our file will consist
+					of a series of statements separated by semicolons.
+				</p>
+				<p>In this article, we started moving away from just adding features we think we'll
+					probably need to come up with clear goals that will help us figure out what
+					features we need.
+					We decided to stay with numerical and text-based projects for now, since those
+					projects would be easiest for a beginner but still require us to have the
+					necessary features for the language.
+					We decided that <code>C</code> should have the ability to
+				</p>
+				<ul>
+					<li>perform basic arithmetic (including counting),
+					</li>
+					<li>store values for later use,
+					</li>
+					<li>handle text,
+					</li>
+					<li>change the behavior of a program by giving it different inputs,
+					</li>
+					<li>read from a file,
+					</li>
+					<li>print numbers to the screen,
+					</li>
+					<li>store things in a list,
+					</li>
+					<li>print text to a screen,
+					</li>
+					<li>write data to files,
+					</li>
+					<li>and perform floating point calculations.
+					</li>
+				</ul>
+				<p>Since we're putting ourselves in the shoes of Ritchie et al, we're going to
+					design <code>C</code> in such a way that we can use all these features.
+				</p>
+				<h1 id="whats-next">What's Next</h1>
+				<p>While we could start with almost any feature of the language, we'll start simple
+					with some <a href="../04-variables/index.html">basic arithmetic and storing values for later use</a>.
+				</p>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#coming-up-with-our-first-program-in-c" style="padding-left:12px;">Coming Up with Our First Program in C</a>
+				<a href="#projects-we-wont-do-for-now" style="padding-left:24px;">Projects We Won't Do (For Now!)</a>
+				<a href="#what-projects-can-we-do" style="padding-left:24px;">What Projects Can We Do?</a>
+				<a href="#why-choose-these-projects" style="padding-left:24px;">Why Choose These Projects?</a>
+				<a href="#coming-up-with-the-features-we-need" style="padding-left:24px;">Coming Up With the Features We Need</a>
+				<a href="#first-project" style="padding-left:36px;">First Project</a>
+				<a href="#second-project" style="padding-left:36px;">Second Project</a>
+				<a href="#third-project" style="padding-left:36px;">Third Project</a>
+				<a href="#fourth-project" style="padding-left:36px;">Fourth Project</a>
+				<a href="#other-features" style="padding-left:36px;">Other Features</a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
+				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+			<div id="copyright" class="mt-4">
+				&copy; 2019 TUACM &sdot; <a href="">LICENSE</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>

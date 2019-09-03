@@ -1,0 +1,1010 @@
+article
+Title:		Control Flow in C
+Author:		Joseph Mellor
+Tagline:	We're finally going to do something cool.
+Code Style:	trac+dark
+Import:		aside code-block
+Scripts:	highlight-internal-link
+
+\{{style}}
+
+.spoiler {
+    border: 3px solid #B0B0B0;
+    padding: 1em;
+    border-radius: 8px;
+    background: #E6E6FA;
+    margin-bottom: 1em;
+}
+
+.spoiler .code-block {
+    opacity: 0;
+    margin-bottom: 0;
+}
+
+.spoiler .code-block:hover {
+    opacity: 1;
+}
+
+\{{\style}}
+
+<i>This is the ninth article in the </i>Making Sense of C<i> series.
+In this article, we're going to come up with ways to modify the behavior of the
+program at runtime.</i>
+
+So far, we've
+
+\{{ul}}
+
+determined that we're going to give the compiler a file with a bunch of
+statements ending in semicolons,
+
+established that we can use comments with {//} for single line comments and {/*}
+and {*/} for multiline comments,
+
+reserved the symbols {+-*/%} for arithmetic,
+
+set up variables {[type] [variable] = [expression]} which will allow us to store
+values for later use,
+
+come up with the integral types ({char}, {short}, {int}, and {long long}) and
+the floating point types ({float} and {double}),
+
+figured out a way to represent characters using the {char} type and invented the
+{NULL} character, which indicates that we're ending a string,
+
+and decided to use single quotes around a character to represent the ASCII value
+for that {char}.
+
+explained how the program uses memory addresses to identify variables,
+
+came up with a way to access the memory address of a variable using the <b>
+address of</b> operator ({&amp;}),
+
+came up with a way to access the value stored at a memory address using the
+<b>dereference</b> operator ({*}),
+
+created <b>pointer</b> variables to allow us to store memory addresses using the
+syntax {type * variable_name;},
+
+came up with a way to tell the computer to get us a block of memory (a.k.a. an
+<b>array</b> or <b>buffer</b>) using the syntax {type
+array[num_elements];},
+
+came up with a way to initialize an array with an <b>initializer list</b>,
+
+came up with a way to initialize a {char} array using double quotes
+({"Hello!"}),
+
+and came up with a way to access elements of an array using the syntax
+{variable_name[offset]}.
+
+\{{\ul}}
+
+Once we get to the projects and we have some actual example code, I'll stop
+listing everything we've covered up to this point.
+For now, I think it's important to keep all these ideas in your working memory
+so that once we get to the projects, you won't have to go back to the earlier
+articles and forget everything up to this point.
+
+In the last article, we ended by saying that we need some way to tell if two
+strings have the same characters, which means we'll need the ability to do two
+things:
+
+\{{ul}}
+
+Loop through all the characters in a word until we reach the end.
+
+Add one to the total if the words match.
+
+\{{\ul}}
+
+In this article, we're going to introduce these methods.
+
+# Topics Covered
+
+{{and}}:="&amp;&amp;"
+
+\{{ul}}
+
+<b>Relational Operators:</b> {==}, {!=}, {&lt;}, {&gt;}, {&lt;=}, {&gt;=}
+
+<b>Logical Operators:</b> {{{and}}}, {||}, and {!}
+
+<b>Conditional Branches:</b> {if} and {else}
+
+<b>Unindexed Looping:</b> {while} and {do}
+
+<b>Indexed Looping:</b> {for}
+
+\{{\ul}}
+
+# Relational Operators
+
+First, we're going to need some sort of way to evaluate whether or not a
+statement is true, so we're going to introduce a few operators to help us out.
+In a natural language (e.g. English), you can read these operators as
+
+{{sp}}:="&nbsp;"
+
+{{tab}}:="<span style="padding-left: 1em;">{{rest-of-line}}</span>{{end-of-line}}"
+{{tab2}}:="<span style="padding-left: 1.56em;">{{rest-of-line}}</span>{{end-of-line}}"
+
+\{{ul}}
+
+{==}:{{tab}}equals
+
+{!=}:{{tab}}does not equal
+
+{&lt;}:{{tab2}}less than
+
+{&lt;=}:{{tab}}less than or equal to
+
+{&gt;}:{{tab2}}greater than
+
+{&gt;=}:{{tab}}greater than or equal to
+
+\{{\ul}}
+
+{{op}}:="&#9634;"
+{{imp}}:="&rArr;"
+
+and they all use the syntax {[expression 1] {{op}} [expression 2]}, where
+{{{op}}} represents any of the relational operators.
+{a {{op}} b} returns {1} if {a {{op}} b} and {0} otherwise.
+
+For example:
+
+\{{ul}}
+
+{5 == 5}{{imp}}{1} because "{5} equals {5}" is a true statement
+
+{5 == 6}{{imp}}{0} because "{5} equals {6}" is a false statement
+
+{5 != 5}{{imp}}{0} because "{5} does not equal {5}" is a false statement
+
+{5 != 6}{{imp}}{1} because "{5} does not equal {6}" is a true statement
+
+{25 == 6 * 4 + 1}{{imp}}{1} because the right side of the {==} evaluates to 25
+and "{25} equals {25}" is a true statement.
+
+{8 {{lt}}= 100}{{imp}}{1} because "{8} is less than or equal to {100}" is a true
+statement
+
+{8 {{lt}}= 8}{{imp}}{1} because "{8} is less than or equal to {8}" is a true
+statement
+
+{8 {{lt}} 8}{{imp}}{0} because "{8} is less than {8}" is a false statement
+
+{8 {{lt}}= -7}{{imp}}{0} because "{8} is less than or equal to {-7}" is a false
+statement
+
+\{{\ul}}
+
+I could keep going, but the general idea remains the same.
+
+# Logical Operators
+
+What if you want to check two things?
+For example, what if you want to check if a number is between {4} and {20}?
+
+You can use the <b>logical operators</b> to check for multiple conditions.
+These operators represent the fundamental operators of boolean logic.
+Both {{{and}}} and {||} have the syntax {[expression 1] {{op}} [expression 1]},
+but {!} has the syntax {![expression]}.
+All logical operators return {1} or {0} just like the relational operators.
+
+\{{ul}}
+
+{{{and}}} represents {and}, which will return {1} <b>if both the expressions to
+the left and right of {{{and}}} are not zero</b>.
+
+{||} represents {or}, which will return {1} <b>if either of the expressions to
+the left and right of {||} is not zero</b>.
+
+{!} represents {not}, which will return {1} only <b>if the expression to its
+right is zero</b>.
+
+\{{\ul}}
+
+Usually, you would use the logical operators with the relational operators.
+For example, say you want a username to be between {4} and {20} characters long.
+Assuming you have the length of the username stored in a variable called
+{username_len}, you could check if it was more than four characters using {4
+{{lt}} username_len} and you could check if it was less than {20} characters
+long using {20 {{gt}} username_len}.
+To check if the username is both longer than four characters <b>and</b> less
+than twenty charachters, you would use the {{{and}}} operator like {(4 {{lt}}
+username_len) {{and}} (20 {{gt}} username_len)}.
+
+# Conditional Branches
+
+In {C}, {0} is interpreted as false and everything else is interpreted as true.
+{C} does not have dedicated boolean types built into the langauge, but all
+conditional branches and loops work under {0}{{imp}}{false}.
+The logical and relational operators are mainly used with conditional branches
+and loops.
+
+For example, let's go back to the username example in the Logical Operators
+section, where we figured out an expression that would help us get a username
+that was more than four characters and less than twenty.
+We'll go through three cases.
+
+\{{ol}}
+
+We want to do stuff if the username is the right length.
+
+We want to do stuff if the username is the right length <b>and different stuff
+otherwise</b>.
+
+we want to tell the user that the username is too short if the username is too
+short, tell the user that the username is too long if the username is too long,
+and do valid username stuff if the username is the right length.
+
+\{{\ol}}
+
+## {if} and {else}
+
+Since we need to come up with some keyword or symbol or something to tell the
+computer to do one thing if a condition is true and do something else if a
+condition is false.
+Well, since we used {if} and {else} in describing what we want the computer to
+do and since they're short keywords, let's just use {if} to indicate that we
+want to do something and {else} to indicate that we want to do something else.
+
+## Organizing Code in a Conditional Branch
+
+A conditional branch has five parts:
+
+\{{ul}}
+
+the {if} keyword,
+
+the condition you want to test,
+
+the code you want to execute if the {if} statement is true,
+
+an optional {else} keyword,
+
+and the code you want to execute if the {if} statement is false.
+
+\{{\ul}}
+
+We also need some way of separating these parts from the rest of the code.
+The grouping symbols we have are {()\{\}[]}.
+Since we already use {[]} for arrays, we can only use {()\{\}}.
+We'll put the condition we want to test in {()} and the code we want to execute
+in {\{\}}.
+If we have an {else} statement, we can put it after the code we want to execute.
+
+Our generic conditional branch will look like:
+
+\{{code-block c no-line-numbers}}
+
+{{stuff}}:="// Do stuff you would want to do if"
+
+// Other code
+
+if (condition) {
+    {{stuff}} condition is true
+} else {                            // Optional
+    {{stuff}} condition is false
+}
+
+// Other code
+
+\{{\code-block}}
+
+## Putting it Together
+
+Here is how we would apply {if} statements to deal with the three cases to check
+the username.
+
+\{{code-block c no-line-numbers}}
+
+{{stuff}}:="// Do stuff you would want to do if"
+{{user}}:="{{stuff}} the username is "
+{{valid}}:="{{user}}valid"
+{{invalid}}:="{{user}}invalid"
+{{short}}:="{{user}}too short"
+{{long}}:="{{user}}too long"
+{{other}}:="// Stuff to do regardless of whether the username is a valid length"
+{{div}}:="//------------------------------------------------------------------------------"
+
+
+// FIRST CASE: WE ONLY WANT TO DO STUFF IF THE USERNAME IS VALID
+if ((4 {{lt}} username_len) && (20 {{gt}} username_len)) {
+    {{valid}}
+}
+
+{{other}}
+
+{{div}}
+// SECOND CASE: WE WANT TO DO STUFF IF THE USERNAME IS VALID AND DIFFERENT STUFF
+// IF IT IS INVALID
+if ((4 {{lt}} username_len) && (20 {{gt}} username_len)) {
+    {{valid}}
+} else {
+    {{invalid}}
+}
+
+{{other}}
+
+{{div}}
+//THIRD CASE: THREE DIFFERENT OPTIONS
+
+if (4 {{gt}} username_len) {
+    {{short}}
+} else {
+    if (20 {{lt}} username_len) {
+        {{long}}
+    } else {
+        {{valid}}
+    }
+}
+
+{{other}}
+
+\{{\code-block}}
+
+The third case is closest to something you would see in actual code, though the
+programmer might use a {switch} statement instead.
+Plus, the last case is kind of weird, so let's come up with the {else if} syntax
+to shorten everything.
+
+\{{code-block c no-line-numbers}}
+
+//THIRD CASE: SIMPLER FORM
+if (4 {{gt}} username_len) {
+    {{short}}
+} else if (20 {{lt}} username_len) {
+    {{long}}
+} else {
+    {{valid}}
+}
+
+{{other}}
+
+\{{\code-block}}
+
+Just to be absolutely clear on what the computer will do when it sees this code,
+I'm going to list out all the steps the computer will take when it enters the
+{if} statement.
+
+\{{ol}}
+
+Evaluate {4 {{gt}} username_len}.
+
+If {4 {{gt}} username_len} is true, then go to step 3, else go to step 5.
+
+Execute whatever is in the set of curly brackets after the {if (4 {{gt}}
+username_len)}.
+
+Go to step 10.
+
+Evaluate {20 {{lt}} username_len}.
+
+If {20 {{lt}} username_len} is true, then go step 6, else go to step 8.
+
+Execute whatever code is in the set of curly brackets after the {if (20 {{lt}}
+username_len)}.
+
+Go to step 10.
+
+Execute whatever is in the curly brackets after the {else}.
+
+Execute the code after the {if-else} statements.
+
+\{{\ol}}
+
+\{{aside}}
+#### Using {==} Instead of {=}
+<hr>
+
+In general, you should not put variables on the left of the {==} operator
+because it's common to accidentally type {=} instead, which leads to valid {C}
+code <b>that acts differently from what you expected</b>, which is what causes
+most bugs and security exploits.
+If you want to test if a variable equals an expression, {[variable] ==
+[expression]} will return a {1} if {[variable]} equals {[expression]} and a {0}
+if {[variable]} does not equal {[expression]}.
+
+On the other hand, {[variable] = [expression]} will return {[expression]}.
+Since only {0} is considered false, what you're actually testing is
+{[expression] != 0}.
+
+If you do {[expression] == [variable]}, however, it functions exactly like
+{[variable] == [expression]}, but now if you forget the second {=}, the compiler
+will catch the error because you cannot assign an expression to another
+expression.
+
+In code it would look like:
+
+\{{code-block c no-line-numbers}}
+
+int a = 6;
+
+// This form is bad because you can forget one of the equal signs, but it works
+// exactly as expected.
+if (a == 5) {
+    // do stuff
+}
+
+// This is what the typo would look like. a = 5 will always return 5, which will
+// always be interpreted as true, so the stuff inside the if statement will
+// always run regardless of whether a equals 5 or not
+if (a = 5) {
+    // do stuff
+}
+
+// This functions exactly like you would expect it to
+if (5 == a) {
+    // do stuff
+}
+
+// This doesn't compile because you can't assign anything to an rvalue
+if (5 = a) {
+    // do stuff
+}
+
+\{{\code-block}}
+
+In general, you should try to code in such a way that if you make a mistake, the
+compiler will catch it before it can even run.
+
+\{{\aside}}
+
+# Using a Simple {if} in Our Code
+
+Now that we have a way for us to check if some condition is true, we can check
+if two words match.
+For example, let's say that our word is "the" and we only want a match if the
+characters are the same case (It makes our code easier.).
+To check if two words match, we have to check if the individual characters
+match.
+Remember that we can access individual {char}s in an array using the syntax
+{array[offset]}, we can check if two characters match by comparing them using
+{a == b}, and we can check if every character matches using the syntax {cond1
+{{and}} cond2}.
+
+Putting it all together, we get
+
+\{{code-block c no-line-numbers}}
+
+// Assume we store the word we want to compare in the variable word, which is an
+// array of more than four characters for now
+
+// This if statement can go on multiple lines
+if (('t' == word[0]) &&
+    ('h' == word[1]) &&
+    ('e' == word[2]) &&
+    ('\0' == word[3]) {         // Forgetting to check for the null character
+                                // means you'll also match words like "these"
+                                // and "there"
+    {{stuff}} the word matches
+}
+
+\{{\code-block}}
+
+Of course, this code has a ton of problems:
+
+\{{ul}}
+
+If a user wants to use a different word, he or she will have to rewrite the
+source code.
+You might recognize rewriting the source code of a program to change how it
+behaves as something you would never think of doing.
+At worst, you should be changing config files.
+
+It doesn't check for capital and lowercase letters (which is its own problem
+that we'll deal with in a later article).
+
+It only works if {word} has at least four characters.
+
+\{{\ul}}
+
+We should be able to handle pretty much any word of any length without writing
+the word directly in the source code.
+In this case, we will have to introduce a loop.
+
+# Loops
+
+Loops are pretty straightforward.
+While some condition is true, it will run through the code in the block, jump
+back to the top of the block, and then keep executing the code in the block
+again.
+We have two types of looping: unindexed and indexed.
+To check if two strings match, we need to check if each individual character
+matches including the null character ({'\0'}) and we should stop once we see the
+null character.
+Since we don't know how long the string will be beforehand, we should use
+unindexed looping.
+
+## Unindexed Looping
+
+There are two types of unindexed loops: {while} loops and {do-while} loops.
+A while loop is the simplest, and it has a similar syntax to an {if} statement.
+
+\{{code-block c no-line-numbers}}
+
+{{while-true}}:="// Stuff to do while the condition is true"
+while (condition) {
+    {{while-true}}
+}
+
+\{{\code-block}}
+
+While {condition} is true, the loop will execute all the code inside the curly
+braces, then jump back to the top of the curly braces, check the condition, then
+repeat until {condition} is false.
+
+For example, let's go back to the {username_len} example.
+We never specified how we would calculate it because we didn't have the tools to
+calculate it properly.
+Now that we have a {while} loop, we can using this code (assume that the
+username is stored in the variable {username} and that {username} is a {char}
+array):
+
+\{{code-block c no-line-numbers}}
+
+unsigned short username_len = 0;    // Using a short since I don't expect a
+                                    // username longer than 64000 characters
+
+while (username[username_len]) {
+    username_len += 1;
+}
+
+// username_len now has the number of characters in the username.
+
+\{{\code-block}}
+
+A few things to note here:
+
+\{{ul}}
+
+I set {username_len} to {0} before I started.
+
+{username[username_len]} returns the character at {(username + username_len)}.
+
+{username[username_len]} keeps changing because we keep changing the value of
+{username_len}.
+
+{username[username_len]} is the condition, and it works because {0} is false in
+{C} and the null terminator is actually {0} in ASCII.
+
+\{{\ul}}
+
+Let's say for a moment that our username is {"jpm"}.
+The value in {username} is {\{ 'j', 'p', 'm', '\0' \} }.
+The code above will execute these exact steps:
+
+{{lavender}}:="<div style="background: #E6E6FA;">{{rest-of-line}}</div>{{end-of-line}}"
+{{thistle}}:="<div style="background: #D8BFD8">{{rest-of-line}}</div>{{end-of-line}}"
+{{violet}}:="<div style="background: #EE82EE">{{rest-of-line}}</div>{{end-of-line}}"
+{{purple}}:="<div style="background: #9370DB; margin-bottom: 1em;">{{rest-of-line}}</div>{{end-of-line}}"
+{{loop-end}}="{{purple}}Since we reached the end of the block, we jump back up to the top of the block."
+{{add-one}}="{{violet}}Add one to {username_len}."
+
+\{{ol}}
+
+Get some memory for {username_len}.
+
+Set it equal to zero.
+
+Enter {while} loop.
+
+First iteration of {while} loop.
+\{{ol}}
+
+{{lavender}}Check if the character at {username + 0} ({'j'}) is {0}.
+
+{{thistle}}Since {'j'} is not {0}, we move into the block.
+
+{{add-one}}
+
+{{loop-end}}
+
+\{{\ol}}
+
+Second iteration of {while} loop.
+\{{ol}}
+
+{{lavender}}Check if the character at {username + 1} ({'p'}) is {0}.
+
+{{thistle}}Since {'p'} is not {0}, we move into the block.
+
+{{add-one}}
+
+{{loop-end}}
+
+\{{\ol}}
+
+Third iteration of {while} loop.
+\{{ol}}
+
+{{lavender}}Check if the character at {username + 2} ({'m'}) is {0}.
+
+{{thistle}}Since {'m'} is not {0}, we move into the block.
+
+{{add-one}}
+
+{{loop-end}}
+
+\{{\ol}}
+
+Fourth iteration of {while} loop.
+\{{ol}}
+
+{{lavender}}Check if the character at {username + 3} ({'\0'}) is {0}.
+
+{{thistle}}Since {'\0'} is {0}, we exit the {while} loop.
+
+\{{\ol}}
+
+{username_len} now has the value {3}, which is the number of characters in the
+string.
+
+\{{\ol}}
+
+We can also use a modification of a {while} loop known as a {do-while} loop.
+
+\{{code-block c no-line-numbers}}
+
+do {
+    {{while-true}}
+} while (condition);
+
+\{{\code-block}}
+
+The only difference between a {do-while} loop and a {while} loop is that a
+{do-while} loop will check the condition after running the code in the block.
+
+If we had used a {do-while} loop for figuring out the length of the username,
+the computer would execute the steps in this order:
+
+{{thistle}}:="<div style="background: #D8BFD8; margin-bottom: 1em;">{{rest-of-line}}</div>{{end-of-line}}"
+
+\{{ol}}
+
+Get some memory for {username_len}.
+
+Set it equal to zero.
+
+Enter {while} loop.
+
+First iteration of {while} loop.
+\{{ol}}
+
+{{add-one}}
+
+{{lavender}}Check if the character at {username + 1} ({'p'}) is {0}.
+
+{{thistle}}Since {'p'} is not {0}, we jump back to the top of the block.
+
+\{{\ol}}
+
+Second iteration of {while} loop.
+\{{ol}}
+
+{{add-one}}
+
+{{lavender}}Check if the character at {username + 2} ({'m'}) is {0}.
+
+{{thistle}}Since {'m'} is not {0}, we jump back to the top of the block.
+
+\{{\ol}}
+
+Third iteration of {while} loop.
+\{{ol}}
+
+{{add-one}}
+
+{{lavender}}Check if the character at {username + 3} ({'\0'}) is {0}.
+
+{{thistle}}Since {'\0'} is {0}, we exit the {while} loop.
+
+\{{\ol}}
+
+{username_len} now has the value {3}, which is the number of characters in the
+string.
+
+\{{\ol}}
+
+If you're wondering why we used a {while} loop instead of a {do-while} loop for
+finding out the length of the username even though they produces similar
+results, notice that since {username_len += 1;} always runs before the condition
+is checked, {username_len} will always be greater than {1}, even if you pass in
+the empty string {""}, which should have a {username_len} of {0}.
+
+## Indexed Looping
+
+Since we're covering control flow in this article, we should cover the other
+type of looping in {C}: {for} loops.
+We'll have a use for them later, but for now, I'm just going to talk about them
+and bring them up later.
+If you can figure out the range of values, you should use a {for} loop, which
+has the syntax:
+
+\{{code-block c no-line-numbers}}
+
+for (initialization; condition; the next step) {
+    // do stuff
+}
+
+\{{\code-block}}
+
+First, {initialization} will run before anything else in the loop runs.
+Then, the loop starts.
+For every iteration of the loop, it will go to the next iteration of the loop if
+{condition to check} is true, then it will do whatever is between the curly
+braces, then it will do {the next step}, then it will move to the next iteration
+of the loop.
+
+{{sqr}}="<sup>2</sup>"
+
+For example, let's say we want to calculate
+<i>1{{sqr}}+2{{sqr}}+3{{sqr}}+&hellip;+100{{sqr}}</i>.
+Since we know where to start ({1}), where to end ({100}), and the step between
+each number ({1}), we should use a {for} loop.
+
+\{{code-block c no-line-numbers}}
+
+int sum_of_squares = 0;
+
+for (int i = 1; 100 {{gt}}= i; i++) {   // i is only visible inside the for loop
+    sum_of_squares += i * i;
+}
+
+// sum_of_squares now contains 338 350, which is the sum of the first 100 square
+// numbers.
+
+{{div}}
+// EXAMPLE TO CALCULATE THE SUM OF THE ODD SQUARE NUMBERS BETWEEN 17 and 1001
+// INCLUSIVE
+
+int sum_of_squares = 0;
+
+for (int i = 17; 1001 {{gt}}= i; i += 2) {
+    sum_of_squares += i * i;
+}
+
+// sum_of_squares now contains the number 167 667 821, which is the sum of odd
+// square numbers between 17 and 1001 inclusive
+
+\{{\code-block}}
+
+## When to Use {for} and When to Use {while}?
+
+To be clear, you can convert any {for} loop into a {while} loop easily.
+
+\{{code-block c no-line-numbers}}
+
+for (initialization; condition; next_step) {
+    // do stuff
+}
+
+// is almost exactly (I have to explain scope for you to understand the
+// difference.) equivalent to
+
+initialization;
+
+while (condition) {
+    // do stuff
+    next_step;
+}
+
+\{{\code-block}}
+
+In general, I use a {for} loop when I know the range and the step I want to
+iterate over and a {while} loop when I don't know the range.
+As an example, I will use a {for} loop when you want me to read from the
+seventeenth element of a list until the thirtieth and I will use a {while} loop
+when I want to start reading at the seventeenth element and continue reading
+until I reach a specified element.
+Since strings end once we reach the null terminator, I will generally use a
+{while} loop to read strings and a {for} loop otherwise.
+
+\{{aside}}
+#### Invariants
+<hr>
+
+<b>Invariants</b> are simply things that remain constant between iterations of a
+loop.
+For loops, it's better for performance and intelligibility to pull invariants
+out of the loop body and store them before you get to the loop.
+
+\{{code-block c no-line-numbers}}
+
+// BAD WAY TO DO THE CALCULATION
+
+int total_sum = 0;
+
+for (int i = 0; 100 {{gt}}= i; i++) {
+    int sum_of_squares = 0;
+    for (int j = 0; 100 {{gt}}= j; j++) {
+        sum_of_squares += j * j;
+    }
+    total_sum += i * sum_of_squares;
+}
+
+// Since sum_of_squares will not change, between iteratrions, we can pull it out
+// of the for loop so the program doesn't have to waste time recomputing it.
+// It also improves readability since it separates the code into two different
+// parts.
+
+// TOTAL NUMBER OF OPERATIONS: 10,100 multiplications and 10,100 additions
+
+{{div}}
+//BETTER WAY TO DO THE CALCULATION
+
+int total_sum = 0;
+
+for (int i = 1; 100 {{gt}}= i; i++) {
+    total_sum += i;
+}
+
+int sum_of_squares = 0;
+
+for (int i = 1; 100 {{gt}}= i; i++) {
+    sum_of_squares += i * i;
+}
+
+total_sum *= sum_of_squares;
+
+// a * b + a * c is the same as a * (b + c) and it saves you some
+// multiplications.
+
+// TOTAL NUMBER OF OPERATIONS: 101 multiplications and 200 additions
+
+\{{\code-block}}
+
+<b>Note about the code above:</b> In practice, it would probably be best to
+either calculate the value of total sum using a calculator and just set {int
+total_sum = 1708667500;} or use the <a
+href="https://brilliant.org/wiki/sum-of-n-n2-or-n3/">various formulas</a>.
+Doing so will guarantee that your compiler can optimize the code out.
+
+\{{\aside}}
+
+# Using Loops in Our Program
+
+Now that we can loop through all the characters in a word and we can check for
+certain conditions, we should be able to check if two words are the same easily.
+
+\{{aside}}
+
+For now, we're going to consider "the" and "The" different words because the 't'
+and the 'T' are different characters in ASCII, but we'll introduce a way to deal
+with it later.
+
+\{{\aside}}
+
+You should try to come up with a way to check if two words are the same using
+what you've learned in this article before going further.
+<b>Remember that you must read characters from both words until you've found a
+character that doesn't match or until you've read to the end of the word which
+is denoted with the null terminator, {'\0'}.
+Two characters match only if you reach the null terminator for both strings
+without finding a mismatch.</b>
+
+Don't worry if you come up with an inefficient or incomplete way.
+As long as you come up with something to work from, you're fine.
+If it's inefficient, you can figure out why it's inefficient, and if it's
+incomplete, you can figure out why it's incomplete.
+Once you want to see the answer, hover over the program below.
+
+Assuming the strings are properly formatted, I would write the following code:
+
+\{{raw-html}}
+<div class="spoiler">
+\{{\raw-html}}
+
+\{{code-block c no-line-numbers}}
+
+int i = 0;
+
+while (str1[i] && str2[i] && (str1[i] == str2[i])) {
+    i += 1;
+}
+
+if (str1[i] == str2[i]) {
+    {{stuff}} the two strings match
+} else {
+    {{stuff}} the two strings don't match
+}
+
+\{{\code-block}}
+
+\{{raw-html}}
+</div>
+\{{\raw-html}}
+
+Let's break this down.
+First, we get ourselves an integral index named {i} since {i} represents an
+index in mathematics.
+We might be able to get away with an {unsigned short} instead of an {int}, but
+an optimization like that isn't going to do much for us, so we're sticking with
+an {int}.
+
+Then, we enter the {while} loop.
+We have three conditions joined with {&&}s: {str1[i]}, {str2[i]}, and
+{str1[i] == str2[i]}.
+The first two conditions check if either str has reached the null terminator,
+since {'\0'} is {0}, {0} is false, and {false && anything_else}{{imp}}{false}.
+In other wordss, {str1[i] && str2[1]} make sure that we're only performing an
+iteration of the while loop if both strings still have characters we need to
+check.
+The other condition, {str1[i] == str2[i]} checks if the two characters at the
+same position match.
+If they don't match, then we don't need to check any more characters since the
+strings don't match, so we can exit the while loop.
+The line {i += 1} adds one to {i}, effectively moving us to the next character
+in both strings.
+
+Lastly, we leave the {while} loop, enter the {if} statement, and check if the
+characters we stopped on are equal.
+If they aren't equal, we would have left the {while} loop without changing {i}
+because {str1[i] == str2[i]} was false, meaning that {str1[i]} and {str2[i]} are
+still different characters and the condition {str1[i] == str2[i]} is still false
+when it's evaluated in the {if} statement.
+If either {str1[i]} or {str2[i]} is {'\0'}, we'll also exit the while loop, at
+which point the only way the two strings are equal is if both {str1[i]} and
+{str2[i]} are {'\0'}.
+
+You could have also done
+
+\{{raw-html}}
+<div class="spoiler">
+\{{\raw-html}}
+
+\{{code-block c no-line-numbers}}
+
+int i = 0;
+
+while (('\0' != str1[i]) && ('\0' != str2[i]) && (str1[i] == str2[i])) {
+    i += 1;
+}
+
+if (str1[i] == str2[i]) {
+    {{stuff}} the two strings match
+} else {
+    {{stuff}} the two strings don't match
+}
+
+\{{\code-block}}
+
+\{{raw-html}}
+</div>
+\{{\raw-html}}
+
+since {while (a)} and {while (0 != a)} are the same thing.
+
+# Summary
+
+We've made quite a lot of progress thoughtout this series.
+We went from coming up with a vague idea of stuff we should have in our language
+to coming up with a consistent format for the file itself, creating some syntax
+for comments and arithmetic, declaring and setting variables of different types,
+using variables, accessing memory and memory addresses, handling arrays, and
+representing strings of text.
+In this article, we introduced several new operators (the <b>Relational</b> and
+<b>Logical</b> operators) and a few keywords ({if}, {else}, {while}, {do}, and
+{for}) that will help us control the flow of the program.
+
+# What's Next
+
+Now that we have a way to test if two strings are equal, we still need to be
+able to read from a file and print the count to the screen.
+Since we're putting ourselves in the shoes of Ritchie et al, we need to come up
+ways for programmers to do both.
+We don't want programmers to copy and paste chunks of code into their program
+because it makes it harder for them to find their code and because it means that
+if we have any bugs in our code or features we want to add to our code,
+programmers have to go to each pasted block of code and update every block of
+code.
+There could also be an efficiency cost, but it's situation specific.
+We should have exactly one block of code so that we can fix or upgrade it
+exactly once for every feature or bug.
+
+In the next article, we'll introduce <a
+href="../09-functions/index.html">Functions in C</a>, which will allow us to
+reuse code without copying it.
