@@ -86,6 +86,9 @@ We can't use a semicolon, {/*}, {*/}, {//}, or a space since they're already
 reserved.
 For now, let's just say that we can use any letters or digits to name a
 variable.
+We also can't use any reserved symbols like {+-/*%} in our names or use any
+reserved words, like {int}.
+We can use something like {sum_of_ints}, we just can't use the name {int}.
 Since we also might want spaces, we can use the underscore ({_}) to represent a
 space.
 Lastly, we don't want numbers at the beginning of variables, since someone could
@@ -364,13 +367,13 @@ other statement;
 Before we go onto the next topic in {C}, we need to take a detour to explain
 how computers handle memory, as we're going to introduce types that won't
 appear to have any use cases unless you understand <a
-href="../../hardware/memory-hierarchy/index.html">how your computer
+href="https://tuacm.com/hardware/memory-hierarchy/index.html">how your computer
 handles memory</a>.
 I strongly recommend that you read the article before moving on.
 
-We also can also discuss <a href="../../binary/integers/index.html">how
+We also can also discuss <a href="https://tuacm.com/hardware/integers/index.html">how
 computers represent integral types</a> and <a
-href="../../binary/floating-point/index.html">how computers represent floating point
+href="https://tuacm.com/hardware/floating-point/index.html">how computers represent floating point
 types</a>, but knowing how to represent them isn't as important for
 understanding {C}.
 Without the knowledge about how computers represent numbers, you're just going

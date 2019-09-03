@@ -1,0 +1,331 @@
+article
+Title:		Functions in C
+Author:		Joseph Mellor
+Tagline:	Functions are the building blocks of programs in C.
+Code Style:	trac+dark
+Import:		aside code-block
+Scripts:
+
+<i>This in the tenth article in the </i>Making Sense of C<i> series.
+In this article, we're going to come up with ways to group together statements
+in code to make it possible to reuse code without copying it, which will improve
+the legibility of our code and reduce the spread of bugs.</i>
+
+So far, we've
+
+\{{ul}}
+
+determined that we're going to give the compiler a file with a bunch of
+statements ending in semicolons,
+
+established that we can use comments with {//} for single line comments and {/*}
+and {*/} for multiline comments,
+
+reserved the symbols {+-*/%} for arithmetic,
+
+set up variables {[type] [variable] = [expression]} which will allow us to store
+values for later use,
+
+come up with the integral types ({char}, {short}, {int}, and {long long}) and
+the floating point types ({float} and {double}),
+
+figured out a way to represent characters using the {char} type and invented the
+{NULL} character, which indicates that we're ending a string,
+
+and decided to use single quotes around a character to represent the ASCII value
+for that {char}.
+
+explained how the program uses memory addresses to identify variables,
+
+came up with a way to access the memory address of a variable using the <b>
+address of</b> operator ({&amp;}),
+
+came up with a way to access the value stored at a memory address using the
+<b>dereference</b> operator ({*}),
+
+created <b>pointer</b> variables to allow us to store memory addresses using the
+syntax {type * variable_name;},
+
+came up with a way to tell the computer to get us a block of memory (a.k.a. an
+<b>array</b> or <b>buffer</b>) using the syntax {type
+array[num_elements];},
+
+came up with a way to initialize an array with an <b>initializer list</b>,
+
+came up with a way to initialize a {char} array using double quotes
+({"Hello!"}),
+
+came up with a way to access elements of an array using the syntax
+{variable_name[offset]},
+
+added the ability to use conditional branches through {if else} statements,
+
+and added the ability to use loop through something with {for} and {while}.
+
+\{{\ul}}
+
+In the last article, we established control flow, which is the collective term
+for conditional branches and loops.
+
+\{{aside}}
+
+Technically, functions are also included in control flow, but I didn't include
+them in the control flow article because you could replace the function with the
+code in the funciton and get the same exact result.
+
+\{{\aside}}
+
+We also used control flow to come up with some code that can do different things
+depending on whether the words match:
+
+\{{code-block c no-line-numbers}}
+
+{{stuff}}="// Do stuff you would want to do if"
+
+int i = 0;
+
+while (('\0' != str1[i]) && ('\0' != str2[i]) && (str1[i] == str2[i])) {
+    i += 1;
+}
+
+if (str1[i] == str2[i]) {
+    {{stuff}} the two strings match
+} else {
+    {{stuff}} the two strings don't match
+}
+
+\{{\code-block}}
+
+We'll modify it in this article, but not significantly.
+
+With just what we have up to this point, we have enough functionality in the
+language to make any program, but doing so would be tedious for several reasons,
+most notably the lack of functions and the lack of a standard library.
+In this article, we're going to add functions to {C}.
+
+# What is a Function?
+
+A function in mathematics takes in an input and produces an output, with the
+rule that the same exact input produces the same exact output.
+Functions in {C} work just like functions in math, though the input and output
+are slightly more complicated than for reasons we'll get into later in this
+article.
+To the computer, a function is a set of instructions that the computer will jump
+to, execute, and jump back from.
+
+# Function Syntax
+
+Since we used the general syntax
+
+\{{code-block c no-line-numbers}}
+
+keyword (input) {
+    code to execute;
+}
+
+\{{\code-block}}
+
+for the other elements of control flow, let's keep it with modifications.
+We know that we're going to put the code to execute between the curly braces,
+but functions also have inputs and an output.
+Like with {if} statements, {for} loops, and {while} loops, we put the input
+between the parantheses but we need somewhere to put the output.
+We also need to know the types of everything and we need to be able to provide
+multiple inputs.
+Inside the function, we'll need to tell the computer what we want to return from
+the function, so we'll use the keyword {return} with the syntax {return
+output;}.
+Finally, when we want to execute the function, we just need to specify the name
+and the inputs.
+
+The syntax for calling a function is
+
+\{{code-block c no-line-numbers}}
+
+function_name(first_input, second_input);
+
+\{{\code-block}}
+
+If we want to store the output, we can use
+
+\{{code-block c no-line-numbers}}
+
+variable = function_name(input);
+
+\{{\code-block}}
+
+The syntax for declaring a function with one input is
+
+\{{code-block c no-line-numbers}}
+
+output_type function_name(type input) {
+    first statement;
+    second statement;
+    // and so on
+    return output;
+}
+
+\{{\code-block}}
+
+The syntax for declaring a function with two inputs is
+
+\{{code-block c no-line-numbers}}
+
+output_type function_name(first_type first_input, second_type second_input) {
+    first statement;
+    second statement;
+    // and so on
+    return output;
+}
+
+\{{\code-block}}
+
+I'll let you guess the syntax for three inputs.
+
+As you would guess we can use the inputs to our function in our function.
+
+# Functions in Our Programs
+
+For us, we'll need functions to:
+
+\{{ul}}
+
+check if two words match,
+
+read a file word by word,
+
+print the output,
+
+get the word the user wants to be counted,
+
+and get the filename from the user.
+
+\{{\ul}}
+
+Since reading from a file is dependent on your file system and printing output
+is dependent on your terminal/console/command prompt, you as a programmer
+shouldn't have to write these functions for yourself, so we'll include them in
+the standard library, which we'll discuss more in the next few articles.
+
+Checking if two words match is common enough that the standard library also has
+some functions to handle it for you, but since almost all computers use the same
+character encodings, we can actually write the function ourselves.
+Of course, the authors of the standard library are going to write
+platform-specific code that takes advantage of how the computer works at a low
+level for each platform, CPU architecture, etc., so we probably shouldn't use
+our code for checking if strings match in code that we're going to publish.
+We'll write the function ourselves just to get some practice working with
+functions.
+
+In our case, we'll convert our code to check if two words are the same into a
+function.
+
+We'll need the two strings as input and a name for the function.
+Since we're checking if two strings match/differ, let's call it
+{check_if_strings_differ}.
+We could have also done {check_if_strings_match}, but {check_if_strings_differ}
+is more consistent with how the standard library works, so we won't have to
+change our code in the future once we replace our function with the standard
+library.
+
+We'll also need to figure out what exactly we want the function to do so we can
+figure out exactly what code we should write for the function.
+In our case, we want to follow the Single Responsibility Principle, which states
+that everything in your code should do one and only one thing.
+
+\{{aside}}
+#### Single Responsibilty Principle
+<hr>
+
+To understand why the Single Responsibility Principle is so important, imagine
+if you had to go to the store whenever you pick up your children because you
+had to buy groceries and pick up your children once in the same day.
+Such a situation never happens in real life because we treat these as separate
+tasks, but novice programmers often combine tasks into one giant task
+unecessarily because they don't follow the Single Responsibility Principle.
+
+As an example, let's say you're writing a program that has a screen that allows
+users to log in at some point in the program.
+You'll need to display a screen that shows a box for a username and a box for
+the password and you'll need to check if the password given matches the username
+given.
+You should probably not have a singular function that checks if the username and
+password match and displays what the user sees because now if you need to change
+either the code for logging in or the code for displaying what the user sees,
+you will need to waste time figuring out which lines of code are relevant to
+what you want to do.
+Furthermore, changing the login checking shouldn't change what the user sees
+after attempting to log in and and changing what the user sees after logging in
+shouldn't change the login process, but by putting them in the same function,
+you're couplilng them together.
+
+They should be two separate functions passing relevant information back and
+forth between each other.
+To check if a username and password match, all you need is the username, the
+password, and some way of checking if they match.
+You do not need to know where the username and password input boxes are on the
+screen, the color of the background, etc.
+Likewise, the function to display the screen doesn't need to know anything about
+how to determine whether the username and password match, just whether or not
+the username and password match.
+
+To be clear, there might be some security things you need to take into account
+that would make you write a program differently, but you would still follow the
+Single Responsibility Principle.
+
+\{{\aside}}
+
+For example, we'll want to check if two strings match and do different things
+depending on whether they match or not.
+We have four responsibilities:
+
+\{{ol}}
+
+figuring out whether the strings match,
+
+doing something if the strings match,
+
+doing something else if the strings don't match,
+
+and making sure that the other three responsibilities have everything they need.
+
+\{{\ol}}
+
+The last responsibility is a little bit harder to explain, but it's the easiest
+to code: it's the {if} statement that takes the output for responsibility 1 and
+decides what to do based on the output.
+
+\{{code-block c no-line-numbers}}
+
+// Responsibility 4
+if (check_if_strings_differ(word1, word2)) {
+    // Responsibility 3
+    {{stuff}} the words differ
+} else {
+    // Responsibility 2
+    {{stuff}} the words match
+}
+
+\{{\code-block}}
+
+And {check_if_strings_differ} will take care of responsibility 1.
+So now, we've decided that {check_if_strings_differ} will return {0} if the
+strings don't match and {1} if the strings do match.
+If we kept our version with the {if} statement at the end, we would be combining
+responsibilities 1 and 4, which leads to code that's harder to maintain.
+
+Anyway, we'll keep our original code but output {str1[i] != str2[i]} instead of
+using the {if} statement.
+
+\{{code-block c no-line-numbers}}
+
+// Responsibility 1
+int check_if_strings_differ(char * str1, char * str2) {
+    int i = 0;
+    while (('\0' == str1[i]) && ('\0' == str2[i]) && (str1[i] == str2[i])) {
+        i += 1;
+    }
+    return str1[i] != str2[i];
+}
+
+\{{\code-block}}

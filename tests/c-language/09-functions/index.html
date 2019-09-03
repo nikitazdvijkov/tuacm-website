@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>Functions in C</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="functions-in-c">Functions in C</h1></div>
+				<div id="meta-description">Functions are the building blocks of programs in C.</div>
+				<div id="date-and-tags">Posted 3 September 2019 at 12:10 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>This in the tenth article in the </i>Making Sense of C<i> series.
+					In this article, we're going to come up with ways to group together statements
+					in code to make it possible to reuse code without copying it, which will improve
+					the legibility of our code and reduce the spread of bugs.</i>
+				</p>
+				<p>So far, we've
+				</p>
+				<ul>
+					<li>determined that we're going to give the compiler a file with a bunch of
+						statements ending in semicolons,
+					</li>
+					<li>established that we can use comments with <code>//</code> for single line comments and <code>/*</code>
+						and <code>*/</code> for multiline comments,
+					</li>
+					<li>reserved the symbols <code>+-*/%</code> for arithmetic,
+					</li>
+					<li>set up variables <code>[type] [variable] = [expression]</code> which will allow us to store
+						values for later use,
+					</li>
+					<li>come up with the integral types (<code>char</code>, <code>short</code>, <code>int</code>, and <code>long long</code>) and
+						the floating point types (<code>float</code> and <code>double</code>),
+					</li>
+					<li>figured out a way to represent characters using the <code>char</code> type and invented the
+						<code>NULL</code> character, which indicates that we're ending a string,
+					</li>
+					<li>and decided to use single quotes around a character to represent the ASCII value
+						for that <code>char</code>.
+					</li>
+					<li>explained how the program uses memory addresses to identify variables,
+					</li>
+					<li>came up with a way to access the memory address of a variable using the <b>
+						address of</b> operator (<code>&amp;</code>),
+					</li>
+					<li>came up with a way to access the value stored at a memory address using the
+						<b>dereference</b> operator (<code>*</code>),
+					</li>
+					<li>created <b>pointer</b> variables to allow us to store memory addresses using the
+						syntax <code>type * variable_name;</code>,
+					</li>
+					<li>came up with a way to tell the computer to get us a block of memory (a.k.a. an
+						<b>array</b> or <b>buffer</b>) using the syntax <code>type
+						array[num_elements];</code>,
+					</li>
+					<li>came up with a way to initialize an array with an <b>initializer list</b>,
+					</li>
+					<li>came up with a way to initialize a <code>char</code> array using double quotes
+						(<code>"Hello!"</code>),
+					</li>
+					<li>came up with a way to access elements of an array using the syntax
+						<code>variable_name[offset]</code>,
+					</li>
+					<li>added the ability to use conditional branches through <code>if else</code> statements,
+					</li>
+					<li>and added the ability to use loop through something with <code>for</code> and <code>while</code>.
+					</li>
+				</ul>
+				<p>In the last article, we established control flow, which is the collective term
+					for conditional branches and loops.
+				</p>
+				<div class="aside" >
+					<p>Technically, functions are also included in control flow, but I didn't include
+						them in the control flow article because you could replace the function with the
+						code in the funciton and get the same exact result.
+					</p>
+				</div>
+				<p>We also used control flow to come up with some code that can do different things
+					depending on whether the words match:
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="k">while</span> <span class="p">((</span><span class="sc">&#39;\0&#39;</span> <span class="o">!=</span> <span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="sc">&#39;\0&#39;</span> <span class="o">!=</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+    <span class="c1">// Do stuff you would want to do if the two strings match</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// Do stuff you would want to do if the two strings don&#39;t match</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>We'll modify it in this article, but not significantly.
+				</p>
+				<p>With just what we have up to this point, we have enough functionality in the
+					language to make any program, but doing so would be tedious for several reasons,
+					most notably the lack of functions and the lack of a standard library.
+					In this article, we're going to add functions to <code>C</code>.
+				</p>
+				<h1 id="what-is-a-function">What is a Function?</h1>
+				<p>A function in mathematics takes in an input and produces an output, with the
+					rule that the same exact input produces the same exact output.
+					Functions in <code>C</code> work just like functions in math, though the input and output
+					are slightly more complicated than for reasons we'll get into later in this
+					article.
+					To the computer, a function is a set of instructions that the computer will jump
+					to, execute, and jump back from.
+				</p>
+				<h1 id="function-syntax">Function Syntax</h1>
+				<p>Since we used the general syntax
+				</p>
+<div class="code-block"><pre><span></span><span class="n">keyword</span> <span class="p">(</span><span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">code</span> <span class="n">to</span> <span class="n">execute</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>for the other elements of control flow, let's keep it with modifications.
+					We know that we're going to put the code to execute between the curly braces,
+					but functions also have inputs and an output.
+					Like with <code>if</code> statements, <code>for</code> loops, and <code>while</code> loops, we put the input
+					between the parantheses but we need somewhere to put the output.
+					We also need to know the types of everything and we need to be able to provide
+					multiple inputs.
+					Inside the function, we'll need to tell the computer what we want to return from
+					the function, so we'll use the keyword <code>return</code> with the syntax <code>return
+					output;</code>.
+					Finally, when we want to execute the function, we just need to specify the name
+					and the inputs.
+				</p>
+				<p>The syntax for calling a function is
+				</p>
+<div class="code-block"><pre><span></span><span class="n">function_name</span><span class="p">(</span><span class="n">first_input</span><span class="p">,</span> <span class="n">second_input</span><span class="p">);</span>
+</pre></div>
+				
+				<p>If we want to store the output, we can use
+				</p>
+<div class="code-block"><pre><span></span><span class="n">variable</span> <span class="o">=</span> <span class="n">function_name</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+</pre></div>
+				
+				<p>The syntax for declaring a function with one input is
+				</p>
+<div class="code-block"><pre><span></span><span class="n">output_type</span> <span class="nf">function_name</span><span class="p">(</span><span class="n">type</span> <span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">first</span> <span class="n">statement</span><span class="p">;</span>
+    <span class="n">second</span> <span class="n">statement</span><span class="p">;</span>
+    <span class="c1">// and so on</span>
+    <span class="k">return</span> <span class="n">output</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>The syntax for declaring a function with two inputs is
+				</p>
+<div class="code-block"><pre><span></span><span class="n">output_type</span> <span class="nf">function_name</span><span class="p">(</span><span class="n">first_type</span> <span class="n">first_input</span><span class="p">,</span> <span class="n">second_type</span> <span class="n">second_input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">first</span> <span class="n">statement</span><span class="p">;</span>
+    <span class="n">second</span> <span class="n">statement</span><span class="p">;</span>
+    <span class="c1">// and so on</span>
+    <span class="k">return</span> <span class="n">output</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>I'll let you guess the syntax for three inputs.
+				</p>
+				<p>As you would guess we can use the inputs to our function in our function.
+				</p>
+				<h1 id="functions-in-our-programs">Functions in Our Programs</h1>
+				<p>For us, we'll need functions to:
+				</p>
+				<ul>
+					<li>check if two words match,
+					</li>
+					<li>read a file word by word,
+					</li>
+					<li>print the output,
+					</li>
+					<li>get the word the user wants to be counted,
+					</li>
+					<li>and get the filename from the user.
+					</li>
+				</ul>
+				<p>Since reading from a file is dependent on your file system and printing output
+					is dependent on your terminal/console/command prompt, you as a programmer
+					shouldn't have to write these functions for yourself, so we'll include them in
+					the standard library, which we'll discuss more in the next few articles.
+				</p>
+				<p>Checking if two words match is common enough that the standard library also has
+					some functions to handle it for you, but since almost all computers use the same
+					character encodings, we can actually write the function ourselves.
+					Of course, the authors of the standard library are going to write
+					platform-specific code that takes advantage of how the computer works at a low
+					level for each platform, CPU architecture, etc., so we probably shouldn't use
+					our code for checking if strings match in code that we're going to publish.
+					We'll write the function ourselves just to get some practice working with
+					functions.
+				</p>
+				<p>In our case, we'll convert our code to check if two words are the same into a
+					function.
+				</p>
+				<p>We'll need the two strings as input and a name for the function.
+					Since we're checking if two strings match/differ, let's call it
+					<code>check_if_strings_differ</code>.
+					We could have also done <code>check_if_strings_match</code>, but <code>check_if_strings_differ</code>
+					is more consistent with how the standard library works, so we won't have to
+					change our code in the future once we replace our function with the standard
+					library.
+				</p>
+				<p>We'll also need to figure out what exactly we want the function to do so we can
+					figure out exactly what code we should write for the function.
+					In our case, we want to follow the Single Responsibility Principle, which states
+					that everything in your code should do one and only one thing.
+				</p>
+				<div class="aside" >
+					<h4>Single Responsibilty Principle</h4>
+					<hr>
+					<p>To understand why the Single Responsibility Principle is so important, imagine
+						if you had to go to the store whenever you pick up your children because you
+						had to buy groceries and pick up your children once in the same day.
+						Such a situation never happens in real life because we treat these as separate
+						tasks, but novice programmers often combine tasks into one giant task
+						unecessarily because they don't follow the Single Responsibility Principle.
+					</p>
+					<p>As an example, let's say you're writing a program that has a screen that allows
+						users to log in at some point in the program.
+						You'll need to display a screen that shows a box for a username and a box for
+						the password and you'll need to check if the password given matches the username
+						given.
+						You should probably not have a singular function that checks if the username and
+						password match and displays what the user sees because now if you need to change
+						either the code for logging in or the code for displaying what the user sees,
+						you will need to waste time figuring out which lines of code are relevant to
+						what you want to do.
+						Furthermore, changing the login checking shouldn't change what the user sees
+						after attempting to log in and and changing what the user sees after logging in
+						shouldn't change the login process, but by putting them in the same function,
+						you're couplilng them together.
+					</p>
+					<p>They should be two separate functions passing relevant information back and
+						forth between each other.
+						To check if a username and password match, all you need is the username, the
+						password, and some way of checking if they match.
+						You do not need to know where the username and password input boxes are on the
+						screen, the color of the background, etc.
+						Likewise, the function to display the screen doesn't need to know anything about
+						how to determine whether the username and password match, just whether or not
+						the username and password match.
+					</p>
+					<p>To be clear, there might be some security things you need to take into account
+						that would make you write a program differently, but you would still follow the
+						Single Responsibility Principle.
+					</p>
+				</div>
+				<p>For example, we'll want to check if two strings match and do different things
+					depending on whether they match or not.
+					We have four responsibilities:
+				</p>
+				<ol>
+					<li>figuring out whether the strings match,
+					</li>
+					<li>doing something if the strings match,
+					</li>
+					<li>doing something else if the strings don't match,
+					</li>
+					<li>and making sure that the other three responsibilities have everything they need.
+					</li>
+				</ol>
+				<p>The last responsibility is a little bit harder to explain, but it's the easiest
+					to code: it's the <code>if</code> statement that takes the output for responsibility 1 and
+					decides what to do based on the output.
+				</p>
+<div class="code-block"><pre><span></span><span class="c1">// Responsibility 4</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">check_if_strings_differ</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// Responsibility 3</span>
+    <span class="c1">// Do stuff you would want to do if the words differ</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// Responsibility 2</span>
+    <span class="c1">// Do stuff you would want to do if the words match</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>And <code>check_if_strings_differ</code> will take care of responsibility 1.
+					So now, we've decided that <code>check_if_strings_differ</code> will return <code>0</code> if the
+					strings don't match and <code>1</code> if the strings do match.
+					If we kept our version with the <code>if</code> statement at the end, we would be combining
+					responsibilities 1 and 4, which leads to code that's harder to maintain.
+				</p>
+				<p>Anyway, we'll keep our original code but output <code>str1[i] != str2[i]</code> instead of
+					using the <code>if</code> statement.
+				</p>
+<div class="code-block"><pre><span></span><span class="c1">// Responsibility 1</span>
+<span class="kt">int</span> <span class="nf">check_if_strings_differ</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">str1</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">str2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">((</span><span class="sc">&#39;\0&#39;</span> <span class="o">==</span> <span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="sc">&#39;\0&#39;</span> <span class="o">==</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+				
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#functions-in-c" style="padding-left:12px;">Functions in C</a>
+				<a href="#what-is-a-function" style="padding-left:24px;">What is a Function?</a>
+				<a href="#function-syntax" style="padding-left:24px;">Function Syntax</a>
+				<a href="#functions-in-our-programs" style="padding-left:24px;">Functions in Our Programs</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+			<div id="copyright" class="mt-4">
+				&copy; 2019 TUACM &sdot; <a href="">LICENSE</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>
