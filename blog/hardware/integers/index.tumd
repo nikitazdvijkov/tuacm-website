@@ -51,12 +51,6 @@ binary.
 
 <b>Overflow</b>
 
-<b>Types and Size</b>
-
-<b>Bitwise Operators:</b> {&amp;}, {|}, {^}, {~}, {{{shfl}}}, {{{shfr}}}
-
-<b>Bitwise Assignment Operators:</b> {&amp;=}, {|=}, {^=}, {{{shfl}}=}, {{{shfr}}=}
-
 \{{\ul}}
 
 ## Limited Number of Digits
