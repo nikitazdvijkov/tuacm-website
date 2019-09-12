@@ -86,7 +86,7 @@
 					it reaches a special character we call the <code>NULL</code> character, which we represent
 					with a <code>'\0'</code>.
 				</p>
-				<h1 id="what-exactly-is-a-list">What Exactly is a List?</h1>
+				<h2 id="what-exactly-is-a-list">What Exactly is a List?</h2>
 				<p>There are a lot of terms that we know them when we see them, but we have a hard
 					time defining them in a concrete, meaningful way.
 					To make sure we have a clear goal, we're going to come up with a formal
@@ -109,7 +109,7 @@
 					<b>If we know the first element and we know how to access the next element in
 					the sequence, we will have an implementation of a list</b>.
 				</p>
-				<h1 id="a-problem-weve-been-putting-off">A Problem We've Been Putting Off</h1>
+				<h2 id="a-problem-weve-been-putting-off">A Problem We've Been Putting Off</h2>
 				<p>Locating an element of a list is actually related to another problem that we've
 					put off, namely how does something like <code>int a = 84;</code> get converted into
 					something the machine can read?
@@ -120,7 +120,7 @@
 					Since computers have no concept of a variable, how can we actually implement a
 					variable?
 				</p>
-				<h2 id="variables-in-machine-code">Variables in Machine Code</h2>
+				<h3 id="variables-in-machine-code">Variables in Machine Code</h3>
 				<p>Remember that a variable stores a value for later use, and the only way we can
 					store data for later use is by using memory.
 					In essence, when your computer sees something like <code>int a = 84;</code>, it will first
@@ -175,7 +175,7 @@
 					to change</b>.
 				</p>
 				<div class="aside" >
-					<h4>Lvalues and Rvalues</h4>
+					<h5>Lvalues and Rvalues</h5>
 					<hr>
 					<p>If you remember back in the <a href="../04-variables/index.html">variables and
 						basic arithmetic</a> article in this series, I defined rvalues as expressions
@@ -187,7 +187,7 @@
 						For example, variables have memory addresses, but a constant like <code>5</code> does not.
 					</p>
 				</div>
-				<h1 id="how-can-memory-addresses-help-us-with-strings">How Can Memory Addresses Help Us With Strings?</h1>
+				<h2 id="how-can-memory-addresses-help-us-with-strings">How Can Memory Addresses Help Us With Strings?</h2>
 				<p>When we started this article, we had two problems to solve: how to specify the
 					beginning of a list and how to implement a list.
 					Memory addresses will let us solve both of our problems.
@@ -200,7 +200,7 @@
 					up with a way that the computer can figure out what character to access next
 					based on the current character and its memory address.
 				</p>
-				<h2 id="what-if-we-used-a-linked-list">What if We Used a Linked List?</h2>
+				<h3 id="what-if-we-used-a-linked-list">What if We Used a Linked List?</h3>
 				<p>Here's what that would look like:
 				</p>
 				<div class="text-center" style="margin-bottom: 1em; background: #FFFFFF; border-radius: 8px;">
@@ -221,7 +221,7 @@
 					list to see the last element, we're going to use an algorithm to find the next
 					character.
 				</p>
-				<h2 id="using-an-algorithm-to-find-the-next-character">Using an Algorithm to Find the Next Character</h2>
+				<h3 id="using-an-algorithm-to-find-the-next-character">Using an Algorithm to Find the Next Character</h3>
 				<p>While there are probably many different algorithms we could implement to figure
 					out the next character from the current character, the simplest algorithm is to
 					put all the characters in a block of memory in order and tell the computer to
@@ -242,7 +242,7 @@
 					time, meaning we only have to move something into the cache one sixty-fourth of
 					the time.
 				</p>
-				<h1 id="implementing-the-list">Implementing the List</h1>
+				<h2 id="implementing-the-list">Implementing the List</h2>
 				<p>We now have a few things to implement:
 				</p>
 				<ul>
@@ -255,7 +255,7 @@
 					<li>a way to tell the computer to give us a block of memory
 					</li>
 				</ul>
-				<h2 id="accessing-the-memory-address-of-some-variable">Accessing the Memory Address of Some Variable</h2>
+				<h3 id="accessing-the-memory-address-of-some-variable">Accessing the Memory Address of Some Variable</h3>
 				<p>Since it's going to happen often, we should try to make accessing the memory
 					address of some variable something short so you don't have to type as much.
 					To get the memory address of a variable, we need to know what variable we're
@@ -267,7 +267,7 @@
 					like ampersand</a>, so let's use <code>&amp;</code>.
 					We've decided that <code>&amp;a</code> will return the memory address of <code>a</code>.
 				</p>
-				<h2 id="accessing-a-value-stored-in-a-memory-address">Accessing A Value Stored in a Memory Address</h2>
+				<h3 id="accessing-a-value-stored-in-a-memory-address">Accessing A Value Stored in a Memory Address</h3>
 				<p>Same as accessing the memory address of a variable, we want something of the
 					format <code>&bull;[variable]</code> where <code>&bull;</code> is some character on the keyboard.
 					Assembly used <code>*</code> to access values at memory addresses, so let's keep it.
@@ -279,7 +279,7 @@
 				<p>The act of getting the value stored at a memory address is known as
 					<b>dereferencing</b> the variable.
 				</p>
-				<h2 id="storing-the-memory-address-of-some-variable">Storing the Memory Address of Some Variable</h2>
+				<h3 id="storing-the-memory-address-of-some-variable">Storing the Memory Address of Some Variable</h3>
 				<p>Since memory addresses shouldn't be treated like any of our existing types and
 					we need to know what type the memory address represents, we need to come up with
 					some new types, which we'll call <b>pointers</b> because they point to locations
@@ -303,7 +303,7 @@
 					In other words, <b>dereferencing a pointer allows us to set the memory it's
 					pointing at</b>.
 				</p>
-				<h2 id="getting-a-block-of-memory">Getting A Block of Memory</h2>
+				<h3 id="getting-a-block-of-memory">Getting A Block of Memory</h3>
 				<p>In <code>C</code>, blocks of memory are known as <b>arrays</b> (or <b>buffers</b> in some
 					contexts).
 					There are actually two different ways to get a block of memory in <code>C</code>, but for
@@ -335,7 +335,7 @@
 <span class="kt">char</span> <span class="n">string</span><span class="p">[</span><span class="mi">30</span><span class="p">];</span>            <span class="c1">// Creates an array of 30 chars</span>
 </pre></div>
 				
-				<h1 id="bringing-it-all-together">Bringing it All Together</h1>
+				<h2 id="bringing-it-all-together">Bringing it All Together</h2>
 				<p>We're almost there.
 				</p>
 				<p>Remember that I said that we were going to use memory addresses to implement a
@@ -380,7 +380,7 @@
 					It would be nice if we could just give it a list of characters on one line when
 					we started so we didn't have to worry about it.
 				</p>
-				<h2 id="initializer-lists">Initializer Lists</h2>
+				<h3 id="initializer-lists">Initializer Lists</h3>
 <div class="code-block"><pre><span></span><span class="c1">// This is actually two lines, but remember that C doesn&#39;t care about</span>
 <span class="c1">// whitespace or newlines. There&#39;s still only one semicolon, so it&#39;s one</span>
 <span class="c1">// statement.</span>
@@ -407,7 +407,7 @@
 					We also chose single quotes earlier for <code>char</code>s like <code>'A'</code> because of how they
 					relate to strings.
 				</p>
-				<h3 id="do-we-have-to-specify-the-number-of-elements-if-were-initializing-it">Do We Have to Specify the Number of Elements If We're Initializing It?</h3>
+				<h4 id="do-we-have-to-specify-the-number-of-elements-if-were-initializing-it">Do We Have to Specify the Number of Elements If We're Initializing It?</h4>
 				<p>For either an array of <code>int</code>s or a string, we would probably want the array to
 					be exactly large enough to store all the elements, so we shouldn't have to
 					specify the number of elements.
@@ -419,7 +419,7 @@
 				<p>The compiler will figure what number it needs to put in the square brackets for
 					us.
 				</p>
-				<h2 id="modifying-an-array-after-initialization">Modifying an Array After Initialization</h2>
+				<h3 id="modifying-an-array-after-initialization">Modifying an Array After Initialization</h3>
 				<p>What if we want to change the array after initializing it?
 				</p>
 <div class="code-block"><pre><span></span><span class="n">string</span> <span class="o">=</span> <span class="s">&quot;Hello, Other World!&quot;</span><span class="p">;</span>     <span class="c1">// Your compiler will print out &quot;error:</span>
@@ -457,7 +457,7 @@
 					becomes <code>*(array + offset)</code> and <code>array</code> is a pointer to the first element of the
 					array, so <code>array[0]</code>&rArr;<code>*(array + 0)</code>&rArr;<code>*array</code>.
 				</p>
-				<h1 id="summary">Summary</h1>
+				<h2 id="summary">Summary</h2>
 				<p>In this article, we
 				</p>
 				<ul>
@@ -588,7 +588,7 @@
 				</div>
 			</div>
 			<nav id="sidenav">
-				<a href="#memory-addresses-in-c" style="padding-left:12px;">Memory Addresses in C</a>
+				<a href="#memory-addresses-in-c" style="padding-left:0px;">Memory Addresses in C</a>
 				<a href="#what-exactly-is-a-list" style="padding-left:24px;">What Exactly is a List?</a>
 				<a href="#a-problem-weve-been-putting-off" style="padding-left:24px;">A Problem We've Been Putting Off</a>
 				<a href="#variables-in-machine-code" style="padding-left:36px;">Variables in Machine Code</a>

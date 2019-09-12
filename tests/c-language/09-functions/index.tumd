@@ -30,10 +30,10 @@ come up with the integral types ({char}, {short}, {int}, and {long long}) and
 the floating point types ({float} and {double}),
 
 figured out a way to represent characters using the {char} type and invented the
-{NULL} character, which indicates that we're ending a string,
+{'\0'} character, which indicates that we're ending a string,
 
-and decided to use single quotes around a character to represent the ASCII value
-for that {char}.
+decided to use single quotes around a character to represent the ASCII value for
+that {char},
 
 explained how the program uses memory addresses to identify variables,
 
@@ -71,12 +71,12 @@ for conditional branches and loops.
 
 Technically, functions are also included in control flow, but I didn't include
 them in the control flow article because you could replace the function with the
-code in the funciton and get the same exact result.
+code in the function and get the same exact result.
 
 \{{\aside}}
 
 We also used control flow to come up with some code that can do different things
-depending on whether the words match:
+depending on whether two strings match:
 
 \{{code-block c no-line-numbers}}
 
@@ -84,7 +84,7 @@ depending on whether the words match:
 
 int i = 0;
 
-while (('\0' != str1[i]) && ('\0' != str2[i]) && (str1[i] == str2[i])) {
+while (str1[i] && str2[i] && (str1[i] == str2[i])) {
     i += 1;
 }
 
@@ -108,8 +108,7 @@ In this article, we're going to add functions to {C}.
 A function in mathematics takes in an input and produces an output, with the
 rule that the same exact input produces the same exact output.
 Functions in {C} work just like functions in math, though the input and output
-are slightly more complicated than for reasons we'll get into later in this
-article.
+are slightly more complicated.
 To the computer, a function is a set of instructions that the computer will jump
 to, execute, and jump back from.
 
@@ -129,7 +128,7 @@ for the other elements of control flow, let's keep it with modifications.
 We know that we're going to put the code to execute between the curly braces,
 but functions also have inputs and an output.
 Like with {if} statements, {for} loops, and {while} loops, we put the input
-between the parantheses but we need somewhere to put the output.
+between the parentheses but we need somewhere to put the output.
 We also need to know the types of everything and we need to be able to provide
 multiple inputs.
 Inside the function, we'll need to tell the computer what we want to return from
@@ -182,7 +181,206 @@ output_type function_name(first_type first_input, second_type second_input) {
 
 I'll let you guess the syntax for three inputs.
 
+We can also have functions that take in no input using the syntax:
+
+\{{code-block c no-line-numbers}}
+
+output_type function_name(void) {
+    first statement;
+    second statement;
+    // and so on
+    return output;
+}
+
+\{{\code-block}}
+
+We can have functions that return no output by making the output type {void}:
+
+\{{code-block c no-line-numbers}}
+
+void function_name(void) {
+    first statement;
+    second statement;
+    // and so on
+    return;
+}
+
+\{{\code-block}}
+
+\{{aside}}
+#### The {void} Type
+<hr>
+
+The {void} type is different from all other types because you cannot make a
+variable of {void} type and you cannot use a {void} type in any of the
+operations we've established.
+It might seem pointless, but it has a few specific usages.
+Returning nothing from a function and telling the compiler that the function
+doesn't take inputs are two uses.
+Later, we'll cover the other main use of {void}.
+
+\{{\aside}}
+
 As you would guess we can use the inputs to our function in our function.
+Inputs and the output can be any of the types we've established up to this
+point, including pointer types such as {char *} and {int *}.
+
+# {return} Statements Exit the Function Immediately
+
+I want to emphasize that your function will exit as soon as it hits a {return}
+statement.
+For example:
+
+\{{code-block c no-line-numbers}}
+
+unsigned long long smallest_fibonacci_above(unsigned long long number) {
+    // 12200160415121876738 is the largest Fibonacci number we can represent in
+    // 64 bits, so if someone gives us a number greater than it, we will have an
+    // infinite loop below, so we just return some value to indicate that we
+    // cannot calculate the required Fibonacci number
+    unsigned long long max_fibonacci_number = 12200160415121876738;
+
+    if (number {{gt}} max_fibonacci_number) {
+        return 0;
+        // Anything after this point inside the surrounding curly brackets will
+        // not be executed since the program has already left the function
+    }
+    unsigned long long previous, current;
+    previous = 0;
+    current = 1;
+    while (current {{lt}} number) {
+        // The next three lines are the definition of the Fibonacci sequence
+        next = previous + current;
+        previous = current;
+        current = next;
+    }
+    return current;
+    // Anything after this point inside the surrounding curly brackets will not
+    // be executed since the program has already left the function
+}
+
+\{{\code-block}}
+
+If the value of {number} is greater than {12200160415121876738}, then the
+function will immediately exit with output {0} without even looking at the other
+code, otherwise, it will calculate the smallest Fibonacci number above the
+number you give the function.
+
+By the way, here's the code without comments so it's easier to read:
+
+\{{code-block c no-line-numbers}}
+
+unsigned long long smallest_fibonacci_above(unsigned long long number) {
+    unsigned long long max_fibonacci_number = 12200160415121876738;
+    if (number {{gt}} max_fibonacci_number) {
+        return 0;
+    }
+    unsigned long long previous, current;
+    previous = 0;
+    current = 1;
+    while (current {{lt}} number) {
+        next = previous + current;
+        previous = current;
+        current = next;
+    }
+    return current;
+}
+
+\{{\code-block}}
+
+# Pass by Value
+
+Lastly, I want to make sure that it's clear that when you call a function, you
+create copies of the inputs and store them into whatever variables you use for
+the parameter.
+
+\{{code-block c no-line-numbers}}
+
+unsigned long long example = 100;
+unsigned long long result = smallest_fibonacci_above(example);
+
+\{{\code-block}}
+
+Notice that I passed in {example} to the function even though the function
+definition uses {number} as the parameter, and the variables will refer to
+different memory.
+The value in {example} will be copied into {number}, meaning that if you had a
+function like
+
+\{{code-block c no-line-numbers}}
+
+void change_value_to_four(int number) {
+    number = 4;
+    return;
+}
+
+\{{\code-block}}
+
+and you use it like so
+
+\{{code-block c no-line-numbers}}
+
+int random_number = 73;
+change_value_to_four(random_number);
+
+\{{\code-block}}
+
+{random_number} is still {73}, because {random_number} is copied into {number},
+and, just as modifying a copy of something doesn't affect the original, neither
+does modifying {number}.
+You should have two questions:
+
+\{{ul}}
+
+Why does {C} copy the input into a variable?
+
+How can I give a function some data and have it modify the data?
+
+\{{\ul}}
+
+We can answer both of them easily.
+
+## Why Does {C} Copy Input into Variables?
+
+I can actually show you with one line:
+
+\{{code-block c no-line-numbers}}
+
+change_value_to_four(73);
+
+\{{\code-block}}
+
+Remember that plain numbers are <b>rvalues</b>, which means they neither have a
+memory address nor can they be assigned values.
+If {C} didn't copy {73} into a variable, this program would make no sense
+because we can't store things without somewhere to store it.
+
+## Modifying Data Passed Into Functions
+
+Functions will always copy their inputs into their own local variables, so we
+can't pass the value as is.
+In other words, if we want to pass in an {int} to a function that we can modify,
+we cannot have it come in as a parameter as an {int} like so
+
+\{{code-block c no-line-numbers}}
+
+void example_function(int input) {
+    // input is a copy of whatever you passed in, so you can't modify it
+}
+
+\{{\code-block}}
+
+You're going to need to modify the {int input} section of the code.
+If you look through everything we've come up with so far in {C}, you should be
+able to figure out some way we can tell the computer what memory we want to
+modify.
+For now, I'm going to leave this as an exercise for you to figure out on your
+own.
+I'll cover it in the future, but just go through all the features we've covered
+up to this point and figure out which feature can help us.
+For example, comments cannot help us because the compiler will ignore them and
+arithmetic operations cannot help us because any arithmetic we do within the
+function will be done on the local copy, not the original data.
 
 # Functions in Our Programs
 
@@ -234,7 +432,7 @@ In our case, we want to follow the Single Responsibility Principle, which states
 that everything in your code should do one and only one thing.
 
 \{{aside}}
-#### Single Responsibilty Principle
+#### Single Responsibility Principle
 <hr>
 
 To understand why the Single Responsibility Principle is so important, imagine
@@ -242,7 +440,7 @@ if you had to go to the store whenever you pick up your children because you
 had to buy groceries and pick up your children once in the same day.
 Such a situation never happens in real life because we treat these as separate
 tasks, but novice programmers often combine tasks into one giant task
-unecessarily because they don't follow the Single Responsibility Principle.
+unnecessarily because they don't follow the Single Responsibility Principle.
 
 As an example, let's say you're writing a program that has a screen that allows
 users to log in at some point in the program.
@@ -255,9 +453,9 @@ either the code for logging in or the code for displaying what the user sees,
 you will need to waste time figuring out which lines of code are relevant to
 what you want to do.
 Furthermore, changing the login checking shouldn't change what the user sees
-after attempting to log in and and changing what the user sees after logging in
+after attempting to log in and changing what the user sees after logging in
 shouldn't change the login process, but by putting them in the same function,
-you're couplilng them together.
+you're coupling them together.
 
 They should be two separate functions passing relevant information back and
 forth between each other.
@@ -322,10 +520,80 @@ using the {if} statement.
 // Responsibility 1
 int check_if_strings_differ(char * str1, char * str2) {
     int i = 0;
-    while (('\0' == str1[i]) && ('\0' == str2[i]) && (str1[i] == str2[i])) {
+    while (str1[i] && str2[i] && (str1[i] == str2[i])) {
         i += 1;
     }
     return str1[i] != str2[i];
 }
 
 \{{\code-block}}
+
+We've written our first function!
+
+\{{aside}}
+#### {if (condition_is_true) \\{ return true; \\} else \\{ return false; \\}}
+<hr>
+
+Generally, when people first learn a programming language and they want to
+return a true or false value from a function, they write code like
+
+\{{code-block c no-line-numbers}}
+
+if (a == b) {
+    return 1;
+} else {
+    return 0;
+}
+
+\{{\code-block}}
+
+which is valid, but verbose because what you want to return and the result of {a
+== b} are identical.
+You could just as easily write the code as
+
+\{{code-block c no-line-numbers}}
+
+return a == b;
+
+\{{\code-block}}
+
+The title of this aside is how you would read the novice code with the if
+statement, which should make it clear why you can just use the return statement.
+
+\{{\aside}}
+
+# Summary
+
+In this article, we set up the basic syntax for functions in {C}, we introduced
+the {void} type and two ways to use it, and we introduced a way to call
+functions.
+We also wrote our own function to check if two strings differ.
+
+# What's Next
+
+We're almost to the point where we can write our first program!
+Furthermore, because of the way we've written these articles, once we can write
+a complete program, we'll be able to write other programs quickly and easily.
+
+We just need to know how to
+
+\{{ul}}
+
+establish some form of an entry point,
+
+set up and use a compiler,
+
+print something out to the terminal,
+
+and read from a file.
+
+\{{\ul}}
+
+Remember that we can write functions that can be executed at any time, but we
+need some way to tell the program which function to run first, i.e. establish
+some form of an entry point.
+We also need some way of getting user input from the command line (later, we
+will likely cover different graphical user interfaces).
+In the next article, <a href="../10-main-function/">The main Function
+in C</a>, we'll discuss the {main} function in {C} and how we can use it to take
+in user input.

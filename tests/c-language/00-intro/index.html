@@ -103,7 +103,7 @@
 					<code>C</code> programming.
 				</p>
 				<div class="aside" >
-					<h4>Historical Accuracy</h4>
+					<h5>Historical Accuracy</h5>
 					<hr>
 					<p><b>This tutorial does not intend to be a history lesson</b>, but I will make it
 						clear when I'm making a historically incorrect claim with an explanation off to
@@ -136,7 +136,7 @@
 						It also does a good job of explaining design choices for the language.
 					</p>
 				</div>
-				<h1 id="the-problems-c-needs-to-solve">The Problems <code>C</code> Needs to Solve</h1>
+				<h2 id="the-problems-c-needs-to-solve">The Problems <code>C</code> Needs to Solve</h2>
 				<p>Since I neither want to write yet another <code>C</code> dictionary nor rehash <i>The C
 					Programming Language</i>, this tutorial will explain why <code>C</code> is the way it is by
 					looking at the problems Ritchie et al faced when designing the <code>C</code> language
@@ -159,7 +159,7 @@
 				<p>At the end of this tutorial, you shouldn't just know the features and syntax of
 					<code>C</code>, but how you should use them to write good <code>C</code> code.
 				</p>
-				<h2 id="why-not-use-machine-code">Why Not Use Machine Code?</h2>
+				<h3 id="why-not-use-machine-code">Why Not Use Machine Code?</h3>
 				<p>First, let's talk about a program from the computer's perspective.
 					Most, if not all computers use a <a
 					href="https://en.wikipedia.org/wiki/Von_Neumann_architecture">von Neumann
@@ -189,7 +189,7 @@
 					To actually get a program running, it needs to be in machine code, so why not
 					just write our programs in machine code?
 				</p>
-				<h3 id="machine-code-is-completely-unintelligible">Machine Code is Completely Unintelligible</h3>
+				<h4 id="machine-code-is-completely-unintelligible">Machine Code is Completely Unintelligible</h4>
 				<p>To see why programming in machine code was painful, consider the following
 					example that I pulled from David A. Patterson and John L. Hennessy's
 					<i>Computer Organization and Design: The Hardware/Software Interface</i>, Fifth
@@ -256,7 +256,7 @@
 					into an assembly language</a>.
 				</p>
 				<div class="aside" >
-					<h4>Programming the First Computers</h4>
+					<h5>Programming the First Computers</h5>
 					<hr>
 					<p>Fortunately, memory and register size on these early computers was small and
 						they could only perform a few operations, meaning each of these instructions
@@ -274,7 +274,7 @@
 						before it prints it out.
 					</p>
 				</div>
-				<h3 id="assembly-a-step-above-machine-code">Assembly: A Step Above Machine Code</h3>
+				<h4 id="assembly-a-step-above-machine-code">Assembly: A Step Above Machine Code</h4>
 				<p>As computers got more powerful, <a
 					href="https://medium.com/a-computer-of-ones-own/kathleen-booth-machine-learning-pioneer-7cb8b2ed70c8">Kathleen
 					Booth</a> figured that, instead of remembering all the binary instructions off
@@ -359,7 +359,7 @@
 					named registers instead of numbers, assembly languages suffer from a few
 					fundamental flaws.
 				</p>
-				<h2 id="why-not-use-assembly">Why Not Use Assembly?</h2>
+				<h3 id="why-not-use-assembly">Why Not Use Assembly?</h3>
 				<p>From the code snippet provided, it's easy to see several problems with writing
 					code in assembly:
 				</p>
@@ -392,7 +392,7 @@
 					all bad code is spaghetti code.
 				</p>
 				<div class="aside" >
-					<h4>What's the Deal with Spaghetti Code?</h4>
+					<h5>What's the Deal with Spaghetti Code?</h5>
 					<hr>
 					<p><b>Spaghetti code strips lines of code from their context.</b>
 						If you run your code and you get an error on line 27, you won't be able to tell
@@ -426,7 +426,7 @@
 					automate tasks so that you can deal with the higher level algorithms and data
 					organization.
 				</p>
-				<h2 id="the-purpose-of-programming-languages">The Purpose of Programming Languages</h2>
+				<h3 id="the-purpose-of-programming-languages">The Purpose of Programming Languages</h3>
 				<p>Just as Booth came up with the idea of using a program to convert something
 					intelligible to machine code, people like <a
 					href="https://scientificwomen.net/women/hopper-grace-45">Grace Hopper</a> came
@@ -440,7 +440,7 @@
 					write your own compiler or modify your interpreter.
 				</p>
 				<div class="aside" >
-					<h4>Compiled vs. Interpreted Language</h4>
+					<h5>Compiled vs. Interpreted Language</h5>
 					<hr>
 					<p>A <b>compiled language</b> uses a compiler to convert source code into machine
 						code, producing a whole new executable file.
@@ -467,7 +467,7 @@
 					The programmer should give the compiler enough information for it to generate
 					the proper code and nothing more.
 				</p>
-				<h2 id="slow-computers-with-little-memory">Slow Computers with Little Memory</h2>
+				<h3 id="slow-computers-with-little-memory">Slow Computers with Little Memory</h3>
 				<p>The first iteration of <code>C</code> was implemented on the <a
 					href="https://en.wikipedia.org/wiki/PDP-7">PDP-11</a> system, which had 24 KB
 					of memory with 12 KB reserved for the Unix operating system.
@@ -501,7 +501,7 @@
 					use either <code>C</code> or an assembly language because <code>C</code> was made for computers with
 					little memory.
 				</p>
-				<h2 id="explicit-types-are-more-efficient-than-text">Explicit Types are More Efficient than Text</h2>
+				<h3 id="explicit-types-are-more-efficient-than-text">Explicit Types are More Efficient than Text</h3>
 				<p>Types with defined rules are easier for the compiler to convert into machine
 					code.
 					For example, there are only 128 possible ASCII characters, (though there are
@@ -510,7 +510,7 @@
 					take up a thousand bytes.
 					Integers and floating point numbers, however, require more memory.
 				</p>
-				<h2 id="a-standard-library">A Standard Library</h2>
+				<h3 id="a-standard-library">A Standard Library</h3>
 				<p>There is a lot of basic functionality (such as printing things to a terminal or
 					reading from a file) that everyone should be able to use if they need to use it
 					without having to write the code themselves.
@@ -519,7 +519,7 @@
 					Furthermore, if your goal is to write code that can be compiled on any computer,
 					you should take care of anything that could differ from computer to computer.
 				</p>
-				<h1 id="summary">Summary</h1>
+				<h2 id="summary">Summary</h2>
 				<p>For <code>C</code> to be a good programming language, it must
 				</p>
 				<ul>
@@ -543,7 +543,7 @@
 					<li>implement a standard library
 					</li>
 				</ul>
-				<h1 id="whats-next">What's Next</h1>
+				<h2 id="whats-next">What's Next</h2>
 				<p>We didn't actually discuss any specific features, design choices, or syntax of
 					the <code>C</code> language in this article, but we did set up the ground work for what we
 					need to accomplish to make the <code>C</code> language a good language.
@@ -585,7 +585,7 @@
 					understand the topics in the article, though I might mention future topics in
 					passing.
 				</p>
-				<h1 id="complete-list-of-articles-in-the-series">Complete List of Articles in the Series</h1>
+				<h2 id="complete-list-of-articles-in-the-series">Complete List of Articles in the Series</h2>
 				<ul>
 					<li><a href="../01-compiler-reads-code/index.html">The Basics of C</a>
 					</li>
@@ -625,7 +625,7 @@
 				</div>
 			</div>
 			<nav id="sidenav">
-				<a href="#making-sense-of-c" style="padding-left:12px;">Making Sense of C</a>
+				<a href="#making-sense-of-c" style="padding-left:0px;">Making Sense of C</a>
 				<a href="#the-problems-c-needs-to-solve" style="padding-left:24px;">The Problems <code>C</code> Needs to Solve</a>
 				<a href="#why-not-use-machine-code" style="padding-left:36px;">Why Not Use Machine Code?</a>
 				<a href="#machine-code-is-completely-unintelligible" style="padding-left:48px;">Machine Code is Completely Unintelligible</a>

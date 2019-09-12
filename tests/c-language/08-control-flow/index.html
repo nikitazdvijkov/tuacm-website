@@ -48,7 +48,7 @@
 		<div>
 			<div class="article">
 				<div id="article-title"><h1 id="control-flow-in-c">Control Flow in C</h1></div>
-				<div id="meta-description">We're finally going to do something cool.</div>
+				<div id="meta-description">We still need some way of changing the behavior of the program based on the user input.</div>
 				<div id="date-and-tags">Posted 3 September 2019 at 12:10 PM </div>
 				<div id="author-box">
 					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
@@ -124,7 +124,7 @@
 				</ul>
 				<p>In this article, we're going to introduce these methods.
 				</p>
-				<h1 id="topics-covered">Topics Covered</h1>
+				<h2 id="topics-covered">Topics Covered</h2>
 				<ul>
 					<li><b>Relational Operators:</b> <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>
 					</li>
@@ -137,7 +137,7 @@
 					<li><b>Indexed Looping:</b> <code>for</code>
 					</li>
 				</ul>
-				<h1 id="relational-operators">Relational Operators</h1>
+				<h2 id="relational-operators">Relational Operators</h2>
 				<p>First, we're going to need some sort of way to evaluate whether or not a
 					statement is true, so we're going to introduce a few operators to help us out.
 					In a natural language (e.g. English), you can read these operators as
@@ -188,7 +188,7 @@
 				</ul>
 				<p>I could keep going, but the general idea remains the same.
 				</p>
-				<h1 id="logical-operators">Logical Operators</h1>
+				<h2 id="logical-operators">Logical Operators</h2>
 				<p>What if you want to check two things?
 					For example, what if you want to check if a number is between <code>4</code> and <code>20</code>?
 				</p>
@@ -219,7 +219,7 @@
 					than twenty charachters, you would use the <code>&amp;&amp;</code> operator like <code>(4 &lt;
 					username_len) &amp;&amp; (20 &gt; username_len)</code>.
 				</p>
-				<h1 id="conditional-branches">Conditional Branches</h1>
+				<h2 id="conditional-branches">Conditional Branches</h2>
 				<p>In <code>C</code>, <code>0</code> is interpreted as false and everything else is interpreted as true.
 					<code>C</code> does not have dedicated boolean types built into the langauge, but all
 					conditional branches and loops work under <code>0</code>&rArr;<code>false</code>.
@@ -242,7 +242,7 @@
 						and do valid username stuff if the username is the right length.
 					</li>
 				</ol>
-				<h2 id="if-and-else"><code>if</code> and <code>else</code></h2>
+				<h3 id="if-and-else"><code>if</code> and <code>else</code></h3>
 				<p>Since we need to come up with some keyword or symbol or something to tell the
 					computer to do one thing if a condition is true and do something else if a
 					condition is false.
@@ -250,7 +250,7 @@
 					do and since they're short keywords, let's just use <code>if</code> to indicate that we
 					want to do something and <code>else</code> to indicate that we want to do something else.
 				</p>
-				<h2 id="organizing-code-in-a-conditional-branch">Organizing Code in a Conditional Branch</h2>
+				<h3 id="organizing-code-in-a-conditional-branch">Organizing Code in a Conditional Branch</h3>
 				<p>A conditional branch has five parts:
 				</p>
 				<ul>
@@ -285,7 +285,7 @@
 <span class="c1">// Other code</span>
 </pre></div>
 				
-				<h2 id="putting-it-together">Putting it Together</h2>
+				<h3 id="putting-it-together">Putting it Together</h3>
 				<p>Here is how we would apply <code>if</code> statements to deal with the three cases to check
 					the username.
 				</p>
@@ -369,7 +369,7 @@
 					</li>
 				</ol>
 				<div class="aside" >
-					<h4>Using <code>==</code> Instead of <code>=</code></h4>
+					<h5>Using <code>==</code> Instead of <code>=</code></h5>
 					<hr>
 					<p>In general, you should not put variables on the left of the <code>==</code> operator
 						because it's common to accidentally type <code>=</code> instead, which leads to valid <code>C</code>
@@ -420,7 +420,7 @@
 						compiler will catch it before it can even run.
 					</p>
 				</div>
-				<h1 id="using-a-simple-if-in-our-code">Using a Simple <code>if</code> in Our Code</h1>
+				<h2 id="using-a-simple-if-in-our-code">Using a Simple <code>if</code> in Our Code</h2>
 				<p>Now that we have a way for us to check if some condition is true, we can check
 					if two words match.
 					For example, let's say that our word is "the" and we only want a match if the
@@ -467,7 +467,7 @@
 					the word directly in the source code.
 					In this case, we will have to introduce a loop.
 				</p>
-				<h1 id="loops">Loops</h1>
+				<h2 id="loops">Loops</h2>
 				<p>Loops are pretty straightforward.
 					While some condition is true, it will run through the code in the block, jump
 					back to the top of the block, and then keep executing the code in the block
@@ -479,7 +479,7 @@
 					Since we don't know how long the string will be beforehand, we should use
 					unindexed looping.
 				</p>
-				<h2 id="unindexed-looping">Unindexed Looping</h2>
+				<h3 id="unindexed-looping">Unindexed Looping</h3>
 				<p>There are two types of unindexed loops: <code>while</code> loops and <code>do-while</code> loops.
 					A while loop is the simplest, and it has a similar syntax to an <code>if</code> statement.
 				</p>
@@ -642,7 +642,7 @@
 					is checked, <code>username_len</code> will always be greater than <code>1</code>, even if you pass in
 					the empty string <code>""</code>, which should have a <code>username_len</code> of <code>0</code>.
 				</p>
-				<h2 id="indexed-looping">Indexed Looping</h2>
+				<h3 id="indexed-looping">Indexed Looping</h3>
 				<p>Since we're covering control flow in this article, we should cover the other
 					type of looping in <code>C</code>: <code>for</code> loops.
 					We'll have a use for them later, but for now, I'm just going to talk about them
@@ -690,7 +690,7 @@
 <span class="c1">// square numbers between 17 and 1001 inclusive</span>
 </pre></div>
 				
-				<h2 id="when-to-use-for-and-when-to-use-while">When to Use <code>for</code> and When to Use <code>while</code>?</h2>
+				<h3 id="when-to-use-for-and-when-to-use-while">When to Use <code>for</code> and When to Use <code>while</code>?</h3>
 				<p>To be clear, you can convert any <code>for</code> loop into a <code>while</code> loop easily.
 				</p>
 <div class="code-block"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">initialization</span><span class="p">;</span> <span class="n">condition</span><span class="p">;</span> <span class="n">next_step</span><span class="p">)</span> <span class="p">{</span>
@@ -718,7 +718,7 @@
 					<code>while</code> loop to read strings and a <code>for</code> loop otherwise.
 				</p>
 				<div class="aside" >
-					<h4>Invariants</h4>
+					<h5>Invariants</h5>
 					<hr>
 					<p><b>Invariants</b> are simply things that remain constant between iterations of a
 						loop.
@@ -774,7 +774,7 @@
 						Doing so will guarantee that your compiler can optimize the code out.
 					</p>
 				</div>
-				<h1 id="using-loops-in-our-program">Using Loops in Our Program</h1>
+				<h2 id="using-loops-in-our-program">Using Loops in Our Program</h2>
 				<p>Now that we can loop through all the characters in a word and we can check for
 					certain conditions, we should be able to check if two words are the same easily.
 				</p>
@@ -866,7 +866,7 @@
 				</div>
 				<p>since <code>while (a)</code> and <code>while (0 != a)</code> are the same thing.
 				</p>
-				<h1 id="summary">Summary</h1>
+				<h2 id="summary">Summary</h2>
 				<p>We've made quite a lot of progress thoughtout this series.
 					We went from coming up with a vague idea of stuff we should have in our language
 					to coming up with a consistent format for the file itself, creating some syntax
@@ -877,7 +877,7 @@
 					<b>Logical</b> operators) and a few keywords (<code>if</code>, <code>else</code>, <code>while</code>, <code>do</code>, and
 					<code>for</code>) that will help us control the flow of the program.
 				</p>
-				<h1 id="whats-next">What's Next</h1>
+				<h2 id="whats-next">What's Next</h2>
 				<p>Now that we have a way to test if two strings are equal, we still need to be
 					able to read from a file and print the count to the screen.
 					Since we're putting ourselves in the shoes of Ritchie et al, we need to come up
@@ -913,7 +913,7 @@
 				</div>
 			</div>
 			<nav id="sidenav">
-				<a href="#control-flow-in-c" style="padding-left:12px;">Control Flow in C</a>
+				<a href="#control-flow-in-c" style="padding-left:0px;">Control Flow in C</a>
 				<a href="#topics-covered" style="padding-left:24px;">Topics Covered</a>
 				<a href="#relational-operators" style="padding-left:24px;">Relational Operators</a>
 				<a href="#logical-operators" style="padding-left:24px;">Logical Operators</a>

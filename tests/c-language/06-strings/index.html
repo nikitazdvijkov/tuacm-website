@@ -56,7 +56,7 @@
 					represent <code>0</code> in eight bits, but how can we make those eight bits have something
 					to do with text?
 				</p>
-				<h1 id="defining-text">Defining Text</h1>
+				<h2 id="defining-text">Defining Text</h2>
 				<p>First, we need a clear definition of "text" so we know exactly what we're doing.
 					In the context of computers, text is just a <b>list of characters, where
 					characters consist of letters, digits, punctuation, spaces, etc</b>.
@@ -73,7 +73,7 @@
 					the word "string"</a>, which was "a number of objects arranged in a line", like
 					beads on a string.
 				</p>
-				<h1 id="how-to-map-bits-to-characters">How to Map Bits to Characters</h1>
+				<h2 id="how-to-map-bits-to-characters">How to Map Bits to Characters</h2>
 				<p>In the first part of the article, we're going to come up with a system to map
 					bits to characters.
 					We're going to use a process similar to the process we used in coming up with
@@ -81,7 +81,7 @@
 					First, we're going to figure out what characters to represent, then we're going
 					to come up with a mapping from bits to characters.
 				</p>
-				<h2 id="what-characters-do-we-want-to-represent">What Characters Do We Want to Represent?</h2>
+				<h3 id="what-characters-do-we-want-to-represent">What Characters Do We Want to Represent?</h3>
 				<p>First, we need to figure out what characters to represent.
 					Since a lot of early programming languages and computers were developed in
 					America, let's just use the characters used in American text.
@@ -119,7 +119,7 @@
 					characters.
 					We have 27 characters left within seven bits.
 				</p>
-				<h2 id="mapping-characters-to-bits">Mapping Characters to Bits</h2>
+				<h3 id="mapping-characters-to-bits">Mapping Characters to Bits</h3>
 				<p>We're going to use the ASCII character mapping, since it's the standard on every
 					computer and in Unicode.
 				</p>
@@ -140,7 +140,7 @@
 					indicate italic letters, etc.
 				</p>
 				<div class="aside" >
-					<h4>Unicode</h4>
+					<h5>Unicode</h5>
 					<hr>
 					<p>Letting people use the eighth bit to do whatever they wanted turned out to be a
 						terrible idea, which is why we now use Unicode, which assigns a character to a
@@ -191,7 +191,7 @@
 					so the ASCII encoding loses a bit of the efficiency of setting individual bits
 					to achieve the effect of Shift and Ctrl.
 				</p>
-				<h2 id="printing-out-characters">Printing Out Characters</h2>
+				<h3 id="printing-out-characters">Printing Out Characters</h3>
 				<p>Now that we've established a mapping from a <code>char</code> to a character, all we need
 					to do if we want a computer to print out a letter is to draw a picture for each
 					character and write a program that, when given a <code>char</code> finds the proper picture
@@ -201,7 +201,7 @@
 					If we were making a video game or anything else that has to draw a picture (i.e.
 					not a terminal), we might need to implement our own <code>char</code> to picture feature.
 				</p>
-				<h1 id="how-to-know-which-bits-to-convert-to-characters">How to Know Which Bits to Convert to Characters</h1>
+				<h2 id="how-to-know-which-bits-to-convert-to-characters">How to Know Which Bits to Convert to Characters</h2>
 				<p>For the numeric types, an <code>int</code> was exactly four bytes, so you would just need
 					to know where it was in memory, but strings can vary in how many bytes you need
 					to represent them, so you need some way of telling the computer where to start
@@ -279,7 +279,7 @@
 						we can go into more depth.
 					</p>
 				</div>
-				<h1 id="representing-characters-in-c">Representing Characters in <code>C</code></h1>
+				<h2 id="representing-characters-in-c">Representing Characters in <code>C</code></h2>
 				<p>I don't know about you, but I would hate if I had to look up the ASCII value for
 					each individual character to set a <code>char</code>.
 					Instead, I would much rather use some shorthand and let the compiler figure out
@@ -308,7 +308,7 @@
 					If you were to go through all the keys on your keyboard, you would find that
 					quotes make the most sense for text.
 				</p>
-				<h2 id="escape-characters">Escape Characters</h2>
+				<h3 id="escape-characters">Escape Characters</h3>
 				<p>Because there are several characters that you can't really type (like the
 					Backspace, newline, and carriage return), we should have some functionality that
 					allows us to say, "We want this character to be a newline."
@@ -336,7 +336,7 @@
 					<b>ANSI escape sequences</b> after I finish the <code>C</code> tutorial.
 					ANSI escape sequences are an advanced topic, so don't worry about them for now.
 				</p>
-				<h1 id="summary">Summary</h1>
+				<h2 id="summary">Summary</h2>
 				<p>In this article, we decided that we're going to represent text in <code>C</code> by using a
 					list of characters, and we will represent each character with a <code>char</code>, which is
 					a type that represents a byte of memory.
@@ -345,7 +345,7 @@
 					We're going to mark a string by somehow keeping track of where it starts and
 					storing a <code>NULL</code> character as the last character of the string.
 				</p>
-				<h1 id="whats-next">What's Next</h1>
+				<h2 id="whats-next">What's Next</h2>
 				<p>In representing text, we have two currently unsolved issues: how to keep track
 					of where a list starts and how to implement a list.
 					In the next article, we're going to take care of both of these issues by
@@ -369,7 +369,7 @@
 				</div>
 			</div>
 			<nav id="sidenav">
-				<a href="#representing-text-in-c" style="padding-left:12px;">Representing Text in C</a>
+				<a href="#representing-text-in-c" style="padding-left:0px;">Representing Text in C</a>
 				<a href="#defining-text" style="padding-left:24px;">Defining Text</a>
 				<a href="#how-to-map-bits-to-characters" style="padding-left:24px;">How to Map Bits to Characters</a>
 				<a href="#what-characters-do-we-want-to-represent" style="padding-left:36px;">What Characters Do We Want to Represent?</a>

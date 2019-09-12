@@ -49,7 +49,7 @@
 					In this article, we're going to discuss the most basic statements in <code>C</code>:
 					variables and basic arithmetic.
 				</p>
-				<h1 id="topics-covered">Topics Covered</h1>
+				<h2 id="topics-covered">Topics Covered</h2>
 				<ul>
 					<li><b>Variables</b>
 					</li>
@@ -60,7 +60,7 @@
 					<li><b>Operator Precedence:</b> How <code>C</code> handles operators and <code>()</code>
 					</li>
 				</ul>
-				<h2 id="value-manipulation">Value Manipulation</h2>
+				<h3 id="value-manipulation">Value Manipulation</h3>
 				<p>For <code>C</code> to be a programming language, you'll need to be able to write more than
 					comments.
 					While there are some complicated things you should be able to do in any
@@ -71,7 +71,7 @@
 					the basic operators in <code>C</code>, how to store the results in variables, and how to
 					use those results later on.
 				</p>
-				<h3 id="variables">Variables</h3>
+				<h4 id="variables">Variables</h4>
 				<p>Variables store values for later use.
 					To access a variable, we need some way of identifying it, so we'll need to give
 					it a name.
@@ -102,11 +102,14 @@
 <div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">;</span>
 </pre></div>
 				
-				<h4 id="naming-variables">Naming Variables</h4>
+				<h5 id="naming-variables">Naming Variables</h5>
 				<p>We can't use a semicolon, <code>/*</code>, <code>*/</code>, <code>//</code>, or a space since they're already
 					reserved.
 					For now, let's just say that we can use any letters or digits to name a
 					variable.
+					We also can't use any reserved symbols like <code>+-/*%</code> in our names or use any
+					reserved words, like <code>int</code>.
+					We can use something like <code>sum_of_ints</code>, we just can't use the name <code>int</code>.
 					Since we also might want spaces, we can use the underscore (<code>_</code>) to represent a
 					space.
 					Lastly, we don't want numbers at the beginning of variables, since someone could
@@ -132,7 +135,7 @@
 					</li>
 				</ul>
 				<div class="aside" >
-					<h4>Naming Conventions</h4>
+					<h5>Naming Conventions</h5>
 					<hr>
 					<p>In general, I use <b>snake_case</b> when I name my variables, meaning each word
 						is separated with underscores, like in the first three examples above.
@@ -161,7 +164,7 @@
 					variables or to recognize when I'm using it when I shouldn't is that the
 					variable stores a sum of squares.
 				</p>
-				<h3 id="arithmetic-operators">Arithmetic Operators</h3>
+				<h4 id="arithmetic-operators">Arithmetic Operators</h4>
 				<p>Since you're programming, you probably want to do some math operations like
 					addition, subtraction, etc., so let's just reserve the normal math symbols for
 					these basic operations right off the bat.
@@ -225,7 +228,7 @@
 				<p>Now that you can do some basic arithmetic in <code>C</code>, let's look into how to store
 					the results.
 				</p>
-				<h3 id="assignment-operators">Assignment Operators</h3>
+				<h4 id="assignment-operators">Assignment Operators</h4>
 				<p>First and foremost, <code>=</code> stores the value on the right in the variable on the
 					left.
 					Things that can be assigned in <code>C</code> are called <b>lvalues</b> (<b><i>l</i></b>eft
@@ -272,7 +275,7 @@
 </pre></div>
 				
 				<div class="aside" >
-					<h4>Just Because You Can Doesn't Mean You Should</h4>
+					<h5>Just Because You Can Doesn't Mean You Should</h5>
 					<hr>
 					<p>When you write code, you aren't just writing code for the computer, you're
 						writing code for everyone who reads your code, including yourself.
@@ -290,7 +293,7 @@
 						using it.
 					</p>
 				</div>
-				<h2 id="operator-precedence">Operator Precedence</h2>
+				<h3 id="operator-precedence">Operator Precedence</h3>
 				<p>Say that you have this code:
 				</p>
 <div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">17</span><span class="p">;</span>
@@ -328,7 +331,7 @@
 				<p>The less energy you have to spend on figuring out the result of an expression,
 					the better.
 				</p>
-				<h1 id="summary">Summary</h1>
+				<h2 id="summary">Summary</h2>
 				<p>Up to this point, we've established that we're going to give our compiler a file
 					with a series of statements without giving examples of these statements.
 					In this article, we've established what some statements will look like.
@@ -346,7 +349,7 @@
 <span class="n">other</span> <span class="n">statement</span><span class="p">;</span>
 </pre></div>
 				
-				<h1 id="whats-next">What's Next</h1>
+				<h2 id="whats-next">What's Next</h2>
 				<p>Before we go onto the next topic in <code>C</code>, we need to take a detour to explain
 					how computers handle memory, as we're going to introduce types that won't
 					appear to have any use cases unless you understand <a
@@ -384,7 +387,7 @@
 				</div>
 			</div>
 			<nav id="sidenav">
-				<a href="#variables-and-basic-arithmetic" style="padding-left:12px;">Variables and Basic Arithmetic</a>
+				<a href="#variables-and-basic-arithmetic" style="padding-left:0px;">Variables and Basic Arithmetic</a>
 				<a href="#topics-covered" style="padding-left:24px;">Topics Covered</a>
 				<a href="#value-manipulation" style="padding-left:36px;">Value Manipulation</a>
 				<a href="#variables" style="padding-left:48px;">Variables</a>

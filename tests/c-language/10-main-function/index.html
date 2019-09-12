@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>The main Function in C</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="the-main-function-in-c">The main Function in C</h1></div>
+				<div id="meta-description">As you can guess, the main function is quite an important function in C.</div>
+				<div id="date-and-tags">Posted 10 September 2019 at 11:16 AM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>This is the eleventh article in the </i>Making Sense of C<i> series.
+					In this article, we're going to come up with some way of telling the computer
+					where to start executing commands and some way of getting user input somewhere
+					into your program.</i>
+				</p>
+				<p>In the last article, we established both the syntax of defining and calling
+					functions in <code>C</code>, but we need some way of getting user input from the command
+					line and we need some way of telling the computer which function to start from.
+					In this article, we'll establish the <code>main</code> function, which serves as an entry
+					point in <code>C</code> and we'll write the basics of our first program.
+				</p>
+				<div class="aside" >
+					<h5>Minor Detours</h5>
+					<hr>
+					<p>Since I want us to get the first program written soon, I'm going to gloss over a
+						few things for now, such as the distinction between the stack and the heap, how
+						your computer actually allocates variables, dynamic memory allocation, etc.
+						These topics are important for understanding how to program well in <code>C</code>, but
+						they aren't strictly necessary for the first program.
+						Anything more complicated than a simple program will require you to understand
+						these topics.
+					</p>
+				</div>
+				<h2 id="entry-point">Entry Point</h2>
+				<p>There are several possible ways to tell the computer the first statement to
+					execute.
+					Generally, interpreted languages start with the top of source code file, read
+					through it, and execute each line from top to bottom.
+					For example, an oversimplified <code>python</code> file would look like
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Alphabet&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Soup&quot;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>and the <code>python</code> interpreter would start at the top, see <code>print("Alphabet")</code>,
+					print <code>Alphabet</code> to the terminal, see <code>print("Soup")</code>, print <code>Soup</code> to the
+					terminal, then exit the program.
+					You would execute the program using
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ python3 basic.py</span>
+</pre>
+				</div>
+				<p>where <code>basic.py</code> is the name of the file.
+				</p>
+				<p>Just reading the code from top to bottom won't work in <code>C</code> since <code>C</code> is a
+					compiled language with multiple compilation units (source files), which I'll
+					explain later.
+					Instead, we need to use some label to tell the computer that you want it to
+					start with a specific block of code.
+				</p>
+				<h2 id="the-main-function">The <code>main</code> Function</h2>
+				<p>In <code>C</code>, we use the <code>main</code> function to start the program and it has two possible
+					ways of writing it.
+					If you don't want to take in any user input on the command line, you can use
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Do stuff</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>On the other hand, if you want to take in user input on the command line, you
+					can use
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Do stuff</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<div class="aside" >
+					<h5>Variations on Entry Points in <code>C</code></h5>
+					<hr>
+					<p>For now, we're working on <code>C</code> on its own and not part of a framework.
+						Furthermore, we aren't taking in any environment variables.
+						In either of these cases, the entry point in <code>C</code> can be different.
+						For example, both POSIX (Linux and Mac) and Windows support a third way of
+						writing <code>main</code>:
+					</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">envp</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Do stuff</span>
+<span class="p">}</span>
+</pre></div>
+					
+					<p>where the last argument is a list of all the environment variables.
+						Environment variables contain things like your current directory, <a
+						href="https://tuacm.com/blog/posix/commands/" title="How to Make a Command in
+						Linux or Mac">where all your command line executables are</a>.
+					</p>
+					<p>Furthermore, other programs may use a different name for the entry point, such
+						as <code>WinMain</code> for some Windows programs.
+					</p>
+					<p>Once again, we are just going to use the standard <code>main</code> function since we're
+						writing freestanding <code>C</code> programs.
+					</p>
+				</div>
+				<p>Let's break these functions apart, starting with the easiest to explain: <code>main</code>.
+				</p>
+				<h3 id="why-main">Why <code>main</code>?</h3>
+				<p>Since we need a name for our entry point function, we have to choose a name that
+					makes sense.
+					The shortest word we can use to indicate that the function is the center of our
+					program is <code>main</code>.
+					We could have made it <code>start</code> or <code>begin</code> or something else, but we decided to
+					stick with <code>main</code>.
+				</p>
+				<h3 id="why-return-an-int">Why Return an <code>int</code>?</h3>
+				<p>Let's say that you need a file to exist or else your program cannot run.
+					For example, let's say that you provide the name of a file that doesn't exist to
+					our program to count words.
+					We can't count words in files that do not exist, so what should we do?
+					In our case, we can print out an error saying <code>"Error: File does not exist!"</code>
+					and the user can figure out what to do from there, but what happens if we have a
+					program whose output cannot be read by a user, such as a server that needs to
+					run automatically or an embedded system that doesn't have a screen?
+					If we knew the error, we could write some more code that handles it for us.
+					For example, if the file does not exist, then might run a different program to
+					figure out why the file doesn't exist.
+					We need some way of telling the other program that the file did not exist.
+				</p>
+				<p>The simplest way to do so is to return an <code>int</code> with some value that indicates
+					either that everything went smoothly or what went wrong.
+					For example, let's say that <code>main</code> will return a <code>0</code> if nothing went wrong and a
+					<code>1</code> if our file was missing.
+					If we have other errors, we can use other numbers.
+					For example, if someone gives us a value that we cannot use as one of our
+					inputs, let's return <code>2</code>.
+					Eventually, we'll get to some standard error codes in <code>errno.h</code>, but don't worry
+					about it for now.
+					In our case, we just need to put <code>return 0;</code> at the end of the <code>main</code> function,
+					since we're not going to use them that often.
+				</p>
+				<p>In short, the value returned from <code>main</code> tells the computer how the program
+					ended.
+				</p>
+				<h3 id="what-is-argc">What is <code>argc</code>?</h3>
+				<p>When you execute a command on the command line, it generally looks like
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ command first_argument second_argument third_argument</span>
+</pre>
+				</div>
+				<p>Without going into too much depth on the syntax of the command line, <code>argc</code> is
+					the number of words you type in, where each word is separated by whitespace.
+					If we were to type in the command <code>command a b c d</code>, <code>argc</code> would be <code>5</code>.
+					If we were to type in the command <code>command</code>, <code>argc</code> would be <code>1</code>.
+				</p>
+				<p>For our first program, we just need to make sure that our users have given us
+					the program name, the file the user wants to read, and the word that the user
+					wants to check, so we need to make sure that we have at least three arguments.
+					If we don't have at least three arguments, we should just exit the program and
+					print out something like a usage message.
+					Since we now have something our program needs to do, we can start writing our
+					<code>main</code> function.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// TODO: Print usage message</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// TODO: Count the number of words</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>We still don't have the functionality to print out the usage message and we
+					haven't written the code to count the number of words, but we'll get there.
+				</p>
+				<h3 id="what-even-is-a-char-">What Even is a <code>char **</code>?</h3>
+				<p>As you know, we're using a <code>char *</code> to represent strings, so what is a <code>char
+					**</code>?
+				</p>
+				<p>When we represent lists, we generally allocate a contiguous block of memory and
+					return the memory address of the first element of the block of memory.
+					For example, we represent a string as a list of characters, so we use the syntax
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">char</span> <span class="n">string</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;This is an example.&quot;</span><span class="p">;</span>
+</pre></div>
+				
+				<p>Immediately after allocating the memory, though, <code>string</code> is a <code>char *</code> that
+					holds the memory address of the first character.
+					We access each individual character using the syntax <code>string[offset]</code>, which is
+					a shorter version of <code>*(string + offset)</code>.
+					Likewise, we said that if we wanted a list of numbers, we could use the syntax
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">list_of_integers</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">44</span> <span class="p">};</span>
+</pre></div>
+				
+				<p>Immediately after allocating the memory, though, <code>list_of_integers</code> is a pointer
+					that holds the memory address of the first number.
+					We access each individual number using <code>list_of_integers[offset]</code>, which is a
+					shorter version of <code>*(list_of_integers + offset)</code>.
+				</p>
+				<p>So what if we want a list of strings?
+					Well, the general syntax for declaring a list of anything is <code>type
+					array_name[count];</code> and the type of a string is a <code>char *</code>, so we can declare a
+					list of strings using the syntax.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">char</span> <span class="o">*</span> <span class="n">list_of_strings</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;First string&quot;</span><span class="p">,</span> <span class="s">&quot;Second String&quot;</span><span class="p">,</span> <span class="s">&quot;Third String&quot;</span> <span class="p">};</span>
+</pre></div>
+				
+				<p>But remember that after you declare an array using <code>type array_name[count];</code>,
+					the variable <code>array_name</code> will be <code>type *</code>.
+					So if you were to declare an array of <code>char *</code>, the type of the array variable
+					would be <code>char **</code>.
+				</p>
+				<p>In short, <code>argv</code> is a <code>char **</code> because it is an array of strings, specifically
+					each word on the command line.
+					For example, if you were to type
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ command first_argument second_argument third_argument</span>
+</pre>
+				</div>
+				<p><code>argv</code> would contain <code> { "command", "first_argument", "second_argument",
+					"third_argument" } </code>.
+					You can then use it like a normal array, where <code>argv[0]</code> would be <code>"command"</code>,
+					<code>argv[1]</code> would be <code>"first_argument"</code>, etc.
+					In general, <code>argv[0]</code> in <code>main</code> is the name of the executable.
+				</p>
+				<h2 id="the-main-function-in-our-program">The <code>main</code> Function in Our Program</h2>
+				<p>As we've discussed earlier, we've already come up with something to check to
+					make sure that we have enough arguments, but we also need some standard way to
+					read the arguments.
+					In our case, let's make the first argument the file and the second argument the
+					word we want to count.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// TODO: Print Usage Message</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="c1">// TODO: Count number of occurrences in a file</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>All we did is give names to the arguments given to the function, but now we've
+					taken care of everything related to the main function and now we can write
+					functions for the usage message and counting the number of occurrences in a file
+					and we're done.
+				</p>
+				<h2 id="summary">Summary</h2>
+				<p>In this article, we learned about the <code>main</code> function, which allows us to get
+					user input on the command line and serves as the entry point in the program.
+				</p>
+				<h2 id="whats-next">What's Next</h2>
+				<p>Here's our complete To Do List with everything we've completed up to this point:
+				</p>
+				<ul>
+					<li><del style="color: #DC143C"><span style="color: black">determined that we're going to give the compiler a file with a bunch of statements ending in semicolons</span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">established that we can use comments with <code>//</code> for single line comments and <code>/*</code> and <code>*/</code> for multiline comments</span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">reserved the symbols <code>+-*/%</code> for arithmetic</span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">set up variables <code>[type] [variable] = [expression]</code> which will allow us to store values for later use</span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">come up with the integral types (<code>char</code>, <code>short</code>, <code>int</code>, and <code>long long</code>) and the floating point types (<code>float</code> and <code>double</code>)</span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">figured out a way to represent characters using the <code>char</code> type and invented the <code>'\0'</code> character, which indicates that we're ending a string</span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">decided to use single quotes around a character to represent the ASCII value for that <code>char</code></span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">explained how the program uses memory addresses to identify variables</span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">came up with a way to access the memory address of a variable using the <b> address of</b> operator (<code>&amp;</code>)</span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">came up with a way to access the value stored at a memory address using the <b>dereference</b> operator (<code>*</code>)</span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">created <b>pointer</b> variables to allow us to store memory addresses using the syntax <code>type * variable_name;</code></span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">came up with a way to tell the computer to get us a block of memory (a.k.a.  an <b>array</b> or <b>buffer</b>) using the syntax <code>type array[num_elements];</code></span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">came up with a way to initialize an array with an <b>initializer list</b></span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">came up with a way to initialize a <code>char</code> array using double quotes (<code>"Hello!"</code>)</span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">came up with a way to access elements of an array using the syntax <code>variable_name[offset]</code></span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">added the ability to use conditional branches through <code>if else</code> statements</span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">added the ability to use loop through something with <code>for</code> and <code>while</code></span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">set up the basic syntax for functions in <code>C</code></span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">introduced the <code>void</code> type and two ways to use it</span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">established the <code>main</code> function as the entry point of our program and the way for us to take in command line arguments</span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">written a function to check if two strings differ</span></del>,
+					</li>
+					<li><del style="color: #DC143C"><span style="color: black">laid the foundations for our <code>main</code> function</span></del>,
+					</li>
+					<li>set up and use a compiler,
+					</li>
+					<li>familiarize ourselves with an IDE/text editor,
+					</li>
+					<li>figure out a way to print something out to the terminal,
+					</li>
+					<li>and figure out a way to read from a file.
+					</li>
+				</ul>
+				<p>As you can see, we've covered quite a lot of ground.
+					We can now write complete programs that can mess with user input, but we
+					currently have no way for us to see the output of any of our programs.
+					We can't print our output to the terminal and we can't save our output to a
+					file, so we'll need to implement those features soon.
+					More importantly, we still can't compile our code, so it's just a useless text
+					file sitting on our hard drive.
+				</p>
+				<p>In the next article, <a href="../11-c-compilers-and-ides">Compilers and IDEs for
+					C</a>, we're going to explain what IDE is, how they work, and a few features of
+					the big ones relevant for compiling <code>C</code> programs.
+					Don't worry about needing to know about all of them
+				</p>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#the-main-function-in-c" style="padding-left:0px;">The main Function in C</a>
+				<a href="#entry-point" style="padding-left:24px;">Entry Point</a>
+				<a href="#the-main-function" style="padding-left:24px;">The <code>main</code> Function</a>
+				<a href="#why-main" style="padding-left:36px;">Why <code>main</code>?</a>
+				<a href="#why-return-an-int" style="padding-left:36px;">Why Return an <code>int</code>?</a>
+				<a href="#what-is-argc" style="padding-left:36px;">What is <code>argc</code>?</a>
+				<a href="#what-even-is-a-char-" style="padding-left:36px;">What Even is a <code>char **</code>?</a>
+				<a href="#the-main-function-in-our-program" style="padding-left:24px;">The <code>main</code> Function in Our Program</a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
+				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+			<div id="copyright" class="mt-4">
+				&copy; 2019 TUACM &sdot; <a href="">LICENSE</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>

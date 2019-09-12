@@ -1,7 +1,7 @@
 article
 Title:		Control Flow in C
 Author:		Joseph Mellor
-Tagline:	We're finally going to do something cool.
+Tagline:	We still need some way of changing the behavior of the program based on the user input.
 Code Style:	trac+dark
 Import:		aside code-block
 Scripts:	highlight-internal-link
