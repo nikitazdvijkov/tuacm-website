@@ -500,6 +500,39 @@ In other words, if you use data once, it will be in the high speed memory until
 something else replaces it, meaning you will pay no speed penalty if you use the
 data soon after.
 
+As a real world example, let's say we have an AI that will find text and faces
+in a set of images.
+Furthermore, let's say we have a hundred images to check and we can only fit one
+4&nbsp;KB image in the L1 cache at a time.
+
+If we were to write this code:
+
+\{{code-block python no-line-numbers}}
+
+for image in images:
+    find_text(image)
+
+for image in images:
+    find_faces(image)
+
+\{{\code-block}}
+
+we would end up loading each image once for each for loop, meaning we load an
+image into the cache 200 times.
+On the other hand, if we were to write this code:
+
+\{{code-block python no-line-numbers}}
+
+for image in images:
+    find_text(image)
+    find_faces(image)
+
+\{{\code-block}}
+
+when we run {find_faces}, we still have the image in the cache from when we
+accessed the image in {find_text}, meaning we would only load an image into the
+cache 100 times.
+
 ### Spatial Locality
 
 When the professor first started with her labeling scheme, she originally didn't
@@ -545,6 +578,25 @@ Instead, it would put the entire box into the backpack regardless of whether the
 professor needed everything in the box.
 Knowing this fact, you should make sure that you fill your boxes with exactly
 what you need.
+
+As a real world example, let's say that you're programming 2D video game and you
+want to find out if two objects are colliding.
+For example, if a character is colliding with a wall, he, she, or it should stop
+moving.
+If a character collides with an enemy projectile, the character should take
+damage.
+To tell if two objects are colliding, all you need to know is where the
+collision area or hitbox of the objects are in relation to each other.
+While you could store the hitbox within the object it represents (such as a
+player or a projectile) alongside other data like health, stamina, inventory,
+etc., the hitbox is only relevant to collision detection.
+Instead, you can store all the hitboxes together.
+Since a 2D hitbox only contains four numbers for the left, right, top, and
+bottom sides of the box and each number can be stored in four bytes, you can
+store sixteen hitboxes in a single 64 byte cache line.
+If you were to store the hitbox within the collision objects, you would end up
+having to load way more memory since all the hitboxes are in different cache
+lines.
 
 ### Finite Amount of Memory
 
@@ -594,7 +646,7 @@ For example, the entire human genome needs about 3 GB of memory to store all the
 base pairs (technically less, but whatever), meaning you could load the entire
 human genome into memory and still not even run out of RAM.
 The only practical way to run out of swap is to have way more programs running
-at the same time as your computer.
+at the same time as your computer or twenty tabs of Google Chrome.
 
 In terms of the professor, running out of swap means she's hoarding and needs an
 intervention.

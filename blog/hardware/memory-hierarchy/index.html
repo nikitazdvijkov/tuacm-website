@@ -502,6 +502,33 @@
 					something else replaces it, meaning you will pay no speed penalty if you use the
 					data soon after.
 				</p>
+				<p>As a real world example, let's say we have an AI that will find text and faces
+					in a set of images.
+					Furthermore, let's say we have a hundred images to check and we can only fit one
+					4&nbsp;KB image in the L1 cache at a time.
+				</p>
+				<p>If we were to write this code:
+				</p>
+<div class="code-block"><pre><span></span><span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+    <span class="n">find_text</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+    <span class="n">find_faces</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+				
+				<p>we would end up loading each image once for each for loop, meaning we load an
+					image into the cache 200 times.
+					On the other hand, if we were to write this code:
+				</p>
+<div class="code-block"><pre><span></span><span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+    <span class="n">find_text</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">find_faces</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+				
+				<p>when we run <code>find_faces</code>, we still have the image in the cache from when we
+					accessed the image in <code>find_text</code>, meaning we would only load an image into the
+					cache 100 times.
+				</p>
 				<h4 id="spatial-locality">Spatial Locality</h4>
 				<p>When the professor first started with her labeling scheme, she originally didn't
 					organize her office at all.
@@ -547,6 +574,25 @@
 					Knowing this fact, you should make sure that you fill your boxes with exactly
 					what you need.
 				</p>
+				<p>As a real world example, let's say that you're programming 2D video game and you
+					want to find out if two objects are colliding.
+					For example, if a character is colliding with a wall, he, she, or it should stop
+					moving.
+					If a character collides with an enemy projectile, the character should take
+					damage.
+					To tell if two objects are colliding, all you need to know is where the
+					collision area or hitbox of the objects are in relation to each other.
+					While you could store the hitbox within the object it represents (such as a
+					player or a projectile) alongside other data like health, stamina, inventory,
+					etc., the hitbox is only relevant to collision detection.
+					Instead, you can store all the hitboxes together.
+					Since a 2D hitbox only contains four numbers for the left, right, top, and
+					bottom sides of the box and each number can be stored in four bytes, you can
+					store sixteen hitboxes in a single 64 byte cache line.
+					If you were to store the hitbox within the collision objects, you would end up
+					having to load way more memory since all the hitboxes are in different cache
+					lines.
+				</p>
 				<h4 id="finite-amount-of-memory">Finite Amount of Memory</h4>
 				<p>For the professor, she should try to fill the box with smaller objects like
 					thinner binders and excerpts from the textbook.
@@ -591,7 +637,7 @@
 					base pairs (technically less, but whatever), meaning you could load the entire
 					human genome into memory and still not even run out of RAM.
 					The only practical way to run out of swap is to have way more programs running
-					at the same time as your computer.
+					at the same time as your computer or twenty tabs of Google Chrome.
 				</p>
 				<p>In terms of the professor, running out of swap means she's hoarding and needs an
 					intervention.
@@ -680,7 +726,7 @@
 				</div>
 			</div>
 			<nav id="sidenav">
-				<a href="#the-memory-hierarchy" style="padding-left:0px;">The Memory Hierarchy</a>
+				<a href="#the-memory-hierarchy" style="padding-left:12px;">The Memory Hierarchy</a>
 				<a href="#the-allegory-of-the-professor" style="padding-left:24px;">The Allegory of the Professor</a>
 				<a href="#the-professor-arrives" style="padding-left:36px;">The Professor Arrives</a>
 				<a href="#the-first-day-of-class" style="padding-left:36px;">The First Day of Class</a>
