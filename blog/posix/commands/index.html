@@ -85,7 +85,7 @@
 					you ran <code>git clone https://github.com/TheLandfill/minit</code> while in the directory
 					<code>~/dev</code>.
 				</p>
-				<h1 id="what-is-a-command">What is a Command?</h1>
+				<h2 id="what-is-a-command">What is a Command?</h2>
 				<p>As with most topics involving computers, there is a distinction between what a
 					command is to the user and what a command is to the computer.
 				</p>
@@ -93,7 +93,7 @@
 					to interact with the computer</b>.
 				</p>
 				<div class="aside" >
-					<h4>Why Use a Terminal?</h4>
+					<h5>Why Use a Terminal?</h5>
 					<hr>
 					<p>Before computers were powerful enough to use Graphical User Interfaces (GUI),
 						which you would recognize as your desktop where you click icons to run programs
@@ -147,7 +147,7 @@
 					more detail about the specifics.
 				</p>
 				<div class="aside" >
-					<h4>Quick Note on Aliases</h4>
+					<h5>Quick Note on Aliases</h5>
 					<hr>
 					<p>You can make an alias out of almost anything you could type on the command line,
 						but aliases have severe limits on what they can do.
@@ -186,7 +186,7 @@ cd is a shell builtin
 </pre>
 				</div>
 				<div class="aside" >
-					<h4>Why is <code>cd</code> a Function?</h4>
+					<h5>Why is <code>cd</code> a Function?</h5>
 					<hr>
 					<p>I had to write a function that modified the behavior of <code>cd</code> slightly so that my
 						prompt <a href="https://unix.stackexchange.com/a/217097" title="This Stack
@@ -230,7 +230,7 @@ cd is a shell builtin
 					<code>PATH</code> contains plain text, which means altering it will require us to replace
 					the old text with the new text.
 				</p>
-				<h2 id="making-an-executable">Making an Executable</h2>
+				<h3 id="making-an-executable">Making an Executable</h3>
 				<p>Before you can run an executable, you have to tell the system which users can
 					run it by using the <code>chmod</code> command.
 					The <code>chmod</code> command allows you to set who can read, write, and execute a file.
@@ -243,7 +243,7 @@ cd is a shell builtin
 					chmod (which you can see by typing <code>man chmod</code> in the terminal) contain more
 					information about the <code>chmod</code> command.
 				</p>
-				<h2 id="absolute-vs-relative-paths">Absolute vs. Relative Paths</h2>
+				<h3 id="absolute-vs-relative-paths">Absolute vs. Relative Paths</h3>
 				<p>An absolute filepath starts from either your root directory, <code>/</code>, or your home
 					directory, <code>~/</code>.
 					The <code>~/</code> is shorthand for <code>/home/[username]</code>, where <code>[username]</code> is the username
@@ -260,7 +260,7 @@ cd is a shell builtin
 					<code>minit</code> needs to create new directories from your current location, so it uses
 					relative paths.
 				</p>
-				<h1 id="making-a-command">Making a Command</h1>
+				<h2 id="making-a-command">Making a Command</h2>
 				<p>Since any executable must be in one of the directories specified in <code>PATH</code>, we
 					now have two ways to turn an executable into a command.
 				</p>
@@ -295,7 +295,7 @@ cd is a shell builtin
 					<li>work on most, if not all, standard Linux distros and most modern Mac computers.
 					</li>
 				</ul>
-				<h2 id="adding-a-directory-to-the-path-variable">Adding a Directory to the <code>PATH</code> Variable</h2>
+				<h3 id="adding-a-directory-to-the-path-variable">Adding a Directory to the <code>PATH</code> Variable</h3>
 				<div class="aside" style="border-width: 8px; border-radius: 12px;">
 					<h3 style="color: red; text-align: center">WARNING</h3><hr>
 					<p>Before you interact with anything related to the operating system or anything
@@ -341,7 +341,7 @@ cd is a shell builtin
 					Once again, <b style="color: #FF0000">DO NOT MODIFY IMPORTANT SYSTEM FILES OR
 					VARIABLES WITHOUT MAKING SOME SORT OF A BACKUP</b>.
 				</p>
-				<h3 id="multiple-executables-in-a-directory">Multiple Executables in a Directory</h3>
+				<h4 id="multiple-executables-in-a-directory">Multiple Executables in a Directory</h4>
 				<p>We wanted to create the <code>minit</code> command, but now every executable is a command.
 					Some of these commands will not work, but could still lead to some unwanted
 					behavior.
@@ -350,7 +350,7 @@ cd is a shell builtin
 					dangerous code.
 				</p>
 				<div class="aside" >
-					<h4>Almost a Tragedy</h4>
+					<h5>Almost a Tragedy</h5>
 					<hr>
 					<p>I ran <code>Makefile</code> to see what would happen, and it interpreted as a bash script.
 						Unfortunately for me, it had one interpretable bash command in it: <code>rm -rf
@@ -389,7 +389,7 @@ cd is a shell builtin
 					program, which means the debug command will also be a command unless I
 					rearrange the build system around it.
 				</p>
-				<h3 id="more-directories-means-more-to-search">More Directories Means More to Search</h3>
+				<h4 id="more-directories-means-more-to-search">More Directories Means More to Search</h4>
 				<p>This issue isn't as big a deal as having more executables than you wanted, but
 					it's still a potential issue.
 					When you type in a command to the terminal, the computer will look through all
@@ -420,7 +420,7 @@ cd is a shell builtin
 					specific directory you added and removing it, then using the method above in the
 					WARNING aside to remove it from the current <code>PATH</code> variable.
 				</p>
-				<h3 id="name-clash">Name Clash</h3>
+				<h4 id="name-clash">Name Clash</h4>
 				<p>You saw earlier that <code>type -a</code> listed the function I wrote for <code>cd</code> before the
 					builtin <code>cd</code>, but let's do a little experiment.
 					We're going to create two empty executables in two different directories
@@ -478,14 +478,14 @@ hello-world is /usr/local/games/hello-world
 					end up running a different <code>install.sh</code>, which, like the <code>Makefile</code> command
 					earlier, could harm your computer.
 				</p>
-				<h3 id="extensions-on-names">Extensions on Names</h3>
+				<h4 id="extensions-on-names">Extensions on Names</h4>
 				<p>Commands with extensions (<code>.sh</code>, <code>.py</code>, etc.) will keep their extensions if you
 					make them commands using this method.
 					While you could remove the extension, you shouldn't.
 					You can no longer search for the script based on its extension and you would
 					have to open the file to determine the language of script.
 				</p>
-				<h2 id="moving-or-copying-the-executable-into-one-of-the-directories-in-path">Moving or Copying the Executable into One of the Directories in <code>PATH</code></h2>
+				<h3 id="moving-or-copying-the-executable-into-one-of-the-directories-in-path">Moving or Copying the Executable into One of the Directories in <code>PATH</code></h3>
 				<p>Either <code>cp</code> or <code>mv</code> will work.
 					Since they have the same exact syntax, I'll use <code>cp</code>.
 					If you've run <code>./install.sh tutorial</code>, then the script should still work.
@@ -515,7 +515,7 @@ hello-world is /usr/local/games/hello-world
 					<li>Accidental Overwrite
 					</li>
 				</ul>
-				<h3 id="scattered-build-system">Scattered Build System</h3>
+				<h4 id="scattered-build-system">Scattered Build System</h4>
 				<p>You could restructure your build system to have the executable in one of the
 					<code>PATH</code> directories, but then you have a major organizational problem.
 					Your code is now spread into multiple directories.
@@ -529,7 +529,7 @@ hello-world is /usr/local/games/hello-world
 					href="https://medium.com/existek/what-is-technical-debt-and-how-to-calculate-it-80193e4e746d">technical
 					debt</a>, which can kill your project if you don't pay it off.
 				</p>
-				<h3 id="manual-updates">Manual Updates</h3>
+				<h4 id="manual-updates">Manual Updates</h4>
 				<p>If you decide to keep the executable as part of a separate project, then you
 					will have to recopy or replace the executable whenever or someone else updates
 					the code.
@@ -542,16 +542,16 @@ hello-world is /usr/local/games/hello-world
 					name clashes, and <code>PATH</code> doesn't fill up with a bunch of minor directories.
 					You still have to manually update the executable in <code>PATH</code>.
 				</p>
-				<h3 id="duplicate-files">Duplicate Files</h3>
+				<h4 id="duplicate-files">Duplicate Files</h4>
 				<p>If you decide to copy the file into <code>PATH</code>, you'll end up wasting memory, but
 					you will be able to rename your command to whatever you want.
 				</p>
-				<h3 id="accidental-overwrite">Accidental Overwrite</h3>
+				<h4 id="accidental-overwrite">Accidental Overwrite</h4>
 				<p>If you're not careful, you could end up overwriting a file that already exists.
 					Before making a command, running <code>type</code> on the command will make sure it doesn't
 					exist.
 				</p>
-				<h1 id="a-better-way">A Better Way?</h1>
+				<h2 id="a-better-way">A Better Way?</h2>
 				<p>As you can see, none of the methods above will satisfy all the criteria I
 					suggested.
 					Unfortunately, there is no way to make an executable a command unless the
@@ -574,7 +574,7 @@ hello-world is /usr/local/games/hello-world
 					<li>Making <code>minit</code> shouldn't rely on anything unique to a specific Linux distro or Mac version.
 					</li>
 				</ul>
-				<h2 id="symlinks">Symlinks</h2>
+				<h3 id="symlinks">Symlinks</h3>
 				<p>Most operating systems (including Linux, Mac, and Windows) have a built in
 					filetype that will allow us to satisfy all the criteria for a command, which is
 					known as a <a href="https://kb.iu.edu/d/abbe">symbolic link</a> or "symlink" for
@@ -608,7 +608,7 @@ hello-world is /usr/local/games/hello-world
 					If you did, you would treat it like I have treated <code>/usr/local/bin/</code>, where you
 					store the symlinks in your personal command directory.
 				</p>
-				<h1 id="what-if-i-dont-need-an-entire-executable">What if I Don't Need an Entire Executable?</h1>
+				<h2 id="what-if-i-dont-need-an-entire-executable">What if I Don't Need an Entire Executable?</h2>
 				<p>Often, you won't need an entire executable for a simple command.
 					I generally use the command line text editor <code>vim</code>, and, while I do like it, it
 					has some weird quirks compared to modern text editors.
@@ -637,7 +637,7 @@ hello-world is /usr/local/games/hello-world
 				<p>You can also use a function by writing a function in bash and putting it in one
 					of the scripts that run when you login or create a new terminal.
 				</p>
-				<h1 id="what-about-package-managers-like-apt-for-ubuntu-and-brew-for-mac">What About Package Managers Like <code>apt</code> for Ubuntu and <code>brew</code> for Mac?</h1>
+				<h2 id="what-about-package-managers-like-apt-for-ubuntu-and-brew-for-mac">What About Package Managers Like <code>apt</code> for Ubuntu and <code>brew</code> for Mac?</h2>
 				<p>In this tutorial, I haven't actually told you how to distribute executables.
 					For <code>minit</code>, I just used a github repository from which you could download the
 					necessary executables and files because it's just a few short scripts.
@@ -687,7 +687,7 @@ hello-world is /usr/local/games/hello-world
 					For any other package manager, you'll have to look up how to add a package to
 					the specific package manager.
 				</p>
-				<h1 id="summary">Summary</h1>
+				<h2 id="summary">Summary</h2>
 				<ul>
 					<li>Linux and Mac commands are generally executables in one of the directories
 						defined in <code>PATH</code>, aliases, or shell builtins.
@@ -730,7 +730,7 @@ hello-world is /usr/local/games/hello-world
 				</div>
 			</div>
 			<nav id="sidenav">
-				<a href="#how-to-make-a-command-on-linux-or-mac" style="padding-left:12px;">How to Make a Command on Linux or Mac</a>
+				<a href="#how-to-make-a-command-on-linux-or-mac" style="padding-left:0px;">How to Make a Command on Linux or Mac</a>
 				<a href="#what-is-a-command" style="padding-left:24px;">What is a Command?</a>
 				<a href="#making-an-executable" style="padding-left:36px;">Making an Executable</a>
 				<a href="#absolute-vs-relative-paths" style="padding-left:36px;">Absolute vs. Relative Paths</a>
@@ -759,9 +759,6 @@ hello-world is /usr/local/games/hello-world
 				<a href="#">Get Involved</a>
 				<a href="http://hacktulsa.com">Hackathon</a>
 				<a href="#">GitHub</a>
-			</div>
-			<div id="copyright" class="mt-4">
-				&copy; 2019 TUACM &sdot; <a href="">LICENSE</a>
 			</div>
 		</div>
 		<script src="https://tuacm.com/js/sidenav.js"></script>

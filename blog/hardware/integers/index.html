@@ -60,7 +60,7 @@
 					binary.
 					</i>
 				</p>
-				<h1 id="topics-covered">Topics Covered</h1>
+				<h2 id="topics-covered">Topics Covered</h2>
 				<ul>
 					<li><b>Using a Limited Number of Digits</b>
 					</li>
@@ -71,7 +71,7 @@
 					<li><b>Overflow</b>
 					</li>
 				</ul>
-				<h2 id="limited-number-of-digits">Limited Number of Digits</h2>
+				<h3 id="limited-number-of-digits">Limited Number of Digits</h3>
 				<p>I'm going to describe a scenario that's weird to humans but that your computer
 					actually has to do all the time.
 				</p>
@@ -109,7 +109,7 @@
 					For example, if we have a type one byte long, then that type can only represent
 					<i>2<sup>8</sup>=256</i> different values.
 				</p>
-				<h2 id="signed-vs-unsigned">Signed vs Unsigned</h2>
+				<h3 id="signed-vs-unsigned">Signed vs Unsigned</h3>
 				<p>We have to make a distinction between signed and unsigned integers before we go
 					any further.
 					<b>Signed integers</b> can represent <b>zero, positive numbers, and negative
@@ -128,7 +128,7 @@
 					We'll let <code>int</code> represent signed integers and <code>unsigned int</code> represent unsigned
 					integers.
 				</p>
-				<h2 id="binary-representation">Binary Representation</h2>
+				<h3 id="binary-representation">Binary Representation</h3>
 				<p>As you already know, computers don't understand anything except <code>on</code> and <code>off</code>,
 					which we generally abbrieviate with <code>1</code> and <code>0</code>.
 					For us to represent something any numeric types, we have to work with this
@@ -163,7 +163,7 @@
 					<li>Determining if <code>a &gt; b</code> should be quick.
 					</li>
 				</ol>
-				<h3 id="unsigned-types">Unsigned Types</h3>
+				<h4 id="unsigned-types">Unsigned Types</h4>
 				<p>Since we have 256 possible numbers and we want to represent all the positive
 					numbers we can and zero, we can just let the binary representation of a number
 					be the number in base two and the resulting binary representations will satisfy
@@ -178,7 +178,7 @@
 				<p>Since the algorithms for arithmetic in binary are just like the algorithms in
 					base ten, we can just use the normal algorithms for arithmetic.
 				</p>
-				<h3 id="overflow">Overflow</h3>
+				<h4 id="overflow">Overflow</h4>
 				<p>Since we can represent all the numbers from <code>0</code> to <code>255</code>, we should be able to
 					represent the result of any arithmetic operation so long as the result is
 					between <code>0</code> and <code>255</code>.
@@ -243,7 +243,7 @@
 					the lowest number we can represent, you'll loop back around to the highest
 					number we can represent</b>.
 				</p>
-				<h3 id="signed-types">Signed Types</h3>
+				<h4 id="signed-types">Signed Types</h4>
 				<p>With signed Types, we also need to satisfy a few other constraints, such as:
 				</p>
 				<ul>
@@ -256,7 +256,7 @@
 					<li>Determining if a number is negative or positive should be quick.
 					</li>
 				</ul>
-				<h4 id="what-numbers-will-we-represent">What Numbers Will We Represent?</h4>
+				<h5 id="what-numbers-will-we-represent">What Numbers Will We Represent?</h5>
 				<p>Before we can come up with a representation for something, we need to establish
 					what we're representing.
 					In our case, we need to figure out what numbers we want to represent.
@@ -285,7 +285,7 @@
 					We'll determine the last number we want to represent when we figure out how
 					we're going to represent our numbers.
 				</p>
-				<h4 id="choosing-an-efficient-representation">Choosing an Efficient Representation</h4>
+				<h5 id="choosing-an-efficient-representation">Choosing an Efficient Representation</h5>
 				<p>As I showed earlier when I asked you to multiply two numbers in Roman numerals,
 					choosing a good representation for numbers will help you do math quickly and
 					effectively.
@@ -300,7 +300,7 @@
 					While representing something like <code>81</code> as <code>0101 0001</code> is all fine and good, how
 					do we represent <code>-81</code>?
 				</p>
-				<h4 id="taking-the-negative">Taking the Negative</h4>
+				<h5 id="taking-the-negative">Taking the Negative</h5>
 				<p>Remember, taking the negative of a number <code>a</code> produces another number <code>-a</code> such
 					that <code>-a + a</code>&rArr;<code>0</code>.
 					To figure out what <code>-a</code> is, we'll use the equivalent statement <code>0 -
@@ -396,7 +396,7 @@
 					turn addition into subtraction and vice versa and switch the order of the
 					numbers you're adding or subtracting depending on the sign.
 				</p>
-				<h4 id="benefits-of-twos-compliment">Benefits of Two's Compliment</h4>
+				<h5 id="benefits-of-twos-compliment">Benefits of Two's Compliment</h5>
 				<ul>
 					<li>Every number has one binary representation and every binary representation
 						represents one number.
@@ -413,14 +413,14 @@
 						bit (a &gt;.
 					</li>
 				</ul>
-				<h4 id="the-missing-number">The Missing Number</h4>
+				<h5 id="the-missing-number">The Missing Number</h5>
 				<p>We've established that we're going to use two's complement to represent our
 					integers and that we are definitely going to represent the integers from <code>-127</code>
 					to <code>127</code>, but we're still missing one number.
 					We can't have a representation we don't know how to interpret, or else our
 					program could fail.
 				</p>
-				<h5 id="finding-the-missing-number">Finding the Missing Number</h5>
+				<h6 id="finding-the-missing-number">Finding the Missing Number</h6>
 				<p>To figure out how to deal with the missing number, we're going to first find out
 					which binary representation hasn't been used yet and then we're going to use
 					the properties of the binary representation to figure out what it should be.
@@ -467,7 +467,7 @@
 					Since <code>a</code> can only be a <code>0</code> or a <code>1</code> and <code>0000 0000</code> is zero, <code>1000 0000</code> must
 					be the representation for the missing number.
 				</p>
-				<h5 id="what-number-does-1000-0000-represent">What Number Does <code>1000 0000</code> Represent?</h5>
+				<h6 id="what-number-does-1000-0000-represent">What Number Does <code>1000 0000</code> Represent?</h6>
 				<p>The missing number is kind of weird since it's its own negative and not zero.
 					If we subtract one, we will end up with <code>127</code>, so maybe it should be <code>127</code>.
 					If we add one to it, however, we will end up with <code>1000 0001</code>, which is <code>-127</code>
@@ -485,7 +485,7 @@
 				<p>Since we've decided that our missing number will be negative, <code>1000 0000</code> will
 					represent <code>-128</code>.
 				</p>
-				<h1 id="what-if-we-want-to-represent-larger-numbers">What if We Want to Represent Larger Numbers?</h1>
+				<h2 id="what-if-we-want-to-represent-larger-numbers">What if We Want to Represent Larger Numbers?</h2>
 				<p>The system we set up works identically with more bits.
 					If we want unsigned numbers, we use the number in base two as the number's
 					binary representation, and we can represent numbers from <i>0</i> to
@@ -498,7 +498,7 @@
 					is still <code>1111 ... 1111</code>, <i>2<sup>n-1</sup>-1</i> is still <code>0111 ... 1111</code>, and
 					<i>-2<sup>n-1</sup></i> is still <code>1000 ... 0000</code>.
 				</p>
-				<h1 id="summary">Summary</h1>
+				<h2 id="summary">Summary</h2>
 				<p>We explained how computers represent integer numbers using a system called <a
 					href="https://en.wikipedia.org/wiki/Two%27s_complement">two's complement</a>
 					which will allow us to represent integers of any size.
@@ -527,7 +527,7 @@
 				</div>
 			</div>
 			<nav id="sidenav">
-				<a href="#representing-integers-in-binary" style="padding-left:12px;">Representing Integers in Binary</a>
+				<a href="#representing-integers-in-binary" style="padding-left:0px;">Representing Integers in Binary</a>
 				<a href="#topics-covered" style="padding-left:24px;">Topics Covered</a>
 				<a href="#limited-number-of-digits" style="padding-left:36px;">Limited Number of Digits</a>
 				<a href="#signed-vs-unsigned" style="padding-left:36px;">Signed vs Unsigned</a>
@@ -553,9 +553,6 @@
 				<a href="#">Get Involved</a>
 				<a href="http://hacktulsa.com">Hackathon</a>
 				<a href="#">GitHub</a>
-			</div>
-			<div id="copyright" class="mt-4">
-				&copy; 2019 TUACM &sdot; <a href="">LICENSE</a>
 			</div>
 		</div>
 		<script src="https://tuacm.com/js/sidenav.js"></script>

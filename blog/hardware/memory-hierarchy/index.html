@@ -89,7 +89,7 @@
 					using <b><i>and made the program run about four times as fast</i></b>.
 				</p>
 				<div class="aside" >
-					<h4>Amdahl's Law in my Program</h4>
+					<h5>Amdahl's Law in my Program</h5>
 					<hr>
 					<p>Let's say you're doing three tasks: one task takes five minutes, another task
 						takes five minutes, and the last task takes fifty minutes.
@@ -117,11 +117,11 @@
 				<p>How would using a fourth of the memory make the program run about four times as
 					fast?
 				</p>
-				<h1 id="the-allegory-of-the-professor">The Allegory of the Professor</h1>
+				<h2 id="the-allegory-of-the-professor">The Allegory of the Professor</h2>
 				<p>I won't try to dumb down how your computer manages memory, but I think the
 					allegory I'm about to tell should prime your mind for the explanation.
 				</p>
-				<h2 id="the-professor-arrives">The Professor Arrives</h2>
+				<h3 id="the-professor-arrives">The Professor Arrives</h3>
 				<p>After earning her bachelor's degree, a woman decided to become a professor at
 					her alma mater to help pay for grad school.
 					The university offered her a job and a small office, which she gladly accepted.
@@ -132,7 +132,7 @@
 					For example, her markers were on the second shelf from the top.
 					Nothing strange happened until her first day teaching.
 				</p>
-				<h2 id="the-first-day-of-class">The First Day of Class</h2>
+				<h3 id="the-first-day-of-class">The First Day of Class</h3>
 				<p>Just as she was about to leave her office, she realized that she had forgotten
 					to buy a new backpack, as her old one fell apart on her last day of classes.
 					She was going to be late to class if she didn't leave immediately, so she
@@ -173,7 +173,7 @@
 					felt terrible.
 					She immediately went out to buy a backpack before her second class started.
 				</p>
-				<h2 id="the-second-class">The Second Class</h2>
+				<h3 id="the-second-class">The Second Class</h3>
 				<p>Now that the professor had her backpack, she realized that she wouldn't lose
 					anything she brought to class if she put it in her backpack immediately after
 					she finished using it, so she updated her old rule of only putting things down
@@ -210,7 +210,7 @@
 					When she wanted to switch between the textbook and the syllabus, she had to go
 					back to her backpack.
 				</p>
-				<h2 id="the-third-class">The Third Class</h2>
+				<h3 id="the-third-class">The Third Class</h3>
 				<p>For the last class of the day, she decided that she would go buy a few magnets
 					for the board so she could stick anything light like a syllabus on the board.
 					She also bought a magnetic marker tray so she could keep all her markers in a
@@ -229,7 +229,7 @@
 					Once she took all the markers and her syllabus out of the backpack, the only
 					time she ever needed to go into her backpack was to take out the textbook.
 				</p>
-				<h2 id="after-her-first-day">After Her First Day</h2>
+				<h3 id="after-her-first-day">After Her First Day</h3>
 				<p>As she got more and more stuff, she eventually had to move some stuff out of her
 					office and into her home.
 					Just as she couldn't fit everything in her office into her backpack, she
@@ -241,7 +241,7 @@
 				<p>From then on, she continued to teach efficiently, much to the delight of her
 					students, who often got out of class five minutes early.
 				</p>
-				<h1 id="explaining-the-allegory">Explaining the Allegory</h1>
+				<h2 id="explaining-the-allegory">Explaining the Allegory</h2>
 				<p>Designing how your computer manages memory is almost exactly like figuring out
 					an efficient way to have everything you need for a class.
 					I'm going to list all the analogous concepts between the allegory and the
@@ -288,13 +288,13 @@
 						<td>Secondary Storage</td>
 					</tr>
 				</table>
-				<h2 id="cpu">CPU</h2>
+				<h3 id="cpu">CPU</h3>
 				<p>The <b>Central Processing Unit</b> (<b>CPU</b> for short) is the brain of a
 					computer.
 					It decides what to do next, how to organize things, etc.
 					I could say a lot about it, but treat it just like the professor.
 				</p>
-				<h2 id="registers">Registers</h2>
+				<h3 id="registers">Registers</h3>
 				<p>Let's say you want to make a computer.
 					First, to do anything on the computer, you have to have some data stored inside
 					the CPU itself, otherwise the CPU can't interact with data at all.
@@ -307,11 +307,11 @@
 					In general, you will have anywhere from four to sixty four (or some other power
 					of two) registers.
 				</p>
-				<h2 id="programs">Programs</h2>
+				<h3 id="programs">Programs</h3>
 				<p>The actual content of the classes determines what stuff you'll need to bring to
 					each class, just as a program determines what the CPU needs to do.
 				</p>
-				<h2 id="memory-addresses">Memory Addresses</h2>
+				<h3 id="memory-addresses">Memory Addresses</h3>
 				<p>You'll also need a way to identify which data you want, so you need to come up
 					with a labeling scheme like the professor.
 					The labeling scheme should consist of a list of what you want to find and where
@@ -321,7 +321,7 @@
 					On a computer, each memory address is a specific number that uniquely identifies
 					a byte of memory.
 				</p>
-				<h2 id="ram">RAM</h2>
+				<h3 id="ram">RAM</h3>
 				<p>Now, you can't store an entire program in the registers alone in the same way
 					the professor couldn't just hold everything she owned in her hands, so you need
 					to make a place to store information such as files and the values of variables.
@@ -332,7 +332,7 @@
 					specific bytes.
 				</p>
 				<div class="aside" >
-					<h4>Random Access?</h4>
+					<h5>Random Access?</h5>
 					<hr>
 					<p>In STEM, <b>random means you cannot tell me with certainty what's going to
 						happen next</b>.
@@ -356,7 +356,7 @@
 					progress specifically because they couldn't save the data (<i>The Legend of
 					Zelda</i> was an early exception because it had save files.).
 				</p>
-				<h2 id="the-caches">The Caches</h2>
+				<h3 id="the-caches">The Caches</h3>
 				<p>The biggest problem with RAM is that it's slow.
 					Just like going to the office to get something took a while for the professor,
 					getting data from RAM takes a while (for computers, anyway).
@@ -413,7 +413,7 @@
 					I would focus on the relative speed of the different levels of memory in that
 					article in particular.
 				</p>
-				<h2 id="secondary-storage">Secondary Storage</h2>
+				<h3 id="secondary-storage">Secondary Storage</h3>
 				<p>What's the only type of memory I haven't mentioned yet?
 					That's right, your hard drive or solid state drive.
 					RAM consists of data that your program has requested and your secondary storage
@@ -426,7 +426,7 @@
 					she might store stuff that she could bring to her office but won't for sake of
 					space.
 				</p>
-				<h1 id="why-have-a-memory-hierarchy">Why Have a Memory Hierarchy?</h1>
+				<h2 id="why-have-a-memory-hierarchy">Why Have a Memory Hierarchy?</h2>
 				<p>I hope at this point you see the general pattern: more memory means less speed.
 					Of course, the memory-speed trade-off isn't a fundamental law of nature, but
 					then your computer would be way more expensive since faster memory is more
@@ -435,7 +435,7 @@
 					If you write good programs that use the memory hierarchy to your advantage, you
 					can effectively simulate having a lot of high speed memory.
 				</p>
-				<h2 id="how-to-use-the-cache">How to Use the Cache</h2>
+				<h3 id="how-to-use-the-cache">How to Use the Cache</h3>
 				<p>As a programmer, you do not move things back and forth between caches and RAM,
 					your computer handles that for you.
 					The computer, however, does it in a reliable way that you can use to your
@@ -447,7 +447,7 @@
 					href="https://en.wikipedia.org/wiki/Locality_of_reference">the Principles of
 					Locality</a>.
 				</p>
-				<h3 id="temporal-locality">Temporal Locality</h3>
+				<h4 id="temporal-locality">Temporal Locality</h4>
 				<p>Let's go back to the allegory before the professor bought her backpack.
 					She spent most of her time going back and forth between her office because she
 					kept switching between things she needed.
@@ -502,7 +502,7 @@
 					something else replaces it, meaning you will pay no speed penalty if you use the
 					data soon after.
 				</p>
-				<h3 id="spatial-locality">Spatial Locality</h3>
+				<h4 id="spatial-locality">Spatial Locality</h4>
 				<p>When the professor first started with her labeling scheme, she originally didn't
 					organize her office at all.
 					For example, to find everything she needed for her third class, she would have
@@ -547,7 +547,7 @@
 					Knowing this fact, you should make sure that you fill your boxes with exactly
 					what you need.
 				</p>
-				<h3 id="finite-amount-of-memory">Finite Amount of Memory</h3>
+				<h4 id="finite-amount-of-memory">Finite Amount of Memory</h4>
 				<p>For the professor, she should try to fill the box with smaller objects like
 					thinner binders and excerpts from the textbook.
 				</p>
@@ -555,7 +555,7 @@
 					amount of memory you use means you can fit more useful memory in the cache</b>.
 					This last principle is just "Don't waste fast memory on irrelevant data".
 				</p>
-				<h2 id="swap-memory">Swap Memory</h2>
+				<h3 id="swap-memory">Swap Memory</h3>
 				<p>What happens when the professor can't keep everything she needs for the day in
 					her office?
 					She has to store some of the stuff in her home, so she decides to store the
@@ -573,10 +573,10 @@
 					that you're barely using (such as tabs in your browse that you haven't looked at
 					in a week) and it will only use swap when it runs out of RAM.
 				</p>
-				<h3 id="what-happens-if-i-run-out-of-swap">What Happens if I Run Out of Swap?</h3>
+				<h4 id="what-happens-if-i-run-out-of-swap">What Happens if I Run Out of Swap?</h4>
 				<p>Don't.
 				</p>
-				<h3 id="seriously-what-happens-if-i-run-out-of-swap">Seriously, What Happens if I Run Out of Swap?</h3>
+				<h4 id="seriously-what-happens-if-i-run-out-of-swap">Seriously, What Happens if I Run Out of Swap?</h4>
 				<p>In general, your computer screen will probably freeze since the computer is
 					spending all its processing power on whatever you're doing, so it will stop
 					caring about trivial things like changing the pixels of the screen or processing
@@ -596,7 +596,7 @@
 				<p>In terms of the professor, running out of swap means she's hoarding and needs an
 					intervention.
 				</p>
-				<h1 id="how-did-you-get-a-4x-speedup">How Did You Get a 4x Speedup?</h1>
+				<h2 id="how-did-you-get-a-4x-speedup">How Did You Get a 4x Speedup?</h2>
 				<p>If you remember the beginning of the article, I said I was able to achieve a
 					massive speedup by first reducing one of the large matrices to just the last two
 					columns then by using two bytes to represent the numbers instead of four bytes,
@@ -611,7 +611,7 @@
 					data throughout the program, but I would have to make this article even longer,
 					so I'll pass on the example.
 				</p>
-				<h1 id="summary">Summary</h1>
+				<h2 id="summary">Summary</h2>
 				<ul>
 					<li>Your computer has a memory hierarchy consisting of
 						<ol>
@@ -680,7 +680,7 @@
 				</div>
 			</div>
 			<nav id="sidenav">
-				<a href="#the-memory-hierarchy" style="padding-left:12px;">The Memory Hierarchy</a>
+				<a href="#the-memory-hierarchy" style="padding-left:0px;">The Memory Hierarchy</a>
 				<a href="#the-allegory-of-the-professor" style="padding-left:24px;">The Allegory of the Professor</a>
 				<a href="#the-professor-arrives" style="padding-left:36px;">The Professor Arrives</a>
 				<a href="#the-first-day-of-class" style="padding-left:36px;">The First Day of Class</a>
@@ -714,9 +714,6 @@
 				<a href="#">Get Involved</a>
 				<a href="http://hacktulsa.com">Hackathon</a>
 				<a href="#">GitHub</a>
-			</div>
-			<div id="copyright" class="mt-4">
-				&copy; 2019 TUACM &sdot; <a href="">LICENSE</a>
 			</div>
 		</div>
 		<script src="https://tuacm.com/js/sidenav.js"></script>
