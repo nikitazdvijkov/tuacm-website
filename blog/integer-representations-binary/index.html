@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="In this article, we figure out the best way for computers to represent integers, a.k.a. two's compliment.">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<style>
+			.arithmetic-table {
+				font-weight: bold;
+			}
+			.arithmetic-table th {
+				text-align: center
+			}
+			.arithmetic-table td {
+				text-align: right;
+			}
+			table {
+				margin-bottom: 1em;
+			}
+			.math-line {
+				border-bottom: 1px solid #000000;
+			}
+		</style>
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>Representing Integers in Binary</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="representing-integers-in-binary">Representing Integers in Binary</h1></div>
+				<div id="meta-description">Getting close to the metal in this article.</div>
+				<div id="date-and-tags">Posted 3 September 2019 at 12:10 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>In this article, we're going to discuss how we can represent integers in
+					binary.
+					</i>
+				</p>
+				<h2 id="topics-covered">Topics Covered</h2>
+				<ul>
+					<li><b>Using a Limited Number of Digits</b>
+					</li>
+					<li><b>Signed vs Unsigned</b>
+					</li>
+					<li><b>Binary Representation</b>
+					</li>
+					<li><b>Overflow</b>
+					</li>
+				</ul>
+				<h3 id="limited-number-of-digits">Limited Number of Digits</h3>
+				<p>I'm going to describe a scenario that's weird to humans but that your computer
+					actually has to do all the time.
+				</p>
+				<p>Let's say that you have a 200 page book with exactly 50 000 words, and I ask you
+					to tell me what the 37 420<sup>th</sup> word is.
+					To make it easier for you, the author of the book wrote the number of words on
+					each page at the bottom of the page, since the number of words can vary from
+					page to page.
+					To determine the actual word, you would have to keep a running total of the
+					number of words you've seen so far, stop as soon as your total goes above 37
+					420, and then count words from the beginning of the page until you reach the
+					word.
+				</p>
+				<p>Now, let me make a small change.
+					Let's say you have a 200 page book with exactly 50 000 words <b>and exactly 250
+					words on every page</b>, and I ask you to tell me what the 37 420<sup>th</sup>
+					word is.
+					Well, the first page is going to have 250 words on it, the first two pages will
+					have 500 words, the first three pages will have 750 words, etc., so the 37
+					420<sup>th</sup> word will be the <code>(37 420 % 250) + 1</code>&rArr;<code>171</code><sup>th</sup>
+					word on page <code>(37 420 / 250) + 1</code>&rArr;<code>150</code>.
+					Now, instead of having to go through more than a hundred pages and keep a total
+					of the number of words so far, you can now just flip to page 150 and find the
+					171<sup>th</sup> word.
+				</p>
+				<p>As you can see, when the pages have a fixed number of words on them, finding an
+					arbitrary word given an index is quick and easy.
+					Types in a lot of high performance languages will have a fixed number of bytes
+					for the same exact reason.
+					If we don't, the computer either won't know when the number ends or will have to
+					waste time trying to figure out when the number ends.
+				</p>
+				<p>By making the types have a fixed number of bytes, we limit the number of
+					possible values we can represent.
+					For example, if we have a type one byte long, then that type can only represent
+					<i>2<sup>8</sup>=256</i> different values.
+				</p>
+				<h3 id="signed-vs-unsigned">Signed vs Unsigned</h3>
+				<p>We have to make a distinction between signed and unsigned integers before we go
+					any further.
+					<b>Signed integers</b> can represent <b>zero, positive numbers, and negative
+					numbers</b> and <b>unsigned integers</b> can only represent <b>zero and positive
+					numbers</b>.
+				</p>
+				<p>If you want to count the number of people who visited your webpage, you only
+					want positive numbers since you can't get a negative number of views.
+					If you have a rating system that allows people to upvote and downvote posts,
+					then you want both positive and negative numbers for the net upvotes.
+					If you just want negative numbers, add a '<code>-</code>' in front of an unsigned number
+					when you write your results.
+				</p>
+				<p>Since we want people to use the right type for the job, we'll allow people to
+					use signed and unsigned versions of the <code>int</code>.
+					We'll let <code>int</code> represent signed integers and <code>unsigned int</code> represent unsigned
+					integers.
+				</p>
+				<h3 id="binary-representation">Binary Representation</h3>
+				<p>As you already know, computers don't understand anything except <code>on</code> and <code>off</code>,
+					which we generally abbrieviate with <code>1</code> and <code>0</code>.
+					For us to represent something any numeric types, we have to work with this
+					constraint.
+					We should also be able to handle arithmetic as efficently as possible, so we
+					should pick a good representation.
+					To see why picking a good representation for you number system is important, see
+					how long you can multiply <i>MMMCDLXXXIII</i> and <i>MMCMXVIII</i> without
+					giving up.
+				</p>
+				<p>To start out, we're just going to say that we can use eight bits (a.k.a. a byte)
+					to represent a number, which means
+				</p>
+				<ol>
+					<li>We can only represent <i>2<sup>8</sup>=256</i> different numbers since we only
+						have eight bits, just as we could only represent <i>10<sup>4</sup>=10 000</i>
+						different numbers if we have four digits.
+					</li>
+					<li>Because we want to represent as many different numbers as possible, each number
+						should only have one binary representation.
+					</li>
+					<li>Because we want to be consistent, there should be exactly one base ten number
+						for each binary representation
+					</li>
+					<li>If <code>a &bull; b</code>&rArr;<code>c</code> in base ten (where <code>&bull;</code> is an arbitrary arithmetic
+						operation), the binary representations of <code>a</code>, <code>b</code>, and <code>c</code> should also satisfy
+						<code>a &bull; b</code>&rArr;<code>c</code>.
+					</li>
+					<li>In our representation <code>a &bull; b</code> should be quick to calculate, where <code>&bull;</code>
+						is any arithmetic operation.
+					</li>
+					<li>Determining if <code>a &gt; b</code> should be quick.
+					</li>
+				</ol>
+				<h4 id="unsigned-types">Unsigned Types</h4>
+				<p>Since we have 256 possible numbers and we want to represent all the positive
+					numbers we can and zero, we can just let the binary representation of a number
+					be the number in base two and the resulting binary representations will satisfy
+					everything an unsigned type should satisfy, meaning we'll represent the numbers
+					from <code>0</code> to <code>255</code>.
+					Converting from base ten to binary is trivial, so I'm not going to rehash it
+					here.
+					If you need a more in-depth explanation, check <a
+					href="https://blog.angularindepth.com/the-simple-math-behind-decimal-binary-conversion-algorithms-d30c967c9724">this
+					article</a>.
+				</p>
+				<p>Since the algorithms for arithmetic in binary are just like the algorithms in
+					base ten, we can just use the normal algorithms for arithmetic.
+				</p>
+				<h4 id="overflow">Overflow</h4>
+				<p>Since we can represent all the numbers from <code>0</code> to <code>255</code>, we should be able to
+					represent the result of any arithmetic operation so long as the result is
+					between <code>0</code> and <code>255</code>.
+					For example:
+				</p>
+				<code>
+					<table class="arithmetic-table">
+						<tr>
+							<th>Binary</th>
+							<th></th>
+							<th>Base 10</th>
+						</tr>
+						<tr>
+							<td>111&nbsp;</td>
+							<td style="width: 2ch"></td>
+							<td>1&nbsp;</td>
+						</tr>
+						<tr>
+							<td>0010 0101</td>
+							<td style="width: 2ch"></td>
+							<td>37</td>
+						</tr>
+						<tr>
+							<td class="math-line">+ 0001
+							0011</td>
+							<td style="width: 2ch"></td>
+							<td class="math-line">+&nbsp;&nbsp;&nbsp;&nbsp;19</td>
+						</tr>
+						<tr>
+							<td>0011 1000</td>
+							<td style="width: 2ch"></td>
+							<td>56</td>
+						</tr>
+					</table>
+				</code>
+				<p>We will have a problem, however, if the result is greater than <code>255</code> or less
+					than <code>0</code>.
+					For example, let's calculate <code>255 + 1</code>.
+				</p>
+				<code>
+					<table class="arithmetic-table">
+						<tr>
+							<td>1 1111 111&nbsp;</td>
+						</tr>
+						<tr>
+							<td>1111 1111</td>
+						</tr>
+						<tr>
+							<td class="math-line">+&nbsp;&nbsp;&nbsp;&nbsp;0000 0001</td>
+						</tr>
+						<tr>
+							<td><s>1</s> 0000 0000</td>
+						</tr>
+					</table>
+				</code>
+				<p>Since we only have eight bits we just drop the ninth bit, meaning <code>255 +
+					1</code>&rArr;<code>0</code>.
+					Since <code>a + b</code>&rArr;<code>c</code> means <code>c - b</code>&rArr;<code>a</code> by the basic rules of algebra,
+					<code>255 + 1</code>&rArr;<code>0</code> means <code>0 - 1</code>&rArr;<code>255</code>.
+					In general, <b>if you go above the highest number we can represent, you'll loop
+					back around to the lowest number we can represent</b>, and, <b>if you go below
+					the lowest number we can represent, you'll loop back around to the highest
+					number we can represent</b>.
+				</p>
+				<h4 id="signed-types">Signed Types</h4>
+				<p>With signed Types, we also need to satisfy a few other constraints, such as:
+				</p>
+				<ul>
+					<li>For every number, we should be able to represent its negative.
+					</li>
+					<li><code>-a + a</code>&rArr;<code>0</code>, since that's how you define the negative (a.k.a. additive
+						inverse) of a number without changing how the computer adds numbers based on the
+						sign.
+					</li>
+					<li>Determining if a number is negative or positive should be quick.
+					</li>
+				</ul>
+				<h5 id="what-numbers-will-we-represent">What Numbers Will We Represent?</h5>
+				<p>Before we can come up with a representation for something, we need to establish
+					what we're representing.
+					In our case, we need to figure out what numbers we want to represent.
+				</p>
+				<p>We want <code>0</code> since <code>0</code> is pretty useful, so let's include it.
+					Since <code>0</code> is its own inverse and we only want one binary representation for each
+					number, we don't need to include a "negative zero".
+					We'll also want <code>1</code>, so we'll include <code>1</code>.
+					Since we want to be able to represent the negative of every number we add to the
+					list, we'll also have to include <code>-1</code>.
+					Let's also add <code>2</code> and <code>-2</code> into the list, <code>3</code> and <code>-3</code> to the list, and so on
+					until we run out of numbers.
+				</p>
+				<p>After adding <code>127</code> and <code>-127</code>, we have a problem: we only have one more binary
+					representation available.
+					If we added <code>128</code> and <code>-128</code>, we would have to represent 257 different numbers,
+					which we can't do since we've run out of space.
+					Since <code>0</code> is its own inverse, we don't want to include it twice, and we can only
+					have <i>2<sup>n</sup></i> binary representations, we will never be able to
+					completely represent a consecutive series of numbers centered around <code>0</code>.
+					Since it's only one number, though, we won't have to worry.
+				</p>
+				<p>Right now, since we don't really know what to do with the last number, we're
+					just going to say that we definitely want to represent every integer from <code>-127</code>
+					to <code>127</code>.
+					We'll determine the last number we want to represent when we figure out how
+					we're going to represent our numbers.
+				</p>
+				<h5 id="choosing-an-efficient-representation">Choosing an Efficient Representation</h5>
+				<p>As I showed earlier when I asked you to multiply two numbers in Roman numerals,
+					choosing a good representation for numbers will help you do math quickly and
+					effectively.
+					Ideally, we would like to use the same exact algorithms for arithmetic
+					operations for signed and unsigned integers so that we don't have to have
+					separate hardware for signed and unsigned operations.
+					Since using the number in base two works for all the nonnegative numbers, let's
+					keep that system for all the nonnegative numbers, meaning <code>0000 0000</code> is <code>0</code>,
+					<code>0000 0001</code> is <code>1</code>, <code>0000 0010</code> is <code>2</code>, ..., and <code>0111 1111</code> is <code>127</code>.
+				</p>
+				<p>We have a problem, though.
+					While representing something like <code>81</code> as <code>0101 0001</code> is all fine and good, how
+					do we represent <code>-81</code>?
+				</p>
+				<h5 id="taking-the-negative">Taking the Negative</h5>
+				<p>Remember, taking the negative of a number <code>a</code> produces another number <code>-a</code> such
+					that <code>-a + a</code>&rArr;<code>0</code>.
+					To figure out what <code>-a</code> is, we'll use the equivalent statement <code>0 -
+					a</code>&rArr;<code>-a</code>.
+					First, we'll figure out the representation for <code>-1</code>.
+					Since we want to use the same exact algorithms for arithmetic, we'll subtract
+					<code>1</code> from <code>0</code> just like we normally would.
+				</p>
+				<p>Doing the subtraction yields
+				</p>
+				<code>
+					<table class="arithmetic-table">
+						<tr>
+							<td><sup>1</sup><s>0</s><sup>1</sup><s>0</s><sup>1</sup><s>0</s><sup>1</sup><s>0</s> <sup>1</sup><s>0</s><sup>1</sup><s>0</s><sup>1</sup><s>0</s><sup>1</sup><s>0</s></td>
+						</tr>
+						<tr>
+							<td class="math-line">-<sup>&nbsp;</sup>0<sup>&nbsp;</sup>0<sup>&nbsp;</sup>0<sup>&nbsp;</sup>0 <sup>&nbsp;</sup>0<sup>&nbsp;</sup>0<sup>&nbsp;</sup>0<sup>&nbsp;</sup>1</td>
+						</tr>
+						<tr>
+							<td><s>1</s><sup>&nbsp;</sup>1<sup>&nbsp;</sup>1<sup>&nbsp;</sup>1<sup>&nbsp;</sup>1 <sup>&nbsp;</sup>1<sup>&nbsp;</sup>1<sup>&nbsp;</sup>1<sup>&nbsp;</sup>1</td>
+						</tr>
+					</table>
+				</code>
+				<p>where we drop the leftmost <code>1</code> from the result since we can't store it anywhere
+					and doing anything else requires us to modify our addition algorithm.
+				</p>
+				<p>If we add the binary representations for <code>-1</code> and <code>1</code>, we'll get <code><s>1</s> 0000
+					0000</code>, which overflows to <code>0</code>, which is exactly the behavior we're looking for.
+					We now have two ways of figuring out the rest of the negative numbers: subtract
+					a positive number from <code>0</code> or multiplying by <code>-1</code>.
+					Once we do the calculations, we'll find that <code>-2</code> is <code>1111 1110</code>, <code>-3</code> is <code>1111
+					1101</code>, ..., and <code>-127</code> is <code>1000 0001</code>.
+				</p>
+				<p>We could also express <code>-a</code> as <code>-1 - a + 1</code>, which may be easier to understand.
+					For example to calculate <code>-81</code>:
+				</p>
+				<code>
+					<table class="arithmetic-table">
+						<tr>
+							<th>Binary</th>
+							<th></th>
+							<th>Base 10</th>
+						</tr>
+						<tr>
+							<td>1111 1111</td>
+							<td style="width: 2ch"></td>
+							<td>-1</td>
+						</tr>
+						<tr>
+							<td style="text-align: right; border-bottom: 1px solid #000000;">- 0101 0001</td>
+							<td style="width: 2ch"></td>
+							<td style="text-align: right; border-bottom: 1px solid #000000;">-&nbsp;&nbsp;&nbsp;&nbsp;81</td>
+						</tr>
+						<tr>
+							<td>1010 1110</td>
+							<td style="width: 2ch"></td>
+							<td>-82</td>
+						</tr>
+						<tr>
+							<td class="math-line">+ 0000 0001</td>
+							<td style="width: 2ch"></td>
+							<td class="math-line">+&nbsp;&nbsp;&nbsp;&nbsp; 1</td>
+						</tr>
+						<tr>
+							<td>1010 1111</td>
+							<td style="width: 2ch"></td>
+							<td>-81</td>
+						</tr>
+					</table>
+				</code>
+				<p>The new <code>-1 - a + 1</code> process we came up with is equivalent to <b>flipping the
+					bits (replacing zeros with ones and ones with zeros) and adding one</b>, which
+					is how people normally describe taking the negative of a number in this system.
+				</p>
+				<p>We've set up a system called <a
+					href="https://en.wikipedia.org/wiki/Two%27s_complement">two's complement</a>,
+					and it's the standard on the overwhelming majority on most computers since IBM
+					released the System/360 in 1964.
+					The only other options at the time were "one's compliment", in which you just
+					flipped the bits to get the negative of a number, and the "sign-magnitude"
+					format, in which you use the leftmost bit to represent the sign and you use the
+					other bits to represent the absolute value.
+				</p>
+				<p>One's compliment suffered from several problems, but the worst was <code>0</code> would
+					have two representations: the standard <code>0000 0000</code> and <code>1111 1111</code>.
+					Since zero could be coded using either representation, you would have to check
+					both representations whenever you wanted to make a comparison with zero.
+				</p>
+				<p>The sign-magnitude format also has two representations for <code>0</code> (<code>0000 0000</code> and
+					<code>1000 0000</code>), but checking if a number is zero is pretty easy since you can just
+					ignore the leftmost bit entirely.
+					Other than checking for zero, however, the sign-magnitude format requires you to
+					turn addition into subtraction and vice versa and switch the order of the
+					numbers you're adding or subtracting depending on the sign.
+				</p>
+				<h5 id="benefits-of-twos-compliment">Benefits of Two's Compliment</h5>
+				<ul>
+					<li>Every number has one binary representation and every binary representation
+						represents one number.
+					</li>
+					<li>Adding signed and unsigned numbers works in exactly the same way.
+					</li>
+					<li>Negative numbers work exactly as they should.
+					</li>
+					<li>All negative numbers will have a <code>1</code> as the most significant (leftmost) bit and
+						all non-negative numbers will have a <code>0</code> as the most significant bit.
+					</li>
+					<li>Determining whether a number is greater than or less than a number is easy,
+						since you can just subtract the two numbers and look at the most significant
+						bit (a &gt;.
+					</li>
+				</ul>
+				<h5 id="the-missing-number">The Missing Number</h5>
+				<p>We've established that we're going to use two's complement to represent our
+					integers and that we are definitely going to represent the integers from <code>-127</code>
+					to <code>127</code>, but we're still missing one number.
+					We can't have a representation we don't know how to interpret, or else our
+					program could fail.
+				</p>
+				<h6 id="finding-the-missing-number">Finding the Missing Number</h6>
+				<p>To figure out how to deal with the missing number, we're going to first find out
+					which binary representation hasn't been used yet and then we're going to use
+					the properties of the binary representation to figure out what it should be.
+				</p>
+				<p>We could do this by going through all the numbers from <code>0</code> to <code>127</code>, finding
+					their negatives, but that would take too long.
+					Plus, it's no fun.
+					Since we can flip all the bits and add one to any binary representation, we know
+					that we can negate the binary representation of the missing number.
+					The missing number, however, can't have any of the numbers from <code>-127</code> to <code>127</code>
+					as its negative since each of them already have a negative and the negative of a
+					negative is the original number.
+				</p>
+				<p>Putting all this together means that when we negate the missing number, we have
+					to end up with the number itself.
+					Since the number is its own negative, adding it to itself must equal zero, and
+					since adding the number to itself is equivalent to multiplying by 2 (<code>10</code> in
+					binary) and multiplying by 2 will be easier in this case, we're going to
+					multiply by two.
+					Let's represent the missing number by <code>abcd efgh</code>, where each letter represents
+					an unknown digit.
+				</p>
+				<code>
+					<table class="arithmetic-table">
+						<tr>
+							<td>abcd efgh</td>
+						</tr>
+						<tr>
+							<td class="math-line">x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10</td>
+						</tr>
+						<tr>
+							<td>0</td>
+						</tr>
+						<tr>
+							<td class="math-line">a bcde fgh0</td>
+						</tr>
+						<tr>
+							<td><s>a</s> bcde fgh0</td>
+						</tr>
+					</table>
+				</code>
+				<p>For <code>abcd efgh</code> to be its own inverse <code>bcde fgh0</code> must equal <code>0000 0000</code>,
+					meaning the missing number must be <code>a000 0000</code>.
+					Since <code>a</code> can only be a <code>0</code> or a <code>1</code> and <code>0000 0000</code> is zero, <code>1000 0000</code> must
+					be the representation for the missing number.
+				</p>
+				<h6 id="what-number-does-1000-0000-represent">What Number Does <code>1000 0000</code> Represent?</h6>
+				<p>The missing number is kind of weird since it's its own negative and not zero.
+					If we subtract one, we will end up with <code>127</code>, so maybe it should be <code>127</code>.
+					If we add one to it, however, we will end up with <code>1000 0001</code>, which is <code>-127</code>
+					(to see it for yourself, negate <code>1000 0001</code> and convert from binary to base 10).
+					Our choices are either the number one more than <code>127</code> or the number one less
+					than <code>-127</code>, which are <code>128</code> and <code>-128</code>.
+				</p>
+				<p>Note that the most significant bit (leftmost digit) is a <code>1</code>.
+					If we were to make it positive, it would be the only positive number that starts
+					with a <code>1</code>.
+					As a general principle, every special case you have to check will make your
+					program more inefficient, and making <code>1000 0000</code> positive would be a special
+					case, so let's just make it negative.
+				</p>
+				<p>Since we've decided that our missing number will be negative, <code>1000 0000</code> will
+					represent <code>-128</code>.
+				</p>
+				<h2 id="what-if-we-want-to-represent-larger-numbers">What if We Want to Represent Larger Numbers?</h2>
+				<p>The system we set up works identically with more bits.
+					If we want unsigned numbers, we use the number in base two as the number's
+					binary representation, and we can represent numbers from <i>0</i> to
+					<i>2<sup>n</sup></i> with <i>n</i> bits.
+					If we want signed numbers, we can represent numbers from <i>-2<sup>n-1</sup></i>
+					to <i>2<sup>n-1</sup>-1</i> with <i>n</i> bits, where positive numbers get their
+					normal binary representations and negative numbers flip all the bits of their
+					corresponding positive numbers and add one.
+					<i>0</i> is still <code>0000 ... 0000</code>, <i>1</i> is still <code>0000 ... 0001</code>, <i>-1</i>
+					is still <code>1111 ... 1111</code>, <i>2<sup>n-1</sup>-1</i> is still <code>0111 ... 1111</code>, and
+					<i>-2<sup>n-1</sup></i> is still <code>1000 ... 0000</code>.
+				</p>
+				<h2 id="summary">Summary</h2>
+				<p>We explained how computers represent integer numbers using a system called <a
+					href="https://en.wikipedia.org/wiki/Two%27s_complement">two's complement</a>
+					which will allow us to represent integers of any size.
+				</p>
+				<p>If you're coming from the <i>Making Sense of C</i> series, the next article in
+					the series is <a href="../../c-language/05-types/index.html">Types in C</a>, but
+					you should read <a href="https://tuacm.com/hardware/memory-hierarchy/index.html">The Memory
+					Hierarchy</a> before reading about types in <code>C</code> since it will provide use cases
+					for the different types.
+				</p>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#representing-integers-in-binary" style="padding-left:12px;">Representing Integers in Binary</a>
+				<a href="#topics-covered" style="padding-left:24px;">Topics Covered</a>
+				<a href="#limited-number-of-digits" style="padding-left:36px;">Limited Number of Digits</a>
+				<a href="#signed-vs-unsigned" style="padding-left:36px;">Signed vs Unsigned</a>
+				<a href="#binary-representation" style="padding-left:36px;">Binary Representation</a>
+				<a href="#unsigned-types" style="padding-left:48px;">Unsigned Types</a>
+				<a href="#overflow" style="padding-left:48px;">Overflow</a>
+				<a href="#signed-types" style="padding-left:48px;">Signed Types</a>
+				<a href="#what-numbers-will-we-represent" style="padding-left:60px;">What Numbers Will We Represent?</a>
+				<a href="#choosing-an-efficient-representation" style="padding-left:60px;">Choosing an Efficient Representation</a>
+				<a href="#taking-the-negative" style="padding-left:60px;">Taking the Negative</a>
+				<a href="#benefits-of-twos-compliment" style="padding-left:60px;">Benefits of Two's Compliment</a>
+				<a href="#the-missing-number" style="padding-left:60px;">The Missing Number</a>
+				<a href="#finding-the-missing-number" style="padding-left:72px;">Finding the Missing Number</a>
+				<a href="#what-number-does-1000-0000-represent" style="padding-left:72px;">What Number Does <code>1000 0000</code> Represent?</a>
+				<a href="#what-if-we-want-to-represent-larger-numbers" style="padding-left:24px;">What if We Want to Represent Larger Numbers?</a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>

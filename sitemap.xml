@@ -13,12 +13,12 @@
 		<loc>https://tuacm.com/blog/hardware/</loc>
 	</url>
 	<url>
-		<loc>https://tuacm.com/blog/hardware/memory-hierarchy/</loc>
+		<loc>https://tuacm.com/blog/memory-hierarchy/</loc>
 	</url>
 	<url>
-		<loc>https://tuacm.com/blog/hardware/integers/</loc>
+		<loc>https://tuacm.com/blog/integer-represenations-binary/</loc>
 	</url>
 	<url>
-		<loc>https://tuacm.com/blog/posix/commands/</loc>
+		<loc>https://tuacm.com/blog/make-command-linux-mac/</loc>
 	</url>
 </urlset>

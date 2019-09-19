@@ -1,1 +1,0 @@
-In this article, we discuss what your computer does when you type a command in the Mac or Linux terminal and how you can write your own commands.
