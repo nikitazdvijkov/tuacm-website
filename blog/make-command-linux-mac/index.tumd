@@ -1,0 +1,734 @@
+article
+Title:		How to Make a Command on Linux or Mac
+Author:		Joseph Mellor
+Tagline:	What is your computer doing when you type a command in the terminal?
+Code Style:	trac+dark
+Import:		terminal aside code-block
+Scripts:
+
+<i>Since both Linux and Mac are based off Unix, the methods in this tutorial
+will work for both.
+Since I'm not a Windows user anymore and I never used the command prompt on
+Windows, I cannot provide a good explanation of <a
+href="https://www.instructables.com/id/How-to-Create-your-own-Commands-with-Batch/"
+title="An article on how to make a command on Windows.">how to make a command on
+Windows</a>, though it's similar to making a command on Linux and Mac.</i>
+
+Although the purpose of a computer is to automate tasks, programmers still have
+to do some tasks manually.
+For instance, to set up a {C}/{C++} project on my computer, I would have to
+create a bunch of directories, copy a Makefile (it's a project file for
+{C/C++}) into the right directory, modify the Makefile to generate the specific
+program, etc.
+Doing so requires me to remember both the directories I need to create and where
+I stored the original Makefile.
+Furthermore, since I wrote the Makefile specifically for {C++} projects, I have to
+change it for {C} projects.
+Lastly, if I mess up any of the steps above, I have to spend even more time to
+find the error.
+All in all, it's a waste of time and effort to go through this process to set up
+a project, especially since I have to follow the same exact steps for every
+project.
+
+Since I was typing in the same bash commands over and over again, I decided to
+write a script that would execute the bash commands for me whenever I ran it.
+Since I wanted to be able to use the script from any directory, I decided to
+make the script into the Linux command, which I called <a
+href="https://github.com/TheLandfill/minit" title="The github repo for
+minit.">minit</a>.
+
+In this article, I'm going to discuss what a command is, the basics of how the
+terminal processes commands, and how to make one yourself.
+I will use {minit}, as a guide.
+To run {minit}, you need to run {./install.sh} so it can figure out where the
+specific files are and ensure it's not overwriting any other commands.
+To make {minit} a command, we don't necessarily need it to run properly, but if
+you do want it to run and use this tutorial, type {./install.sh tutorial} into
+your terminal instead of {./install.sh}.
+You can also remove the command by running {./uninstall.sh} and then deleting
+the whole {minit} directory.
+I will assume that the {minit.sh} script is in the directory {~/dev/minit} as if
+you ran {git clone https://github.com/TheLandfill/minit} while in the directory
+{~/dev}.
+
+# What is a Command?
+
+As with most topics involving computers, there is a distinction between what a
+command is to the user and what a command is to the computer.
+
+To the user, <b>commands are phrases you type into the terminal that allow you
+to interact with the computer</b>.
+
+\{{aside}}
+#### Why Use a Terminal?
+<hr>
+
+Before computers were powerful enough to use Graphical User Interfaces (GUI),
+which you would recognize as your desktop where you click icons to run programs
+or open windows, you had to use the terminal to do anything on your computer.
+While GUIs may be more intuitive for first time users, the terminal is much more
+powerful than a GUI because the terminal can automate processes the GUI can't.
+
+For example, if I were to use a GUI to do what {minit} does, I would have to
+create a new directory with the project name, move to that directory, create
+{bin}, {obj}, {src}, and {includes}, copy the {Makefile} (whose location I would
+have to remember) into the {bin} directory and then go through the Makefile and
+change what I need to change to make it actually work.
+
+With {minit}, I type {minit project-name outfile-name} and I'm done.
+
+As another example, I went on a trip and took a ton of photos, but since I
+couldn't force everyone to wait for me to get all the settings exactly right to
+take the best possible picture, I took a bunch of pictures of the same object
+with different settings (stuff like exposure and white balance) in the hopes
+that at least one of them would be good.
+I ended up taking hundreds more pictures than I was going to use and I needed to
+get rid of them.
+I figured that if I could group together pictures that were taken around the
+same time, I would group together pictures of the same object, which would make
+it easier for me to get rid of the bad pictures.
+
+Doing so manually would have required me to look at the file name (which is
+based on the time at which the picture was taken) and sort them into folders.
+Using a bash script, however, I was able to group each picture into its proper
+folder, which made finding bad pictures a lot easier.
+
+\{{\aside}}
+
+If you have any experience with bash, you'll already know some standard
+commands, such as {cd} (change current directory), {mv} (move or rename files
+and directories), and {cp} (copy files).
+If you're a little more experienced, you might know about some more complex
+commands, such as {sudo} (gives a command temporary root/admin privileges) or
+{python} (runs the python interpreter).
+Because you can't do much in the terminal without these commands and they come
+on most terminals, people often assume that they're built in.
+While some commands are ({cd} is because it's directly related to the terminal),
+most are not.
+
+To the computer, <b>commands are executables in a specific directory, aliases,
+functions, or builtins</b>.
+In this article, we'll discuss how to make an executable into a command, how to
+make an alias, and how to make a function into a command.
+In general, you won't be able to write a builtin and functions are usually best
+used for simple, frequently used commands that you couldn't use an alias for.
+You'll see an example of both a builtin and a function later, and we'll go into
+more detail about the specifics.
+
+\{{aside}}
+#### Quick Note on Aliases
+<hr>
+
+You can make an alias out of almost anything you could type on the command line,
+but aliases have severe limits on what they can do.
+They also rely on builtins and other bash commands.
+We'll discuss <a href="#what-if-i-dont-need-an-entire-executable" title="Skip to
+a later part of the article.">how to create an alias</a> later in the article.
+Since {minit} is too complex to be an alias, I had to use a script.
+
+\{{\aside}}
+
+You can use the {which} command to see which executable the computer will run
+when you type in a command.
+Commands that are not executables (like {cd}) won't print out anything when you
+run {which}.
+Instead, you can use the {type} command to determine what a command is in the
+general case.
+Using {type -a NAME} will display all locations containing an executable named
+NAME including aliases, builtins, and functions.
+For example:
+
+\{{terminal}}
+{{prompt}} which cd
+{{prompt}} type -a cd
+cd is a function
+cd ()
+{
+    builtin cd "$@" && chpwd
+}
+cd is a shell builtin
+{{prompt}} which mv
+/bin/mv
+{{prompt}} which cp
+/bin/cp
+{{prompt}} which sudo
+/usr/bin/sudo
+{{prompt}} which python
+/usr/bin/python
+
+\{{\terminal}}
+
+\{{aside}}
+#### Why is {cd} a Function?
+<hr>
+
+I had to write a function that modified the behavior of {cd} slightly so that my
+prompt <a href="https://unix.stackexchange.com/a/217097" title="This Stack
+Exchange answer discusses how I made my terminal print out just the current and
+parent directory.">displays the current and parent directories</a>, but it
+doesn't matter for the tutorial.
+On most computers, {cd} will be a shell builtin.
+Since the only way to write a shell builtin is to write or modify a shell, we
+aren't going to deal with that here.
+Since I use cd frequently, the actual function is simple (it calls the builtin
+{cd} and then runs another function if the builtin {cd} ran properly), and I
+need to call it instead of the builtin {cd} (see the <a
+href="#more-directories-means-more-to-search" title="You'll find a description
+of the order in which your terminal will search for a given command.">command
+hierarchy</a> I describe later in the article for more info), I had to make it a
+function.
+If you want more information on when to use a function, alias, or script to make
+a command, see <a href="https://unix.stackexchange.com/a/30964" title="An answer
+on Stack Overflow that describes the pros and cons of each type of
+command.">this answer on StackOverflow</a>.
+
+Also, notice that it prints out both that {cd is a function} and {cd is a shell
+builtin}.
+In other words, multiple commands are named {cd}, but the computer will run just
+the first one when you type {cd} into the console.
+
+\{{\aside}}
+
+Most of the other commands are actually executables in either {/bin} or
+{/usr/bin/}.
+You can run any executable in either of these directories from anywhere like a
+bash command.
+Other directories can also have commands, and these directories are listed in
+the {PATH} environment variable.
+To see the full list, type {echo $PATH} into your terminal.
+
+\{{terminal}}
+{{prompt}} echo $PATH
+/home/joseph/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+\{{\terminal}}
+
+You should see a list of directories separated by colons, as shown above.
+{PATH} contains plain text, which means altering it will require us to replace
+the old text with the new text.
+
+## Making an Executable
+
+Before you can run an executable, you have to tell the system which users can
+run it by using the {chmod} command.
+The {chmod} command allows you to set who can read, write, and execute a file.
+In most cases, you can use {chmod 755 exe}, which will allow anyone to execute
+{exe} and allow the user to modify it.
+This <a
+href="https://askubuntu.com/questions/932713/what-is-the-difference-between-chmod-x-and-chmod-755"
+title="An article specifically on the difference between 'chmod +x' and 'chmod
+755' but also describes chmod well."> article on chmod</a> and the man page for
+chmod (which you can see by typing {man chmod} in the terminal) contain more
+information about the {chmod} command.
+
+## Absolute vs. Relative Paths
+
+An absolute filepath starts from either your root directory, {/}, or your home
+directory, {~/}.
+The {~/} is shorthand for {/home/[username]}, where {[username]} is the username
+of the person currently logged in.
+A relative filepath starts from your current directory in the terminal and moves
+around to different directories.
+When making commands, they have to properly run in any directory, meaning your
+current directory is going to change, meaning any relative filepaths you use
+will be wrong.
+<b>If you want to make use of a specific file or directory, then you must use an
+absolute path.</b>
+For example, {minit} copies the Makefile in {~/dev/minit/} (or wherever you
+clone the project) into a different directory, so it needs an absolute path.
+{minit} needs to create new directories from your current location, so it uses
+relative paths.
+
+# Making a Command
+
+Since any executable must be in one of the directories specified in {PATH}, we
+now have two ways to turn an executable into a command.
+
+\{{ul}}
+
+Add the directory containing your executable to the {PATH} variable.
+
+Move the executable into one of the directories in {PATH}.
+
+\{{\ul}}
+
+While both of these methods will work, we want to set up some criteria for
+determining the best method.
+As with most programming projects, we have to focus on user experience and ease
+of development.
+We'll use the standard bash commands as a guide for user experience and general
+development knowledge for development ease.
+The method we use to create a command should
+
+\{{ul}}
+
+look like a standard bash command, since <a
+href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment"
+title="Wikipedia article for the Principle of Least
+Astonishment/Surprise.">that's what people expect</a>.
+
+not create extraneous commands.
+
+work with the organization of a project or, at least, not complicate the project.
+
+use the fewest resources it can.
+
+require the user to do as little as possible to update the command.
+
+work on most, if not all, standard Linux distros and most modern Mac computers.
+
+\{{\ul}}
+
+## Adding a Directory to the {PATH} Variable
+
+\{{aside style="border-width: 8px; border-radius: 12px;"}}
+<h3 style="color: red; text-align: center">WARNING</h3><hr>
+
+Before you interact with anything related to the operating system or anything
+related to configurations, always make sure to back your data up.
+Modifying {PATH} doesn't severely modify your configuration, but you should
+still back your {PATH} variable up.
+In this case, make sure to record the value of {PATH} somewhere so you can
+revert it back to normal.
+You can use {echo $PATH} to print out {PATH} to the terminal.
+If you mess up and don't record the value of {PATH}, record its current value
+using {echo $PATH}, then run the command:
+
+\{{terminal}}
+{{prompt}} export PATH="$(echo $PATH | sed "s/:[^:]*\/dev\/minit//g")"
+\{{\terminal}}
+
+This command will search your {PATH} variable for any string starting with a
+colon and ending with {/dev/minit} and remove it from {PATH}.
+If your command is in a different directory, replace {\/dev\/minit} with your
+path to the directory, making sure that you add a backslash before every slash.
+
+\{{\aside}}
+
+Add the directory to your PATH variable using the syntax:
+
+\{{terminal}}
+{{prompt}} export PATH=$PATH:~/dev/minit
+\{{\terminal}}
+
+It's that simple.
+
+The {export} will mean that all that the current and all future terminal
+windows/bash sessions you create will also have {PATH} set, {PATH=} will set the
+{PATH} environment variable to everything that's after it, {$PATH} will expand
+out the contents of {PATH} (which include all the directories in {PATH}), and
+{:~/dev/minit} will be expanded to {:/home/[username]/dev/minit} (where
+{[username]} is the username of the current user) and then appended to the
+contents of {PATH}.
+Now, you can call every executable in the directory from anywhere.
+You will have to type the command every time you log into your computer unless
+you have some script that automatically runs when you login.
+Instead of making your own, though, add the command to the end of your
+{~/.bash_profile} or {~/.profile} file.
+It's one of the <a href="https://superuser.com/a/183980">main scripts that runs
+when you login</a>.
+Once again, <b style="color: #FF0000">DO NOT MODIFY IMPORTANT SYSTEM FILES OR
+VARIABLES WITHOUT MAKING SOME SORT OF A BACKUP</b>.
+
+### Multiple Executables in a Directory
+
+We wanted to create the {minit} command, but now every executable is a command.
+Some of these commands will not work, but could still lead to some unwanted
+behavior.
+Worse, if a file in the directory was executable even though it shouldn't be
+executable (such as a text file or a Makefile), you could end up running
+dangerous code.
+
+\{{aside}}
+#### Almost a Tragedy
+<hr>
+
+I ran {Makefile} to see what would happen, and it interpreted as a bash script.
+Unfortunately for me, it had one interpretable bash command in it: {rm -rf
+$(OBJDIR)/* $(PRODUCT) $(DEBUG_PRODUCT)}, which will remove all the intermediate
+files and all the executables the Makefile generates.
+When using {make} to interpret the {Makefile}, that command does what it's
+supposed to do.
+If you don't set any of the variables ({$(OBJDIR)}, {$(PRODUCT)}, and
+{$(DEBUG_PRODUCT)}) because you didn't use {make}, they will be empty, meaning
+I ran {<a
+href="https://www.tecmint.com/10-most-dangerous-commands-you-should-never-execute-on-linux/">rm
+-rf &#8203; /*</a>}, which is almost the most dangerous command you can run on
+a Linux system.
+It's actually worse than deleting {system32} on a Windows computer, because at
+least you still have your personal files.
+{rm -rf /*} will actually try to delete everything on your computer.
+Fortunately, it can't delete any files you would need root privileges to modify.
+Unfortunately, it can delete any files you can modify without root privileges,
+which mainly includes your personal files.
+I didn't lose anything because it didn't have any root privileges and it hadn't
+reached anything important before I killed it using {Ctrl-c}.
+You won't be able to execute the Makefile for this reason.
+
+\{{\aside}}
+
+Now, you could move the script into a different directory, and add that
+directory to the {PATH}, and you would have one executable.
+In practice, having your executable in a different directory could lead to some
+problems or at least annoyances, as it might disrupt the organization of your
+project.
+In a {C}/{C++} project, I would have to change directories every time I wanted
+to rebuild the project and execute the command, which doesn't sound like a lot
+until you have to find an error by hand because your debugger isn't working
+properly or you want to make some slight changes to make sure everything is
+working properly.
+Furthermore, I generally have a release and a debug version of a {C}/{C++}
+program, which means the debug command will also be a command unless I
+rearrange the build system around it.
+
+### More Directories Means More to Search
+
+This issue isn't as big a deal as having more executables than you wanted, but
+it's still a potential issue.
+When you type in a command to the terminal, the computer will look through all
+the commands in a specified order.
+On my terminal ({Linux Mint 19.1 Tessa} with {bash 4.4.19}), the order seems to
+be
+
+\{{ol}}
+
+user-defined functions
+
+builtin functions
+
+executables in the first directory in {PATH}
+
+executables in the second directory in {PATH}
+
+...
+
+executables in the last directory in {PATH}
+
+\{{\ol}}
+
+Adding a directory or two won't hurt, but adding a lot of them could mean it
+takes a little bit longer for your commands to execute.
+A computer will still be quick enough that you wouldn't notice a difference
+except in some extreme circumstances.
+You will need to edit the {PATH} variable whenever you want to remove a command,
+which means going into your {~/.bash_profile} or {~/.profile} and finding the
+specific directory you added and removing it, then using the method above in the
+WARNING aside to remove it from the current {PATH} variable.
+
+### Name Clash
+
+You saw earlier that {type -a} listed the function I wrote for {cd} before the
+builtin {cd}, but let's do a little experiment.
+We're going to create two empty executables in two different directories
+specified in {PATH}, and we'll see which one the computer will run.
+To prevent anything bad from happening, we're going to come up with an unused
+command name.
+I'm going to use {hello-world}, since it's not a command on my system.
+To test if the command isn't on your system, use {type hello-world}, which
+should say something like "not found" or "does not exist".
+I'm going to pick {/usr/games} and {/usr/local/games} since they don't contain
+anything important (one is empty and the other one contains <a
+href="https://linux.die.net/man/1/espdiff">espdiff</a>, which I'll let you
+figure out).
+We're going to use the {touch} command, which creates an empty file if the file
+doesn't exist and does nothing if the file already exists.
+
+\{{terminal}}
+{{prompt}} type hello-world
+bash: type: hello-world: not found
+{{prompt}} sudo touch /usr/games/hello-world
+{{prompt}} sudo chmod 755 /usr/games/hello-world
+{{prompt}} sudo touch /usr/local/games/hello-world
+{{prompt}} sudo chmod 755 /usr/local/games/hello-world
+{{prompt}} type -a hello-world
+hello-world is /usr/games/hello-world
+hello-world is /usr/local/games/hello-world
+{{prompt}} which hello-world
+/usr/games/hello-world
+{{prompt}} sudo rm /usr/games/hello-world
+{{prompt}} sudo rm /usr/local/games/hello-world
+\{{\terminal}}
+
+Notice that {/usr/games/hello-world} shows up before
+{/usr/local/games/hello-world} and that {which} returns
+{/usr/games/hello-world}.
+This experiment shows several things:
+
+\{{ul}}
+
+There can be multiple executables with the same name as another script.
+
+Bash will go through all the directories in {PATH} and choose the first
+executable with the name you provided.
+
+Therefore, <b>the computer will only run the first executable</b>.
+
+Furthermore, <b>you could end up running the wrong executable</b>.
+
+\{{\ul}}
+
+I don't think this issue will come up too often, but I can think of a much more
+common name clash.
+You'll notice that I called one of the executables in {minit} called
+{install.sh}.
+In the context of the {minit} directory, {install.sh} makes perfect sense.
+In the general context of the entire file system, it doesn't.
+If you have another code base with its own {install.sh} executable, you could
+end up running a different {install.sh}, which, like the {Makefile} command
+earlier, could harm your computer.
+
+### Extensions on Names
+
+Commands with extensions ({.sh}, {.py}, etc.) will keep their extensions if you
+make them commands using this method.
+While you could remove the extension, you shouldn't.
+You can no longer search for the script based on its extension and you would
+have to open the file to determine the language of script.
+
+## Moving or Copying the Executable into One of the Directories in {PATH}
+
+Either {cp} or {mv} will work.
+Since they have the same exact syntax, I'll use {cp}.
+If you've run {./install.sh tutorial}, then the script should still work.
+
+\{{terminal}}
+{{prompt}} sudo cp minit/minit.sh /usr/local/bin/
+\{{\terminal}}
+
+This solution is much better than adding your whole directory to {PATH}, as you
+don't get unwanted executables, there are fewer directories to search, and you
+don't have to worry about name clashes.
+In fact, <b>if you're just distributing the executable to users who don't care
+about the source code, you can just give them the executable and move it into a
+directory in {PATH}</b>.
+Since the user no longer cares about the details of the executable, the
+extenstion doesn't matter nearly as much.
+
+If you do care about the source code and your executable is part of the source
+code, this solution introduces some new problems.
+
+\{{ul}}
+
+Scattered Build System
+
+Manual Updates
+
+Duplicate Files
+
+Accidental Overwrite
+
+\{{\ul}}
+
+### Scattered Build System
+
+You could restructure your build system to have the executable in one of the
+{PATH} directories, but then you have a major organizational problem.
+Your code is now spread into multiple directories.
+How would you share the code with someone else?
+You would have to log all the files manually, assemble them, and send them over
+with instructions on where to put the executables.
+You also couldn't use git or most other version control systems, as most VCSs
+require the project to be inside the same directory.
+In general, poor organization at any level of a software project could lead to
+<a
+href="https://medium.com/existek/what-is-technical-debt-and-how-to-calculate-it-80193e4e746d">technical
+debt</a>, which can kill your project if you don't pay it off.
+
+### Manual Updates
+
+If you decide to keep the executable as part of a separate project, then you
+will have to recopy or replace the executable whenever or someone else updates
+the code.
+You might also need to use {sudo} if you're using an important directory, like
+{/usr/local/bin}.
+
+Other than manual updates, this solution is almost optimal.
+It keeps everything organized, the executables you want to be commands will be
+commands, the executables you don't want to be commands won't be commands, no
+name clashes, and {PATH} doesn't fill up with a bunch of minor directories.
+You still have to manually update the executable in {PATH}.
+
+### Duplicate Files
+
+If you decide to copy the file into {PATH}, you'll end up wasting memory, but
+you will be able to rename your command to whatever you want.
+
+### Accidental Overwrite
+
+If you're not careful, you could end up overwriting a file that already exists.
+Before making a command, running {type} on the command will make sure it doesn't
+exist.
+
+# A Better Way?
+
+As you can see, none of the methods above will satisfy all the criteria I
+suggested.
+Unfortunately, there is no way to make an executable a command unless the
+executable is in one of the directories in {PATH}.
+Reviewing the problems with the proposed solutions and the criteria, we can come
+up with our ideal solution:
+
+\{{ul}}
+There must be a file named {minit} in one of the directories in {PATH} or we
+will not have a command.
+
+{minit} must be an executable.
+
+{minit} must update when {minit.sh} updates.
+
+Nothing in the code base must depend on {minit}.
+
+{minit} shouldn't waste space.
+
+Making {minit} shouldn't rely on anything unique to a specific Linux distro or Mac version.
+
+\{{\ul}}
+
+## Symlinks
+
+Most operating systems (including Linux, Mac, and Windows) have a built in
+filetype that will allow us to satisfy all the criteria for a command, which is
+known as a <a href="https://kb.iu.edu/d/abbe">symbolic link</a> or "symlink" for
+short.
+Symlinks consist of a file or directory name, some metadata (e.g. the time the
+link was last modified), and that's it.
+Most symlinks take up less than one hundred bytes, while executables can often
+take up orders of magnitude more space.
+Since symlinks are separate files, they don't have to share the same name,
+meaning the symlink can leave the extension off while the executable can keep it
+on.
+Symlinks also won't affect anything in the code base since they're not part of
+it.
+And since symlinks contain just a filepath and metadata, you only need to update
+a symlink if you move the linked executable.
+To create our symlink for this command, use
+
+\{{terminal}}
+{{prompt}} sudo ln -s ~/dev/minit/minit.sh /usr/local/bin/minit
+\{{\terminal}}
+
+Note that we used an absolute path and not a relative path since we want to run
+the command from everywhere.
+You can also have a symlink with a relative path as long as the relative link
+always points to the same file or directory.
+
+Now, you can still add directories to your {PATH}, like if you wanted to have a
+directory filled with your commands so you didn't mix them in with any other
+commands.
+For example, I made {/usr/nonlocal/physics/} for my physics programs on an older
+computer.
+If you did, you would treat it like I have treated {/usr/local/bin/}, where you
+store the symlinks in your personal command directory.
+
+# What if I Don't Need an Entire Executable?
+
+Often, you won't need an entire executable for a simple command.
+I generally use the command line text editor {vim}, and, while I do like it, it
+has some weird quirks compared to modern text editors.
+When you open multiple files at once with {vim}, it will open them like an old
+Unix terminal: you have to cycle through them and there's one open at a time.
+{vim} can open them in tabs (like a modern text editor) if you use {vim -p} on
+the command line.
+Since I strongly prefer using tabs as opposed to the old Unix style, I wanted
+to make a command that would work as if I had typed {vim -p}.
+If I were to write a bash script, it would have one line of code.
+In this case, I would use an <b>alias</b>.
+
+Aliases have an easy syntax.
+
+\{{code-block bash no-line-numbers}}
+alias vip="vim -p"
+\{{\code-block}}
+
+This line will create a command called {vip} that will run {vim -p} whenever
+you call it.
+Since I want it to stay across login sessions, I needed to put it in one of
+those scripts that run when you login or create a new terminal.
+On my computer, my {~/.bashrc} would run all the commands in the file
+{~/.bash_aliases} if it existed, so I created the {~/.bash_aliases} and put the
+alias in there and it worked as expected.
+
+You can also use a function by writing a function in bash and putting it in one
+of the scripts that run when you login or create a new terminal.
+
+# What About Package Managers Like {apt} for Ubuntu and {brew} for Mac?
+
+In this tutorial, I haven't actually told you how to distribute executables.
+For {minit}, I just used a github repository from which you could download the
+necessary executables and files because it's just a few short scripts.
+To install most programs in something like Ubuntu (which I'm focusing on since
+it's one of the largest Linux distros), however, you would go through the
+package manager, {apt}, like so:
+
+\{{terminal}}
+
+{{prompt}} sudo apt install [executable]
+
+\{{\terminal}}
+
+If you aren't using Ubuntu, search for {[distro] package manager} online (where
+{[distro]} is your Linux distro) and replace {apt} in the command above with
+your package manager.
+
+On a Mac, you would use {brew} (if you don't have brew set up, follow the <a
+href="https://www.howtogeek.com/211541/homebrew-for-os-x-easily-installs-desktop-apps-and-terminal-utilities/">instructions
+on setting up brew for Mac</a>) like so:
+
+\{{terminal}}
+
+{{prompt}} brew install [executable]
+
+\{{\terminal}}
+
+Furthermore, there are sometimes package managers specific to languages, such as
+<a href="https://en.wikipedia.org/wiki/Pip_(package_manager)">{pip}</a> for
+{python} and <a href="https://www.npmjs.com/">{npm}</a> for {javascript}.
+
+Package managers are out of the scope of this article, but the general process
+for having your package manager recognize and install your software is to either
+send the source code for the software to the people in charge of the package
+manager with a request for them to include it in one of their repositories or to
+tell people who want to install your software to add your specific repository to
+their lists of repositories for the password manager to check.
+
+To be clear, the people in charge of the package manager differ in how they want
+you to send them your software, which is why I can't explain more in this long
+article.
+To start you off, though, someone already asked <a
+href="https://askubuntu.com/q/16446">how to get software into Ubuntu</a> on
+StackExchange, the people behind {brew} wrote their own documentation on <a
+href="https://docs.brew.sh/Formula-Cookbook">how to add a package to
+{brew}</a>, someone already wrote a guide on <a
+href="https://dzone.com/articles/executable-package-pip-install">how to add a
+package to {pip}</a>, and <a
+href="https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry">{npm}
+has their own documentation for adding a package</a>.
+For any other package manager, you'll have to look up how to add a package to
+the specific package manager.
+
+# Summary
+
+\{{ul}}
+
+Linux and Mac commands are generally executables in one of the directories
+defined in {PATH}, aliases, or shell builtins.
+
+Creating your own command generally means adding an alias or putting an
+executable in {PATH}.
+
+We can add or remove directories to {PATH}.
+
+Some scripts run when you login and you can customize them to alter the behavior
+of your computer or terminal.
+
+We can also move or copy the executable to any directory already in {PATH}.
+
+Symlinks are files that point to other files.
+
+Symlinks will allow us to achieve all the criteria we made for commands.
+
+Use aliases when your command is simple.
+
+Use functions when you don't need to write an entire executable and you need
+functionality that an alias can't provide.
+
+\{{\ul}}

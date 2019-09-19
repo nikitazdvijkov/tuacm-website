@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="In this article, we discuss what your computer does when you type a command in the Mac or Linux terminal and how you can write your own commands.">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>How to Make a Command on Linux or Mac</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="how-to-make-a-command-on-linux-or-mac">How to Make a Command on Linux or Mac</h1></div>
+				<div id="meta-description">What is your computer doing when you type a command in the terminal?</div>
+				<div id="date-and-tags">Posted 3 September 2019 at 12:10 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>Since both Linux and Mac are based off Unix, the methods in this tutorial
+					will work for both.
+					Since I'm not a Windows user anymore and I never used the command prompt on
+					Windows, I cannot provide a good explanation of <a
+					href="https://www.instructables.com/id/How-to-Create-your-own-Commands-with-Batch/"
+					title="An article on how to make a command on Windows.">how to make a command on
+					Windows</a>, though it's similar to making a command on Linux and Mac.</i>
+				</p>
+				<p>Although the purpose of a computer is to automate tasks, programmers still have
+					to do some tasks manually.
+					For instance, to set up a <code>C</code>/<code>C++</code> project on my computer, I would have to
+					create a bunch of directories, copy a Makefile (it's a project file for
+					<code>C/C++</code>) into the right directory, modify the Makefile to generate the specific
+					program, etc.
+					Doing so requires me to remember both the directories I need to create and where
+					I stored the original Makefile.
+					Furthermore, since I wrote the Makefile specifically for <code>C++</code> projects, I have to
+					change it for <code>C</code> projects.
+					Lastly, if I mess up any of the steps above, I have to spend even more time to
+					find the error.
+					All in all, it's a waste of time and effort to go through this process to set up
+					a project, especially since I have to follow the same exact steps for every
+					project.
+				</p>
+				<p>Since I was typing in the same bash commands over and over again, I decided to
+					write a script that would execute the bash commands for me whenever I ran it.
+					Since I wanted to be able to use the script from any directory, I decided to
+					make the script into the Linux command, which I called <a
+					href="https://github.com/TheLandfill/minit" title="The github repo for
+					minit.">minit</a>.
+				</p>
+				<p>In this article, I'm going to discuss what a command is, the basics of how the
+					terminal processes commands, and how to make one yourself.
+					I will use <code>minit</code>, as a guide.
+					To run <code>minit</code>, you need to run <code>./install.sh</code> so it can figure out where the
+					specific files are and ensure it's not overwriting any other commands.
+					To make <code>minit</code> a command, we don't necessarily need it to run properly, but if
+					you do want it to run and use this tutorial, type <code>./install.sh tutorial</code> into
+					your terminal instead of <code>./install.sh</code>.
+					You can also remove the command by running <code>./uninstall.sh</code> and then deleting
+					the whole <code>minit</code> directory.
+					I will assume that the <code>minit.sh</code> script is in the directory <code>~/dev/minit</code> as if
+					you ran <code>git clone https://github.com/TheLandfill/minit</code> while in the directory
+					<code>~/dev</code>.
+				</p>
+				<h2 id="what-is-a-command">What is a Command?</h2>
+				<p>As with most topics involving computers, there is a distinction between what a
+					command is to the user and what a command is to the computer.
+				</p>
+				<p>To the user, <b>commands are phrases you type into the terminal that allow you
+					to interact with the computer</b>.
+				</p>
+				<div class="aside" >
+					<h5>Why Use a Terminal?</h5>
+					<hr>
+					<p>Before computers were powerful enough to use Graphical User Interfaces (GUI),
+						which you would recognize as your desktop where you click icons to run programs
+						or open windows, you had to use the terminal to do anything on your computer.
+						While GUIs may be more intuitive for first time users, the terminal is much more
+						powerful than a GUI because the terminal can automate processes the GUI can't.
+					</p>
+					<p>For example, if I were to use a GUI to do what <code>minit</code> does, I would have to
+						create a new directory with the project name, move to that directory, create
+						<code>bin</code>, <code>obj</code>, <code>src</code>, and <code>includes</code>, copy the <code>Makefile</code> (whose location I would
+						have to remember) into the <code>bin</code> directory and then go through the Makefile and
+						change what I need to change to make it actually work.
+					</p>
+					<p>With <code>minit</code>, I type <code>minit project-name outfile-name</code> and I'm done.
+					</p>
+					<p>As another example, I went on a trip and took a ton of photos, but since I
+						couldn't force everyone to wait for me to get all the settings exactly right to
+						take the best possible picture, I took a bunch of pictures of the same object
+						with different settings (stuff like exposure and white balance) in the hopes
+						that at least one of them would be good.
+						I ended up taking hundreds more pictures than I was going to use and I needed to
+						get rid of them.
+						I figured that if I could group together pictures that were taken around the
+						same time, I would group together pictures of the same object, which would make
+						it easier for me to get rid of the bad pictures.
+					</p>
+					<p>Doing so manually would have required me to look at the file name (which is
+						based on the time at which the picture was taken) and sort them into folders.
+						Using a bash script, however, I was able to group each picture into its proper
+						folder, which made finding bad pictures a lot easier.
+					</p>
+				</div>
+				<p>If you have any experience with bash, you'll already know some standard
+					commands, such as <code>cd</code> (change current directory), <code>mv</code> (move or rename files
+					and directories), and <code>cp</code> (copy files).
+					If you're a little more experienced, you might know about some more complex
+					commands, such as <code>sudo</code> (gives a command temporary root/admin privileges) or
+					<code>python</code> (runs the python interpreter).
+					Because you can't do much in the terminal without these commands and they come
+					on most terminals, people often assume that they're built in.
+					While some commands are (<code>cd</code> is because it's directly related to the terminal),
+					most are not.
+				</p>
+				<p>To the computer, <b>commands are executables in a specific directory, aliases,
+					functions, or builtins</b>.
+					In this article, we'll discuss how to make an executable into a command, how to
+					make an alias, and how to make a function into a command.
+					In general, you won't be able to write a builtin and functions are usually best
+					used for simple, frequently used commands that you couldn't use an alias for.
+					You'll see an example of both a builtin and a function later, and we'll go into
+					more detail about the specifics.
+				</p>
+				<div class="aside" >
+					<h5>Quick Note on Aliases</h5>
+					<hr>
+					<p>You can make an alias out of almost anything you could type on the command line,
+						but aliases have severe limits on what they can do.
+						They also rely on builtins and other bash commands.
+						We'll discuss <a href="#what-if-i-dont-need-an-entire-executable" title="Skip to
+						a later part of the article.">how to create an alias</a> later in the article.
+						Since <code>minit</code> is too complex to be an alias, I had to use a script.
+					</p>
+				</div>
+				<p>You can use the <code>which</code> command to see which executable the computer will run
+					when you type in a command.
+					Commands that are not executables (like <code>cd</code>) won't print out anything when you
+					run <code>which</code>.
+					Instead, you can use the <code>type</code> command to determine what a command is in the
+					general case.
+					Using <code>type -a NAME</code> will display all locations containing an executable named
+					NAME including aliases, builtins, and functions.
+					For example:
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ which cd</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ type -a cd</span>
+cd is a function
+cd ()
+{
+    builtin cd "$@" && chpwd
+}
+cd is a shell builtin
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ which mv</span>
+/bin/mv
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ which cp</span>
+/bin/cp
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ which sudo</span>
+/usr/bin/sudo
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ which python</span>
+/usr/bin/python
+</pre>
+				</div>
+				<div class="aside" >
+					<h5>Why is <code>cd</code> a Function?</h5>
+					<hr>
+					<p>I had to write a function that modified the behavior of <code>cd</code> slightly so that my
+						prompt <a href="https://unix.stackexchange.com/a/217097" title="This Stack
+						Exchange answer discusses how I made my terminal print out just the current and
+						parent directory.">displays the current and parent directories</a>, but it
+						doesn't matter for the tutorial.
+						On most computers, <code>cd</code> will be a shell builtin.
+						Since the only way to write a shell builtin is to write or modify a shell, we
+						aren't going to deal with that here.
+						Since I use cd frequently, the actual function is simple (it calls the builtin
+						<code>cd</code> and then runs another function if the builtin <code>cd</code> ran properly), and I
+						need to call it instead of the builtin <code>cd</code> (see the <a
+						href="#more-directories-means-more-to-search" title="You'll find a description
+						of the order in which your terminal will search for a given command.">command
+						hierarchy</a> I describe later in the article for more info), I had to make it a
+						function.
+						If you want more information on when to use a function, alias, or script to make
+						a command, see <a href="https://unix.stackexchange.com/a/30964" title="An answer
+						on Stack Overflow that describes the pros and cons of each type of
+						command.">this answer on StackOverflow</a>.
+					</p>
+					<p>Also, notice that it prints out both that <code>cd is a function</code> and <code>cd is a shell
+						builtin</code>.
+						In other words, multiple commands are named <code>cd</code>, but the computer will run just
+						the first one when you type <code>cd</code> into the console.
+					</p>
+				</div>
+				<p>Most of the other commands are actually executables in either <code>/bin</code> or
+					<code>/usr/bin/</code>.
+					You can run any executable in either of these directories from anywhere like a
+					bash command.
+					Other directories can also have commands, and these directories are listed in
+					the <code>PATH</code> environment variable.
+					To see the full list, type <code>echo $PATH</code> into your terminal.
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ echo $PATH</span>
+/home/joseph/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+</pre>
+				</div>
+				<p>You should see a list of directories separated by colons, as shown above.
+					<code>PATH</code> contains plain text, which means altering it will require us to replace
+					the old text with the new text.
+				</p>
+				<h3 id="making-an-executable">Making an Executable</h3>
+				<p>Before you can run an executable, you have to tell the system which users can
+					run it by using the <code>chmod</code> command.
+					The <code>chmod</code> command allows you to set who can read, write, and execute a file.
+					In most cases, you can use <code>chmod 755 exe</code>, which will allow anyone to execute
+					<code>exe</code> and allow the user to modify it.
+					This <a
+					href="https://askubuntu.com/questions/932713/what-is-the-difference-between-chmod-x-and-chmod-755"
+					title="An article specifically on the difference between 'chmod +x' and 'chmod
+					755' but also describes chmod well."> article on chmod</a> and the man page for
+					chmod (which you can see by typing <code>man chmod</code> in the terminal) contain more
+					information about the <code>chmod</code> command.
+				</p>
+				<h3 id="absolute-vs-relative-paths">Absolute vs. Relative Paths</h3>
+				<p>An absolute filepath starts from either your root directory, <code>/</code>, or your home
+					directory, <code>~/</code>.
+					The <code>~/</code> is shorthand for <code>/home/[username]</code>, where <code>[username]</code> is the username
+					of the person currently logged in.
+					A relative filepath starts from your current directory in the terminal and moves
+					around to different directories.
+					When making commands, they have to properly run in any directory, meaning your
+					current directory is going to change, meaning any relative filepaths you use
+					will be wrong.
+					<b>If you want to make use of a specific file or directory, then you must use an
+					absolute path.</b>
+					For example, <code>minit</code> copies the Makefile in <code>~/dev/minit/</code> (or wherever you
+					clone the project) into a different directory, so it needs an absolute path.
+					<code>minit</code> needs to create new directories from your current location, so it uses
+					relative paths.
+				</p>
+				<h2 id="making-a-command">Making a Command</h2>
+				<p>Since any executable must be in one of the directories specified in <code>PATH</code>, we
+					now have two ways to turn an executable into a command.
+				</p>
+				<ul>
+					<li>Add the directory containing your executable to the <code>PATH</code> variable.
+					</li>
+					<li>Move the executable into one of the directories in <code>PATH</code>.
+					</li>
+				</ul>
+				<p>While both of these methods will work, we want to set up some criteria for
+					determining the best method.
+					As with most programming projects, we have to focus on user experience and ease
+					of development.
+					We'll use the standard bash commands as a guide for user experience and general
+					development knowledge for development ease.
+					The method we use to create a command should
+				</p>
+				<ul>
+					<li>look like a standard bash command, since <a
+						href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment"
+						title="Wikipedia article for the Principle of Least
+						Astonishment/Surprise.">that's what people expect</a>.
+					</li>
+					<li>not create extraneous commands.
+					</li>
+					<li>work with the organization of a project or, at least, not complicate the project.
+					</li>
+					<li>use the fewest resources it can.
+					</li>
+					<li>require the user to do as little as possible to update the command.
+					</li>
+					<li>work on most, if not all, standard Linux distros and most modern Mac computers.
+					</li>
+				</ul>
+				<h3 id="adding-a-directory-to-the-path-variable">Adding a Directory to the <code>PATH</code> Variable</h3>
+				<div class="aside" style="border-width: 8px; border-radius: 12px;">
+					<h3 style="color: red; text-align: center">WARNING</h3><hr>
+					<p>Before you interact with anything related to the operating system or anything
+						related to configurations, always make sure to back your data up.
+						Modifying <code>PATH</code> doesn't severely modify your configuration, but you should
+						still back your <code>PATH</code> variable up.
+						In this case, make sure to record the value of <code>PATH</code> somewhere so you can
+						revert it back to normal.
+						You can use <code>echo $PATH</code> to print out <code>PATH</code> to the terminal.
+						If you mess up and don't record the value of <code>PATH</code>, record its current value
+						using <code>echo $PATH</code>, then run the command:
+					</p>
+					<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ export PATH="$(echo $PATH | sed "s/:[^:]*\/dev\/minit//g")"</span>
+</pre>
+					</div>
+					<p>This command will search your <code>PATH</code> variable for any string starting with a
+						colon and ending with <code>/dev/minit</code> and remove it from <code>PATH</code>.
+						If your command is in a different directory, replace <code>\/dev\/minit</code> with your
+						path to the directory, making sure that you add a backslash before every slash.
+					</p>
+				</div>
+				<p>Add the directory to your PATH variable using the syntax:
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ export PATH=$PATH:~/dev/minit</span>
+</pre>
+				</div>
+				<p>It's that simple.
+				</p>
+				<p>The <code>export</code> will mean that all that the current and all future terminal
+					windows/bash sessions you create will also have <code>PATH</code> set, <code>PATH=</code> will set the
+					<code>PATH</code> environment variable to everything that's after it, <code>$PATH</code> will expand
+					out the contents of <code>PATH</code> (which include all the directories in <code>PATH</code>), and
+					<code>:~/dev/minit</code> will be expanded to <code>:/home/[username]/dev/minit</code> (where
+					<code>[username]</code> is the username of the current user) and then appended to the
+					contents of <code>PATH</code>.
+					Now, you can call every executable in the directory from anywhere.
+					You will have to type the command every time you log into your computer unless
+					you have some script that automatically runs when you login.
+					Instead of making your own, though, add the command to the end of your
+					<code>~/.bash_profile</code> or <code>~/.profile</code> file.
+					It's one of the <a href="https://superuser.com/a/183980">main scripts that runs
+					when you login</a>.
+					Once again, <b style="color: #FF0000">DO NOT MODIFY IMPORTANT SYSTEM FILES OR
+					VARIABLES WITHOUT MAKING SOME SORT OF A BACKUP</b>.
+				</p>
+				<h4 id="multiple-executables-in-a-directory">Multiple Executables in a Directory</h4>
+				<p>We wanted to create the <code>minit</code> command, but now every executable is a command.
+					Some of these commands will not work, but could still lead to some unwanted
+					behavior.
+					Worse, if a file in the directory was executable even though it shouldn't be
+					executable (such as a text file or a Makefile), you could end up running
+					dangerous code.
+				</p>
+				<div class="aside" >
+					<h5>Almost a Tragedy</h5>
+					<hr>
+					<p>I ran <code>Makefile</code> to see what would happen, and it interpreted as a bash script.
+						Unfortunately for me, it had one interpretable bash command in it: <code>rm -rf
+						$(OBJDIR)/* $(PRODUCT) $(DEBUG_PRODUCT)</code>, which will remove all the intermediate
+						files and all the executables the Makefile generates.
+						When using <code>make</code> to interpret the <code>Makefile</code>, that command does what it's
+						supposed to do.
+						If you don't set any of the variables (<code>$(OBJDIR)</code>, <code>$(PRODUCT)</code>, and
+						<code>$(DEBUG_PRODUCT)</code>) because you didn't use <code>make</code>, they will be empty, meaning
+						I ran <code><a
+						href="https://www.tecmint.com/10-most-dangerous-commands-you-should-never-execute-on-linux/">rm
+						-rf &#8203; /*</a></code>, which is almost the most dangerous command you can run on
+						a Linux system.
+						It's actually worse than deleting <code>system32</code> on a Windows computer, because at
+						least you still have your personal files.
+						<code>rm -rf /*</code> will actually try to delete everything on your computer.
+						Fortunately, it can't delete any files you would need root privileges to modify.
+						Unfortunately, it can delete any files you can modify without root privileges,
+						which mainly includes your personal files.
+						I didn't lose anything because it didn't have any root privileges and it hadn't
+						reached anything important before I killed it using <code>Ctrl-c</code>.
+						You won't be able to execute the Makefile for this reason.
+					</p>
+				</div>
+				<p>Now, you could move the script into a different directory, and add that
+					directory to the <code>PATH</code>, and you would have one executable.
+					In practice, having your executable in a different directory could lead to some
+					problems or at least annoyances, as it might disrupt the organization of your
+					project.
+					In a <code>C</code>/<code>C++</code> project, I would have to change directories every time I wanted
+					to rebuild the project and execute the command, which doesn't sound like a lot
+					until you have to find an error by hand because your debugger isn't working
+					properly or you want to make some slight changes to make sure everything is
+					working properly.
+					Furthermore, I generally have a release and a debug version of a <code>C</code>/<code>C++</code>
+					program, which means the debug command will also be a command unless I
+					rearrange the build system around it.
+				</p>
+				<h4 id="more-directories-means-more-to-search">More Directories Means More to Search</h4>
+				<p>This issue isn't as big a deal as having more executables than you wanted, but
+					it's still a potential issue.
+					When you type in a command to the terminal, the computer will look through all
+					the commands in a specified order.
+					On my terminal (<code>Linux Mint 19.1 Tessa</code> with <code>bash 4.4.19</code>), the order seems to
+					be
+				</p>
+				<ol>
+					<li>user-defined functions
+					</li>
+					<li>builtin functions
+					</li>
+					<li>executables in the first directory in <code>PATH</code>
+					</li>
+					<li>executables in the second directory in <code>PATH</code>
+					</li>
+					<li>...
+					</li>
+					<li>executables in the last directory in <code>PATH</code>
+					</li>
+				</ol>
+				<p>Adding a directory or two won't hurt, but adding a lot of them could mean it
+					takes a little bit longer for your commands to execute.
+					A computer will still be quick enough that you wouldn't notice a difference
+					except in some extreme circumstances.
+					You will need to edit the <code>PATH</code> variable whenever you want to remove a command,
+					which means going into your <code>~/.bash_profile</code> or <code>~/.profile</code> and finding the
+					specific directory you added and removing it, then using the method above in the
+					WARNING aside to remove it from the current <code>PATH</code> variable.
+				</p>
+				<h4 id="name-clash">Name Clash</h4>
+				<p>You saw earlier that <code>type -a</code> listed the function I wrote for <code>cd</code> before the
+					builtin <code>cd</code>, but let's do a little experiment.
+					We're going to create two empty executables in two different directories
+					specified in <code>PATH</code>, and we'll see which one the computer will run.
+					To prevent anything bad from happening, we're going to come up with an unused
+					command name.
+					I'm going to use <code>hello-world</code>, since it's not a command on my system.
+					To test if the command isn't on your system, use <code>type hello-world</code>, which
+					should say something like "not found" or "does not exist".
+					I'm going to pick <code>/usr/games</code> and <code>/usr/local/games</code> since they don't contain
+					anything important (one is empty and the other one contains <a
+					href="https://linux.die.net/man/1/espdiff">espdiff</a>, which I'll let you
+					figure out).
+					We're going to use the <code>touch</code> command, which creates an empty file if the file
+					doesn't exist and does nothing if the file already exists.
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ type hello-world</span>
+bash: type: hello-world: not found
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ sudo touch /usr/games/hello-world</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ sudo chmod 755 /usr/games/hello-world</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ sudo touch /usr/local/games/hello-world</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ sudo chmod 755 /usr/local/games/hello-world</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ type -a hello-world</span>
+hello-world is /usr/games/hello-world
+hello-world is /usr/local/games/hello-world
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ which hello-world</span>
+/usr/games/hello-world
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ sudo rm /usr/games/hello-world</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ sudo rm /usr/local/games/hello-world</span>
+</pre>
+				</div>
+				<p>Notice that <code>/usr/games/hello-world</code> shows up before
+					<code>/usr/local/games/hello-world</code> and that <code>which</code> returns
+					<code>/usr/games/hello-world</code>.
+					This experiment shows several things:
+				</p>
+				<ul>
+					<li>There can be multiple executables with the same name as another script.
+					</li>
+					<li>Bash will go through all the directories in <code>PATH</code> and choose the first
+						executable with the name you provided.
+					</li>
+					<li>Therefore, <b>the computer will only run the first executable</b>.
+					</li>
+					<li>Furthermore, <b>you could end up running the wrong executable</b>.
+					</li>
+				</ul>
+				<p>I don't think this issue will come up too often, but I can think of a much more
+					common name clash.
+					You'll notice that I called one of the executables in <code>minit</code> called
+					<code>install.sh</code>.
+					In the context of the <code>minit</code> directory, <code>install.sh</code> makes perfect sense.
+					In the general context of the entire file system, it doesn't.
+					If you have another code base with its own <code>install.sh</code> executable, you could
+					end up running a different <code>install.sh</code>, which, like the <code>Makefile</code> command
+					earlier, could harm your computer.
+				</p>
+				<h4 id="extensions-on-names">Extensions on Names</h4>
+				<p>Commands with extensions (<code>.sh</code>, <code>.py</code>, etc.) will keep their extensions if you
+					make them commands using this method.
+					While you could remove the extension, you shouldn't.
+					You can no longer search for the script based on its extension and you would
+					have to open the file to determine the language of script.
+				</p>
+				<h3 id="moving-or-copying-the-executable-into-one-of-the-directories-in-path">Moving or Copying the Executable into One of the Directories in <code>PATH</code></h3>
+				<p>Either <code>cp</code> or <code>mv</code> will work.
+					Since they have the same exact syntax, I'll use <code>cp</code>.
+					If you've run <code>./install.sh tutorial</code>, then the script should still work.
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ sudo cp minit/minit.sh /usr/local/bin/</span>
+</pre>
+				</div>
+				<p>This solution is much better than adding your whole directory to <code>PATH</code>, as you
+					don't get unwanted executables, there are fewer directories to search, and you
+					don't have to worry about name clashes.
+					In fact, <b>if you're just distributing the executable to users who don't care
+					about the source code, you can just give them the executable and move it into a
+					directory in <code>PATH</code></b>.
+					Since the user no longer cares about the details of the executable, the
+					extenstion doesn't matter nearly as much.
+				</p>
+				<p>If you do care about the source code and your executable is part of the source
+					code, this solution introduces some new problems.
+				</p>
+				<ul>
+					<li>Scattered Build System
+					</li>
+					<li>Manual Updates
+					</li>
+					<li>Duplicate Files
+					</li>
+					<li>Accidental Overwrite
+					</li>
+				</ul>
+				<h4 id="scattered-build-system">Scattered Build System</h4>
+				<p>You could restructure your build system to have the executable in one of the
+					<code>PATH</code> directories, but then you have a major organizational problem.
+					Your code is now spread into multiple directories.
+					How would you share the code with someone else?
+					You would have to log all the files manually, assemble them, and send them over
+					with instructions on where to put the executables.
+					You also couldn't use git or most other version control systems, as most VCSs
+					require the project to be inside the same directory.
+					In general, poor organization at any level of a software project could lead to
+					<a
+					href="https://medium.com/existek/what-is-technical-debt-and-how-to-calculate-it-80193e4e746d">technical
+					debt</a>, which can kill your project if you don't pay it off.
+				</p>
+				<h4 id="manual-updates">Manual Updates</h4>
+				<p>If you decide to keep the executable as part of a separate project, then you
+					will have to recopy or replace the executable whenever or someone else updates
+					the code.
+					You might also need to use <code>sudo</code> if you're using an important directory, like
+					<code>/usr/local/bin</code>.
+				</p>
+				<p>Other than manual updates, this solution is almost optimal.
+					It keeps everything organized, the executables you want to be commands will be
+					commands, the executables you don't want to be commands won't be commands, no
+					name clashes, and <code>PATH</code> doesn't fill up with a bunch of minor directories.
+					You still have to manually update the executable in <code>PATH</code>.
+				</p>
+				<h4 id="duplicate-files">Duplicate Files</h4>
+				<p>If you decide to copy the file into <code>PATH</code>, you'll end up wasting memory, but
+					you will be able to rename your command to whatever you want.
+				</p>
+				<h4 id="accidental-overwrite">Accidental Overwrite</h4>
+				<p>If you're not careful, you could end up overwriting a file that already exists.
+					Before making a command, running <code>type</code> on the command will make sure it doesn't
+					exist.
+				</p>
+				<h2 id="a-better-way">A Better Way?</h2>
+				<p>As you can see, none of the methods above will satisfy all the criteria I
+					suggested.
+					Unfortunately, there is no way to make an executable a command unless the
+					executable is in one of the directories in <code>PATH</code>.
+					Reviewing the problems with the proposed solutions and the criteria, we can come
+					up with our ideal solution:
+				</p>
+				<ul>
+					<li>There must be a file named <code>minit</code> in one of the directories in <code>PATH</code> or we
+						will not have a command.
+					</li>
+					<li><code>minit</code> must be an executable.
+					</li>
+					<li><code>minit</code> must update when <code>minit.sh</code> updates.
+					</li>
+					<li>Nothing in the code base must depend on <code>minit</code>.
+					</li>
+					<li><code>minit</code> shouldn't waste space.
+					</li>
+					<li>Making <code>minit</code> shouldn't rely on anything unique to a specific Linux distro or Mac version.
+					</li>
+				</ul>
+				<h3 id="symlinks">Symlinks</h3>
+				<p>Most operating systems (including Linux, Mac, and Windows) have a built in
+					filetype that will allow us to satisfy all the criteria for a command, which is
+					known as a <a href="https://kb.iu.edu/d/abbe">symbolic link</a> or "symlink" for
+					short.
+					Symlinks consist of a file or directory name, some metadata (e.g. the time the
+					link was last modified), and that's it.
+					Most symlinks take up less than one hundred bytes, while executables can often
+					take up orders of magnitude more space.
+					Since symlinks are separate files, they don't have to share the same name,
+					meaning the symlink can leave the extension off while the executable can keep it
+					on.
+					Symlinks also won't affect anything in the code base since they're not part of
+					it.
+					And since symlinks contain just a filepath and metadata, you only need to update
+					a symlink if you move the linked executable.
+					To create our symlink for this command, use
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ sudo ln -s ~/dev/minit/minit.sh /usr/local/bin/minit</span>
+</pre>
+				</div>
+				<p>Note that we used an absolute path and not a relative path since we want to run
+					the command from everywhere.
+					You can also have a symlink with a relative path as long as the relative link
+					always points to the same file or directory.
+				</p>
+				<p>Now, you can still add directories to your <code>PATH</code>, like if you wanted to have a
+					directory filled with your commands so you didn't mix them in with any other
+					commands.
+					For example, I made <code>/usr/nonlocal/physics/</code> for my physics programs on an older
+					computer.
+					If you did, you would treat it like I have treated <code>/usr/local/bin/</code>, where you
+					store the symlinks in your personal command directory.
+				</p>
+				<h2 id="what-if-i-dont-need-an-entire-executable">What if I Don't Need an Entire Executable?</h2>
+				<p>Often, you won't need an entire executable for a simple command.
+					I generally use the command line text editor <code>vim</code>, and, while I do like it, it
+					has some weird quirks compared to modern text editors.
+					When you open multiple files at once with <code>vim</code>, it will open them like an old
+					Unix terminal: you have to cycle through them and there's one open at a time.
+					<code>vim</code> can open them in tabs (like a modern text editor) if you use <code>vim -p</code> on
+					the command line.
+					Since I strongly prefer using tabs as opposed to the old Unix style, I wanted
+					to make a command that would work as if I had typed <code>vim -p</code>.
+					If I were to write a bash script, it would have one line of code.
+					In this case, I would use an <b>alias</b>.
+				</p>
+				<p>Aliases have an easy syntax.
+				</p>
+<div class="code-block"><pre><span></span><span class="nb">alias</span> <span class="nv">vip</span><span class="o">=</span><span class="s2">&quot;vim -p&quot;</span>
+</pre></div>
+				
+				<p>This line will create a command called <code>vip</code> that will run <code>vim -p</code> whenever
+					you call it.
+					Since I want it to stay across login sessions, I needed to put it in one of
+					those scripts that run when you login or create a new terminal.
+					On my computer, my <code>~/.bashrc</code> would run all the commands in the file
+					<code>~/.bash_aliases</code> if it existed, so I created the <code>~/.bash_aliases</code> and put the
+					alias in there and it worked as expected.
+				</p>
+				<p>You can also use a function by writing a function in bash and putting it in one
+					of the scripts that run when you login or create a new terminal.
+				</p>
+				<h2 id="what-about-package-managers-like-apt-for-ubuntu-and-brew-for-mac">What About Package Managers Like <code>apt</code> for Ubuntu and <code>brew</code> for Mac?</h2>
+				<p>In this tutorial, I haven't actually told you how to distribute executables.
+					For <code>minit</code>, I just used a github repository from which you could download the
+					necessary executables and files because it's just a few short scripts.
+					To install most programs in something like Ubuntu (which I'm focusing on since
+					it's one of the largest Linux distros), however, you would go through the
+					package manager, <code>apt</code>, like so:
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ sudo apt install [executable]</span>
+</pre>
+				</div>
+				<p>If you aren't using Ubuntu, search for <code>[distro] package manager</code> online (where
+					<code>[distro]</code> is your Linux distro) and replace <code>apt</code> in the command above with
+					your package manager.
+				</p>
+				<p>On a Mac, you would use <code>brew</code> (if you don't have brew set up, follow the <a
+					href="https://www.howtogeek.com/211541/homebrew-for-os-x-easily-installs-desktop-apps-and-terminal-utilities/">instructions
+					on setting up brew for Mac</a>) like so:
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ brew install [executable]</span>
+</pre>
+				</div>
+				<p>Furthermore, there are sometimes package managers specific to languages, such as
+					<a href="https://en.wikipedia.org/wiki/Pip_(package_manager)"><code>pip</code></a> for
+					<code>python</code> and <a href="https://www.npmjs.com/"><code>npm</code></a> for <code>javascript</code>.
+				</p>
+				<p>Package managers are out of the scope of this article, but the general process
+					for having your package manager recognize and install your software is to either
+					send the source code for the software to the people in charge of the package
+					manager with a request for them to include it in one of their repositories or to
+					tell people who want to install your software to add your specific repository to
+					their lists of repositories for the password manager to check.
+				</p>
+				<p>To be clear, the people in charge of the package manager differ in how they want
+					you to send them your software, which is why I can't explain more in this long
+					article.
+					To start you off, though, someone already asked <a
+					href="https://askubuntu.com/q/16446">how to get software into Ubuntu</a> on
+					StackExchange, the people behind <code>brew</code> wrote their own documentation on <a
+					href="https://docs.brew.sh/Formula-Cookbook">how to add a package to
+					<code>brew</code></a>, someone already wrote a guide on <a
+					href="https://dzone.com/articles/executable-package-pip-install">how to add a
+					package to <code>pip</code></a>, and <a
+					href="https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry"><code>npm</code>
+					has their own documentation for adding a package</a>.
+					For any other package manager, you'll have to look up how to add a package to
+					the specific package manager.
+				</p>
+				<h2 id="summary">Summary</h2>
+				<ul>
+					<li>Linux and Mac commands are generally executables in one of the directories
+						defined in <code>PATH</code>, aliases, or shell builtins.
+					</li>
+					<li>Creating your own command generally means adding an alias or putting an
+						executable in <code>PATH</code>.
+					</li>
+					<li>We can add or remove directories to <code>PATH</code>.
+					</li>
+					<li>Some scripts run when you login and you can customize them to alter the behavior
+						of your computer or terminal.
+					</li>
+					<li>We can also move or copy the executable to any directory already in <code>PATH</code>.
+					</li>
+					<li>Symlinks are files that point to other files.
+					</li>
+					<li>Symlinks will allow us to achieve all the criteria we made for commands.
+					</li>
+					<li>Use aliases when your command is simple.
+					</li>
+					<li>Use functions when you don't need to write an entire executable and you need
+						functionality that an alias can't provide.
+					</li>
+				</ul>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#how-to-make-a-command-on-linux-or-mac" style="padding-left:12px;">How to Make a Command on Linux or Mac</a>
+				<a href="#what-is-a-command" style="padding-left:24px;">What is a Command?</a>
+				<a href="#making-an-executable" style="padding-left:36px;">Making an Executable</a>
+				<a href="#absolute-vs-relative-paths" style="padding-left:36px;">Absolute vs. Relative Paths</a>
+				<a href="#making-a-command" style="padding-left:24px;">Making a Command</a>
+				<a href="#adding-a-directory-to-the-path-variable" style="padding-left:36px;">Adding a Directory to the <code>PATH</code> Variable</a>
+				<a href="#multiple-executables-in-a-directory" style="padding-left:48px;">Multiple Executables in a Directory</a>
+				<a href="#more-directories-means-more-to-search" style="padding-left:48px;">More Directories Means More to Search</a>
+				<a href="#name-clash" style="padding-left:48px;">Name Clash</a>
+				<a href="#extensions-on-names" style="padding-left:48px;">Extensions on Names</a>
+				<a href="#moving-or-copying-the-executable-into-one-of-the-directories-in-path" style="padding-left:36px;">Moving or Copying the Executable into One of the Directories in <code>PATH</code></a>
+				<a href="#scattered-build-system" style="padding-left:48px;">Scattered Build System</a>
+				<a href="#manual-updates" style="padding-left:48px;">Manual Updates</a>
+				<a href="#duplicate-files" style="padding-left:48px;">Duplicate Files</a>
+				<a href="#accidental-overwrite" style="padding-left:48px;">Accidental Overwrite</a>
+				<a href="#a-better-way" style="padding-left:24px;">A Better Way?</a>
+				<a href="#symlinks" style="padding-left:36px;">Symlinks</a>
+				<a href="#what-if-i-dont-need-an-entire-executable" style="padding-left:24px;">What if I Don't Need an Entire Executable?</a>
+				<a href="#what-about-package-managers-like-apt-for-ubuntu-and-brew-for-mac" style="padding-left:24px;">What About Package Managers Like <code>apt</code> for Ubuntu and <code>brew</code> for Mac?</a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>
