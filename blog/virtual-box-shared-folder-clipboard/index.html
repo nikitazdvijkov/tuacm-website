@@ -19,6 +19,9 @@
 			.terminal pre {
 				color: #AAAAAA;
 			}
+			.normal .terminal pre {
+				color: #EC1111;
+			}
 			.terminal-with-header {
 				border-radius: 8px;
 				background: #D0D0D0;
@@ -119,6 +122,7 @@
 						</li>
 						<li>Every backslash in the command in step 2 can be removed and you can put
 							everything on one line.
+							<span class="normal">
 							<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ name="$(getent passwd $(whoami) | awk -F: '{print $5}')"</span>
 <span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ out_dir='/root/module-signing'</span>
 <span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ sudo mkdir ${out_dir}</span>
@@ -126,6 +130,7 @@
 <span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ sudo chmod 600 ${out_dir}/MOK*</span>
 </pre>
 							</div>
+							</span>
 						</li>
 						<li>You can't use the mouse in the blue screen section, just the keyboard.
 						</li>

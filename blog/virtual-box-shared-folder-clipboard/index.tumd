@@ -17,6 +17,10 @@ img {
 	color: #AAAAAA;
 }
 
+.normal .terminal pre {
+	color: #EC1111;
+}
+
 .terminal-with-header {
 	border-radius: 8px;
 	background: #D0D0D0;
@@ -100,6 +104,7 @@ VirtualBox website for installing VirtualBox.
 
 Every backslash in the command in step 2 can be removed and you can put
 everything on one line.
+<span class="normal">
 \{{terminal}}
 {{prompt}} name="$(getent passwd $(whoami) | awk -F: '{print $5}')"
 {{prompt}} out_dir='/root/module-signing'
@@ -107,6 +112,7 @@ everything on one line.
 {{prompt}} sudo openssl req -new -x509 -newkey rsa:2048 -keyout ${out_dir}/MOK.priv -outform DER -out ${out_dir}/MOK.der -days 36500 -subj "/CN=${name}/"
 {{prompt}} sudo chmod 600 ${out_dir}/MOK*
 \{{\terminal}}
+</span>
 
 You can't use the mouse in the blue screen section, just the keyboard.
 
