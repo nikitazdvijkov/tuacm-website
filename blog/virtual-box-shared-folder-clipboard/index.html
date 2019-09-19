@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="The complete process of installing VirtualBox, setting up a virtual machine with Xubuntu, and creating a shared clipboard and a shared folder.">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
+		<style>
+			img {
+				max-width: 100%;
+				margin-bottom: 1em;
+			}
+			.terminal pre {
+				color: #AAAAAA;
+			}
+			.terminal-with-header {
+				border-radius: 8px;
+				background: #D0D0D0;
+			}
+			.terminal-with-header .terminal {
+				border-color: #D0D0D0;
+				font-size: 0.85em;
+			}
+			.terminal .file {
+				color: #295FCC;
+				font-weight: bold;
+			}
+			.terminal .exe {
+				color: #4CE64C;
+				font-weight: bold;
+			}
+		</style>
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>How to Set Up a Lightweight Linux Virtual Box VM With a Shared Folder and Clipboard</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="how-to-set-up-a-lightweight-linux-virtual-box-vm-with-a-shared-folder-and-clipboard">How to Set Up a Lightweight Linux Virtual Box VM With a Shared Folder and Clipboard</h1></div>
+				<div id="meta-description">Running Linux on Windows has never been easier!</div>
+				<div id="date-and-tags">Posted 12 September 2019 at 4:41 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/nikita-zdvijkov/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Nikita Zdvijkov</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>In this article, we're going to discuss how you can install Virtual Box, a
+					Virtual Machine that will allow your computer to run a different operating
+					system on your computer without affecting your main computer.
+					We'll also cover how to use the same clipboard (i.e., Ctrl+C and Ctrl+V) both on
+					your computer and the virtual machine.</i>
+				</p>
+				<p>Let's say that you want to write a program for Linux on your Windows computer.
+					If you want to test the program, you need the ability to run it on a Linux
+					system.
+					Instead of going out searching for a computer that has Linux installed, you can
+					install it yourself.
+					You probably don't want to get rid of everything else on your computer just to
+					install Linux, though.
+					You want some way to install Linux without replacing Windows, which you can do
+					by using a <b>Virtual Machine</b>.
+					A <b>Virtual Machine</b> (VM) is a program that runs on your computer that
+					emulates another program natively on your computer, like a video game emulator.
+					In this tutorial, we're going to discuss how to install <b>VirtualBox</b>, a
+					virtual machine that will allow you to emulate several operating systems
+					including most Linux distros and most versions of Windows,
+				</p>
+				<h2 id="installing-virtualbox">Installing VirtualBox</h2>
+				<p>First, go to the <a href="https://www.virtualbox.org/wiki/Downloads">VirtualBox
+					Downloads page</a> and download both VirtualBox and the extension pack.
+				</p>
+				<img src="pics/dl-vbox.png" alt="An arrow points to the section VirtualBox 6.0.4
+				Platform Packages and another arrow points to the section VirtualBox 6.0.4
+				Oracle VM VirtualBox Extension Pack, which contain links to the packages you
+				want to download.">
+				<p>The 6.0.4 is just a version number indicating the most recent stable release,
+					and will likely change in the future.
+				</p>
+				<div class="aside" >
+					<h5>Installing an Earlier Version and Signing Kernel Modules</h5>
+					<hr>
+					<p>On the editor's Linux Mint computer, VirtualBox 6.0 didn't work so he used
+						VirtualBox 5.2, which you can find on <a
+						href="https://www.virtualbox.org/wiki/Download_Old_Builds_5_2">the older
+						versions download page</a>.
+						He also installed the Extension Pack for Version 5.2, which you can find on the
+						same page.
+					</p>
+					<p>He also had to follow the instructions on <a
+						href="https://gist.github.com/reillysiemens/ac6bea1e6c7684d62f544bd79b2182a4">this
+						short tutorial on signing VirtualBox Kernel Modules</a> since he was using UEFI
+						secure boot and Linux hates programs messing around with important files unless
+						the user gives the programs explicit permission.
+						A few notes about the tutorial:
+					</p>
+					<ul>
+						<li>You can use this part of the tutorial and follow the instructions on the
+							VirtualBox website for installing VirtualBox.
+						</li>
+						<li>Every backslash in the command in step 2 can be removed and you can put
+							everything on one line.
+							<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ name="$(getent passwd $(whoami) | awk -F: '{print $5}')"</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ out_dir='/root/module-signing'</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ sudo mkdir ${out_dir}</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ sudo openssl req -new -x509 -newkey rsa:2048 -keyout ${out_dir}/MOK.priv -outform DER -out ${out_dir}/MOK.der -days 36500 -subj "/CN=${name}/"</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ sudo chmod 600 ${out_dir}/MOK*</span>
+</pre>
+							</div>
+						</li>
+						<li>You can't use the mouse in the blue screen section, just the keyboard.
+						</li>
+						<li>After the step where you "Select OK to Reboot", you may not see an "OK", but you
+							could see an option to reboot that you can select instead.
+						</li>
+					</ul>
+				</div>
+				<p>Make sure to choose the platform package specific to your system.
+				</p>
+				<p>After that point, just open the file you downloaded and follow the instructions
+					to install VirtualBox on your system.
+					You should see a message that says you've installed VirtualBox successfully
+					after you're done.
+				</p>
+				<h2 id="installing-the-extension-pack">Installing the Extension Pack</h2>
+				<p>Next, you'll want to start VirtualBox up.
+					From there, go to <b>File</b> &gt; <b>Preferences</b> &gt;
+					<b>Extensions</b>.
+					Click on the down arrow on the blue square to open up a file explorer.
+					Then, navigate to the Extension Pack you downloaded, and open it.
+					You'll then see a dialog box pop up asking if you want to install the Extension
+					Pack, so click <b>Install</b>.
+				</p>
+				<img src="pics/install-vbox-ext.png" alt="A dialog box saying you have
+				successfully installed the VirtualBox Extension Pack">
+				<h2 id="setting-up-the-virtual-machine">Setting Up the Virtual Machine</h2>
+				<p>First, we're going to create the virtual machine, so we'll click the button that
+					says "New".
+					From there, we're going to give it a name so we can identify it later.
+					We're going to install Xubuntu, which is the Ubuntu Distribution with the XCFE
+					window manager instead of the GNOME window manager that comes with Ubuntu by
+					default, since it's efficient and high quality.
+				</p>
+				<img src="pics/create-vm-1.png" alt="A picture of the Create New VM window.">
+				<p>As you can see, we gave it the name "My Local Xubuntu VM" (name it whatever you
+					want), we left the machine folder untouched, we set the "Type" field to Linux
+					and the "Version" field to "Ubuntu (64-bit)".
+				</p>
+				<p>Now, we're going to have to set some parameters of our virtual machine.
+					Since the virtual machine is like its own computer so it needs RAM to function
+					properly.
+					Our virtual machine will end up taking some RAM from our main computer, but we
+					still want most of our RAM reserved for our main computer, so we're going to
+					limit the amout of RAM the virtual machine can use.
+					Since Xubuntu doesn't need a lot of resources, around 1024&nbsp;MB to
+					2048&nbsp;MB of RAM is fine.
+					Just make sure that you don't open too many tabs of Google Chrome on the virtual
+					machine or anything else that hogs a bunch of RAM.
+				</p>
+				<p>To be clear, your virtual machine has 1024&nbsp;MB to 2048&nbsp;MB of RAM,
+					meaning your virtual machine will be simulating a computer with 1&nbsp;GB to
+					2&nbsp;GB of RAM.
+					Furthermore, your main computer will then lose however much RAM you give to the
+					virtual machine while you're running it.
+					If you have 8&nbsp;GB and you give 2&nbsp;GB to your virtual machine, you will
+					have 6&nbsp;GB left for your main computer.
+				</p>
+				<p>Virtual Machines also need memory on the hard drive, so we're going to reserve
+					some memory for it on our hard drive.
+					We don't have a virtual hard drive yet, so we're going to have to create a new
+					one, so click the option to <b>Create a virtual hard disk now</b>.
+					After hitting <b>Create</b>, another window will pop up to allow us to create a
+					virtual hard disk.
+				</p>
+				<img src="pics/create-vm-2.png" alt="The VirtualBox window to create a virtual
+				hard disk.">
+				<p>We're going to select the <b>VDI (VirtualBox Disk Image)</b> option and the
+					<b>Dynamically Allocated</b> option, which will let the virtual hard drive of
+					the virtual machine grow until it reaches a cutoff point, meaning it will start
+					out taking up almost no space on the hard drive, but as we save files in the
+					virtual machine, it will grow larger.
+					As you can see, we set the cutoff point to 32.96&nbsp;GB, so the virtual machine
+					will never take up more than 32.96&nbsp;GB of our hard drive.
+				</p>
+				<p>Hit <b>Create</b> and we're done.
+					You should see the virtual machine we created in the start up menu.
+				</p>
+				<img src="pics/create-vm-3.png" alt="The start up menu after we created the
+				virtual machine. Notice that 'My Local Xubuntu VM' or whatever you named it
+				shows up.">
+				<h2 id="downloading-xubuntu">Downloading Xubuntu</h2>
+				<p>Installing most Linux distros requires you to download an <code>.iso</code> file, which
+					contains all the installation information.
+					We're going to download the <code>.iso</code> file from a <b>mirror</b>, which is a copy of
+					a web resource (like a video, website, or <code>.iso</code> file) hosted on a different
+					server.
+					Since Xubuntu is being downloaded by people all over the world, we need multiple
+					servers in a bunch of places to efficently send information about installation
+					and updates.
+					Since we're writing this article in the United States, we're going to download
+					from the United States mirror.
+				</p>
+				<img src="pics/dl-xubuntu-1.png" alt="The Download page for the xubuntu website
+				should have a list of mirrors based on countries, and we'll pick the one that
+				says 'United States'.">
+				<p>Anyway, we're going to follow the <a
+					href="https://xubuntu.org/download/">instructions on how to download
+					Xubuntu</a>.
+					If you want a different Linux distro, feel free to download any distro you want.
+					You can either choose to download the <code>.iso</code> file from a mirror or use a torrent
+					download.
+					Mirrors are easier to use but torrents are much faster, so the choice is up to
+					you.
+					Regardless of what you choose, we're going to want to download the <code>xubuntu-[version]-desktop-amd64.iso</code>
+					file if we're using a mirror or we're going to want to download the
+					<code>xubuntu-[version]-desktop-amd64.iso.torrent</code> file if we want to use a torrent, where the current
+					<code>[version]</code> as of this article was <code>18.04</code>, so we downloaded
+					<code>xubuntu-18.04-desktop-amd64.iso</code>.
+				</p>
+				<div class="aside" >
+					The <code>-amd64.iso</code> file is for 64 bit computers and the <code>-i386.iso</code> is for 32 bit
+					computers.
+					Unless you're running an old computer, you have a 64 bit computer.
+				</div>
+				<img src="pics/dl-xubuntu-2.png" alt="A picture of the Xubuntu download screen
+				with a red rectangle around the .iso file.">
+				<p>If you downloaded the <code>.iso</code> file from the mirror, then we can move on.
+					If you downloaded the <code>.iso.torrent</code> file, then you'll need to torrent download
+					the <code>.iso</code> file, then we can move on.
+					Once again, only use the <code>.iso.torrent</code> file if you know how to torrent
+					download.
+				</p>
+				<h2 id="adding-the-iso-file-to-the-virtual-machine">Adding the <code>.iso</code> File to the Virtual Machine</h2>
+				<p>Normally, when you install an operating system, you store the operating system
+					in some removable media (like a USB or a CD) and then you boot (start up
+					your computer) using the removable media.
+					We don't have a physical USB port or an optical drive (a CD tray) on our virtual
+					machine, so VirtualBox has to provide some way for us to emulate them.
+					We can access our emulated optical drive by clicking on our VM (My Local Xubuntu
+					VM), clicking on the <b>Settings</b> button (should be in the same row as the
+					<b>New</b> button we clicked earlier), clicking on <b>Storage</b>, then clicking
+					on <b>Empty</b> under <b>Controller:IDE</b> in the <b>Storage Devices</b> box,
+					clicking on the <b>CD</b> icon, then clicking on <b>Choose Virtual Optical Disk
+					File</b>.
+				</p>
+				<img src="pics/input-iso-1.png" alt="The window after clicking on Storage with
+				an arrow pointing to the CD icon.">
+				<p>From there, we just have to find the <code>.iso</code> file we downloaded (which should be
+					in <b>Downloads</b> unless you did something weird), click it and then click
+					open.
+				</p>
+				<img src="pics/input-iso-2.png" alt="The file explorer with the .iso file
+				selected.">
+				<p>Afterwards, we should see exactly what we saw earlier after navigating to
+					Storage in VirtualBox's settings but with <b>Empty</b> replaced with <code>xubuntu-18.04-desktop-amd64.iso</code>.
+				</p>
+				<p>From here, hit <b>OK</b> and we should be good to go to set up Xubuntu.
+				</p>
+				<h2 id="setting-up-xubuntu">Setting Up Xubuntu</h2>
+				<p>After hitting <b>OK</b>, you should be back at the start up screen and you
+					should see My Local Xubuntu VM on the left.
+				</p>
+				<img src="pics/create-vm-3.png" alt="The start up menu after we created the
+				virtual machine. Notice that 'My Local Xubuntu VM' or whatever you named it
+				shows up.">
+				<p>Hit <b>Start</b>, and you should see a screen like this:
+				</p>
+				<img src="pics/install-xubuntu-1.png" alt="The first install screen for setting
+				up Xubuntu, which offers you the choice of installing or trying it out.">
+				<p>Pick your installation language on the left and then click the <b>Install
+					Xubuntu</b> button.
+					From there, pick your keyboard layout.
+				</p>
+				<img src="pics/install-xubuntu-2.png" alt="The keyboard layout screen.">
+				<p>Then, check both boxes to <b>Download updates while installing Xubuntu</b> and
+					to <b>Install third party software for graphics and Wi-Fi hardware and
+					additional media formats</b> on the next screen.
+				</p>
+				<img src="pics/install-xubuntu-3.png" alt="Updates and installation of third
+				party software while installing Xubuntu screen.">
+				<p>Then, don't bother with anything (including encryption and LVM) except the
+					<b>Erase Disk and Install Xubuntu</b> option.
+				</p>
+				<img src="pics/install-xubuntu-4.png" alt="Options to erase disk and install
+				Xubuntu and to set up encryption and LVM.">
+				<p>A popup will appear asking if you're sure that you want to erase the disk, which
+					you do since it's empty anyways.
+				</p>
+				<img src="pics/install-xubuntu-5.png" alt="The popup saying 'If you continue,
+				the changes listed below will be written to the disks...'.">
+				<p>After that, you'll select your time zone.
+					Then, you'll select your username, computer name (how other computers will see
+					your computer), and your password.
+					We decided to have our username as "johndoe" and our computer name as
+					"johndoe-comp".
+					You'll also want to require your password to log in for security reasons.
+				</p>
+				<p>From there, hit <b>Continue</b> and wait until the installation finishes.
+					You should see a window pop up telling you installation is complete and that
+					you'll have to restart your computer.
+					Hit <b>Restart Now</b>.
+					If you see something saying <b>Remove Installation Disk, then Reboot</b>, you
+					need to "eject" the installation disk, which I did by shutting down the virtual
+					machine (closing the window), then going into the <a
+					href="#adding-the-iso-file-to-the-virtual-machine">settings where we added the
+					<code>.iso</code> file into storage</a>, clicking on the <b>CD icon</b> and clicking the
+					option to remove the disk.
+					If you do it correctly, you should see that <code>xubuntu-18.04-desktop-amd64.iso</code> has been replaced with
+					<code>Empty</code>.
+				</p>
+				<p>From there, go back to the start menu and restart your virtual machine.
+					Once you do, let it load up and it will eventually get to a log in screen, which
+					takes the password you created in this step.
+					We have successfully made a working virtual machine!
+				</p>
+				<h2 id="updating-software">Updating Software</h2>
+				<p>If you see an prompt to update software, ignore it.
+					We're going to use the terminal to update our software since it's more powerful.
+					Go into apps (it's a button with the Xubuntu logo into the top left corner of
+					the screen that works just like hitting the Windows icon in the bottom left
+					corner of the screen) and select <b>Terminal</b> or <b>Terminal Emulator</b>.
+				</p>
+				<img src="pics/up-vm-3.png" alt="The Xubuntu logo working just like the Windows
+				icon with the Terminal Emulator selected.">
+				<p>Doing so will open a terminal that looks like
+				</p>
+				<div class="terminal-with-header">
+					<div style="float: left; position: relative; margin-left:
+					1.5ch;">&#9662;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+					<div style="float: right; position: relative; margin-right: 8px;">&#10799;</div>
+					<div style="float: right; position: relative; margin-right:
+					8px;">+</div>
+					<div style="float: right; position: relative; margin-right:
+					8px;">&ndash;</div>
+					<div class="text-center" style="font-weight: bold; color: #444444;
+					margin-bottom: 0.3em; font-size: 0.9em;">Terminal
+						- johndoe@johndoe-comp: ~
+					</div>
+					<div style="font-size: 0.75em; color:
+					#444444; padding-left: 2ch;">File&nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;View&nbsp;&nbsp;&nbsp;&nbsp;Terminal&nbsp;&nbsp;&nbsp;&nbsp;Tabs&nbsp;&nbsp;&nbsp;&nbsp;Help</div>
+				<div class="terminal"><pre>
+To run a command as administrator (user "root"), use "sudo &lt;command&gt;".
+See "man sudo_root" for details.
+
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ <span style="font-size: 1.5em;">&#9646;</span></span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&nbsp;
+</pre>
+				</div>
+				</div>
+				<p>The first two lines will only be displayed the first time you open a terminal.
+				</p>
+				<p>After this point, we're just going to display the black box in the terminal
+					window.
+				</p>
+				<p>At this point, I would recommend opening this webpage in your VM on Firefox (you
+					can install Chrome later) so that you can copy the commands into the terminal
+					from within the VM.
+					Later in the article, we're going to show you how to make a shared clipboard
+					that will allow you to copy and paste between the host computer and the VM.
+				</p>
+				<p>First, we're going to want to update all the programs on our computer, so we'll
+					use the commands <code>sudo apt update</code> to figure out everything that needs to be
+					updated and <code>sudo apt upgrade</code> to update everything.
+					The <code>sudo</code> command is equivalent to <code>Run As Administrator</code> on Windows and <code>apt</code>
+					is a <b>package manager</b>, which manages what software you're running on your
+					computer.
+					Whenever you run a command with <code>sudo</code> at the front, you're going to get a line
+					that says <code>[sudo] password for johndoe:</code>, at which point you need to type your
+					user password for the account.
+					If you run two commands with <code>sudo</code> in a short time, you probably won't have to
+					type it in the second time.
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ sudo apt update</span>
+[sudo] password for johndoe:
+Hit:1 http://us.archive.ubuntu.com/ubuntu bionic InRelease
+Get:2 http://us.archive.ubuntu.com/ubuntu bionic-updates InRelease [88.7 kB]
+Get:3 http://security.ubuntu.com/ubuntu bionic-security InRelease [88.7 kB]
+Get:4 http://us.archive.ubuntu.com/ubuntu bionic-backports InRelease [74.6 kB]
+Get:5 http://us.archive.ubuntu.com/ubuntu bionic-updates/main amd64 DEP-11 Metadata [285 kB]
+Get:6 http://security.ubuntu.com/ubuntu bionic-security/main amd64 DEP-11 Metadata [26.4 kB]
+Get:7 http://us.archive.ubuntu.com/ubuntu bionic-updates/main DEP-11 48x48 Icons [70.9 kB]
+Get:8 http://security.ubuntu.com/ubuntu bionic-security/main DEP-11 48x48 Icons [14.6 kB]
+Get:9 http://us.archive.ubuntu.com/ubuntu bionic-updates/main DEP-11 64x64 Icons [140 kB]
+Get:10 http://security.ubuntu.com/ubuntu bionic-security/main DEP-11 64x64 Icons [37.8 kB]
+Get:11 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 Packages [1,006 kB]
+Get:12 http://security.ubuntu.com/ubuntu bionic-security/universe amd64 DEP-11 Metadata [42.1 kB]
+Get:13 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe i386 Packages [979 kB]
+Get:14 http://security.ubuntu.com/ubuntu bionic-security/universe DEP-11 48x48 Icons [16.4 kB]
+Get:15 http://security.ubuntu.com/ubuntu bionic-security/universe DEP-11 64x64 Icons [116 kB]
+Get:16 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 DEP-11 Metadata [253 kB]
+Get:17 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe DEP-11 48x48 Icons [205 kB]
+Get:18 http://security.ubuntu.com/ubuntu bionic-security/multiverse amd64 DEP-11 Metadata [2,464 B]
+Get:19 http://us.archive.ubuntu.com/ubuntu bionic-updates/universe DEP-11 64x64 Icons [462 kB]
+Get:20 http://us.archive.ubuntu.com/ubuntu bionic-updates/multiverse amd64 DEP-11 Metadata [2,468 B]
+Get:21 http://us.archive.ubuntu.com/ubuntu bionic-backports/universe amd64 DEP-11 Metadata [7,924 B]
+Fetched 3,920 kB in 5s (808 kB/s)
+Reading package lists...
+Building dependency tree...
+Reading state information...
+307 packages can be upgraded. Run 'apt list --upgradable' to see them.
+</pre>
+				</div>
+				<p>In general, the output of <code>sudo apt update</code> is a <code>Hit:</code>, a bunch of <code>Get:</code>s, a
+					<code>Fetched X kB in Ys (Z kb/s)</code>, and then everything else in the previous
+					terminal.
+					Upgrading <code>307</code> packages will take a while, so you might want to get something
+					else to do for a little bit while you're upgrading them.
+					You could also skip the upgrades for now, but I wouldn't recommend it.
+					Type <code>sudo apt upgrade</code> into the terminal and hit <code>Enter</code>, and the computer will
+					update all the packages it found during <code>sudo apt update</code>.
+					I can't show the output here since it's just a wall of text, but I will show
+					some of the results of <code>sudo apt install gcc make perl</code> later, which looks
+					similar to the output of <code>sudo apt upgrade</code>.
+					When you see the line
+				</p>
+				<div class="terminal"><pre>Do you want to continue [Y/n]?
+</pre>
+				</div>
+				<p>hit <code>y</code> then <code>Enter</code>.
+				</p>
+				<h2 id="installing-guest-additions">Installing Guest Additions</h2>
+				<p>We're going to need to install <b>Guest Additions</b> in order to use shared
+					folders.
+					We can install them by clicking on the <b>Devices</b> tab at the top of the VM,
+					then clicking the option <b>Insert Guest Additions CD image...</b>.
+				</p>
+				<img src="pics/ga-1.png" alt="A screenshot of us selecting the Insert Guest
+				Additions CD image... option from the Devices tab.">
+				<p>From there, type <code>cd /media/[username]/VBox_GAs_[version_number]</code> into the
+					terminal and hit <code>Enter</code> to change the current directory.
+					In our case, our <code>[username]</code> is <code>johndoe</code> and our <code>[version_number]</code> is
+					<code>6.0.4</code>, so we typed <code>cd /media/johndoe/VBox_GAs_6.0.4</code>.
+					When the editor installed VirtualBox on his laptop, he installed version
+					<code>5.2.32</code>, so he typed <code>cd /media/johndoe/VBox_GAs_5.2.32</code>.
+					the files in the directory and make sure that you see the files below.
+				</p>
+				<div class="aside" >
+					<h5><code>Tab</code> Autocomplete</h5>
+					<hr>
+					If you don't know the version off the top of your head, hit the <code>Tab</code> key while
+					typing it in and it will autocomplete for you if possible or display every way
+					it could autocomplete what you've typed in.
+					For example,
+					<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ cd ~</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ ls Do</span>
+Documents/&nbsp;&nbsp;&nbsp;&nbsp;Downloads/
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ ls Downloads</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$</span>
+</pre>
+					</div>
+					<p>After moving to <code>~</code>, your home directory (it's directly analogous to
+						<code>C:\Users\[username]</code> on a Windows computer), we start typing <code>ls Do</code> (let's say
+						we want to see everything in our Downloads folder), then we hit <code>Tab</code> to
+						autocomplete.
+						Since both <code>Documents</code> and <code>Downloads</code> start with <code>Do</code>, the terminal doesn't
+						know which one you want, so it prints out both <code>Documents/</code> and <code>Downloads/</code>.
+						Then if we type <code>ls Dow</code> and then hit <code>Tab</code>, it will autocomplete to <code>ls
+						Downloads</code>.
+						We can then hit enter and see that we don't have any files in <code>Downloads</code>, so
+						<code>ls Downloads</code> won't print anything out.
+					</p>
+					<p>In our case, we can type in <code>cd /media/</code> and hit <code>Tab</code> a few times and it will
+						be the correct directory.
+					</p>
+				</div>
+				<p>Type <code>ls</code> to print out all the files in the current directory and make sure you
+					have files and folders that look like these:
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ cd /media/johndoe/VBox_GAs_6.0.4</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>/media/johndoe/VBox_GAs_6.0.4</b></span>$ ls</span>
+<span class="file">32Bit</span>
+<span class="file">64Bit</span>
+AUTORUN.INF
+<span class="exe">autorun.sh</span>
+<span class="file">cert</span>
+<span class="file">OS2</span>
+<span class="exe">runasroot.sh</span>
+TRANS.TBL
+<span class="exe">VBoxLinuxAdditions.run</span>
+VBoxSolarisAdditions.pkg
+<span class="exe">VBoxWindowsAdditions-amd64.exe</span>
+<span class="exe">VBoxWindowsAdditions.exe</span>
+<span class="exe">VBoxWindowsAdditions-x86.exe</span>
+</pre>
+				</div>
+				<p>Then, we're going to execute the <code>VBoxLinuxAdditions.run</code> file using the syntax
+					<code>./VBoxLinuxAdditions.run</code>.
+					Since we're messing around with system files, we need to use <code>sudo</code> to tell the
+					computer that we are allowing <code>VBoxLinuxAdditions.run</code> to mess with these files.
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>/media/johndoe/VBox_GAs_6.0.4</b></span>$ sudo ./VBoxLinuxAdditions.run</span>
+[sudo] password for johndoe:
+Verifying archive integrity... All good.
+Uncompressing VirtualBox 5.2.32 Guest Additions for Linux........
+VirtualBox Guest Additions installer
+Copying additional installer modules ...
+Installing additional modules ...
+VirtualBox Guest Additions: Building the VirtualBox Guest Additions kernel
+modules.  This may take a while.
+VirtualBox Guest Additions: To build modules for other installed kernels, run
+VirtualBox Guest Additions:   /sbin/rcvboxadd quicksetup &lt;version&gt;
+VirtualBox Guest Additions: Building the modules for kernel 4.15.0-20-generic.
+
+This system is currently not set up to build kernel modules.
+Please install the gcc make perl packages from your distribution.
+VirtualBox Guest Additions: Running kernel modules will not be replaced until
+the system is restarted
+VirtualBox Guest Additions: Starting.
+VirtualBox Guest Additions: Building the modules for kernel 4.15.0-20-generic.
+
+This system is currently not set up to build kernel modules.
+Please install the gcc make perl packages from your distribution.
+</pre>
+				</div>
+				<p>We got an error, which we can fix by installing the packages <code>gcc</code>, <code>make</code>, and
+					<code>perl</code>, which we can do by using <code>sudo apt install gcc make perl</code>.
+					The last two lines of the terminal above make it explicit that we need to
+					install these packages.
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>/media/johndoe/VBox_GAs_6.0.4</b></span>$ sudo apt install gcc make perl</span>
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+perl is already the newest version (5.26.1-6ubuntu0.3).
+The following additional packages will be installed:
+  gcc-7 libasan4 libatomic1 libc-dev-bin libc6-dev libcilkrts5 libgcc-7-dev
+  libitm1 liblsan0 libmpx2 libquadmath0 libtsan0 libubsan0 linux-libc-dev
+  manpages-dev
+Suggested packages:
+  gcc-multilib autoconf automake libtool flex bison gcc-doc gcc-7-multilib
+  gcc-7-doc gcc-7-locales libgcc1-dbg libgomp1-dbg libitm1-dbg libatomic1-dbg
+  libasan4-dbg liblsan0-dbg libtsan0-dbg libubsan0-dbg libcilkrts5-dbg
+  libmpx2-dbg libquadmath0-dbg glibc-doc make-doc
+The following NEW packages will be installed:
+  gcc gcc-7 libasan4 libatomic1 libc-dev-bin libc6-dev libcilkrts5
+  libgcc-7-dev libitm1 liblsan0 libmpx2 libquadmath0 libtsan0 libubsan0
+  linux-libc-dev make manpages-dev
+0 upgraded, 17 newly installed, 0 to remove and 307 not upgraded.
+Need to get 17.1 MB of archives.
+After this operation, 73.9 MB of additional disk space will be used.
+Do you want to continue? [Y/n]
+</pre>
+				</div>
+				<p>After typing <code>y</code> and hitting <code>Enter</code> to continue, you should see a bunch of
+					<code>Get:</code>s followed by a <code>Fetched X MB in Ys (Z kB/s)</code>, then a bunch of <code>Selecting
+					previously ...</code>, <code>Preparing to unpack ...</code>, and <code>unpacking ...</code> lines, then a
+					few <code>Setting up ...</code> and <code>Processing triggers for ...</code> lines, and then you're
+					done.
+					Now, we should be able to run <code>sudo ./VBoxLinuxAdditions.run</code> without any
+					problems.
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>/media/johndoe/VBox_GAs_6.0.4</b></span>$ sudo ./VBoxLinuxAdditions.run</span>
+[sudo] password for johndoe:
+Verifying archive integrity... All good.
+Uncompressing VirtualBox 5.2.32 Guest Additions for Linux........
+VirtualBox Guest Additions installer
+Removing installed version 5.2.32 of VirtualBox Guest Additions...
+update-initramfs: Generating /boot/initrd.img-4.15.0-20-generic
+Copying additional installer modules ...
+Installing additional modules ...
+VirtualBox Guest Additions: Building the VirtualBox Guest Additions kernel
+modules.  This may take a while.
+VirtualBox Guest Additions: To build modules for other installed kernels, run
+VirtualBox Guest Additions:   /sbin/rcvboxadd quicksetup <version>
+VirtualBox Guest Additions: Building the modules for kernel 4.15.0-20-generic.
+update-initramfs: Generating /boot/initrd.img-4.15.0-20-generic
+VirtualBox Guest Additions: Running kernel modules will not be replaced until
+the system is restarted
+VirtualBox Guest Additions: Starting.
+</pre>
+				</div>
+				<p>Notice that we're still in the directory <code>/media/johndoe/VBox_GAs_6.0.4</code> when we
+					run the command <code>sudo ./VBoxLinuxAdditions.run</code>.
+					If we were instead in the directory <code>~</code> (remember that it's our home directory),
+					the command would look for <code>VBoxLinuxAdditions.run</code> in our home directory
+					instead of in <code>/media/johndoe/VBox_GAs_6.0.4</code>, which doesn't exist.
+				</p>
+				<h2 id="creating-a-shared-folder">Creating a Shared Folder</h2>
+				<p>Now that we've set up our virtual machine, we need to create some way for us to
+					share files between them, so let's create a shared folder.
+					First, we're going to need to go to our host machine (your original operating
+					system) and create a folder.
+					It doesn't matter where we create it or what we named it, so long as we know
+					where we created it and what we named it.
+					We decided to create a folder called <code>vm-shared</code> in the directory
+					<code>/Users/nikitazdvijkov/Documents/</code>.
+				</p>
+				<p>Now, we need to go back to our VirtualBox settings for My Local Xubuntu VM.
+				</p>
+				<img src="pics/create-vm-3.png" alt="The start up menu after we created the
+				virtual machine.">
+				<p>Click on <b>My Local Xubuntu VM</b>, then click on <b>Settings</b>, then
+					<b>Shared Folders</b>, then click the <b>Folder with a Plus</b> button, then
+					type the path and the folder name into the box that says <b>Folder Path:</b>.
+					You can also use the arrow on the right of that box to browse through the file
+					manager on your system and select the folder.
+					Then, select the options to <b>Auto-mount</b> and <b>Make Permanent</b>, then
+					hit <b>OK</b>.
+				</p>
+				<img src="pics/sf-1.png" alt="The Shared Folders popup after hitting the Folder
+				with a Plus button.">
+				<p>You should then see the folder in the list of shared folders with <b>Access</b>
+					set to <b>Full</b> and <b>Auto Mount</b> set to <b>Yes</b>.
+					Also, note the name that shows up in <b>Name</b> column, which we will use later
+					as <code>[name]</code>.
+				</p>
+				<p>As a test, let's create a text file in the shared folder on our host system and
+					see if we can access it from the virtual machine.
+					You can use any code editor (e.g. Sublime), Notepad, etc. you want, just save it
+					as some sort of text file.
+				</p>
+				<p>Now, we should be able to access the shared folder in <code>/media/sf_[name]</code>, so
+					let's try <code>cd /media/sf_[name]</code>.
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>/media/johndoe/VBox_GAs_6.0.4</b></span>$ cd /media/sf_vm-shared</span>
+bash: cd: sf_vm-shared: Permission denied
+</pre>
+				</div>
+				<p>We need to tell the computer that <code>johndoe</code> has permission to access the folder,
+					so we'll need to add <code>johndoe</code> to the list of users that have access to the
+					folder, which we can do using <code>sudo adduser johndoe vboxsf</code>.
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>/media/johndoe/VBox_GAs_6.0.4</b></span>$ sudo adduser johndoe vboxsf</span>
+Adding user `johndoe' to group `vboxsf' ...
+Adding user johndoe to group vboxsf
+Done.
+</pre>
+				</div>
+				<p>After adding <code>johndoe</code> to <code>vboxsf</code>, we have to log out and log back in again to
+					see a change, so log out by clicking the <b>Xubuntu icon</b> at the top left of
+					the screen that you used to open the terminal, then click the <b>Power
+					Button</b> on the screen, then click the <b>Log Out Button</b>.
+					Wait a few seconds, and you should end up back at the log in screen.
+					Type in your password.
+					Once you've logged in, open up another terminal and try <code>cd /media/sf_vm-shared</code>
+					again and it should work.
+					If you type <code>ls</code> afterwards, then you should be able to see the text file you
+					created in the shared folder on your host machine.
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ cd /media/sf_vm-shared</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>johndoe@johndoe-comp</b></span>:<span style="color:#295FCC;"><b>/media/sf_vm-shared</b></span>$ ls</span>
+test.txt
+</pre>
+				</div>
+				<p>Note that it doesn't matter what directory you're in when you type <code>cd
+					/media/sf_vm-shared</code>.
+				</p>
+				<p>Now, if you want to edit or run a file on both your VM and your host computer,
+					move the file into <code>/media/sf_vm-shared</code>.
+				</p>
+				<h2 id="setting-up-a-shared-clipboard">Setting Up a Shared Clipboard</h2>
+				<p>A shared clipboard means you can use Ctrl+C to copy text on your host computer
+					and Ctrl+V to paste it on your VM, and vice versa.
+					For example, you've probably noticed that you can't copy and paste the commands
+					from the article on the host machine into the terminal.
+					It's quite easy to fix.
+					In your VM, click <b>Devices</b> at the top of the window, then to <b>Shared
+					Clipboard</b>, then click <b>Bidirectional</b> and you should be done.
+				</p>
+				<img src="pics/create-vm-3.png" alt="The start up menu after we created the
+				virtual machine.">
+				<p>From here, click on <b>My Local Xubuntu VM</b>, then <b>Settings</b>, then
+					<b>General</b>, then click on the <b>Advanced</b> tab, then click on the box
+					next to <b>Shared Clipboard:</b> and select <b>Bidirectional</b> from the
+					drop down menu.
+					You might need to log out on the VM or turn the VM off and back on again, but it
+					will work after a bit.
+					You can also change the settings in the VirtualBox startup menu.
+				</p>
+				<p>Either method worked on the editor's Linux host computer, but the second method
+					is more likely to work on the author's Mac host computer.
+				</p>
+				<div class="aside" >
+					<h5>Copying From and Pasting Into the Terminal</h5>
+					<hr>
+					<p>In the terminal, "Ctrl+C" is reserved for stopping a program running in the
+						terminal and "Ctrl+V" is reserved for "verbatim input", meaning that it will
+						write out the literal character that comes after it, such as the "Esc" key.
+					</p>
+					<p>Regardless, "Ctrl+C" and "Ctrl+V" are reserved for other things, so you have to
+						use "Ctrl+Shift+C" and "Ctrl+Shift+V" to copy and paste things from the
+						terminal.
+					</p>
+				</div>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/nikita-zdvijkov/large.jpg" id="author-description-image" alt="A picture of Nikita Zdvijkov, the author.">
+					<div id="author-description-text">
+						<p>Nikita Zdvijkov &ndash; junior, electrical engineering, TUACM president &ndash;
+							<a href="http://nikitazdvijkov.com">my website</a>.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#how-to-set-up-a-lightweight-linux-virtual-box-vm-with-a-shared-folder-and-clipboard" style="padding-left:12px;">How to Set Up a Lightweight Linux Virtual Box VM With a Shared Folder and Clipboard</a>
+				<a href="#installing-virtualbox" style="padding-left:24px;">Installing VirtualBox</a>
+				<a href="#installing-the-extension-pack" style="padding-left:24px;">Installing the Extension Pack</a>
+				<a href="#setting-up-the-virtual-machine" style="padding-left:24px;">Setting Up the Virtual Machine</a>
+				<a href="#downloading-xubuntu" style="padding-left:24px;">Downloading Xubuntu</a>
+				<a href="#adding-the-iso-file-to-the-virtual-machine" style="padding-left:24px;">Adding the <code>.iso</code> File to the Virtual Machine</a>
+				<a href="#setting-up-xubuntu" style="padding-left:24px;">Setting Up Xubuntu</a>
+				<a href="#updating-software" style="padding-left:24px;">Updating Software</a>
+				<a href="#installing-guest-additions" style="padding-left:24px;">Installing Guest Additions</a>
+				<a href="#creating-a-shared-folder" style="padding-left:24px;">Creating a Shared Folder</a>
+				<a href="#setting-up-a-shared-clipboard" style="padding-left:24px;">Setting Up a Shared Clipboard</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>
