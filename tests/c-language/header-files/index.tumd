@@ -1,0 +1,15 @@
+article
+Title:		Header Files in C
+Author:		Joseph Mellor
+Tagline:	The Glue of C Programs
+Code Style:	trac+dark
+Import:
+Scripts:
+
+<i>This is the thirteenth article in the </i>Making Sense of C<i> series.
+In this article, we're going to discuss header files, which will allow us to use
+the standard library functions to print things to the terminal, read from files,
+and write to files.</i>
+
+As we stated back in the introduction to the series, we want a standard library
+for {C} that contains all the basic functionality that a user would need.

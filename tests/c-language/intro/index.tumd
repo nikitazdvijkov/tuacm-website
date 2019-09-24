@@ -472,6 +472,8 @@ While some wheels should be reinvented, printing stuff to the terminal should
 not.
 Furthermore, if your goal is to write code that can be compiled on any computer,
 you should take care of anything that could differ from computer to computer.
+Therefore, if we want to make {C} work, we need a standard library that contains
+all the basic functionality a programmer would need.
 
 # Summary
 

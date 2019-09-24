@@ -1,1 +1,2 @@
+https://tuacm.com/blog/
 How to Make a Command on Linux or Mac|Joseph Mellor|What is your computer doing when you type a command in the terminal?|make-command-linux-mac/

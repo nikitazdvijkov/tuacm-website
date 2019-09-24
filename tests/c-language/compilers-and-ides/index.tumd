@@ -308,13 +308,13 @@ href="https://www.tutorialspoint.com/How-do-I-set-up-C-Cplusplus-on-Eclipse-in-W
 up Eclipse in Windows for C/C++ development</a>.
 
 I threw a lot at you, so if you feel confused at any point, here's the simplest
-way to get our basic {C} programs to compile on Windows.
+way to get our basic {C} programs to compile on Windows:
 
 \{{ol}}
 
 Set up the {{wsl}} using the linked tutorial.
 Follow the entire process in the tutorial except for setting up {npm},
-{Node.js}, or ESlint since those are JavaScript things that we won't need for
+{Node.js}, or {ESlint} since those are JavaScript things that we won't need for
 programming in {C} at all.
 
 Download either VSCode or Sublime Text (the specific text editor doesn't
@@ -330,15 +330,17 @@ That's it.
 
 ## Linux
 
-If you're on Linux, you should probably use a decent text editor like Sublime
-Text and the command line for everything else, though you might be able to
-integrate everything into Sublime Text.
+If you're on Linux, you should probably use a decent text editor like VSCode
+Sublime Text and the command line for everything else, though you might be able
+to integrate everything into the text editor, though it's more work on your
+part.
 
 ## MacOS
 
 If you're on Mac, you should probably use XCode or anything that works on Linux.
 MacOS also has a terminal that works almost exactly like the Linux terminal
-(both were based of the Unix System).
+(both were based of the Unix System), so you can use a decent text editor and
+the terminal just like in Linux.
 
 # Which IDE Does the Author Use?
 
@@ -357,21 +359,24 @@ code on the target system, debug your code, and manage your files matters when
 choosing an IDE.
 Other than that, most IDEs share probably 95% of the things you would want in an
 IDE, so the choice is over the 5% of features you don't even need.
-For this tutorial, we're going to be focused on using a terminal since
+For this tutorial, we're going to be focused on using a terminal with an
+external text editor since
 
 \{{ul}}
 
 you either have a terminal built into your OS (Linux and MacOS) or you can
 emulate a terminal using the Windows Subsystem for Linux or a virtual machine,
 
-the best IDE for Windows, Visual Studio, barely supports {C},
+the best IDE for Windows, Visual Studio, barely supports {C} (if we were
+learning in {C++}, I would absolutely recommend it),
 
-setting up any of the IDEs for {C} development is harder than using a command
-line,
+setting up any of the IDEs mentioned in this article for {C} development is
+harder than using a command line,
 
-practicing the command line is a much better skill to have than knowing the
+knowing the command line is a much better skill to have than knowing the
 location of the right button to build a project (though you should still know
-the terms),
+the terms <b>Build</b>, <b>Rebuild</b>, <b>Clean</b>, and <b>Compile</b>) or
+where to change a specific setting,
 
 and I would have to spend time on at least three articles for each IDE that most
 readers won't read simply because they'll only need to install one IDE.
@@ -380,7 +385,23 @@ readers won't read simply because they'll only need to install one IDE.
 
 though we will try to indicate where and how to compile programs using other
 IDEs.
-If anyone wants to write an article on setting up a specific IDE for {C}, feel
-free to contact us at <a
+If anyone wants to write an article on setting up a specific IDE for {C} and
+writing programs in it, contact us at <a
 href="mailto:thetuacm@gmail.com">thetuacm@gmail.com</a> and we can talk more
 about it.
+
+# What's Next
+
+We just need to figure out how to print something to the terminal and how to
+read from a file and we can write our first program (and pretty much any other
+program).
+Now, if we were coming up with the {C} language from scratch, we would have to
+write these functions for the standard library, making them specific to the
+operating system and CPU architecture, which would be annoying.
+Luckily for us, we're never going to need to write these functions because
+someone else has already written these functions.
+The next article will be explaining the single line of code we're going to put
+into our program to allow us to read from files and print things out to the
+terminal.
+
+See you in <a href="../12-header-files/">Header Files in C</a>.

@@ -1,3 +1,4 @@
+
 The Memory Hierarchy|Joseph Mellor|Picking the best algorithm for the task will make your code run fast. Using memory properly will make it even faster.|memory-hierarchy/
 Setting Up a VirtualBox VM With a Shared Folder and Clipboard|Nikita Zdvijkov|Running Linux on Windows has never been easier!|virtual-box-shared-folder-clipboard/
 Representing Integers in Binary|Joseph Mellor|Getting close to the metal in this article.|integer-representations-binary/
