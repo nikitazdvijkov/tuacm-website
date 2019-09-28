@@ -381,4 +381,4 @@ to have to accept that the language is the way it is without any explanation
 why.
 
 Once we've covered those two detours, we'll move on to dealing with the <a
-href="../05-types/index.html">fundamental types in {C}</a>.
+href="../types/index.html">fundamental types in {C}</a>.

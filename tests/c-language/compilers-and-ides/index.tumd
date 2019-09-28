@@ -404,4 +404,4 @@ The next article will be explaining the single line of code we're going to put
 into our program to allow us to read from files and print things out to the
 terminal.
 
-See you in <a href="../12-header-files/">Header Files in C</a>.
+See you in <a href="../header-files/">Header Files in C</a>.

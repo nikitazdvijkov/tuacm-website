@@ -140,7 +140,7 @@ to change</b>.
 #### Lvalues and Rvalues
 <hr>
 
-If you remember back in the <a href="../04-variables/index.html">variables and
+If you remember back in the <a href="../variables/index.html">variables and
 basic arithmetic</a> article in this series, I defined rvalues as expressions
 that <b>cannot appear on the left of an assignment operator</b> and lvalues as
 expressions that <b>can appear on the left side of an assignment operator</b>,
@@ -608,5 +608,5 @@ characters in a string and some way to add to the count if we find that the two
 words match.
 
 In the next article, we're going to introduce <a
-href="../08-control-flow/index.html">Control Flow in C</a>, which will be our
+href="../control-flow/index.html">Control Flow in C</a>, which will be our
 first step in making our program do different things given different input.

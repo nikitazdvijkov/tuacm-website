@@ -170,5 +170,5 @@ anything about {C} to understand comments and because I'll need to use them
 throughout the tutorial to explain what code does.
 
 In the next article, we're going to be <a
-href="../03-first-programs/index.html">Coming Up with Our First Program in
+href="../first-programs/index.html">Coming Up with Our First Program in
 C</a>, which will help us figure out what features we need to implement in {C}.

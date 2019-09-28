@@ -351,13 +351,13 @@ Here's our complete To Do List with everything we've completed up to this point:
 
 {{sthru}}laid the foundations for our {main} function
 
-set up and use a compiler,
-
-familiarize ourselves with an IDE/text editor,
-
 figure out a way to print something out to the terminal,
 
-and figure out a way to read from a file.
+figure out a way to read from a file,
+
+set up and use a compiler,
+
+and familiarize ourselves with an IDE/text editor.
 
 \{{\ul}}
 
@@ -367,10 +367,10 @@ currently have no way for us to see the output of any of our programs.
 We can't print our output to the terminal and we can't save our output to a
 file, so we'll need to implement those features soon.
 
-In the next article, <a href="../11-header-files/">Header Files in C</a>, we're
+In the next article, <a href="../header-files/">Header Files in C</a>, we're
 going to
 
-In the next article, <a href="../11-c-compilers-and-ides">Compilers and IDEs for
+In the next article, <a href="../c-compilers-and-ides">Compilers and IDEs for
 C</a>, we're going to explain what IDE is, how they work, and a few features of
 the big ones relevant for compiling {C} programs.
 Don't worry about needing to know about all of them, you'll just need to know

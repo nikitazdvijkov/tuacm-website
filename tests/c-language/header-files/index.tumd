@@ -3,8 +3,63 @@ Title:		Header Files in C
 Author:		Joseph Mellor
 Tagline:	The Glue of C Programs
 Code Style:	trac+dark
-Import:
+Import:		code-block terminal aside
 Scripts:
+
+\{{style}}
+
+ol .code-block {
+	margin-bottom: 0;
+}
+
+.gcc-error {
+	color: #DC2BD9;
+	font-weight: bold;
+}
+
+.gcc-warning {
+	color: #AD7FA8;
+	font-weight: bold;
+}
+
+.gcc-note {
+	color: #34E2E2;
+	font-weight: bold;
+}
+
+.highlight {
+	color: #34E2E2;
+}
+
+.aside .terminal {
+	margin-top: 1em;
+}
+
+.black-bg {
+	background: #000000;
+}
+
+.spoiler {
+	border: 3px solid #B0B0B0;
+	padding: 1em;
+	border-radius: 8px;
+	background: #E6E6FA;
+	margin-bottom: 1em;
+}
+
+.spoiler .content {
+	opacity: 0;
+}
+
+.spoiler .content:hover {
+	opacity: 1;
+}
+
+.spoiler b {
+	color: #DC143C;
+}
+
+\{{\style}}
 
 <i>This is the thirteenth article in the </i>Making Sense of C<i> series.
 In this article, we're going to discuss header files, which will allow us to use
@@ -12,4 +67,641 @@ the standard library functions to print things to the terminal, read from files,
 and write to files.</i>
 
 As we stated back in the introduction to the series, we want a standard library
-for {C} that contains all the basic functionality that a user would need.
+for {C} that contains all the basic functionality that a user would need,
+including reading and writing from files, printing out things to the terminal,
+getting user input in the terminal, doing string things, etc.
+So, let's say that we've already written the standard library, likely in a
+combination of machine specific Assembly and {C}, and we want to let programmers
+use it.
+
+# The Problem
+
+Since we want to compile our programs quickly and organize our code, we have
+decided to write our code in multiple files, compile them separately, then
+combine them together into a single program.
+That way, the next time we make a change, we only have to recompile the changed
+files and then link everything together.
+Furthermore, it's easier to read code and find things if you split them into
+multiple files.
+Everything is all and good until we look at how the {C} compiler works.
+
+The {C} compiler will go through each file it needs to compile from top to
+bottom exactly once and then either compile the code or throw an error.
+So now, let's say that you have a function like this
+
+\{{code-block c}}
+
+int main(void) {
+    a = 4;
+    int a = 5;
+    return 0;
+}
+
+\{{\code-block}}
+
+This function obviously won't compile because we haven't declared the variable
+{a} with its type in the first line.
+To really understand where the error is, let's read through this like a
+compiler.
+
+\{{ol}}
+
+{{empty}}
+\{{code-block c no-line-numbers}}
+
+int main(void) {
+
+\{{\code-block}}
+This line means that we want to create a function called {main} that returns an
+{int} and takes in no arguments.
+All good.
+
+{{empty}}
+\{{code-block c no-line-numbers}}
+
+    a = 4;
+
+\{{\code-block}}
+So we want to set {a} to be {4}.
+What is {a}?
+We've never allocated any memory for it and we don't know its type, so we can't
+store anything in it, so this line of code is an error.
+
+We can no longer compile this file, so we're just going to go through the file
+and find the rest of the errors.
+
+{{empty}}
+\{{code-block c no-line-numbers}}
+    int a = 5;
+\{{\code-block}}
+We should allocate some memory for {a} and store the value of {5} in that
+memory.
+
+{{empty}}
+\{{code-block c no-line-numbers}}
+
+    return 0;
+
+\{{\code-block}}
+There isn't an error in this line.
+
+{{empty}}
+\{{code-block c no-line-numbers}}
+
+}
+
+\{{\code-block}}
+There isn't an error in this line.
+
+We've reached the end of the file, so let's spit out the errors and then finish.
+
+\{{terminal}}
+<b>test.c:</b> In function <b>‘main’</b>:
+<b>test.c:2:2: <span class="gcc-error">error:</span> ‘a’</b> undeclared (first use in this function)
+  <span class="gcc-error">a</span> = 4;
+  <span class="gcc-error">^</span>
+\{{\terminal}}
+
+\{{\ol}}
+
+If you were to correct the code above, your first line containing the {a}
+variable would have an {int a}, and all the lines after it would not have an
+{int a} since we've already declared and allocated memory for that variable.
+
+\{{code-block c no-line-numbers}}
+
+int main(void) {
+    int a = 4;
+    a = 5;
+    return 0;
+}
+
+\{{\code-block}}
+
+When the compiler reads this code, everything makes sense and we don't find any
+errors.
+It should be clear that the order in which we make statements in a {C} file
+makes a big difference, as we would expect from our compiler reading the file
+from the top to the bottom, so if we want to have working code, don't declare
+things before we use them.
+
+# The Symbol Table
+
+When the program gets to {a = 5} in the corrected {C} file, how does it know
+that {a = 5} is valid code?
+Furthermore, when the program gets to {a = 4} in the incorrect {C} file, how
+does it know that {a = 4} is invalid code?
+Without going into too much detail about the inner workings of a compiler,
+<b>your compiler will build a list of all the valid symbols that have been
+declared as it reads through the file</b>.
+In the incorrect {C} file, {a} in {a = 4} isn't in the symbol table because we
+haven't declared it yet.
+When the compiler reads {int a;} or {int a = 4;} it assigns a memory address to
+{a}, which it stores in the symbol table.
+When the compiler reads {a = 5}, it looks in the symbol table for the name {a}
+and substitues the assigned memory in the output assembly code.
+<b>If {a} is not in the symbol table, you will get an error, otherwise, you will
+get the correct memory address</b>.
+
+The symbol table stores more than just local variables.
+It also stores functions and other stuff that you don't need to worry about for
+now (If you're curious, macros, typedefs, etc., but don't worry about them for
+now.).
+
+# Functions and the Symbol Table
+
+Let's say I have the following code:
+
+\{{code-block c}}
+
+{{tab}}:="    "
+{{dtab}}:="{{tab}}{{tab}}"
+
+{{t-init}}:="{{tab}}int val = 0;"
+{{t-for}}:="{{tab}}for (int i = 0; i {{lt}} n; i++) {"
+{{t-end}}:="{{tab}}}"
+{{t-inner}}:="{{dtab}}val += i;"
+{{t-return}}:="{{tab}}return val;"
+
+{{triangular}}:="{{t-init}}{{nl}}{{t-for}}{{nl}}{{t-inner}}{{nl}}{{t-end}}{{nl}}{{t-return}}"
+
+int main(void) {
+    int n = 300;
+    int triangular_number = nth_triangular_num(n);
+    return 0;
+}
+
+int nth_triangular_num(unsigned int n) {
+{{triangular}}
+}
+
+\{{\code-block}}
+
+You might think that this should compile properly.
+Everything is defined properly and there are no syntax errors, so we should be
+fine.
+If I try to compile this code, however, I get this warning:
+
+\{{terminal}}
+
+<b>test.c:</b> In function <b>‘main’</b>:
+{{oneline}}<b>test.c:3:29:</b> <span class="gcc-warning">warning:</span> implicit declaration of function ‘nth_triangular_num’ [<span class="gcc-warning">-Wimplicit-function-declaration</span>]
+     int triangular_number = <span class="gcc-warning">nth_triangular_num</span>(n);
+                             <span class="gcc-warning">^~~~~~~~~~~~~~~~~~</span>
+
+\{{\terminal}}
+
+which means that something might be wrong with the code, but the compiler is
+going to allow it because it might still work.
+
+\{{aside}}
+#### Syntax of Compiler Warnings
+<hr>
+
+When most compilers find an error or a warning in your code, they will tell you
+the name of the file and the line number, then print out the line itself, and
+the error or warning.
+
+{gcc} uses the syntax:
+
+\{{terminal}}
+
+{{hl}}:="<span class="highlight">{{rest-of-line}}</span>{{end-of-line}}"
+{{file}}="{{hl}}[FILE]"
+{{line}}="{{hl}}[LINE]"
+{{col}}="{{hl}}[COLUMN]"
+{{func}}="{{hl}}[function name]"
+{{err-desc}}="{{hl}}[ERROR DESCRIPTION]"
+
+<b>{{file}}:</b> In function <b>‘{{func}}’</b>:
+{{oneline}}<b>{{file}}:{{line}}:{{col}}:</b> <span class="gcc-error">error:</span> {{err-desc}}
+{{oneline}}  actual line of code with <span class="gcc-error">the error clearly marked</span>
+{{oneline}}                           <span class="gcc-error">^~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+\{{\terminal}}
+
+{{hl}}:="<span class="highlight black-bg">{{rest-of-line}}</span>{{end-of-line}}"
+{{hlex}}="{{hl}}this"
+
+where everything highlighted like {<b>{{hlex}}</b>} is something that can vary
+depending on the specifics of the error or warning.
+Also, it's possible to have errors outside of functions (which we're going to
+see in a second) in which the first line of the output will say something like
+{At top level:} instead of {In function ...:}.
+
+Since you can technically turn off warnings (don't), {gcc} will also tell you
+what warning was triggered off to the side like it did with <span
+class="black-bg">{[<span
+class="gcc-warning">-Wimplicit-function-declaration</span>]}</span>.
+Don't worry about it for now.
+
+Other compilers can print out error codes, but you mostly need just the file,
+line number, and what the error was.
+
+Lastly, if at any point you get an error or a warning, copy either the error
+description or the error code into a search engine and search for it.
+Feel free to remove anything specific to your project like the line number or
+file.
+
+\{{\aside}}
+
+Unlike with variables, <b>if the compiler sees a function it hasn't seen before,
+it will implicity assume that the function returns an {int} and take in any
+number of parameters of any type</b>.
+Our function just happens to return an {int}, so it fits the implicit
+declaration.
+On the other hand, if I change the return type of {nth_triangular_number} to
+{unsigned long long} and the type of {triangular_number} to {unsigned long
+long} like so:
+
+\{{code-block c}}
+
+int main(void) {
+    int n = 300;
+    unsigned long long triangular_number = nth_triangular_num(n);
+    return 0;
+}
+
+unsigned long long nth_triangular_num(unsigned int n) {
+{{t-init}}:="{{tab}}unsigned long long val = 0;"
+{{triangular}}
+}
+
+\{{\code-block}}
+
+I get the following warning and <b>error</b>:
+
+\{{terminal}}
+
+<b>test.c:</b> In function <b>‘main’</b>:
+{{oneline}}<b>test.c:3:41:</b> <span class="gcc-warning">warning:</span> implicit declaration of function <b>‘nth_triangular_num’</b> [<span class="gcc-warning">-Wimplicit-function-declaration</span>]
+{{oneline}}  unsigned long long triangular_number = <span class="gcc-warning">nth_triangular_num</span>(n);
+{{oneline}}                                         <span class="gcc-warning">^~~~~~~~~~~~~~~~~~</span>
+{{oneline}}<b>test.c:</b> At top level:
+{{oneline}}<b>test.c:7:20:</b> <span class="gcc-error">error:</span> conflicting types for <b>‘nth_triangular_num’</b>
+{{oneline}} unsigned long long <span class="gcc-error">nth_triangular_num</span>(int n) {
+{{oneline}}                    <span class="gcc-error">^~~~~~~~~~~~~~~~~~</span>
+{{oneline}}<b>test.c:3:41:</b> <span class="gcc-note">note:</span> previous implicit declaration of <b>‘nth_triangular_num’</b> was here
+{{oneline}}  unsigned long long triangular_number = <span class="gcc-note">nth_triangular_num</span>(n);
+{{oneline}}                                         <span class="gcc-note">^~~~~~~~~~~~~~~~~~</span>
+
+\{{\terminal}}
+
+Notice that the compiler thinks we <b>declared</b> (more on what it means to
+declare a function later in the article) {nth_triangular_num} on line 3
+As we did with the variables above, we can solve this by defining
+{nth_triangular_number} before we call it.
+
+\{{code-block c}}
+
+unsigned long long nth_triangular_num(unsigned int n) {
+{{triangular}}
+}
+
+int main(void) {
+    int n = 300;
+    unsigned long long triangular_number = nth_triangular_num(n);
+    return 0;
+}
+
+\{{\code-block}}
+
+So now, we just need to make sure that we define each function before we call
+it.
+Should be easy enough, right?
+We have two problems with this approach:
+
+\{{ul}}
+
+If two functions call each other and neither returns an {int}, we can't write a
+correct program, period.
+
+We have to put all our code into one file, otherwise the {C} compiler will run
+into functions that were defined in another file.
+
+\{{\ul}}
+
+Putting all our code into one file makes it almost impossible to navigate our
+code and it means we have to recompile our entire code base every time we make a
+change.
+For small projects, the compile time will be about the same, but for larger
+projects, the compile time can get significantly longer.
+
+We need some way to tell the compiler that we want to add something to its
+symbol table without defining it within the file.
+
+## Declaring Functions
+
+Let's say you're a compiler and you see the following code:
+
+\{{code-block c no-line-numbers}}
+
+int a = 4;
+char sample_string[] = "This is a test. Wouldn't you agree, Jean Pierre Polnareff?"
+int array[] = { 0, 1, 1, 2, 3, 5, 8, 13, 21 };
+a = some_func(a, sample_string, array);
+
+\{{\code-block}}
+
+What would you, as a compiler, need to know to determine if {a = some_func(a,
+sample_string, array)} is a valid line of code?
+Try to find out on your own, then mouse over the box below to reveal the answer.
+
+\{{raw-html}}
+<div class="spoiler">
+{{tupu}}<div class="content">
+\{{\raw-html}}
+
+In order to know if a function is going to be used properly, the compiler needs
+to know
+
+\{{ul}}
+
+the <b>return type</b>,
+
+the <b>types of its arguments</b>,
+
+and <b>the name of the function</b>.
+
+\{{\ul}}
+
+\{{raw-html}}
+</div>
+{{tupo}}</div>
+\{{\raw-html}}
+
+If we know these details about the function, we should be able to add the
+function to our symbol table, so we just need to find a way to tell this
+information to the compiler.
+We don't want to waste any typing, so let's just use the syntax:
+
+\{{code-block c no-line-numbers}}
+
+return_type no_argument_function(void);
+return_type one_argument_function(first_type);
+return_type two_argument_function(first_type, second_type);
+return_type three_argument_function(first_type, second_type, third_type);
+
+\{{\code-block}}
+
+For {nth_triangular_num}, we would use
+
+\{{code-block c no-line-numbers}}
+
+unsigned long long nth_triangular_num(unsigned int);
+
+\{{\code-block}}
+
+Even though it isn't strictly necessary to put the parameter names, I do so I
+can look back and figure out what the arguments should be.
+
+\{{code-block c no-line-numbers}}
+
+unsigned long long nth_triangular_num(unsigned int n);
+
+\{{\code-block}}
+
+In our code, we can use
+
+\{{code-block c}}
+
+unsigned long long nth_triangular_num(unsigned int n);
+
+int main(void) {
+    int n = 300;
+    unsigned long long triangular_number = nth_triangular_num(n);
+    return 0;
+}
+
+unsigned long long nth_triangular_num(unsigned int n) {
+{{triangular}}
+}
+
+\{{\code-block}}
+
+and our code will compile just fine since we've added {nth_triangular_num} to
+the symbol table.
+As a shortcut, just copy the first line of the definition of the function and
+replace everything after {)} with a semicolon ({;}).
+
+\{{code-block c no-line-numbers}}
+
+unsigned long long nth_triangular_num(unsigned int n) {  // Definition
+unsigned long long nth_triangular_num(unsigned int n);   // Declaration
+
+\{{\code-block}}
+
+You can declare a function as many times as you would like since you're just
+adding to the symbol table, but you can only define it once since the compiler
+needs to know exactly what you want to do when you call {nth_triangular_num}.
+
+# Header Files
+
+Given that we've gotten to this point without mentioning <b>Header Files</b> in
+an article called <b>Header Files in C</b>, you can imagine that <b>Header
+Files</b> will allow us to copy a file into our source file.
+In general, we use header files to store everything we want to be in the symbol
+table (including functions, macros, typedefs, etc.) that we don't want to put in
+our code manually, which makes our code easier to read and less error prone
+since we might copy something incorrectly.
+While {C} source files have the extension {.c}, header files have the extension
+{.h}.
+There is no hard requirement for the extensions on the file but it's standard
+across all of {C}.
+
+Making header files is good, but we need a way to tell the {C} compiler to copy
+and paste them into our code without modifying the source code itself.
+Since this part of the compiler is going to process the input before the
+compiler, we call it the <b>preprocessor</b>.
+
+\{{aside}}
+#### The Full Compiler
+<hr>
+
+Your compiler consists of
+
+\{{ol}}
+
+the <b>preprocessor</b>, which processes the files before running the compiler
+using <b>macros</b> (As a working definition, statements that start with a {#}.
+We'll only have to work with one macro for now, which we'll discuss in the next
+section.),
+
+the <b>compiler</b>, which converts source files into object files containing
+assembly and other useful information for the linker,
+
+the <b>linker</b>, which glues the compiled object files together into one
+singular file,
+
+and the <b>assembler</b>, which converts the singular file the linker produces
+into machine code.
+
+\{{\ol}}
+
+Different compilers might have another subprogram or two inside them or they
+might run the assembler before the linker, but it really doesn't matter.
+
+\{{\aside}}
+
+## The {#include} Statement
+
+The {#include} statement will copy and paste whatever argument it's been given
+into the current file.
+There are two use cases that have slightly different syntax:
+
+\{{ul}}
+
+If it's a header file you've written or copied and pasted into your local
+project and it's in a local directory, then use:
+\{{code-block c no-line-numbers}}
+
+#include "file.h"
+
+\{{\code-block}}
+
+If it's a file included in the standard library, then use:
+\{{code-block c no-line-numbers}}
+
+#include {{lt}}std_file.h{{gt}}
+
+\{{\code-block}}
+
+\{{\ul}}
+
+The difference between {{{lt}}std_file.h{{gt}}} and {"file.h"} is just that the
+angle brackets tell it to look for the file in the standard library directories
+(which are the same for every {C} and {C++} program unless you're doing
+something weird) and the quotes tell it to look for the file in local
+directories.
+
+## A Simple Example
+
+We could write our previous code with the triangular numbers as
+
+\{{code-block c}}
+// triangular_numbers.h
+
+// If you're experienced in C, you know I'm missing header guards, but I'm
+// going to neglect them for now and bring them back later
+unsigned long long nth_triangular_num(unsigned int n);
+
+\{{\code-block}}
+
+in the header file for the triangular numbers ({triangular_numbers.h}),
+
+\{{code-block c}}
+// triangular_numbers.c
+
+unsigned long long nth_triangular_num(unsigned int n) {
+{{triangular}}
+}
+
+\{{\code-block}}
+
+in the source file for the triangular numbers ({triangular_numbers.c}), and
+
+\{{code-block c}}
+// main.c
+#include "triangular_numbers.h"
+
+int main(void) {
+    int n = 300;
+    unsigned long long triangular_number = nth_triangular_num(n);
+    return 0;
+}
+\{{\code-block}}
+
+in the source file for the {main} function ({main.c}).
+As you can see, the source file and the header file containing information about
+the {nth_triangular_num} function had the same name {triangular_numbers} but a
+different extension ({.c} vs {.h}).
+You should generally follow this pattern in simple cases, but there are some
+cases in which you have to use different file names, but we're not going to
+worry about that for now.
+
+Later on, we can improve our algorithm to calculate the triangular numbers by
+just modifying the file {triangular_numbers.c} like so:
+
+\{{code-block c}}
+//triangular_numbers.c
+
+unsigned long long nth_triangular_num(unsigned int n) {
+{{triangular}}:="{{tab}}return ((unsigned long long)n * (n - 1)/2 + n);"
+{{triangular}}
+}
+
+\{{\code-block}}
+
+In this simple example, it might not make sense to make three different files
+since we're saving microseconds of compile time and it's still easy to navigate
+our code, so let's look at a more realistic example: our word counter program.
+
+## Using Standard Library Functions
+
+For now, we're going to use the standard library functions {fopen}, {fclose},
+{fscanf}, {printf}, and we're going to use {stderr} and {FILE}.
+To use all these functions, we would have to write (don't worry about the
+specifics, just look at how much we have to type each time)
+
+\{{code-block c}}
+
+typedef struct _IO_FILE FILE;
+int fscanf(FILE *, const char *, ...);
+int fclose(FILE *);
+FILE * fopen(const char *, const char *);
+FILE * stderr;
+int printf(const char *, ...);
+
+int main(void) {
+    // Do stuff
+}
+
+\{{\code-block}}
+
+except that's not right because I also need to come up with a definition of an
+{_IO_FILE} (you will never use {_IO_FILE}, it's just an under the hood thing to
+make {C} work with {C++}, you will use {FILE} instead), which <a
+href="https://code.woboq.org/userspace/glibc/libio/bits/types/struct_FILE.h.html">itself
+is around 120 lines of code</a> and I might have missed something going through
+the standard library {C} code, so it could be even longer.
+In other words, if you want to print things out to the terminal or do anything
+with files, you need to copy at least 120 lines into every file that uses these
+functions.
+
+With header files, however, we can use {stdio.h} ({st}an{d}ard {i}nput and
+{o}utput {h}eader file), which has all the stuff we need written for us already.
+There are other header files, but we're just going to use ours for now.
+
+# Our Program
+
+Here is everything we have up to this point:
+
+\{{code-block c}}
+#include {{lt}}stdio.h{{gt}}
+
+int check_if_strings_differ(char * str1, char * str2);
+
+int main(int argc, char ** argv) {
+    char * program_name = argv[0];
+    if (argc {{lt}} 3) {
+        // TODO: Print Usage Message
+        return -1;
+    }
+    char * file_name = argv[1];
+    char * word = argv[2];
+    // TODO: Count number of occurrences in a file
+    return 0;
+}
+
+int check_if_strings_differ(char * str1, char * str2) {
+    int i = 0;
+    while (str1[i] && str2[i] && (str1[i] == str2[i])) {
+        i += 1;
+    }
+    return str1[i] != str2[i];
+}
+
+\{{\code-block}}
+
+The only new thing is the line {#include {{lt}}stdio.h{{gt}}}, but this line
+will allow us to use the functions we need to use for our program.

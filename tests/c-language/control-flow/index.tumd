@@ -1006,5 +1006,5 @@ We should have exactly one block of code so that we can fix or upgrade it
 exactly once for every feature or bug.
 
 In the next article, we'll introduce <a
-href="../09-functions/index.html">Functions in C</a>, which will allow us to
+href="../functions/index.html">Functions in C</a>, which will allow us to
 reuse code without copying it.
