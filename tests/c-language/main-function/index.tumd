@@ -368,10 +368,5 @@ We can't print our output to the terminal and we can't save our output to a
 file, so we'll need to implement those features soon.
 
 In the next article, <a href="../header-files/">Header Files in C</a>, we're
-going to
-
-In the next article, <a href="../c-compilers-and-ides">Compilers and IDEs for
-C</a>, we're going to explain what IDE is, how they work, and a few features of
-the big ones relevant for compiling {C} programs.
-Don't worry about needing to know about all of them, you'll just need to know
-the features common to every IDE.
+going to discuss how your compiler uses the symbol table and how you can use
+header files to include code in your project.

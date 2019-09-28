@@ -494,6 +494,40 @@
 					some garbage value, so don't try to store a <code>double</code> in an <code>int</code> if you know
 					it won't fit.
 				</p>
+				<h2 id="type-casting">Type Casting</h2>
+				<p>To force a conversion from a type to another type in an expression (you cannot
+					change the type of any variable), you can use a <b>type cast</b>, which consists
+					of putting the resulting type in front of the variable or expression.
+					For example, if you want to exchange 100 USD for some yen, you would multiply
+					10000 cents (since the cent is the smallest unit of US currency) by the cents to
+					yen conversion rate.
+					Both cents and yen are discrete quantities, so it wouldn't make sense for your
+					resulting money to be floating point numbers.
+					On the other hand, the cents to yen conversion rate is a floating point number,
+					meaning that to convert from cents to yen requires multiplying an integral
+					number by a floating point number, which results in a <b>floating point</b>
+					number, which you have to convert back into an integral number, either
+					implicitly by doing anything involving multiple types as specified above or
+					explicitly by using a <b>type cast</b>.
+				</p>
+				<p>Since the only thing the compiler needs to know to convert one type to another
+					is what you're converting and the resultant type, it uses the syntax
+					<code>(new_type)variable</code>.
+					In our example:
+				</p>
+<div class="code-block"><pre><span></span><span class="c1">// cents_to_yen has been intialized as a double</span>
+<span class="c1">// cents has been initialized as a long long</span>
+
+<span class="c1">// Implicit conversion by storing</span>
+<span class="kt">long</span> <span class="kt">long</span> <span class="n">result</span> <span class="o">=</span> <span class="n">cents</span> <span class="o">*</span> <span class="n">cents_to_yen</span><span class="p">;</span>
+
+<span class="c1">// Explicit conversion using type casting</span>
+<span class="p">(</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)(</span><span class="n">cents</span> <span class="o">*</span> <span class="n">cents_to_yen</span><span class="p">)</span>
+</pre></div>
+				
+				<p>Type casts will show up from time to time, so just know that you can convert
+					types to other types.
+				</p>
 				<h2 id="summary">Summary</h2>
 				<p>Up to this point, we've established that we're going to give our compiler a file
 					with a series of statements, but we've only used the plain <code>int</code> type.
@@ -577,6 +611,7 @@
 				<a href="#what-happens-if-we-try-to-store-an-int-in-a-float" style="padding-left:36px;">What Happens if We Try to Store an <code>int</code> in a <code>float</code>?</a>
 				<a href="#what-happens-if-we-try-to-store-a-double-in-a-float" style="padding-left:36px;">What Happens if We Try to Store a <code>double</code> in a <code>float</code>?</a>
 				<a href="#what-happens-if-we-try-to-store-a-double-in-an-int" style="padding-left:36px;">What Happens if We Try to Store a <code>double</code> in an <code>int</code>?</a>
+				<a href="#type-casting" style="padding-left:24px;">Type Casting</a>
 				<a href="#summary" style="padding-left:24px;">Summary</a>
 				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
 			</nav>

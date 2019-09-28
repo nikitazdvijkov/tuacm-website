@@ -706,8 +706,51 @@
 					<code>o</code>utput <code>h</code>eader file), which has all the stuff we need written for us already.
 					There are other header files, but we're just going to use ours for now.
 				</p>
-				<h2 id="our-program">Our Program</h2>
-<div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+				<h2 id="summary">Summary</h2>
+				<p>In this article, we learned about:
+				</p>
+				<ul>
+					<li>the symbol table, which helps the compiler recognize valid code,
+					</li>
+					<li>function declarations, which allow us to add functions to the symbol table,
+					</li>
+					<li>the syntax of compiler warnings, which will help us debug our code later,
+					</li>
+					<li>the preprocessor, which can generate code for us during compilation without
+						modifying the original source file,
+					</li>
+					<li>and header files, which contain function declarations and other stuff that we'll
+						learn about later that allow us to automate some of the process of addings
+						things to the symbol table.
+					</li>
+				</ul>
+				<h2 id="whats-next">What's Next</h2>
+				<p>Here is everything we have up to this point in code:
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">check_if_strings_differ</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">str1</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">str2</span><span class="p">);</span>
 
@@ -731,7 +774,31 @@
     <span class="k">return</span> <span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
 <span class="p">}</span>
 </pre></div>
-				
+</td></tr></table>				
+				</div>
+				<p>The only new thing is the line <code>#include &lt;stdio.h&gt;</code>, but this line
+					will allow us to use the functions we need to use for our program.
+				</p>
+				<p>All we have left to do to write our word counter program is:
+				</p>
+				<ul>
+					<li>figure out the syntax for a few standard library functions (<code>printf</code>, <code>fopen</code>,
+						<code>fclose</code>, and <code>fscanf)</code>,
+					</li>
+					<li>use the functions to write our code,
+					</li>
+					<li>set up and use a compiler,
+					</li>
+					<li>and familiarize ourselves with an IDE/text editor.
+					</li>
+				</ul>
+				<p>In the next article, we're going to figure out how to use the <a
+					href="../stdio-functions/">Functions of <code>stdio.h</code></a> to write our first
+					completed program.
+					Then, we're going to figure out how to put our code into an IDE/compiler/build
+					system and then compile it.
+					After that point, <b>we will have written our first <code>C</code> program!</b>
+				</p>
 			</div>
 			<div class="article">
 				<div id="author-description-local">
@@ -759,7 +826,8 @@
 				<a href="#the-include-statement" style="padding-left:36px;">The <code>#include</code> Statement</a>
 				<a href="#a-simple-example" style="padding-left:36px;">A Simple Example</a>
 				<a href="#using-standard-library-functions" style="padding-left:36px;">Using Standard Library Functions</a>
-				<a href="#our-program" style="padding-left:24px;">Our Program</a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
+				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
 			</nav>
 			<div id="sidenav-activator"></div>
 		</div>

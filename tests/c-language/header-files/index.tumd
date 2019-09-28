@@ -672,9 +672,30 @@ With header files, however, we can use {stdio.h} ({st}an{d}ard {i}nput and
 {o}utput {h}eader file), which has all the stuff we need written for us already.
 There are other header files, but we're just going to use ours for now.
 
-# Our Program
+# Summary
 
-Here is everything we have up to this point:
+In this article, we learned about:
+
+\{{ul}}
+
+the symbol table, which helps the compiler recognize valid code,
+
+function declarations, which allow us to add functions to the symbol table,
+
+the syntax of compiler warnings, which will help us debug our code later,
+
+the preprocessor, which can generate code for us during compilation without
+modifying the original source file,
+
+and header files, which contain function declarations and other stuff that we'll
+learn about later that allow us to automate some of the process of addings
+things to the symbol table.
+
+\{{\ul}}
+
+# What's Next
+
+Here is everything we have up to this point in code:
 
 \{{code-block c}}
 #include {{lt}}stdio.h{{gt}}
@@ -705,3 +726,25 @@ int check_if_strings_differ(char * str1, char * str2) {
 
 The only new thing is the line {#include {{lt}}stdio.h{{gt}}}, but this line
 will allow us to use the functions we need to use for our program.
+
+All we have left to do to write our word counter program is:
+
+\{{ul}}
+
+figure out the syntax for a few standard library functions ({printf}, {fopen},
+{fclose}, and {fscanf)},
+
+use the functions to write our code,
+
+set up and use a compiler,
+
+and familiarize ourselves with an IDE/text editor.
+
+\{{\ul}}
+
+In the next article, we're going to figure out how to use the <a
+href="../stdio-functions/">Functions of {stdio.h}</a> to write our first
+completed program.
+Then, we're going to figure out how to put our code into an IDE/compiler/build
+system and then compile it.
+After that point, <b>we will have written our first {C} program!</b>
