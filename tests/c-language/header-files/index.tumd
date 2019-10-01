@@ -61,10 +61,11 @@ ol .code-block {
 
 \{{\style}}
 
-<i>This is the thirteenth article in the </i>Making Sense of C<i> series.
-In this article, we're going to discuss header files, which will allow us to use
-the standard library functions to print things to the terminal, read from files,
-and write to files.</i>
+<i>This is the twelfth article in the </i>Making Sense of C<i> series.
+In this article, we're going to discuss the symbol table, which will explain how
+the compiler functions, and header files, which will allow us to use the
+standard library functions to print things to the terminal, read from files, and
+write to files.</i>
 
 As we stated back in the introduction to the series, we want a standard library
 for {C} that contains all the basic functionality that a user would need,
@@ -582,7 +583,9 @@ We could write our previous code with the triangular numbers as
 // triangular_numbers.h
 
 // If you're experienced in C, you know I'm missing header guards, but I'm
-// going to neglect them for now and bring them back later
+// going to neglect them for now and bring them back later in the tutorial
+// since showing people things before they have a clear application will
+// often just confuse them.
 unsigned long long nth_triangular_num(unsigned int n);
 
 \{{\code-block}}
@@ -619,6 +622,30 @@ You should generally follow this pattern in simple cases, but there are some
 cases in which you have to use different file names, but we're not going to
 worry about that for now.
 
+\{{aside style="border-width: 8px; border-radius: 12px;"}}
+<h4 style="color: red; text-align: center;">WARNING</h4><hr>
+
+If you stop this tutorial right now, you need to make sure to use <a
+href="https://en.wikipedia.org/wiki/Include_guard"><b>header guards</b></a> in
+your headers or else you could get errors while compiling.
+
+Header guards look like
+
+\{{code-block c}}
+
+#ifndef NAME_OF_THIS_FILE_H
+#define NAME_OF_THIS_FILE_H
+
+// Everything you would normally put inside the header file.
+
+#endif
+
+\{{\code-block}}
+
+I will explain <b>header guards</b> in a later article in this series.
+
+\{{\aside}}
+
 Later on, we can improve our algorithm to calculate the triangular numbers by
 just modifying the file {triangular_numbers.c} like so:
 
@@ -639,7 +666,9 @@ our code, so let's look at a more realistic example: our word counter program.
 ## Using Standard Library Functions
 
 For now, we're going to use the standard library functions {fopen}, {fclose},
-{fscanf}, {printf}, and we're going to use {stderr} and {FILE}.
+{fscanf}, {printf}, and {perror}
+We'll also use the "type" (it's actually a {struct}, but we'll get into that
+later) {FILE}.
 To use all these functions, we would have to write (don't worry about the
 specifics, just look at how much we have to type each time)
 
@@ -649,7 +678,6 @@ typedef struct _IO_FILE FILE;
 int fscanf(FILE *, const char *, ...);
 int fclose(FILE *);
 FILE * fopen(const char *, const char *);
-FILE * stderr;
 int printf(const char *, ...);
 
 int main(void) {
@@ -674,7 +702,7 @@ There are other header files, but we're just going to use ours for now.
 
 # Summary
 
-In this article, we learned about:
+In this article, we learned about
 
 \{{ul}}
 
@@ -698,6 +726,7 @@ things to the symbol table.
 Here is everything we have up to this point in code:
 
 \{{code-block c}}
+
 #include {{lt}}stdio.h{{gt}}
 
 int check_if_strings_differ(char * str1, char * str2);
@@ -708,7 +737,7 @@ int main(int argc, char ** argv) {
         // TODO: Print Usage Message
         return -1;
     }
-    char * file_name = argv[1];
+    char * filename = argv[1];
     char * word = argv[2];
     // TODO: Count number of occurrences in a file
     return 0;
@@ -732,7 +761,7 @@ All we have left to do to write our word counter program is:
 \{{ul}}
 
 figure out the syntax for a few standard library functions ({printf}, {fopen},
-{fclose}, and {fscanf)},
+{fclose}, and {fscanf}),
 
 use the functions to write our code,
 
@@ -742,9 +771,10 @@ and familiarize ourselves with an IDE/text editor.
 
 \{{\ul}}
 
-In the next article, we're going to figure out how to use the <a
-href="../stdio-functions/">Functions of {stdio.h}</a> to write our first
-completed program.
+In the next article, we're going to figure out how to work with <a
+href="../files/">Files in C</a> to write our first completed program.
+After that, we're going to discuss how to interact with files and the terminal
+in {C}.
 Then, we're going to figure out how to put our code into an IDE/compiler/build
 system and then compile it.
 After that point, <b>we will have written our first {C} program!</b>

@@ -326,6 +326,22 @@ char string[30];            // Creates an array of 30 chars
 
 \{{\code-block}}
 
+If you just declare a pointer variable, then you've only allocated the memory to
+store a memory address and not a list.
+
+\{{code-block c no-line-numbers}}
+
+int * not_an_array;         // Allocates four or eight bytes for a memory
+                            // address
+char * just_an_address;     // Allocates four or eight bytes for a memory
+                            // address
+float * a_normal_variable;  // Allocates four or eight bytes for a memory
+                            // address
+double * only_one_value;    // Allocates four or eight bytes for a memory
+                            // address
+
+\{{\code-block}}
+
 # Bringing it All Together
 
 We're almost there.
@@ -402,7 +418,7 @@ Everything after the last element in the list will be set to zero (<b>the null
 character IS zero</b>, which is why we denote it with {'\0'}).
 
 Typing out a bunch of {int}s isn't too bad, but typing out all these characters
-with all the single quotes is giving me a nightmare.
+with all the single quotes is just annoying.
 Plus, what if I forget the {'\0'} character?
 There should be a way to represent a string without having to type out the
 single quotes, commas, and the null character, so let's make one.
@@ -434,6 +450,17 @@ int list_of_ints[] = { 23, 52, 12, 5, 86, 24 };
 The compiler will figure what number it needs to put in the square brackets for
 us.
 
+You cannot, however, do
+
+\{{code-block c no-line-numbers}}
+
+char string[];
+
+\{{\code-block}}
+
+because the compiler doesn't know how much memory you want to allocate for the
+string.
+
 ## Modifying an Array After Initialization
 
 What if we want to change the array after initializing it?
@@ -448,7 +475,9 @@ list_of_ints = { 1, 2, 3, 4, 5};    // Same error
 
 \{{\code-block}}
 
-Once you've initialized an array, you can't reinitialize it later.
+<b>Once you've initialized an array, you can't reinitialize it later</b>.
+I will show you why later in the series, but for now just know that you can't
+reinitizialize an array later.
 You can, however, change what a pointer points to like so
 
 \{{code-block c no-line-numbers}}

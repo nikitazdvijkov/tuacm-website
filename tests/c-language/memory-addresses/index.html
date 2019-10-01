@@ -335,6 +335,19 @@
 <span class="kt">char</span> <span class="n">string</span><span class="p">[</span><span class="mi">30</span><span class="p">];</span>            <span class="c1">// Creates an array of 30 chars</span>
 </pre></div>
 				
+				<p>If you just declare a pointer variable, then you've only allocated the memory to
+					store a memory address and not a list.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="o">*</span> <span class="n">not_an_array</span><span class="p">;</span>         <span class="c1">// Allocates four or eight bytes for a memory</span>
+                            <span class="c1">// address</span>
+<span class="kt">char</span> <span class="o">*</span> <span class="n">just_an_address</span><span class="p">;</span>     <span class="c1">// Allocates four or eight bytes for a memory</span>
+                            <span class="c1">// address</span>
+<span class="kt">float</span> <span class="o">*</span> <span class="n">a_normal_variable</span><span class="p">;</span>  <span class="c1">// Allocates four or eight bytes for a memory</span>
+                            <span class="c1">// address</span>
+<span class="kt">double</span> <span class="o">*</span> <span class="n">only_one_value</span><span class="p">;</span>    <span class="c1">// Allocates four or eight bytes for a memory</span>
+                            <span class="c1">// address</span>
+</pre></div>
+				
 				<h2 id="bringing-it-all-together">Bringing it All Together</h2>
 				<p>We're almost there.
 				</p>
@@ -394,7 +407,7 @@
 					character IS zero</b>, which is why we denote it with <code>'\0'</code>).
 				</p>
 				<p>Typing out a bunch of <code>int</code>s isn't too bad, but typing out all these characters
-					with all the single quotes is giving me a nightmare.
+					with all the single quotes is just annoying.
 					Plus, what if I forget the <code>'\0'</code> character?
 					There should be a way to represent a string without having to type out the
 					single quotes, commas, and the null character, so let's make one.
@@ -419,6 +432,14 @@
 				<p>The compiler will figure what number it needs to put in the square brackets for
 					us.
 				</p>
+				<p>You cannot, however, do
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">char</span> <span class="n">string</span><span class="p">[];</span>
+</pre></div>
+				
+				<p>because the compiler doesn't know how much memory you want to allocate for the
+					string.
+				</p>
 				<h3 id="modifying-an-array-after-initialization">Modifying an Array After Initialization</h3>
 				<p>What if we want to change the array after initializing it?
 				</p>
@@ -429,7 +450,9 @@
 <span class="n">list_of_ints</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">};</span>    <span class="c1">// Same error</span>
 </pre></div>
 				
-				<p>Once you've initialized an array, you can't reinitialize it later.
+				<p><b>Once you've initialized an array, you can't reinitialize it later</b>.
+					I will show you why later in the series, but for now just know that you can't
+					reinitizialize an array later.
 					You can, however, change what a pointer points to like so
 				</p>
 <div class="code-block"><pre><span></span><span class="kt">char</span> <span class="n">string</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>

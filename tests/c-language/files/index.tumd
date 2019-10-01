@@ -1,0 +1,419 @@
+article
+Title:		Files in C
+Author:		Joseph Mellor
+Tagline:	We're going to get files from our hard drive into our program.
+Code Style:	trac+dark
+Import:		code-block terminal aside
+Scripts:
+
+\{{style}}
+
+table {
+	margin-bottom: 1em;
+}
+
+.c-type-list {
+	overflow: auto;
+	margin: 0 auto;
+	margin-bottom: 1em;
+}
+
+.c-type-list th {
+	text-align: center;
+}
+
+.c-type-list th, .c-type-list td {
+	padding: 0 1ch 0 1ch;
+}
+
+.c-type-list tr {
+	text-align: right;
+}
+
+.c-type-head {
+	text-align: center;
+	border-bottom: 1px solid #000000;
+}
+
+\{{\style}}
+
+
+<i>This is the thirteenth article in the </i>Making Sense of C<i> series.
+In this article, we're going to discuss how to open and close files in {C}.
+We'll also go into a few topics we haven't mentioned yet, including the {const}
+keyword.</i>
+
+This article is going to go through two of the standard library functions that
+we'll use in our first program, {fopen} and {fclose}, which will move a file
+from our hard drive to our program.
+
+# Our First Attempt at {fopen}
+
+First, we're going to need some consistent way to interact with a file, so we
+need some consistent object to pass to all the file manipulation functions in
+the future.
+We also need to specify how we want to interact with a file.
+For example, we could have permission to read from a file but not modify it,
+such as a file with system information.
+Lastly, we're going to need to know the name of the file before we can open it.
+
+## The {FILE} Type
+
+Since we need some consistent way to interact with a file, we need to store data
+about the file, such as where we are in the file, whether we're reading from or
+writing to the file, etc.
+We could store this data in separate variables, but doing so would be an
+absolute nightmare.
+Even Dennis Ritchie et al couldn't figure out how to write the Unix OS (the
+original {C} project) without some way to group everything together.
+So, they came up with the idea of a {struct}, which represents some data grouped
+together.
+We're going to discuss {struct}s in more depth later, but for now, just know
+that a {FILE} is a {struct} with a bunch of data relevant to file operations.
+
+## First Attempt at {fopen}'s Syntax
+
+Remeber that we need to create a {FILE} object from the name of the file (which
+will be an array of characters or a {char *}) and how we want to interact with
+it (which we could represent in multiple ways, so let's leave it unknown for
+now), which means the declaration of {fopen} will look something like:
+
+\{{code-block c no-line-numbers}}
+
+FILE fopen(char * filename, ??? how_to_interact);
+
+\{{\code-block}}
+
+where the {???} means we haven't figured out the type yet.
+
+## Ways of Interacting With Files
+
+As we said before, we can read from files and we can write to files.
+We can also add stuff to the end of files, like if we're recording a log of
+everything that's happened on a server or something.
+Lastly, we might be in situations where we want to be able to read and write to
+a file, such as when we're using save files in a video game (saving is writing
+or appending to a file and loading is reading from a file) or if we're updating
+settings in an application.
+
+In short, Ritchie et al decided that {how_to_interact} should be easy for
+programmers to remember, so he decided to make the input short strings.
+
+\{{raw-html}}
+<table class="c-type-list">
+	<tr class="c-type-head">
+		<th>Operation</th>
+		<th>Input String</th>
+	</tr>
+	<tr style="background: #E0E0E0;">
+		<td style="text-align: left;">Read from a file.</td>
+		<td>{"r"}</td>
+	</tr>
+	<tr>
+		<td style="text-align: left;">Write to a file.</td>
+		<td>{"w"}</td>
+	</tr>
+	<tr style="background: #E0E0E0;">
+		<td style="text-align: left;">Append to a file.</td>
+		<td>{"a"}</td>
+	</tr>
+	<tr>
+		<td style="text-align: left;">Read from and write to a file.</td>
+		<td>{"r+"} or {"w+"}</td>
+	</tr>
+	<tr style="border-bottom: 1px solid #000000; background: #E0E0E0;">
+		<td style="text-align: left;">Read from and append to a file.</td>
+		<td>{"a+"}</td>
+	</tr>
+</table>
+\{{\raw-html}}
+
+Read, write, and append are just the first letters of each word, and if you want
+to read and write, add a {+} at the end.
+You can only open a file that already exists with {"r+"}, but if the file does
+not exist, then opening a file with {"w+"} will create a new file with the name
+you provide.
+In general, {"r"} and {"r+"} can only work on existing files while {"w"},
+{"w+"}, {"a"}, and {"a+"} will create new files if you give it the name of a
+file that doesn't exist.
+{"w"} and {"w+"} will overwrite files if they already exist, but {"a"} and
+{"a+"} will not.
+Lastly, {"a"} and {"a+"} will always append to a file and they cannot change
+anything that was in the file before it was opened.
+
+## Second Attempt at {fopen}'s Syntax
+
+Knowing that, we should have something like
+
+\{{code-block c no-line-numbers}}
+
+FILE fopen(char * filename, char * mode);
+
+\{{\code-block}}
+
+right?
+
+We actually have a few problems with the declaration of {fopen} as is.
+We'll see the first problem when we try to call the function.
+It was back in the <a href="../memory-addresses/index.html">article on memory
+addresses</a>, but do you remember how I said that you could only initialize an
+array once and that just creating a {char *} will only allocate enough memory to
+store a memory address?
+Until this point, I just told you that was a fact of life and didn't offer any
+explanation and now is a good time to explain it.
+
+# String Literals
+
+When you write the following code
+
+\{{code-block c no-line-numbers}}
+
+char string[] = "Hello, World!";
+
+\{{\code-block}}
+
+the compiler converts that into machine instructions that say
+
+\{{ol}}
+
+get fourteen bytes of memory
+
+and copy the bytes {\{ 'H', 'e', 'l', 'l', 'o', ',', ' ', 'W', 'o', 'r', 'l',
+'d', '!', '\0' \}} into those fourteen bytes of memory.
+
+\{{\ol}}
+
+That sounds simple enough, but where exactly are the bytes that make up the
+string?
+How does the computer know which bytes to copy into {string}?
+
+First, whenever someone runs your program, it is moved into RAM and so it has
+its own set of memory addresses for things like instructions (what your code
+becomes) and data (stuff in your program such as strings).
+Whenever your compiler sees a <b>string literal</b> (i.e., almost anything in
+double quotes), it will copy it directly into the executable, which you can see
+if you open it in a text editor like Sublime Text, VS Code, Notepad, etc.
+
+\{{code-block c no-line-numbers}}
+
+char string[] = "Hello, World!";    // "Hello, World!" is a string literal.
+
+\{{\code-block}}
+
+<b>Whenever you use the string literal, it will hand the memory address of the
+first byte in the string to whatever you're using it for just as it would for a
+string.
+Furthermore, when you use a string literal multiple times, it will store the
+string once and give you the same memory address.</b>
+
+\{{code-block c no-line-numbers}}
+
+char string1[] = "Hello, World!";   // Copy the fourteen bytes starting at
+                                    // memory address 1234 (which contain
+                                    // "Hello, World!") into the fourteen bytes
+                                    // reserved for string1
+char string2[] = "Hello, World!";   // Copy the fourteen bytes starting at
+                                    // memory address 1234 (which contain
+                                    // "Hello, World!") into the fourteen bytes
+                                    // reserved for string2
+
+\{{\code-block}}
+
+If we try to store the memory address in a {char *}, we'll get a compiler error
+in our code because <b>we would be modifying the executable file itself</b> if
+the compiler let us.
+A program being able to modify itself is how Skynet or other AIs are supposed to
+take over the world, but your computer is more likely to produce wrong outputs
+or delete some data in the worst case.
+To see how we could modify an executable, let's come up with a simple program
+and convert it into assembly (a more natural language version of assembly, to be
+precise) like a compiler.
+Assume that the bytes "Hello, World!" is stored in memory addresses {1234} to
+{1247} within the program itself.
+
+\{{code-block c no-line-numbers}}
+
+char * string1 = "Hello, World!";   // Copy the memory address 1234 into string1
+
+string1[0] = 'h';                   // Set the value at memory address 1234 to
+                                    // 'h'.
+
+\{{\code-block}}
+
+Memory address {1234} is actually within the program itself, meaning that the
+next time you run the program, {string1} will be initialized with {"hello,
+World!"} instead of {"Hello, World!"}.
+Since your compiler doesn't want you to write such a program, it will throw a
+compilation error and not make an executable.
+If we could guarantee the compiler that we would not modify the string literal,
+then we should be fine to store the memory address.
+
+# The {const} Keyword
+
+The {const} keyword guarantees the compiler that we aren't going to modify
+whatever we apply it to.
+If the compiler sees us modifying it, then it will throw an error to make sure
+that everything runs properly.
+
+\{{code-block c no-line-numbers}}
+
+const int a = 7;
+a = 4;              // ERROR
+int b = a + 5;      // No error because we aren't modifying a
+
+\{{\code-block}}
+
+So for string literals, we need to use a {const char *} instead.
+
+\{{code-block c no-line-numbers}}
+
+const char * string = "Hello, World!";      // No error
+string[0] = 'h';                            // ERROR
+
+\{{\code-block}}
+
+You should read {const char * string;} as "<b>{string} stores a memory address
+to a bunch of {char}s that we cannot change through the variable {string}</b>.
+
+We can also do
+
+\{{code-block c no-line-numbers}}
+
+char string[] = "Hello, World!";    // string has copied "Hello, World!", so it
+                                    // can do whatever it wants to the copy
+                                    // without messing up the program.
+const char * str = string;          // str is a pointer to characters that it
+                                    // can't modify.
+string[0] = 'h';                    // string can modify it since it's just a
+                                    // char *
+str[0] = 'H';                       // ERROR: str is a const char *, which means
+                                    // it can't modify the data at the memory
+                                    // address it stores.
+
+\{{\code-block}}
+
+Declaring a variable {const} just means that you can't use it to modify the
+memory it holds, you can use other variables to modify the memory so long as you
+create it yourself.
+
+Lastly, we can store any type into a {const} version of the type, but we can't
+store pointers to {const} types in pointers to regular types.
+
+\{{code-block c no-line-numbers}}
+
+char string[] = "Hello, World!";                // Valid
+const char * str_literal;                       // Valid
+char * str = string;                            // Valid
+str_literal = str;                              // ERROR
+
+\{{\code-block}}
+
+# Our Correct Attempt at {fopen}
+
+Well, since we don't plan on modifying either of the arguments, we can declare
+them {const} and be done with it.
+
+\{{code-block c no-line-numbers}}
+
+FILE fopen(const char * filename, const char * mode);
+
+\{{\code-block}}
+
+The syntax for {fopen} is almost right as we have it, but we have a slightly
+more efficient way of using it.
+Instead of returning a {FILE} object, we're going to return a pointer to a
+{FILE} object, like so
+
+\{{code-block c no-line-numbers}}
+
+FILE * fopen(const char * filename, const char * mode);
+
+\{{\code-block}}
+
+If we do this, we can then modify the underlying {FILE} object with functions
+instead of having to take the address of the {FILE} and pass it into the
+function or modify the {FILE} object in our code.
+Furthermore, it allows us to return {NULL} to indicate a problem in opening the
+file.
+
+# {fclose}
+
+Since we're opening a file, we need to close it when we're done, so we'll have a
+function called {fclose}.
+{fclose} only needs to know which file to close, so it has the syntax
+
+\{{code-block c no-line-numbers}}
+
+int fclose(FILE * file_object);
+
+\{{\code-block}}
+
+where the return value is {0} if the file closed properly or the constant {EOF}
+if the file was not closed properly.
+
+# {fopen} and {fclose} in Our Program
+
+Now that we can open and close files in our program, let's add it into our code.
+We just want to read from a file, so we're going to use {"r"} as our mode.
+
+\{{code-block c}}
+
+#include {{lt}}stdio.h{{gt}}
+
+int check_if_strings_differ(char * str1, char * str2);
+
+int main(int argc, char ** argv) {
+    char * program_name = argv[0];
+    if (argc {{lt}} 3) {
+        // TODO: Print Usage Message
+        return -1;
+    }
+    char * filename = argv[1];
+    char * word = argv[2];
+hl    FILE * reader = fopen(filename, "r");
+    // TODO: Count number of occurrences in a file
+hl    fclose(reader)
+    return 0;
+}
+
+hlint check_if_strings_differ(const char * str1, const char * str2) {
+    int i = 0;
+    while (str1[i] && str2[i] && (str1[i] == str2[i])) {
+        i += 1;
+    }
+    return str1[i] != str2[i];
+}
+
+\{{\code-block}}
+
+I also modified our {check_if_strings_differ} function to take in {const char
+*}s instead of {char *}s because we will not modify the strings and it will
+allow us to call it with {const char *}s and {char *}s.
+
+Between the first two highlighted lines, we now can use the variable {reader} to
+read from the file.
+
+# Summary
+
+In this article, we learned about
+
+\{{ul}}
+
+the {FILE} type, which will allow us to interact with files,
+
+{fopen}, which will allow us to create a {file} object from a filename and a
+mode,
+
+string literals, which we use for text ({"Hello, World!"}),
+
+{const}, which tells the compiler we will not modify something and allows us to
+use certain things like string literals,
+
+and {fclose}, which will allow us to clean up a {file} object.
+
+\{{\ul}}
+
+# What's Next
+
+In the next article, <a href="../format-strings">Format Strings in C</a>, we're
+going to cover reading from a file and printing out to the terminal.
