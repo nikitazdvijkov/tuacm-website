@@ -3,7 +3,7 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"He
 h1,h2{margin-top:0;margin-bottom:.5rem;}
 p{margin-top:0;margin-bottom:1rem;}
 b{font-weight:bolder;}
-a{color:#007bff;text-decoration:none;background-color:transparent;}
+a{color:#006bff;text-decoration:none;background-color:transparent;}
 a:hover{color:#0056b3;text-decoration:underline;}
 svg{overflow:hidden;vertical-align:middle;}
 h1,h2{margin-bottom:.5rem;font-weight:500;line-height:1.2;}
@@ -85,11 +85,12 @@ svg {
 }
 .my-nav a {
 	text-decoration: none;
-	color: #999;
+	color: #AAA;
+	font-size: 1.25em;
 }
 .my-nav a:hover {
 	text-decoration: none;
-	color: #555;
+	color: #777;
 }
 
 /* Extra small devices (portrait phones, less than 576px) */
