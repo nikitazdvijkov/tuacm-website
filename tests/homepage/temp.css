@@ -1,0 +1,130 @@
+*,::after,::before{box-sizing:border-box;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;text-align:left;background-color:#fff;}
+h1,h2{margin-top:0;margin-bottom:.5rem;}
+p{margin-top:0;margin-bottom:1rem;}
+b{font-weight:bolder;}
+a{color:#007bff;text-decoration:none;background-color:transparent;}
+a:hover{color:#0056b3;text-decoration:underline;}
+svg{overflow:hidden;vertical-align:middle;}
+h1,h2{margin-bottom:.5rem;font-weight:500;line-height:1.2;}
+h1{font-size:2.5rem;}
+h2{font-size:2rem;}
+.lead{font-size:1.25rem;font-weight:300;}
+.container{width:100%;padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto;}
+@media (min-width:576px){
+.container{max-width:540px;}
+}
+@media (min-width:768px){
+.container{max-width:720px;}
+}
+@media (min-width:992px){
+.container{max-width:960px;}
+}
+@media (min-width:1200px){
+.container{max-width:1140px;}
+}
+.btn{display:inline-block;font-weight:400;color:#212529;text-align:center;vertical-align:middle;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-color:transparent;border:1px solid transparent;padding:.375rem .75rem;font-size:1rem;line-height:1.5;border-radius:.25rem;transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;}
+@media (prefers-reduced-motion:reduce){
+.btn{transition:none;}
+}
+.btn:hover{color:#212529;text-decoration:none;}
+.btn:focus{outline:0;box-shadow:0 0 0 .2rem rgba(0,123,255,.25);}
+.btn:disabled{opacity:.65;}
+.btn-primary{color:#fff;background-color:#007bff;border-color:#007bff;}
+.btn-primary:hover{color:#fff;background-color:#0069d9;border-color:#0062cc;}
+.btn-primary:focus{box-shadow:0 0 0 .2rem rgba(38,143,255,.5);}
+.btn-primary:disabled{color:#fff;background-color:#007bff;border-color:#007bff;}
+.btn-lg{padding:.5rem 1rem;font-size:1.25rem;line-height:1.5;border-radius:.3rem;}
+.jumbotron{padding:2rem 1rem;margin-bottom:2rem;background-color:#e9ecef;border-radius:.3rem;}
+@media (min-width:576px){
+.jumbotron{padding:4rem 2rem;}
+}
+@media (min-width:768px){
+.d-md-none{display:none!important;}
+}
+.m-0{margin:0!important;}
+.mb-0{margin-bottom:0!important;}
+.mt-3{margin-top:1rem!important;}
+.py-3{padding-top:1rem!important;}
+.py-3{padding-bottom:1rem!important;}
+.py-4{padding-top:1.5rem!important;}
+.py-4{padding-bottom:1.5rem!important;}
+.py-5{padding-top:3rem!important;}
+.py-5{padding-bottom:3rem!important;}
+.text-center{text-align:center!important;}
+.text-light{color:#f8f9fa!important;}
+@media print{
+*,::after,::before{text-shadow:none!important;box-shadow:none!important;}
+a:not(.btn){text-decoration:underline;}
+h2,p{orphans:3;widows:3;}
+h2{page-break-after:avoid;}
+body{min-width:992px!important;}
+.container{min-width:992px!important;}
+}
+
+#terminal-prompt-logo {
+	font-family: 'Ubuntu Mono', monospace;
+
+	-webkit-user-select: none;  /* Chrome all / Safari all */
+	-moz-user-select: none;     /* Firefox all */
+	-ms-user-select: none;      /* IE 10+ */
+	user-select: none;          /* Likely future */
+}
+
+svg {
+	position: relative;
+	bottom: -3px;
+}
+
+.my-bg-dark {
+	background-color: #333;
+}
+
+.my-nav {
+	word-spacing: 0.5em;
+}
+.my-nav a {
+	text-decoration: none;
+	color: #999;
+}
+.my-nav a:hover {
+	text-decoration: none;
+	color: #555;
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+/* No media query for `xs` since this is the default in Bootstrap */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {}
+
+
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+	#my-wrapper {
+		font-size: 75%;
+	}
+}
+
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {}
+
+/* Large devices (desktops, less than 1200px) */
+@media (max-width: 1199.98px) {}
+
+/* Extra large devices (large desktops) */
+/* No media query since the extra-large */
+/* breakpoint has no upper bound on its width */
