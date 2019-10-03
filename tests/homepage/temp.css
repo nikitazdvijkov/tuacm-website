@@ -30,8 +30,8 @@ h2{font-size:2rem;}
 .btn:hover{color:#212529;text-decoration:none;}
 .btn:focus{outline:0;box-shadow:0 0 0 .2rem rgba(0,123,255,.25);}
 .btn:disabled{opacity:.65;}
-.btn-primary{color:#fff;background-color:#007bff;border-color:#007bff;}
-.btn-primary:hover{color:#fff;background-color:#0069d9;border-color:#0062cc;}
+.btn-primary{color:#fff;background-color:#0069ff;border-color:#0069ff;}
+.btn-primary:hover{color:#fff;background-color:#0059c9;border-color:#0052cc;}
 .btn-primary:focus{box-shadow:0 0 0 .2rem rgba(38,143,255,.5);}
 .btn-primary:disabled{color:#fff;background-color:#007bff;border-color:#007bff;}
 .btn-lg{padding:.5rem 1rem;font-size:1.25rem;line-height:1.5;border-radius:.3rem;}
@@ -132,4 +132,5 @@ svg {
 
 .content-width {
 	max-width: 80ch;
+	width: 90%;
 }
