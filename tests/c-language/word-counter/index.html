@@ -54,7 +54,7 @@
 		<div>
 			<div class="article">
 				<div id="article-title"><h1 id="making-a-word-counter-in-c">Making a Word Counter in C</h1></div>
-				<div id="meta-description">We're going to write our first program.</div>
+				<div id="meta-description">We're going to write our first serious program.</div>
 				<div id="date-and-tags">Posted 11 November 2019 at 12:45 PM </div>
 				<div id="author-box">
 					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
@@ -645,9 +645,10 @@
 				<p>Now, we're actually done with both <code>str-operations.h</code> and <code>word-counter.c</code>, so
 					the rest of this article will be working on <code>str-operations.c</code>.
 				</p>
+				<h3 id="str-operationsc"><code>str-operations.c</code></h3>
 				<p>Our definition of a word is any sequence of alphanumeric characters.
-					For example, "jfsadkl" would be a word but "fasd<code>%</code>as" would be two words
-					because the percent sign will break it apart.
+					For example, "jfsadkl" would be a word but "fasd%as" would be two words because
+					the percent sign will break it apart.
 				</p>
 				<div class="code-blocktable">
 <table><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -727,6 +728,7 @@
 				<a href="#reading-the-file-line-by-line" style="padding-left:48px;">Reading the File Line by Line</a>
 				<a href="#count-the-word-in-the-line" style="padding-left:48px;">Count the Word in the Line</a>
 				<a href="#getting-the-word-count-for-a-line" style="padding-left:36px;">Getting the Word Count for a Line</a>
+				<a href="#str-operationsc" style="padding-left:36px;"><code>str-operations.c</code></a>
 			</nav>
 			<div id="sidenav-activator"></div>
 		</div>

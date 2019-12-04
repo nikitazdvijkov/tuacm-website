@@ -349,12 +349,17 @@ Build Successful!
 				<p>If you're on Linux, you should probably use a decent text editor like VSCode and
 					the command line for everything else.
 					With VSCode, you can actually open a terminal up inside the program itself.
+					You'll need to install the packages <code>gcc</code>, <code>g++</code>, <code>gdb</code>, <code>git</code>, and <code>make</code> for
+					this tutorial, so <code>sudo [package manager] apt install gcc g++ gdb git make</code>,
+					where you'll have to use the <code>[package manager]</code> for your distro.
 				</p>
 				<h3 id="macos">MacOS</h3>
 				<p>If you're on Mac, you should probably use XCode or anything that works on Linux.
 					MacOS also has a terminal that works almost exactly like the Linux terminal
 					(both were based of the Unix System), so you can use a decent text editor and
 					the terminal just like in Linux.
+					In the terminal, type the command <code>brew install gcc g++ gdb git make</code> to install
+					the necessary programs to compile in <code>C</code>.
 				</p>
 				<h2 id="which-ide-does-the-author-use">Which IDE Does the Author Use?</h2>
 				<p>I use Linux, so I use <code>gcc</code> in the terminal with a separate text editor and a
@@ -387,7 +392,7 @@ Build Successful!
 6</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">puts</span><span class="p">(</span><span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">&quot;Hello, World!&quot;</span><span class="p">);</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
@@ -406,6 +411,13 @@ Build Successful!
 <span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ ./hello-world</span>
 Hello, World!
 <span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$</span>
+</pre>
+				</div>
+				<p>If you make changes to the source file <code>test.c</code>, then you will have to recompile
+					using the same exact command you used to compile <code>test.c</code> last time.
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ gcc test.c -o hello-world</span>
 </pre>
 				</div>
 				<h2 id="summary">Summary</h2>

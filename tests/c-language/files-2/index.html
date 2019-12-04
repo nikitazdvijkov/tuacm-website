@@ -65,9 +65,9 @@
 				</div>
 				<hr style="border: 3px solid black;">
 				<p><i>This is the fifteenth article in the </i>Making Sense of C<i> series.
-					In this article, we're going to finish writing our word counter program by
-					introducing a way to print things out to the terminal and to read a file word by
-					word using format strings.</i>
+					In this article, we're going to finish our discussion of basic file interaction
+					by introducing a way to print things out to the terminal and to read a file word
+					by word using format strings.</i>
 				</p>
 				<div class="aside" >
 					<h5>Review of Special Characters</h5>
@@ -569,117 +569,82 @@ This is a test.
 					arguments.
 					Instead, you should use something like
 				</p>
-<div class="code-block"><pre><span></span><span class="k">do</span> <span class="p">{</span>
+<div class="code-block"><pre><span></span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Enter your student ID: &quot;</span><span class="p">);</span>
+<span class="k">while</span> <span class="p">(</span><span class="mi">1</span> <span class="o">!=</span> <span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%u&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">student_id</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Enter your student ID: &quot;</span><span class="p">);</span>
-<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span> <span class="o">!=</span> <span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%u&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">student_id</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>Except that won't actually work because you need to use <code>scanf</code> again to clean
+					up <code>stdin</code> because <code>scanf</code> won't remove anything it can't convert, so whatever
+					you type in will still be in <code>stdin</code> waiting to be read.
+					Your computer will essentially go through this process:
+				</p>
+				<ol>
+					<li>Standard input is empty, so I'm going to let the user type in input.
+					</li>
+					<li>Standard input now has input, so I'm going to read the input.
+					</li>
+					<li>Can I convert the input to an unsigned integer?
+					</li>
+					<li>No, so I'm not going to remove it from standard input.
+					</li>
+					<li>Print out <code>"Enter your student ID: "</code>.
+					</li>
+					<li>Go back to the top of the <code>while</code> loop
+					</li>
+					<li>Standard input is <b>NOT</b> empty, so I'm going to read the input.
+					</li>
+					<li>Can I convert the input to an unsigned integer?
+					</li>
+					<li>No, so I'm not going to remove it from standard input.
+					</li>
+				</ol>
+				<p>The correct way to do it is to clear out standard input if the input is invalid.
+				</p>
+<div class="code-block"><pre><span></span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Enter your student ID: &quot;</span><span class="p">);</span>
+<span class="k">while</span> <span class="p">(</span><span class="mi">1</span> <span class="o">!=</span> <span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%u&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">student_id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%*[^</span><span class="se">\n</span><span class="s">]&quot;</span><span class="p">);</span>       <span class="c1">// Remove anything in stdin that isn&#39;t a newline.</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Enter your student ID: &quot;</span><span class="p">);</span>
+<span class="p">}</span>
 </pre></div>
 				
 				<p>In short, <b><code>scanf</code> can only read characters in the exact format you give
 					it</b>.
 					I tried to write the word counter with <code>scanf</code>, and it didn't really work, so
 					we're going to write our own simple parsing function.
+					Later, we're going to try to incorporate an external library that will take care
+					of most of this functionality for us.
 					If you want <a
 					href="http://sekrit.de/webdocs/c/beginners-guide-away-from-scanf.html">an in
 					depth criticism of the <code>scanf</code> functions</a>, read the linked article.
 				</p>
-				<h2 id="count_word_in_line"><code>count_word_in_line</code></h2>
-				<p>Our definition of a word is any sequence of alphanumeric characters and single
-					dashes for compound words.
-					For example, "jfsadkl" would be a word but "fasd<code>%</code>as" would be two words
-					because the percent sign will break it apart.
+				<h2 id="summary">Summary</h2>
+				<p>Now, we've introduced the most common I/O functions and their uses.
+					To recap, I'm going to describe them and their use cases.
 				</p>
-				<p>For this function, we're going to need the line, the word we want to find, and
-					some way to increment the count of the word.
-					We can either pass in the count as an argument or we can return the number of
-					times the word showed up in the line.
-				</p>
-<div class="code-block"><pre><span></span><span class="c1">// Return the number of times the word shows up in a line</span>
-<span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">);</span>
-<span class="c1">// Add the number of times the word shows up in a line to the current count</span>
-<span class="kt">void</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span> <span class="n">count</span><span class="p">);</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// Everything else in main</span>
-    <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="n">count</span> <span class="o">+=</span> <span class="n">count_word_in_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">word</span><span class="p">);</span>
-    <span class="c1">// OR</span>
-    <span class="n">count_word_in_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">count</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-				
-				<p>For now, either method will work, so we should look ahead to see which one will
-					work better in future projects.
-					The next project we have will print out the line if the word shows up in the
-					line, so we're going to need something like
-				</p>
-<div class="code-block"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">count_word_in_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">word</span><span class="p">))</span> <span class="p">{</span>
-    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-				
-				<p>If we took the <code>count</code> in as an argument, it would be more annoying to test
-					whether the word showed up in the line.
-				</p>
-				<p><code>count_word_in_line</code> will therefore have the syntax
-				</p>
-<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">);</span>
-</pre></div>
-				
-				<p>Anyway, I'm going to specify the exact algorithm we're going to use for
-					<code>count_word_in_line</code>, and I'm going to want you to implement it in <code>C</code>.
-				</p>
-				<ol>
-					<li>Allocate a buffer to store the individual word (so we can use
-						<code>check_if_strings_differ</code> later).
+				<ul>
+					<li>Use <code>printf</code> when you want to print something out from the terminal.
 					</li>
-					<li>Create an variable called <code>count</code> to store the number of times we see the word
-						in the line.
+					<li>Use <code>fprintf</code> when you want to print something to a file.
 					</li>
-					<li>Create a variable called <code>line_ptr</code> that stores where we currently are in the
-						string.
-						Hints:
-						<ul>
-							<li>At the start of this function, we start at the beginning of the line, so we
-								should set <code>line_ptr</code> to <code>line</code>, since <code>line</code> stores the memory address of the
-								first <code>char</code> in the string.
-							</li>
-							<li>Since <code>line_ptr</code> will store just a memory address, you won't need to allocate
-								any memory for it.
-							</li>
-						</ul>
+					<li>Use <code>fgets</code> when you want to read from a file or get user input.
 					</li>
-					<li>Start a loop that will continue until the <code>char</code> at the current position of the
-						line is <code>'\0'</code>, since we want to keep going through the line until we reach the
-						end.
+					<li>Use <code>puts</code> and <code>fputs</code> when you want to print a plain string (i.e. no format
+						strings or anything).
+						Treat them like shorthand for <code>printf("%s\n", string)</code> and <code>fprintf<code>"%s",
+						string)</code>.
 					</li>
-				</ol>
-				<div class="spoiler">
-<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">const</span> <span class="kt">int</span> <span class="n">buff_sz</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">;</span>
-    <span class="kt">char</span> <span class="n">word_buffer</span><span class="p">[</span><span class="n">buff_sz</span><span class="p">];</span>
-    <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kt">int</span> <span class="n">begin</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kt">int</span> <span class="n">word_length</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="k">while</span> <span class="p">(</span><span class="n">word_length</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">begin</span> <span class="o">+=</span> <span class="n">find_next_word_begin</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="n">begin</span><span class="p">);</span>
-        <span class="c1">// Remember that begin changed in the last line.</span>
-        <span class="n">word_length</span> <span class="o">=</span> <span class="n">find_next_word_end</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="n">begin</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">word_length</span> <span class="o">&gt;=</span> <span class="n">buff_sz</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">word_length</span> <span class="o">=</span> <span class="n">buff_sz</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="n">strncpy</span><span class="p">(</span><span class="n">word_buffer</span><span class="p">,</span> <span class="n">line</span> <span class="o">+</span> <span class="n">begin</span><span class="p">,</span> <span class="n">word_length</span><span class="p">);</span>
-        <span class="n">to_upper</span><span class="p">(</span><span class="n">word_buffer</span><span class="p">);</span>
-        <span class="n">word_buffer</span><span class="p">[</span><span class="n">word_length</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">check_if_strings_differ</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">word_buffer</span><span class="p">))</span> <span class="p">{</span>
-            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="n">begin</span> <span class="o">+=</span> <span class="n">word_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="n">count</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-				
-				</div>
+				</ul>
+				<p>These are the main functions that you will use for file I/O or terminal
+					interaction.
+					While you can certainly use other functions (besides <code>gets</code> because it's an
+					abomination), I mainly use these functions in the order shown above.
+				</p>
+				<h2 id="whats-next">What's Next</h2>
+				<p>After this article, we now have all the tools we need to write the first of our
+					goal programs: the <a href="../word-counter/index.html">word counter</a>.
+				</p>
 			</div>
 			<div class="article">
 				<div id="author-description-local">
@@ -710,7 +675,8 @@ This is a test.
 				<a href="#the-source-and-destination-prefixes" style="padding-left:36px;">The Source and Destination Prefixes</a>
 				<a href="#format-suffixes" style="padding-left:36px;">Format Suffixes</a>
 				<a href="#reading-from-vs-writing-to-a-stream" style="padding-left:24px;">Reading From vs Writing to a Stream</a>
-				<a href="#count_word_in_line" style="padding-left:24px;"><code>count_word_in_line</code></a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
+				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
 			</nav>
 			<div id="sidenav-activator"></div>
 		</div>

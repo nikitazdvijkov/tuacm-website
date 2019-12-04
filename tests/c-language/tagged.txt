@@ -14,3 +14,4 @@ Header Files in C|Joseph Mellor|The glue of C programs.|header-files/
 Files in C, Pt. 1|Joseph Mellor|We're going to get files from our hard drive into our program.|files-1/
 Files in C, Pt. 2|Joseph Mellor|Now that we can open files in our program, let's interact with them|files-2/
 Compilers and IDEs for C|Joseph Mellor|We're going to compile our first program!|compilers-and-ides/
+Making a Word Counter in C|Joseph Mellor|We're going to write our first serious program.|word-counter/
