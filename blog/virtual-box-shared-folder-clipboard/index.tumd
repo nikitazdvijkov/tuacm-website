@@ -580,19 +580,21 @@ have files and folders that look like these:
 {{prompt}} cd /media/johndoe/VBox_GAs_6.0.4
 {{dir}}:="/media/johndoe/VBox_GAs_6.0.4"
 {{prompt}} ls
-<span class="file">32Bit</span>
-<span class="file">64Bit</span>
+{{file}}:="<span class="file">{{rest-of-line}}</span>{{end-of-line}}"
+{{exe}}:="<span class="exe">{{rest-of-line}}</span>{{end-of-line}}"
+{{file}}32Bit
+{{file}}64Bit
 AUTORUN.INF
-<span class="exe">autorun.sh</span>
-<span class="file">cert</span>
-<span class="file">OS2</span>
-<span class="exe">runasroot.sh</span>
+{{exe}}autorun.sh
+{{file}}cert
+{{file}}OS2
+{{exe}}runasroot.sh
 TRANS.TBL
-<span class="exe">VBoxLinuxAdditions.run</span>
+{{exe}}VBoxLinuxAdditions.run
 VBoxSolarisAdditions.pkg
-<span class="exe">VBoxWindowsAdditions-amd64.exe</span>
-<span class="exe">VBoxWindowsAdditions.exe</span>
-<span class="exe">VBoxWindowsAdditions-x86.exe</span>
+{{exe}}VBoxWindowsAdditions-amd64.exe
+{{exe}}VBoxWindowsAdditions.exe
+{{exe}}VBoxWindowsAdditions-x86.exe
 \{{\terminal}}
 
 Then, we're going to execute the {VBoxLinuxAdditions.run} file using the syntax

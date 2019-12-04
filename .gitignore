@@ -1,2 +1,7 @@
 .DS_Store
 *.swp
+a.out
+*.c
+*.h
+*.zip
+microsoft.gpg

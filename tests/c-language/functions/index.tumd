@@ -547,8 +547,8 @@ if (a == b) {
 
 \{{\code-block}}
 
-which is valid, but verbose because what you want to return and the result of {a
-== b} are identical.
+which is valid, but verbose because <b>what you want to return and the result of {a
+== b} are identical</b>.
 You could just as easily write the code as
 
 \{{code-block c no-line-numbers}}
@@ -557,8 +557,9 @@ return a == b;
 
 \{{\code-block}}
 
-The title of this aside is how you would read the novice code with the if
-statement, which should make it clear why you can just use the return statement.
+The title of this aside is how you would read the novice code with the {if}
+statement, which should make it clear why you can just use the {return}
+statement.
 
 \{{\aside}}
 

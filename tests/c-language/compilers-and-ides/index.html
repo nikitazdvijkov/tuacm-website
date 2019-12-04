@@ -159,7 +159,7 @@ Build Successful!
 </pre>
 				</div>
 				</div>
-				<p>If the image above looks weird on your phone, turn it sideways.
+				<p>If the "image" above looks weird on your phone, turn your phone sideways.
 				</p>
 				<p>As you can see, the top of the IDE will have tabs like "File" and "View" plus
 					the minimize, maximize, and close buttons, which will work just like they work
@@ -196,7 +196,8 @@ Build Successful!
 					figure out what to compile and how to compile it.
 				</p>
 				<p>While the project file is important under the hood, you as a programmer probably
-					don't need to worry about it directly.
+					don't need to worry about it directly, though we'll discuss how to make one
+					first by hand then by using other programs.
 					In most IDEs, you'll find the ability to create a new project by going to
 					<b>File</b> (Top Left Corner) &gt; <b>New</b> &gt; <b>Project</b>.
 					You can add source files by right-clicking on the project name in the project
@@ -229,7 +230,9 @@ Build Successful!
 				</p>
 				<ul>
 					<li><b>Build:</b> Compiles all the modified and new files and links everything
-						together to get you a working executable.
+						together to get you a working executable, working executables, or a library
+						(<b>libraries are just a bunch of compiled object files glued together in one
+						file</b>, similar to how you can zip a bunch of files into one file).
 					</li>
 					<li><b>Clean:</b> Gets rid of all the object files so that you compile all the files
 						the next time you <b>Build</b> your project.
@@ -326,8 +329,8 @@ Build Successful!
 					href="https://www.tutorialspoint.com/How-do-I-set-up-C-Cplusplus-on-Eclipse-in-Windows">setting
 					up Eclipse in Windows for C/C++ development</a>.
 				</p>
-				<p>I threw a lot at you, so if you feel confused at any point, here's the simplest
-					way to get our basic <code>C</code> programs to compile on Windows:
+				<p>I threw a lot at you, so if you feel confused at any point, here's <b>the
+					simplest way to get our basic <code>C</code> programs to compile on Windows</b>:
 				</p>
 				<ol>
 					<li>Set up the <a href="https://github.com/michaeltreat/Windows-Subsystem-For-Linux-Setup-Guide/blob/master/readmes/01_preface.md">Windows Subsystem for Linux</a> using the linked tutorial.
@@ -335,21 +338,17 @@ Build Successful!
 						<code>Node.js</code>, or <code>ESlint</code> since those are JavaScript things that we won't need for
 						programming in <code>C</code> at all.
 					</li>
-					<li>Download either VSCode or Sublime Text (the specific text editor doesn't
-						matter as long as you have at least one).
+					<li>Download VSCode.
 					</li>
 					<li>In the Ubuntu App, type the command <code>sudo apt install gcc g++ gdb git make</code> to
 						install all the programs after the word <code>install</code> (you probably already have
 						several of them, but it's good to make sure that you have them).
 					</li>
 				</ol>
-				<p>That's it.
-				</p>
 				<h3 id="linux">Linux</h3>
-				<p>If you're on Linux, you should probably use a decent text editor like VSCode
-					Sublime Text and the command line for everything else, though you might be able
-					to integrate everything into the text editor, though it's more work on your
-					part.
+				<p>If you're on Linux, you should probably use a decent text editor like VSCode and
+					the command line for everything else.
+					With VSCode, you can actually open a terminal up inside the program itself.
 				</p>
 				<h3 id="macos">MacOS</h3>
 				<p>If you're on Mac, you should probably use XCode or anything that works on Linux.
@@ -366,12 +365,56 @@ Build Successful!
 					The file manager and the code executor are some of the basic functions of the
 					terminal, while the debugger is a separate command line program, <code>gdb</code>.
 				</p>
+				<h2 id="compiling-on-the-command-line">Compiling on the Command Line</h2>
+				<p>The command is pretty simple for right now, though we're going to add more to it
+					later.
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ gcc [files you want to compile] -o [name of executable]</span>
+</pre>
+				</div>
+				<p>For example, let's say we want to compile this simple program (don't worry about
+					the specific function, it will be covered in the next article) that will just
+					print out "Hello, World!\n".
+					Furthermore, let's call this file <code>test.c</code>.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>To compile this file, use the command
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ gcc test.c -o hello-world</span>
+</pre>
+				</div>
+				<p>Then, to execute it, we can use <code>./</code> followed by the program name (which
+					shouldn't have any spaces in its name).
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ ./hello-world</span>
+Hello, World!
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$</span>
+</pre>
+				</div>
 				<h2 id="summary">Summary</h2>
 				<p>I want to emphasize again that only whether you can compile your code, run your
 					code on the target system, debug your code, and manage your files matters when
 					choosing an IDE.
 					Other than that, most IDEs share probably 95% of the things you would want in an
-					IDE, so the choice is over the 5% of features you don't even need.
+					IDE, so the choice is over the 5% of features that could probably make it easier
+					for you to code.
 					For this tutorial, we're going to be focused on using a terminal with an
 					external text editor since
 				</p>
@@ -402,19 +445,10 @@ Build Successful!
 					about it.
 				</p>
 				<h2 id="whats-next">What's Next</h2>
-				<p>We just need to figure out how to print something to the terminal and how to
-					read from a file and we can write our first program (and pretty much any other
-					program).
-					Now, if we were coming up with the <code>C</code> language from scratch, we would have to
-					write these functions for the standard library, making them specific to the
-					operating system and CPU architecture, which would be annoying.
-					Luckily for us, we're never going to need to write these functions because
-					someone else has already written these functions.
-					The next article will be explaining the single line of code we're going to put
-					into our program to allow us to read from files and print things out to the
-					terminal.
-				</p>
-				<p>See you in <a href="../header-files/">Header Files in C</a>.
+				<p>Now that we have a way to compile our programs, we're going to finish talking
+					about files in <a href="../files-2/">Files in C, Pt. 2</a>.
+					After we finish talking about files, we're going to start using them to write
+					the word counter.
 				</p>
 			</div>
 			<div class="article">
@@ -448,6 +482,7 @@ Build Successful!
 				<a href="#linux" style="padding-left:36px;">Linux</a>
 				<a href="#macos" style="padding-left:36px;">MacOS</a>
 				<a href="#which-ide-does-the-author-use" style="padding-left:24px;">Which IDE Does the Author Use?</a>
+				<a href="#compiling-on-the-command-line" style="padding-left:24px;">Compiling on the Command Line</a>
 				<a href="#summary" style="padding-left:24px;">Summary</a>
 				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
 			</nav>

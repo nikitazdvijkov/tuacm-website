@@ -127,7 +127,7 @@ Build Successful!
 </div>
 \{{\raw-html}}
 
-If the image above looks weird on your phone, turn it sideways.
+If the "image" above looks weird on your phone, turn your phone sideways.
 
 As you can see, the top of the IDE will have tabs like "File" and "View" plus
 the minimize, maximize, and close buttons, which will work just like they work
@@ -165,7 +165,8 @@ When you compile and link your project, it will go through the project file and
 figure out what to compile and how to compile it.
 
 While the project file is important under the hood, you as a programmer probably
-don't need to worry about it directly.
+don't need to worry about it directly, though we'll discuss how to make one
+first by hand then by using other programs.
 In most IDEs, you'll find the ability to create a new project by going to
 <b>File</b> (Top Left Corner) {{gt}} <b>New</b> {{gt}} <b>Project</b>.
 You can add source files by right-clicking on the project name in the project
@@ -200,7 +201,9 @@ All IDEs have four major options to build code:
 \{{ul}}
 
 <b>Build:</b> Compiles all the modified and new files and links everything
-together to get you a working executable.
+together to get you a working executable, working executables, or a library
+(<b>libraries are just a bunch of compiled object files glued together in one
+file</b>, similar to how you can zip a bunch of files into one file).
 
 <b>Clean:</b> Gets rid of all the object files so that you compile all the files
 the next time you <b>Build</b> your project.
@@ -307,8 +310,8 @@ article on <a
 href="https://www.tutorialspoint.com/How-do-I-set-up-C-Cplusplus-on-Eclipse-in-Windows">setting
 up Eclipse in Windows for C/C++ development</a>.
 
-I threw a lot at you, so if you feel confused at any point, here's the simplest
-way to get our basic {C} programs to compile on Windows:
+I threw a lot at you, so if you feel confused at any point, here's <b>the
+simplest way to get our basic {C} programs to compile on Windows</b>:
 
 \{{ol}}
 
@@ -317,8 +320,7 @@ Follow the entire process in the tutorial except for setting up {npm},
 {Node.js}, or {ESlint} since those are JavaScript things that we won't need for
 programming in {C} at all.
 
-Download either VSCode or Sublime Text (the specific text editor doesn't
-matter as long as you have at least one).
+Download VSCode.
 
 In the Ubuntu App, type the command {sudo apt install gcc g++ gdb git make} to
 install all the programs after the word {install} (you probably already have
@@ -326,14 +328,14 @@ several of them, but it's good to make sure that you have them).
 
 \{{\ol}}
 
-That's it.
-
 ## Linux
 
-If you're on Linux, you should probably use a decent text editor like VSCode
-Sublime Text and the command line for everything else, though you might be able
-to integrate everything into the text editor, though it's more work on your
-part.
+If you're on Linux, you should probably use a decent text editor like VSCode and
+the command line for everything else.
+With VSCode, you can actually open a terminal up inside the program itself.
+You'll need to install the packages {gcc}, {g++}, {gdb}, {git}, and {make} for
+this tutorial, so {sudo [package manager] apt install gcc g++ gdb git make},
+where you'll have to use the {[package manager]} for your distro.
 
 ## MacOS
 
@@ -341,6 +343,8 @@ If you're on Mac, you should probably use XCode or anything that works on Linux.
 MacOS also has a terminal that works almost exactly like the Linux terminal
 (both were based of the Unix System), so you can use a decent text editor and
 the terminal just like in Linux.
+In the terminal, type the command {brew install gcc g++ gdb git make} to install
+the necessary programs to compile in {C}.
 
 # Which IDE Does the Author Use?
 
@@ -352,13 +356,69 @@ everything else.
 The file manager and the code executor are some of the basic functions of the
 terminal, while the debugger is a separate command line program, {gdb}.
 
+# Compiling on the Command Line
+
+The command is pretty simple for right now, though we're going to add more to it
+later.
+
+\{{terminal}}
+
+{{prompt}} gcc [files you want to compile] -o [name of executable]
+
+\{{\terminal}}
+
+For example, let's say we want to compile this simple program (don't worry about
+the specific function, it will be covered in the next article) that will just
+print out "Hello, World!\n".
+Furthermore, let's call this file {test.c}.
+
+\{{code-block c}}
+
+#include {{lt}}stdio.h{{gt}}
+
+int main(void) {
+    puts("Hello, World!");
+    return 0;
+}
+
+\{{\code-block}}
+
+To compile this file, use the command
+
+\{{terminal}}
+
+{{prompt}} gcc test.c -o hello-world
+
+\{{\terminal}}
+
+Then, to execute it, we can use {./} followed by the program name (which
+shouldn't have any spaces in its name).
+
+\{{terminal}}
+
+{{prompt}} ./hello-world
+Hello, World!
+{{prompt}}
+
+\{{\terminal}}
+
+If you make changes to the source file {test.c}, then you will have to recompile
+using the same exact command you used to compile {test.c} last time.
+
+\{{terminal}}
+
+{{prompt}} gcc test.c -o hello-world
+
+\{{\terminal}}
+
 # Summary
 
 I want to emphasize again that only whether you can compile your code, run your
 code on the target system, debug your code, and manage your files matters when
 choosing an IDE.
 Other than that, most IDEs share probably 95% of the things you would want in an
-IDE, so the choice is over the 5% of features you don't even need.
+IDE, so the choice is over the 5% of features that could probably make it easier
+for you to code.
 For this tutorial, we're going to be focused on using a terminal with an
 external text editor since
 
@@ -392,16 +452,7 @@ about it.
 
 # What's Next
 
-We just need to figure out how to print something to the terminal and how to
-read from a file and we can write our first program (and pretty much any other
-program).
-Now, if we were coming up with the {C} language from scratch, we would have to
-write these functions for the standard library, making them specific to the
-operating system and CPU architecture, which would be annoying.
-Luckily for us, we're never going to need to write these functions because
-someone else has already written these functions.
-The next article will be explaining the single line of code we're going to put
-into our program to allow us to read from files and print things out to the
-terminal.
-
-See you in <a href="../header-files/">Header Files in C</a>.
+Now that we have a way to compile our programs, we're going to finish talking
+about files in <a href="../files-2/">Files in C, Pt. 2</a>.
+After we finish talking about files, we're going to start using them to write
+the word counter.

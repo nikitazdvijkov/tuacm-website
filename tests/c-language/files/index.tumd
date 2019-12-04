@@ -415,5 +415,6 @@ and {fclose}, which will allow us to clean up a {file} object.
 
 # What's Next
 
-In the next article, <a href="../format-strings">Format Strings in C</a>, we're
-going to cover reading from a file and printing out to the terminal.
+In the next article, <a href="../compilers-and-ides/">Compilers and IDEs for
+C</a>, we're going to go through the basics of setting up a compiler and and IDE
+for {C} so that we can actually compile programs.

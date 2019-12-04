@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<style>
+			.terminal pre {
+				color: #AAAAAA;
+			}
+			.terminal .file {
+				color: #295FCC;
+				font-weight: bold;
+			}
+			.terminal .exe {
+				color: #4CE64C;
+				font-weight: bold;
+			}
+			#creating-a-file {
+				border-radius: 8px;
+				margin-bottom: 1em;
+				padding: 5px;
+			}
+			#creating-a-file p {
+				margin-bottom: 0;
+			}
+		</style>
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>Making a Word Counter in C</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="making-a-word-counter-in-c">Making a Word Counter in C</h1></div>
+				<div id="meta-description">We're going to write our first program.</div>
+				<div id="date-and-tags">Posted 11 November 2019 at 12:45 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>This is the sixteenth article in the </i>Making Sense of C<i> series.
+					In this article, we're going to write a basic word counter, our first goal in
+					programming in <code>C</code>.</i>
+				</p>
+				<p>We had to set up a lot of features in <code>C</code> to get to this point, but we're
+					finally here.
+				</p>
+				<p>Up to this point, we've
+				</p>
+				<ul>
+					<li>determined that we're going to give the compiler a file with a bunch of
+						statements ending in semicolons,
+					</li>
+					<li>established that we can use comments with <code>//</code> for single line comments and <code>/*</code>
+						and <code>*/</code> for multiline comments,
+					</li>
+					<li>reserved the symbols <code>+-*/%</code> for arithmetic,
+					</li>
+					<li>set up variables <code>[type] [variable] = [expression]</code> which will allow us to store
+						values for later use,
+					</li>
+					<li>come up with the integral types (<code>char</code>, <code>short</code>, <code>int</code>, and <code>long long</code>) and
+						the floating point types (<code>float</code> and <code>double</code>),
+					</li>
+					<li>figured out a way to represent characters using the <code>char</code> type and invented the
+						<code>NULL</code> character, which indicates that we're ending a string,
+					</li>
+					<li>and decided to use single quotes around a character to represent the ASCII value
+						for that <code>char</code>.
+					</li>
+					<li>explained how the program uses memory addresses to identify variables,
+					</li>
+					<li>came up with a way to access the memory address of a variable using the <b>
+						address of</b> operator (<code>&amp;</code>),
+					</li>
+					<li>came up with a way to access the value stored at a memory address using the
+						<b>dereference</b> operator (<code>*</code>),
+					</li>
+					<li>created <b>pointer</b> variables to allow us to store memory addresses using the
+						syntax <code>type * variable_name;</code>,
+					</li>
+					<li>came up with a way to tell the computer to get us a block of memory (a.k.a. an
+						<b>array</b> or <b>buffer</b>) using the syntax <code>type
+						array[num_elements];</code>,
+					</li>
+					<li>came up with a way to initialize an array with an <b>initializer list</b>,
+					</li>
+					<li>came up with a way to initialize a <code>char</code> array using double quotes,
+						(<code>"Hello!"</code>),
+					</li>
+					<li>came up with a way to access elements of an array using the syntax
+						<code>variable_name[offset]</code>,
+					</li>
+					<li>introduced a way to compare two values using the <b>relational operators</b>
+						(<code>&lt;</code>, <code>&gt;</code>, <code>&lt;</code>=, <code>&gt;</code>=, <code>==</code>, <code>!=</code>),
+					</li>
+					<li>introduced ways to combine or invert Boolean statements using the <b>logical
+						operators</b> (<code>&amp;&amp;</code>, <code>||</code>, and <code>!</code>),
+					</li>
+					<li>reserved the <code>if</code> and <code>else</code> keywords so that our program can act differently
+						if given different inputs (a.k.a. <b>conditional branches</b>),
+					</li>
+					<li>added <code>while</code> and <code>do while</code> loops for <b>unindexed looping</b>,
+					</li>
+					<li>added <code>for</code> loops for <b>indexed looping</b>,
+					</li>
+					<li>introduced functions to help break our code into more maintainable chunks and to
+						prevent us from typing the same thing repeatedly,
+					</li>
+					<li>designated the <code>main</code> function as the entry point for our program and a way to
+						take in user input,
+					</li>
+					<li>introduced the symbol table, which helps the compiler recognize valid code,
+					</li>
+					<li>set up function declarations, which allow us to add functions to the symbol
+						table,
+					</li>
+					<li>introduced the preprocessor, which can generate code for us during compilation
+						without modifying the original source file,
+					</li>
+					<li>added the <code>#include</code> macro and the concept of header files, which contain
+						function declarations and other stuff that we'll learn about later that allow us
+						to automate some of the process of addings things to the symbol table,
+					</li>
+					<li>introduced <code>stdio.h</code>, which will allow us to do file I/O,
+					</li>
+					<li>created the <code>FILE</code> type, which will allow us to interact with files,
+					</li>
+					<li>created <code>fopen</code>, which will allow us to create a <code>file</code> object from a filename
+						and a mode,
+					</li>
+					<li>reserved the keyword <code>const</code>, which tells the compiler we will not modify
+						something and allows us to use certain things like string literals,
+					</li>
+					<li>created <code>fclose</code>, which will allow us to clean up a <code>file</code> object,
+					</li>
+					<li>set up our compiler and IDE so that we can modify and compile <code>C</code> programs,
+					</li>
+					<li>introduced <code>stdin</code> for user input, <code>stdout</code> for terminal output, and <code>stderr</code>
+						for error output,
+					</li>
+					<li>created <code>fgets</code> to get a line from a file,
+					</li>
+					<li>created <code>printf</code> to print to the terminal,
+					</li>
+					<li>created <code>fprintf</code> to write to files,
+					</li>
+					<li>and introduced <b>format strings</b> to make it easier for us to print things.
+					</li>
+				</ul>
+				<p>These tools are sufficient for us to write our first program: the word counter.
+				</p>
+				<h2 id="before-we-begin">Before We Begin</h2>
+				<p>This is a short step, but you'll want to create two new directories: one for
+					all the <code>C</code> tutorials in this series and one inside that one for the word
+					counter specifically.
+					First, if you're on Mac or Linux, open the terminal app.
+					If you're on Windows, open the Ubuntu app, which you should have installed in
+					the <a href="../compilers-and-ides/index.html#windows">Compilers and Ides for
+					C</a> article.
+					If you're on Mac or Linux, type in the command <code>cd ~</code>, which will put you in the
+					home folder (it's exactly like clicking on folders in the Windows or Mac
+					file explorer until you get to <code>Users/[your username]</code>).
+					If you're using the Windows Subsystem for Linux, type <code>cd /mnt/c/Users/[your
+					username]</code>, which will bring you to your home directory (i.e. the directory that
+					contains Desktop, Documents, Downloads, etc.).
+					Then, type <code>mkdir c-tutorial</code>, which will then create a new directory in <code>~</code>.
+					<span style="color: #5500FF"><b>If you want to put your code in another
+					directory, you can use <code>mkdir -p path/to/&#8203;other/&#8203;directory/&#8203;c-tutorial</code></b></span>.
+					You can see a list of all the directories in your current folder by typing <code>ls</code>.
+					From there, type <code>cd c-tutorial</code> to move into the <code>c-tutorial</code> directory.
+					<span style="color: #5500FF"><b>If you put your code in another directory, you
+					can use <code>cd path/to/&#8203;other/&#8203;directory/&#8203;c-tutorial</code> instead</b></span>.
+					Lastly, create a new directory called <code>word-counter</code> using <code>mkdir word-counter</code>
+					and move into it with <code>cd word-counter</code>.
+				</p>
+				<p>The entire process should look like this:
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/some/random/dir</b></span>$ cd ~</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ mkdir c-tutorial</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ ls</span>
+<span class="file">c-tutorial</span>
+<span class="file">Desktop</span>
+<span class="file">Documents</span>
+<span class="file">Downloads</span>
+<span class="file">Music</span>
+<span class="file">Pictures</span>
+<span class="file">Public</span>
+<span class="file">Videos</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ cd c-tutorial</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/c-tutorial</b></span>$ mkdir word-counter</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/c-tutorial</b></span>$ cd word-counter</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/c-tutorial/word-counter</b></span>$</span>
+</pre>
+				</div>
+				<div id="creating-a-file">
+				<p>Now that you're here, create a file called <code>word-counter.c</code>, which you can do
+					using your IDE, a text editor, or the command line.
+					If you're using an IDE or a text editor, go to <b>File</b> &gt; <b>Open</b>
+					&gt; <b>Folder</b>, navigate to the <code>word-counter</code> folder, and click on it.
+					Then, right click on the <code>word-counter</code> folder and click <b>New File</b>.
+					If you're using a command line text editor like <code>vim</code> or <code>nano</code>, then just type
+					<code>vim word-counter.c</code> or <code>nano word-counter.c</code> and the text editor should pop up
+					with a new file.
+				</p>
+				</div>
+				<div class="aside" >
+					<h5>Command Line Text Editors</h5>
+					<hr>
+					<p>Although I personally use <code>vim</code> (I'm actually using it right now to write these
+						articles.) and would recommend it to an experienced programmer, I don't
+						recommend that any novices use it because it's made less for just putting text
+						on the screen like normal text editors (Google Docs, Microsoft Word, Notepad)
+						and more for coding.
+						It allows fast movement and operations throughout the code, but you have to put
+						in some effort.
+						The same reasoning also applies for <code>emacs</code> and <code>nano</code>.
+					</p>
+				</div>
+				<p>From here, we can start typing our code into our new file.
+				</p>
+				<h2 id="the-top-level">The Top Level</h2>
+				<p>We're going to start with our goal: counting the number of times a word shows up
+					in a file and printing that number to the terminal.
+					From there, we're going to go to the top level of our program, which will
+					correspond to our <code>main</code> function.
+				</p>
+				<p>For us to count the number of times a word shows up in a file, we need to know
+					the word and the file to read from.
+					Then, we'll also need to store the count somewhere and print it out.
+				</p>
+				<p>Our algorithm currently looks like
+				</p>
+				<ol>
+					<li>Get the user input.
+					</li>
+					<li>Count the number of times the word shows up in a file.
+					</li>
+					<li>Print the count of the word.
+					</li>
+				</ol>
+				<h3 id="getting-user-input">Getting User Input</h3>
+				<p>For now, let's focus on getting the user input.
+					We can look through our list of tools we have in <code>C</code> (look above) and we find
+					that <a href="../main-function/index.html">the <code>main</code> function</a> will allow us
+					to get user input directly through its arguments, so we can just use it
+					directly.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="c1">// TODO: Count the number of times the word shows up in a file.</span>
+    <span class="c1">// TODO: Print the count of the word.</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>Now you might notice a problem.
+					What happens if the user doesn't provide us with at least three arguments?
+					<code>argv[0]</code> always has to exist, but <code>argv[1]</code> and so on only exist if the user
+					provides other arguments on the command line.
+					We need to check that there are at least three arguments for the program to
+					continue running, so let's add that check.
+					Furthermore, if the user types the command in without the proper arguments, the
+					general response is to print out a usage message showing the user how to use it,
+					which we'll add too.
+					We want to print to <code>stderr</code>, so we'll need to use <code>fprintf</code> or <code>fputs</code> and
+					<a href="../header-files/index.html">we'll need to include <code>stdio.h</code></a>.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+<span class="hll">    <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll">        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./word_counter file_name word_to_find</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class="hll">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class="hll">    <span class="p">}</span>
+</span>    <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="c1">// TODO: Count the number of times the word shows up in a file.</span>
+    <span class="c1">// TODO: Print the count of the word.</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>So now, we have the name of the file the user wants to run the program on in the
+					variable <code>file_name</code> and the word the user wants to find in <code>word</code>.
+				</p>
+				<h3 id="printing-the-count">Printing the Count</h3>
+				<p>You might think it's a little weird that we skipped the part where we actually
+					count the word, but it's easy enough that we can do it in a few lines.
+					To print a number out to the screen, we can use <code><a
+					href="../files-2/index.html">printf</a></code> and be done with it.
+					Since we need to declare a variable before we can use it, we're going to declare
+					<code>unsigned int count = 0;</code> before we calculate the <code>count</code> of the word.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./word_counter file_name word_to_find</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="hll">    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span>    <span class="c1">// TODO: Count the number of times the word shows up in a file.</span>
+<span class="hll">    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+</span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<h3 id="count-how-often-the-word-shows-up-in-the-file">Count How Often the Word Shows up in the File</h3>
+				<p>Now we're going to get into some of the heavy lifting.
+					Here's how I'm thinking we break down this part of the algorithm:
+				</p>
+				<ol>
+					<li>Get the file into our <code>C</code> program in some way that we can interact with it.
+					</li>
+					<li>Read the file line by line (since that's how you normally read files).
+					</li>
+					<li>For each line, get the count of the word and add it to the total count.
+					</li>
+				</ol>
+				<p>Let's work with this and see what happens.
+				</p>
+				<h4 id="getting-the-file-into-c">Getting the File into <code>C</code></h4>
+				<p>As we went over in the article on <a href="../files/index.html">files in
+					<code>C</code></a>, we can get files from our computer into our program using <code>fopen</code>,
+					which will return a <code>FILE *</code> object that we can use to interact with the file.
+					We'll want to <b>read</b> the file, so we're going to use <code>"r"</code> as the mode
+					(second argument to <code>fopen</code>).
+					Since we have to clean up after ourselves, we'll also need a corresponding
+					<code>fclose</code>.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./word_counter file_name word_to_find</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="hll">    <span class="kt">FILE</span> <span class="o">*</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">);</span>
+</span>    <span class="c1">// TODO: Read the file line by line</span>
+    <span class="c1">// TODO: For each line, get the count of the word and add it to</span>
+    <span class="c1">//       the total count</span>
+<span class="hll">    <span class="n">fclose</span><span class="p">(</span><span class="n">reader</span><span class="p">);</span>
+</span>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>I decided to call the <code>FILE *</code> object <code>reader</code> since it's reading the file.
+					If I had done something stupid and called it something like <code>a</code>, then I could
+					end up accidentally confusing it for something else or not recognizing that I'm
+					using it incorrectly.
+				</p>
+				<h4 id="reading-the-file-line-by-line">Reading the File Line by Line</h4>
+				<p>Now that we have a <code>FILE *</code>, we can read the file line by line.
+					We're going to need somewhere to store the line, and since the line is made up
+					of characters, we're going to use a <code>char</code> buffer.
+					We'll need to allocate a safe amount to get decently long lines, so let's
+					allocate room for <code>4096</code> (i.e. 2<sup>12</sup> or 4 KiB or about 4 kB)
+					characters.
+					If a user uses a line longer than <code>4096</code> characters, then <code>fgets</code> will
+					automatically break it into multiple lines every <code>4095</code> characters (remember
+					that the last character is the null terminator <code>'\0'</code>.
+					We also want to keep reading until we reach the end of the file, which <code>fgets</code>
+					will allow us to do.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./word_counter file_name word_to_find</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">FILE</span> <span class="o">*</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">);</span>
+<span class="hll">    <span class="k">const</span> <span class="kt">int</span> <span class="n">line_sz</span> <span class="o">=</span> <span class="mi">4096</span><span class="p">;</span>           <span class="c1">// There are better ways to do this</span>
+</span><span class="hll">    <span class="kt">char</span> <span class="n">line</span><span class="p">[</span><span class="n">line_sz</span><span class="p">];</span>                 <span class="c1">// but we need features we haven&#39;t</span>
+</span>                                        <span class="c1">// gone over yet.</span>
+<span class="hll">    <span class="k">while</span> <span class="p">(</span><span class="n">fgets</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">line_sz</span><span class="p">,</span> <span class="n">reader</span><span class="p">))</span> <span class="p">{</span>
+</span>        <span class="c1">// TODO: For each line, get the count of the word and add it to</span>
+        <span class="c1">//       the total count</span>
+<span class="hll">    <span class="p">}</span>
+</span>    <span class="n">fclose</span><span class="p">(</span><span class="n">reader</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<h4 id="count-the-word-in-the-line">Count the Word in the Line</h4>
+				<p>Now, we need a function to count the number of times the word shows up in the
+					line.
+					We can then add it to the <code>count</code>.
+					For now, we're going to create a function called <code>count_word_in_line</code> that takes
+					in a line and the word we want to count and return the number of times the word
+					shows up in the line.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./word_counter file_name word_to_find</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">FILE</span> <span class="o">*</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">);</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">line_sz</span> <span class="o">=</span> <span class="mi">4096</span><span class="p">;</span>           <span class="c1">// There are better ways to do this</span>
+    <span class="kt">char</span> <span class="n">line</span><span class="p">[</span><span class="n">line_sz</span><span class="p">];</span>                 <span class="c1">// but we need features we haven&#39;t</span>
+                                        <span class="c1">// gone over yet.</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">fgets</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">line_sz</span><span class="p">,</span> <span class="n">reader</span><span class="p">))</span> <span class="p">{</span>
+<span class="hll">        <span class="n">count</span> <span class="o">+=</span> <span class="n">count_word_in_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">word</span><span class="p">);</span>
+</span>    <span class="p">}</span>
+    <span class="n">fclose</span><span class="p">(</span><span class="n">reader</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>Now, we just have to write <code>count_word_in_line</code>.
+				</p>
+				<h3 id="getting-the-word-count-for-a-line">Getting the Word Count for a Line</h3>
+				<p>Since <code>count_word_in_line</code> is going to be useful later in other programs, we
+					might as well put it in another file so we can reuse it.
+					Because we're going to put it in another file, we're going to have to also make
+					another header file.
+					I feel like we're going to need to do other string operations for our programs,
+					so we're going to create the files <code>str-operations.h</code> and <code>str-operations.c</code>.
+					You can make these files through <a href="#creating-a-file"
+					onclick="highlight_link(this, '#EEAAEE')">the same process in which you created
+					the <code>word-counter.c</code> file</a>.
+				</p>
+				<p>For <code>count_word_in_line</code>, we're going to need the line, the word we want to
+					find, and we're going to return an <code>int</code> to get the proper count, which means
+					<code>count_word_in_line</code> has the syntax:
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">);</span>
+</pre></div>
+				
+				<p>We add the <code>const</code>s because we'll modify neither the <code>word</code> nor the <code>line</code>.
+					Since we just need <code>count_word_in_line</code>, <code>str-operations.h</code> will look like
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="hll"><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">);</span>
+</span></pre></div>
+</td></tr></table>				
+				</div>
+				<p>Furthermore, we're going to want to <code>#include &#8203;"str-operations.h"</code> in
+					<code>word-counter.c</code> so that we can use <code>count_word_in_line</code> in <code>word-counter.c</code>.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="hll"><span class="cp">#include</span> <span class="cpf">&quot;str-operations.h&quot;</span><span class="cp"></span>
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./word_counter file_name word_to_find</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">FILE</span> <span class="o">*</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">);</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">line_sz</span> <span class="o">=</span> <span class="mi">4096</span><span class="p">;</span>           <span class="c1">// There are better ways to do this</span>
+    <span class="kt">char</span> <span class="n">line</span><span class="p">[</span><span class="n">line_sz</span><span class="p">];</span>                 <span class="c1">// but we need features we haven&#39;t</span>
+                                        <span class="c1">// gone over yet.</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">fgets</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">line_sz</span><span class="p">,</span> <span class="n">reader</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="n">count_word_in_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">word</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">fclose</span><span class="p">(</span><span class="n">reader</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>Now, we're actually done with both <code>str-operations.h</code> and <code>word-counter.c</code>, so
+					the rest of this article will be working on <code>str-operations.c</code>.
+				</p>
+				<p>Our definition of a word is any sequence of alphanumeric characters.
+					For example, "jfsadkl" would be a word but "fasd<code>%</code>as" would be two words
+					because the percent sign will break it apart.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">buff_sz</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">word_buffer</span><span class="p">[</span><span class="n">buff_sz</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">begin</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">word_length</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">word_length</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">begin</span> <span class="o">+=</span> <span class="n">find_next_word_begin</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="n">begin</span><span class="p">);</span>
+        <span class="c1">// Remember that begin changed in the last line.</span>
+        <span class="n">word_length</span> <span class="o">=</span> <span class="n">find_next_word_end</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="n">begin</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">word_length</span> <span class="o">&gt;=</span> <span class="n">buff_sz</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">word_length</span> <span class="o">=</span> <span class="n">buff_sz</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">strncpy</span><span class="p">(</span><span class="n">word_buffer</span><span class="p">,</span> <span class="n">line</span> <span class="o">+</span> <span class="n">begin</span><span class="p">,</span> <span class="n">word_length</span><span class="p">);</span>
+        <span class="n">to_upper</span><span class="p">(</span><span class="n">word_buffer</span><span class="p">);</span>
+        <span class="n">word_buffer</span><span class="p">[</span><span class="n">word_length</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">check_if_strings_differ</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">word_buffer</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">begin</span> <span class="o">+=</span> <span class="n">word_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				</div>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#making-a-word-counter-in-c" style="padding-left:12px;">Making a Word Counter in C</a>
+				<a href="#before-we-begin" style="padding-left:24px;">Before We Begin</a>
+				<a href="#the-top-level" style="padding-left:24px;">The Top Level</a>
+				<a href="#getting-user-input" style="padding-left:36px;">Getting User Input</a>
+				<a href="#printing-the-count" style="padding-left:36px;">Printing the Count</a>
+				<a href="#count-how-often-the-word-shows-up-in-the-file" style="padding-left:36px;">Count How Often the Word Shows up in the File</a>
+				<a href="#getting-the-file-into-c" style="padding-left:48px;">Getting the File into <code>C</code></a>
+				<a href="#reading-the-file-line-by-line" style="padding-left:48px;">Reading the File Line by Line</a>
+				<a href="#count-the-word-in-the-line" style="padding-left:48px;">Count the Word in the Line</a>
+				<a href="#getting-the-word-count-for-a-line" style="padding-left:36px;">Getting the Word Count for a Line</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+		<script src="https://tuacm.com/js/highlight-internal-link.js"></script>
+	</body>
+</html>

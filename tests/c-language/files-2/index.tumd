@@ -1,0 +1,647 @@
+article
+Title:		Files in C, Pt. 2
+Author:		Joseph Mellor
+Tagline:	Now that we can open files in our program, let's interact with them.
+Code Style:	trac+dark
+Import:		code-block terminal aside
+Scripts:
+
+\{{style}}
+
+blockquote {
+	padding-left: 1ch;
+	border-left: 3px solid #B0B0B0;
+	background: #E0E0E0;
+}
+
+.aside blockquote {
+	background: #F0F0F0;
+}
+
+.spoiler {
+    border: 3px solid #B0B0B0;
+    padding: 1em;
+    border-radius: 8px;
+    background: #E6E6FA;
+    margin-bottom: 1em;
+}
+
+.spoiler .code-block {
+    opacity: 0;
+    margin-bottom: 0;
+}
+
+.spoiler .code-block:hover {
+    opacity: 1;
+}
+
+\{{\style}}
+
+
+<i>This is the fifteenth article in the </i>Making Sense of C<i> series.
+In this article, we're going to finish our discussion of basic file interaction
+by introducing a way to print things out to the terminal and to read a file word
+by word using format strings.</i>
+
+\{{aside}}
+#### Review of Special Characters
+<hr>
+
+I suggest you go back to the article on <a
+href="../strings/index.html#escape-characters">Strings in C and look at the
+escape characters section</a> because we're going to use them in this article.
+
+\{{\aside}}
+
+# I/O Without Format Strings
+
+As you can imagine, at this point we can easily introduce the functionality to
+do things like "read a line from a file" and "print characters out to a file".
+For reading a line from a file, we just need to come up with a function that
+takes in the {FILE *} of the file we want to read, some output buffer to
+store it, and <b>the number of characters we want to read (since we need to
+make sure that we can actually hold the file in memory)</b>.
+It might also be useful to return a {char *} that points to the output buffer if
+it works, and {NULL} if it doesn't.
+Likewise, printing characters out to a file requires us to specify the buffer we
+want to print to the file and the {FILE *} of the file we want to write to.
+
+## {fgets} and {fputs}
+
+These functions also exist in the standard library, and they're known as {fgets}
+({f}ile {get} {s}tring) and {fputs} ({f}ile {put} {s}tring).
+They have the syntax
+
+\{{code-block c no-line-numbers}}
+
+char * fgets(const char * str, int count, FILE * file_reader);
+int fputs(const char * str, FILE * file_writer);
+
+\{{\code-block}}
+
+{fputs} returns an {int}, but different implementations do different things.
+In all implementations, returning a non-negative number means that your program
+successfully wrote to the file.
+If it can't write to the file, then {fputs} will return a constant known as
+{EOF} for ({E}nd {O}f {F}ile), which you can test for in an {if} statement.
+
+An example usage of a simple program that copies up to 1024 characters from the
+first line of a file to the end of another would look like
+
+\{{code-block c}}
+
+#include {{lt}}stdio.h{{gt}}
+
+int copy_first_line(FILE * source, FILE * dest);
+
+int main(int argc, char ** argv) {
+    if (3 {{gt}} argc) {
+        return -1;
+    }
+
+    char * source_file_name = argv[1];
+    char * dest_file_name = argv[2];
+
+    FILE * source = fopen(source_file_name, "r");
+    FILE * dest = fopen(dest_file_name, "a");
+
+    int errno = copy_first_line(source, dest);
+
+    fclose(source);
+    fclose(dest);
+    return errno;
+}
+
+int copy_first_line(FILE * source, FILE * dest) {
+    if (NULL == source || NULL == dest) {
+        return -1;
+    }
+    const int buff_sz = 1024;
+    char buffer[buff_sz];
+    if (NULL == fgets(buffer, buff_sz, source)) {
+        return -1;
+    }
+    if (EOF == fputs(buffer, dest)) {
+        return -1;
+    }
+    return 0;
+}
+
+\{{\code-block}}
+
+I put the code for actually copying from one file to the other file in its own
+function so that I don't have to close the files if I get an error in opening,
+reading, or writing to a file.
+I could probably make the code above a little cleaner by moving the code from
+lines {13} to {19} into their own function and returning {errno} from the new
+function, but it would be diminishing returns.
+At least to me, {main} should handle getting user input from the command line
+and calling the functions that drive the program and nothing else, though you
+can make a lot of exceptions.
+
+Since we haven't yet covered how we can implement error messages, I just close
+the files and exit the program with a {-1} to indicate something going wrong.
+Later, we can use the return value from {main} to figure out what went wrong.
+There are some specific error numbers reserved in {C} that we can use in the
+standard library, but we aren't going to worry about them for now.
+
+## The Terminal as a File
+
+In Unix (and later Linux and Mac OS), <b>everything is a file (descriptor)</b>,
+though most people leave off the (descriptor) part.
+In particular, this means that things like printers, the terminal, network
+connections, etc. can be represented with {FILE *} objects.
+Up to this point, I've been using names like {file_reader} and {file_writer} for
+the {FILE *} parameters in the standard library functions, but the <a
+href="https://en.cppreference.com/w/c/io/fputs">documentation for C</a> uses the
+more general parameter name of {stream}
+
+\{{code-block c no-line-numbers}}
+
+char * fgets(const char * str, int count, FILE * stream);
+int fputs(const char * str, FILE * stream);
+
+\{{\code-block}}
+
+since you could be taking in a file as an input or a network connection or
+anything else (there are better functions to use than these, though).
+Since the terminal is also a {FILE *} object, we should be able to pass it into
+our file manipulation functions.
+In {C}, we have three preexisting {FILE *} objects:
+
+\{{ul}}
+
+{stdout} for printing stuff to the terminal,
+
+{stderr} for printing errors out to the terminal,
+
+and {stdin} for getting user input from the terminal.
+
+\{{\ul}}
+
+You don't need to open or close them since the operating system itself will take
+care of them for you.
+
+As an example, I modified the {main} function so that it prompts you for the
+text that you want to add to the file:
+
+\{{code-block c}}
+
+int main(int argc, char ** argv) {
+hl    if (2 {{gt}} argc) {
+        // \n is the newline character
+hl        fputs("Not enough arguments provided.\n", stderr);
+        // \t is a tab character
+hl        fputs("usage:\t", stderr):
+hl        fputs(argv[0], stderr);
+hl        fputs(" output_file\n", stderr);
+        return -1;
+    }
+
+    char * dest_file_name = argv[1];
+    FILE * dest = fopen(dest_file_name, "a");
+
+    // \" is the double quote character and we need to use it because just
+    // a " would end the string.
+hl    fputs("What line do you want to add to \"", stdout);
+hl    fputs(dest_file_name, stdout);
+hl    fputs("\"?\n", stdout);
+hl    int errno = copy_first_line(stdin, dest);
+
+    fclose(dest);
+    return errno;
+}
+
+\{{\code-block}}
+
+First, now that I can print things out to the terminal (specifically {stderr}),
+I added a few lines above to tell the user that he or she provided too few
+arguments to the program and print out the proper usage (printing out the usage
+is standard if the command line input isn't formatted correctly).
+Also, since we only expect to have two arguments (the name of the program and
+the file we're adding to), we changed the first highlighted line to check if
+there are at least two arguments.
+We're no longer using a {source} file, I just removed all the lines involving
+it.
+I also replaced {source} with {stdin} in the call to {copy_first_line}.
+Then, I added a few lines to print out a line to {stdout} asking the user what
+line he or she wanted to add to the file.
+
+\{{aside}}
+#### {stdin}
+<hr>
+
+Using {stdin} will pause your program and allow the user to type something into
+the terminal.
+The program will remain paused until the user hits {Enter}.
+Until then, it's just like typing something into a form or a login screen where
+you can hit backspace to remove characters.
+In IDEs that close the terminal window immediately after the program finishes,
+some users will add a read from {stdin} to pause the program so they can see the
+output.
+
+\{{\aside}}
+
+# I/O With Format Strings
+
+If you look back at the example program, you'll notice that I had to break one
+line in the output into multiple calls to {fputs} because I needed to tell it to
+print out everything before the name of the file, then the name of the file,
+then everything after the name of the file.
+It would be nice to be able to write one line of code to print out the message,
+so we're going to invent something called a <b>format string</b>.
+
+A <b>format string</b> is a sequence of {char}s (just like a regular string)
+that the computer will read as instructions on what to print out.
+For example, we want to print out "What line do you want to add to
+"{dest_file_name}"?".
+
+## Escape Sequences in Format Strings
+
+We should be able to have something like an escape character in our format
+strings that tells the computer to stop printing out the characters in the
+string, get something different to print out, then continue printing out the
+rest of the characters in the string.
+We've already reserved the {'\'} character for the normal escape character for
+things like newlines and tabs, so we need something else.
+For {C}, Ritchie decided to use the {%} sign again, probably because it has only
+been used up to this point for the remainder operation and everything else on a
+keyboard (letters, numbers, punctuation, etc.) is already in use.
+
+In our case, we want to tell the program to print out the normal series of
+characters, then print out a different string, then print out the rest of the
+characters.
+Since we're printing out a string, let's use {%s} to tell the computer to print
+out a string.
+Our format string should then use
+
+\{{code-block c no-line-numbers}}
+
+"What line do you want to add to \"%s\"?"
+
+\{{\code-block}}
+
+We'll also need to tell the computer which information to print out.
+
+## {printf} and {fprintf}
+
+We'll make a new function called {printf} ({print} {f}ormat string)
+
+\{{code-block c no-line-numbers}}
+
+int printf(const char * format_string, ...);
+
+\{{\code-block}}
+
+which will print data out to the terminal.
+
+\{{aside}}
+#### Variadic Functions
+<hr>
+
+<b>Variadic Functions</b> are functions that can have a variable number of
+arguments.
+You can say that the first few arguments needs to have a specific format, such
+as in {printf} having a {const char * format_string} as its first argument, then
+say the rest of the arguments can be whatever.
+In our case, whenever {printf} hits one of our escape sequences ({%s}), it needs
+to know what it should print out.
+After the {format_string} argument, the rest of the arguments are what it should
+print out in order.
+For example:
+
+\{{code-block c no-line-numbers}}
+
+printf("%s %s %s %s.", "This", "is", "a", "test");
+
+\{{\code-block}}
+
+will print out
+
+\{{terminal}}
+
+This is a test.
+
+\{{\terminal}}
+
+As a more realisitic example, let's say that we want to print out a word and how
+many times it shows up in a text file.
+In this case, for each word, we would want to print out the word, a space or a
+colon, and then the number of times it shows up in the text.
+Using a format string and assuming that {word} is a {char *} and {count} is an
+{unsigned int} (we can't have a negative count), we can use
+
+\{{code-block c no-line-numbers}}
+
+printf("%s: %u\n", word, count);    // %u is for an unsigned int
+
+\{{\code-block}}
+
+which tells the computer to print {word}, then a colon, then a space, then print
+{count}, then print a newline.
+
+\{{\aside}}
+
+In our example program, we can replace our three {fputs} lines with
+
+\{{code-block c no-line-numbers}}
+
+printf("What line do you want to add to \"%s\"?\n", dest_file_name);
+
+\{{\code-block}}
+
+If, instead, we want to print to a file, we can use {fprintf}, which has the
+syntax
+
+\{{code-block c no-line-numbers}}
+
+int fprintf(FILE * stream, const char * format, ...);
+
+\{{\code-block}}
+
+where the only difference between {fprintf} and {printf} is that you have to
+specify the {FILE *} first for {fprintf} while {printf} prints to {stdout}.
+You could replace every {printf} in your program with an {fprintf} with its
+first argument being {stdout} and see no difference in your program.
+For example, we could have written our {printf} above using {fprintf} using
+
+\{{code-block c no-line-numbers}}
+
+fprintf(stdout, "What line do you want to add to \"%s\"?\n", dest_file_name);
+
+\{{\code-block}}
+
+Later, we'll extend the format strings to include things like restricting the
+number of characters we read.
+
+# General Naming Conventions of {stdio.h} Functions
+
+As you can see by the {printf} vs {fprintf} example, above, a lot of the
+standard library functions will do similar things but with slightly different
+arguments.
+We're going to go through most of them.
+
+## The Four Base Functions
+
+In {C}, we have four base operations for I/O:
+
+\{{ul}}
+
+<b>{put}</b>, which prints out its argument,
+
+<b>{get}</b>, which takes in its argument and stores it in a variable,
+
+<b>{printf}</b>, which prints out its arguments as dictated by a format string,
+
+and <b>{scanf}</b>, which takes in input and stores it in a variable as dictated
+by a format string.
+
+\{{\ul}}
+
+## The Source and Destination Prefixes
+
+By default, the four base functions interact with the terminal.
+To change the source for {get} and {scanf} and to change the destination for
+{put} and {printf}, we add a letter or two to the front of the name.
+
+\{{ul}}
+
+<b>{f}</b> added to the front of any of the base functions changes the input
+source or output destination to a {FILE *}, which is generally specified as the
+first argument.
+
+<b>{s}</b> will change the input source to a {const char *} and the output
+destination to a {char *}, which is generally specified as the first argument.
+
+<b>{sn}</b> is the same as {s}, except it has another argument specifying the
+number of characters it can read.
+{sn} only applies to later versions of {C} and it only applies to {printf}.
+
+\{{\ul}}
+
+Note that {sget} would essentially just copy data that's already in your
+program, so there are no {sget} functions.
+I'm also skipping the {v} prefix since it's a more advanced feature that I have
+never used.
+
+We're done with the two format string functions, {printf} and {scanf}, so let's
+show you the syntax for all the derived functions:
+
+\{{code-block c no-line-numbers}}
+
+// Write to file
+int fprintf(FILE * stream, const char * format, ...);
+
+// Read from file
+int fscanf(FILE * stream, const char * format, ...);
+
+// Print to terminal
+int printf(const char * format, ...);
+
+// Read from terminal
+int scanf(const char * format, ...);
+
+// Write to an array of characters
+int snprintf(char * string, size_t n, const char * format, ...);
+int sprintf(char * string, const char * format, ...);
+
+// Read from an array of characters
+int sscanf(const char * string, const char * format, ...);
+
+\{{\code-block}}
+
+## Format Suffixes
+
+Since {get} and {put} don't have a format specifier but we would like to print
+different things and we've already added stuff to the beginning of the word for
+the input, we need to create new functions with stuff added to the end of the
+name.
+
+\{{ul}}
+
+<b>{s}</b> will tell the computer to expect a string as the input or output.
+
+<b>{c}</b> will read a character from or write a character to a {FILE *}.
+
+<b>{char}</b> will read a character from or write a character to {stdin}, a.k.a.
+the terminal.
+
+\{{\ul}}
+
+As a quick disclaimer, I don't use the {get} and {put} functions that often
+since I can do everything with format strings and I don't need to remember as
+much.
+I won't go into the syntax here, but you can find the syntax for these functions
+on <a href="http://www.cplusplus.com/reference/cstdio/">the c++ website</a>
+({C++} contains all the standard library files of {C} and some more for its
+standard library, so there isn't as much of a reason to make another website.).
+
+\{{aside style="border-width: 8px; border-radius: 12px;"}}
+<h4 style="color: red; text-align: center;">WARNING</h4><hr>
+
+If you remember back in the article on <a href="../memory-addresses/">Memory
+Addresses in C</a>, I had a warning about how <b>by allowing you to directly
+interact with memory, {C} introduces several security vulnerabilities that
+mainly consist of accessing memory outside of a buffer</b>.
+
+I ended the warning with:
+
+\{{raw-html}}
+<blockquote>
+\{{\raw-html}}
+
+As of right now, we neither have the capability to allow or prevent a malicious
+user from accessing memory outside of a buffer, so we'll save that for a later
+article.
+
+\{{raw-html}}
+</blockquote>
+\{{\raw-html}}
+
+Now, we have ways for users to change how our program behaves, so we need to
+prevent mailicious users from accessing memory outside of a buffer, which we can
+do with format string functions, {fgets}, etc. since we can specify the maximum
+number of characters we want to read.
+We can't, however, prevent malicious users from exploiting {gets}, which reads
+input from {stdio}.
+{gets}, however, doesn't specify the number of characters the user can input,
+meaning that a malicious user could use it to exploit our code and do something
+like <a
+href="https://www.washingtonpost.com/news/the-switch/wp/2013/11/01/how-a-grad-student-trying-to-build-the-first-botnet-brought-the-internet-to-its-knees/">launch
+a Denial of Service campaign that shut down the internet for a few days</a>.
+The "Morris Worm", named after Robert Morris, was a white hat hacking attempt
+intended to highlight several security vulnerabilities in commonly used
+programs, including a buffer overflow based on {gets}.
+
+For this reason, {gets} was deprecated before the first official {C} standard
+was released and removed entirely from the {C} standard library in a later
+release.
+Even then, if you somehow get a working program, your compiler will actually
+contain another warning saying that {gets} is dangerous and should not be used.
+
+\{{\aside}}
+
+# Reading From vs Writing to a Stream
+
+Reading from streams is similar to writing from streams except that it's
+generally easier to write to a stream than read from a stream.
+For example, let's say that you want the program to print out the ID number of
+the student when they log in.
+In that case, assuming that the student ID is a base 10 number (has the digits
+zero to nine) and the value is stored in an {unsigned int}, then you can print
+it out using
+
+\{{code-block c no-line-numbers}}
+
+printf("Student ID: %u\n", student_id);
+
+\{{\code-block}}
+
+Pretty straightforward, right?
+Likewise, if you want to print to a file, you can use {fprintf} and specify the
+stream as the first argument.
+On the other hand, let's say that you want to read a student ID number from a
+file.
+In that case, you could use
+
+\{{code-block c no-line-numbers}}
+
+scanf("Enter your student ID: %u", &student_id);
+
+\{{\code-block}}
+
+right?
+
+If we were to use that format string, a user with ID number 1234567 would have
+to type "Enter your student ID: 1234567", not just "1234567".
+If you type anything else, {scanf} will just return {0} since it could fill zero
+arguments.
+Instead, you should use something like
+
+\{{code-block c no-line-numbers}}
+
+printf("Enter your student ID: ");
+while (1 != scanf("%u", &student_id) {
+    printf("Enter your student ID: ");
+}
+
+\{{\code-block}}
+
+Except that won't actually work because you need to use {scanf} again to clean
+up {stdin} because {scanf} won't remove anything it can't convert, so whatever
+you type in will still be in {stdin} waiting to be read.
+Your computer will essentially go through this process:
+
+\{{ol}}
+
+Standard input is empty, so I'm going to let the user type in input.
+
+Standard input now has input, so I'm going to read the input.
+
+Can I convert the input to an unsigned integer?
+
+No, so I'm not going to remove it from standard input.
+
+Print out {"Enter your student ID: "}.
+
+Go back to the top of the {while} loop
+
+Standard input is <b>NOT</b> empty, so I'm going to read the input.
+
+Can I convert the input to an unsigned integer?
+
+No, so I'm not going to remove it from standard input.
+
+\{{\ol}}
+
+The correct way to do it is to clear out standard input if the input is invalid.
+
+\{{code-block c no-line-numbers}}
+
+printf("Enter your student ID: ");
+while (1 != scanf("%u", &student_id) {
+    scanf("%*[^\n]");       // Remove anything in stdin that isn't a newline.
+    printf("Enter your student ID: ");
+}
+
+\{{\code-block}}
+
+In short, <b>{scanf} can only read characters in the exact format you give
+it</b>.
+I tried to write the word counter with {scanf}, and it didn't really work, so
+we're going to write our own simple parsing function.
+Later, we're going to try to incorporate an external library that will take care
+of most of this functionality for us.
+If you want <a
+href="http://sekrit.de/webdocs/c/beginners-guide-away-from-scanf.html">an in
+depth criticism of the {scanf} functions</a>, read the linked article.
+
+# Summary
+
+Now, we've introduced the most common I/O functions and their uses.
+To recap, I'm going to describe them and their use cases.
+
+\{{ul}}
+
+Use {printf} when you want to print something out from the terminal.
+
+Use {fprintf} when you want to print something to a file.
+
+Use {fgets} when you want to read from a file or get user input.
+
+Use {puts} and {fputs} when you want to print a plain string (i.e. no format
+strings or anything).
+Treat them like shorthand for {printf("%s\n", string)} and {fprintf{"%s",
+string)}.
+
+\{{\ul}}
+
+These are the main functions that you will use for file I/O or terminal
+interaction.
+While you can certainly use other functions (besides {gets} because it's an
+abomination), I mainly use these functions in the order shown above.
+
+# What's Next
+
+After this article, we now have all the tools we need to write the first of our
+goal programs: the <a href="../word-counter/index.html">word counter</a>.

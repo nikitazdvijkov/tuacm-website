@@ -665,8 +665,8 @@ our code, so let's look at a more realistic example: our word counter program.
 
 ## Using Standard Library Functions
 
-For now, we're going to use the standard library functions {fopen}, {fclose},
-{fscanf}, {printf}, and {perror}
+For now, let's say we're going to use the standard library functions {fopen},
+{fclose}, {fgets}, {printf}, and {perror}.
 We'll also use the "type" (it's actually a {struct}, but we'll get into that
 later) {FILE}.
 To use all these functions, we would have to write (don't worry about the
@@ -698,7 +698,7 @@ functions.
 
 With header files, however, we can use {stdio.h} ({st}an{d}ard {i}nput and
 {o}utput {h}eader file), which has all the stuff we need written for us already.
-There are other header files, but we're just going to use ours for now.
+There are other header files, but we're just going to use {stdio.h} for now.
 
 # Summary
 
@@ -727,7 +727,7 @@ Here is everything we have up to this point in code:
 
 \{{code-block c}}
 
-#include {{lt}}stdio.h{{gt}}
+hl#include {{lt}}stdio.h{{gt}}
 
 int check_if_strings_differ(char * str1, char * str2);
 

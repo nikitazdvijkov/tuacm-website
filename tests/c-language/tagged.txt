@@ -10,6 +10,7 @@ Memory Addresses in C|Joseph Mellor|How does the computer know which bits to use
 Control Flow in C|Joseph Mellor|We still need some way of changing the behavior of the program based on the user input.|control-flow/
 Functions in C|Joseph Mellor|Functions are the building blocks of programs in C.|functions/
 The main Function in C|Joseph Mellor|As you can guess, the main function is quite an important function in C.|main-function/
+Header Files in C|Joseph Mellor|The glue of C programs.|header-files/
+Files in C, Pt. 1|Joseph Mellor|We're going to get files from our hard drive into our program.|files-1/
+Files in C, Pt. 2|Joseph Mellor|Now that we can open files in our program, let's interact with them|files-2/
 Compilers and IDEs for C|Joseph Mellor|We're going to compile our first program!|compilers-and-ides/
-Header Files in C|Joseph Mellor|Header files are the glue of C programs.|header-files/
-
