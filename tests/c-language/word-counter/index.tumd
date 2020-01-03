@@ -149,6 +149,14 @@ and introduced <b>format strings</b> to make it easier for us to print things.
 
 These tools are sufficient for us to write our first program: the word counter.
 
+# What is a Word?
+
+Our definition of a word is any sequence of alphanumeric characters.
+For example, "ji12fsadkl" would be a word but "f1.asd%as1" would be three words
+because the period and the percent sign will break it apart.
+You could define a word to mean something else (like anything separated by
+spaces), but we're going to use this definition.
+
 # Before We Begin
 
 {{o-path}}="path/to/{{zs}}other/{{zs}}directory/{{zs}}c-tutorial"
@@ -166,7 +174,7 @@ file explorer until you get to {Users/[your username]}).
 If you're using the Windows Subsystem for Linux, type {cd /mnt/c/Users/[your
 username]}, which will bring you to your home directory (i.e. the directory that
 contains Desktop, Documents, Downloads, etc.).
-Then, type {mkdir c-tutorial}, which will then create a new directory in {~}.
+Then, type {mkdir -p dev/c-tutorial}, which will then create a new directory in {~}.
 <span style="color: #5500FF"><b>If you want to put your code in another
 directory, you can use {mkdir -p {{o-path}}}</b></span>.
 You can see a list of all the directories in your current folder by typing {ls}.
@@ -188,7 +196,7 @@ The entire process should look like this:
 
 {{prompt}} cd ~
 {{dir}}:="~"
-{{prompt}} mkdir c-tutorial
+{{prompt}} mkdir -p dev/c-tutorial
 {{prompt}} ls
 {{file}}:="<span class="file">{{rest-of-line}}</span>{{end-of-line}}"
 {{exe}}:="<span class="exe">{{rest-of-line}}</span>{{end-of-line}}"
@@ -200,8 +208,8 @@ The entire process should look like this:
 {{file}}Pictures
 {{file}}Public
 {{file}}Videos
-{{prompt}} cd c-tutorial
-{{dir}}:="~/c-tutorial"
+{{prompt}} cd dev/c-tutorial
+{{dir}}:="~/dev/c-tutorial"
 {{prompt}} mkdir word-counter
 {{prompt}} cd word-counter
 {{dir}}="{{dir}}/word-counter"
@@ -519,7 +527,8 @@ hlint count_word_in_line(const char * line, const char * word);
 \{{\code-block}}
 
 Furthermore, we're going to want to {#include {{zs}}"str-operations.h"} in
-{word-counter.c} so that we can use {count_word_in_line} in {word-counter.c}.
+{word-counter.c} so that we can use {count_word{{zs}}_in_line} in
+{word-counter.c}.
 
 \{{code-block c}}
 
@@ -549,14 +558,191 @@ int main(int argc, char ** argv) {
 
 \{{\code-block}}
 
-Now, we're actually done with both {str-operations.h} and {word-counter.c}, so
-the rest of this article will be working on {str-operations.c}.
+Now, we're actually done with {word-counter.c}, so the rest of this article will
+be working on {str-operations.c} and {str-operations.h}.
 
 ## {str-operations.c}
 
-Our definition of a word is any sequence of alphanumeric characters.
-For example, "jfsadkl" would be a word but "fasd%as" would be two words because
-the percent sign will break it apart.
+Now, we're going to come up with the algorithm to count the word in the line.
+
+\{{ol}}
+
+Initialize an empty {int} that will serve as the {count}.
+
+While we haven't reached the end of the line:
+\{{ol}}
+
+find the next word,
+
+convert it to uppercase to account for differences in ASCII uppercase and
+lowercase,
+
+and add one to the count if it matches the input word.
+
+\{{\ol}}
+
+return the {count}.
+
+\{{\ol}}
+
+### {check_if_strings_differ}
+
+We have already written {check_if_{{zs}}strings_differ}, so we can just put it
+into {str-operations.c} near the top.
+
+\{{code-block c}}
+
+hlint check_if_strings_differ(char * str1, char * str2) {
+hl    int i = 0;
+hl    while (str1[i] && str2[i] && (str1[i] == str2[i])) {
+hl        i += 1;
+hl    }
+hl    return str1[i] != str2[i];
+hl}
+
+\{{\code-block}}
+
+### Converting Text to Uppercase
+
+We also want to be able to convert things to the same case so that we match
+"the" and "The", so we'll need to write a function for it.
+Since we'll be converting from lowercase to uppercase, we'll call this function
+{to_upper}.
+Since we haven't covered dynamic memory allocation, we'll have to convert the
+characters to uppercase in place, meaning we're going to modify the original
+string and we won't need to {return} anything.
+Our function declaration will look like
+
+\{{code-block c}}
+
+hlvoid to_upper(char * string);
+int count_word_in_line(const char * line, const char * word);
+
+\{{\code-block}}
+
+We're going to want to go through all the characters in the string, so we're
+going to need a {while} loop like so:
+
+\{{code-block c no-line-numbers}}
+
+void to_upper(char * string) {
+    int i = 0;
+    while (string[i]) {
+        // TODO: convert string[i] to uppercase if necessary
+        i++;
+    }
+}
+
+\{{\code-block}}
+
+The code above will loop through each character of the string until it reaches
+the end of the string since {'\0'} is {0} and {0} is false in {C}.
+We can access the current character by using {string[i]}.
+Lowercase ASCII characters are between {'a'} and {'z'} inclusive, so we just
+need to check if the current character is greater than or equal to {'a'} and
+less than or equal to {'z'}.
+
+\{{code-block c no-line-numbers}}
+
+void to_upper(char * string) {
+    int i = 0;
+    while (string[i]) {
+hl        if ('a' {{lt}}= string[i] && 'z' {{gt}}= string[i]) {
+            // TODO: convert string[i] to uppercase
+hl        }
+        i++;
+    }
+}
+
+\{{\code-block}}
+
+We'll want to subtact {32} from the character if it is a lowercase ASCII
+character since the numerical value of a lowercase letter is {32} more than it's
+corresponding uppercase letter.
+We haven't covered bitwise operators, which would also work, but we're going to
+continue with this method.
+
+\{{code-block c no-line-numbers}}
+
+void to_upper(char * string) {
+    int i = 0;
+    while (string[i]) {
+        if ('a' {{lt}}= string[i] && 'z' {{gt}}= string[i]) {
+hl            string[i] -= 32;
+        }
+        i++;
+    }
+}
+
+\{{\code-block}}
+
+Now, we just need to add it to {str-operations.c}.
+Since it's declared in {str-operations.h}, we can just {#include} it and we
+won't need to worry about where it is in the file.
+
+\{{code-block c}}
+
+hl#include "str-operations.h"
+
+hlvoid to_upper(char * string) {
+hl    int i = 0;
+hl    while (string[i]) {
+hl        if ('a' {{lt}}= string[i] && 'z' {{gt}}= string[i]) {
+hl            string[i] -= 32;
+hl        }
+hl        i++;
+hl    }
+hl}
+
+int check_if_strings_differ(char * str1, char * str2) {
+    int i = 0;
+    while (str1[i] && str2[i] && (str1[i] == str2[i])) {
+        i += 1;
+    }
+    return str1[i] != str2[i];
+}
+
+\{{\code-block}}
+
+### Starting to Write {count_word_in_line}
+
+We'll need to take care of the function input and output first, which we've done
+below.
+
+\{{code-block c}}
+
+#include "str-operations.h"
+
+void to_upper(char * string) {
+    int i = 0;
+    while (string[i]) {
+        if ('a' {{lt}}= string[i] && 'z' {{gt}}= string[i]) {
+            string[i] -= 32;
+        }
+        i++;
+    }
+}
+
+int check_if_strings_differ(char * str1, char * str2) {
+    int i = 0;
+    while (str1[i] && str2[i] && (str1[i] == str2[i])) {
+        i += 1;
+    }
+    return str1[i] != str2[i];
+}
+
+hlint count_word_in_line(const char * line, const char * word) {
+hl    int count = 0;
+hl    // TODO: For each word in line:
+hl        //   1. Convert the word to uppercase
+hl        //   2. Check if the current word matches the input word
+hl        //   3. Add one to the count if it matches the input word
+hl    return count;
+hl}
+
+\{{\code-block}}
+
+
 
 \{{code-block c}}
 

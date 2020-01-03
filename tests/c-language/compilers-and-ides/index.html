@@ -344,7 +344,70 @@ Build Successful!
 						install all the programs after the word <code>install</code> (you probably already have
 						several of them, but it's good to make sure that you have them).
 					</li>
+					<li>Create a folder somewhere on your computer where you're going to put all your
+						projects.
+						For example, let's say you put it in <code>C:\Users\&#8203;[username]\dev</code>, where
+						<code>[username]</code> is your username.
+					</li>
+					<li>Inside your projects folder, create another folder for a specific project.
+						Since we have to do "Hello, World!", we're going to have the folder
+						<code>C:\Users\&#8203;[username]\dev&#8203;\hello-world</code>.
+					</li>
+					<li>Put all your <code>.c</code> and <code>.h</code> files in that folder. We will use build tools like
+						<code>make</code>, <code>cmake</code>, or <code>premake</code> later in this series, but we're keeping it simple
+						for now.
+						Use your text editor to create your files in the folder and write the code.
+						In our case, we're going to create the file
+						<code>C:\Users\&#8203;[username]\dev&#8203;\hello-world\&#8203;hello-world.c</code> and we're
+						going to put the following code in the file.
+						<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">&quot;Hello, World!&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>						
+						</div>
+					</li>
+					<li>On the command line, type <code>cd /mnt/c/[dir]</code>, where <code>[dir]</code> is everything after
+						<code>C:</code> in the path of the project folder, but with all the backslashes replaced
+						with forward slashes.
+						In our case, it's <code>users/&#8203;[username]/dev&#8203;/hello-world</code>.
+						<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ cd /mnt/c/users/[username]/dev/hello-world</span>
+</pre>
+						</div>
+					</li>
+					<li>Then, type <code>gcc *.c -o [output]</code>, where <code>[output]</code> is the name of the output
+						executable.
+						In our case, we'll name the output executable <code>hello-world</code>, so we're going to
+						type the command:
+						<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>/mnt/c/users/[username]/dev/hello-world</b></span>$ gcc *.c -o hello-world</span>
+</pre>
+						</div>
+					</li>
+					<li>Run the program using <code>./[output]</code>.
+						<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>/mnt/c/users/[username]/dev/hello-world</b></span>$ ./hello-world</span>
+Hello, World!
+</pre>
+						</div>
+					</li>
 				</ol>
+				<p>Once again, this is the bare minimum you need to do to get a <code>C</code> program written
+					and compiled.
+					An actual <code>C</code> program would likely be using build systems like <code>make</code> and would
+					be setting compiler flags for different situations.
+					We're going to get there later, but I'm not trying to overwhelm you.
+				</p>
 				<h3 id="linux">Linux</h3>
 				<p>If you're on Linux, you should probably use a decent text editor like VSCode and
 					the command line for everything else.
@@ -375,7 +438,7 @@ Build Successful!
 					later.
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ gcc [files you want to compile] -o [name of executable]</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>/mnt/c/users/[username]/dev/hello-world</b></span>$ gcc [files you want to compile] -o [name of executable]</span>
 </pre>
 				</div>
 				<p>For example, let's say we want to compile this simple program (don't worry about
@@ -401,23 +464,23 @@ Build Successful!
 				<p>To compile this file, use the command
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ gcc test.c -o hello-world</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>/mnt/c/users/[username]/dev/hello-world</b></span>$ gcc test.c -o hello-world</span>
 </pre>
 				</div>
 				<p>Then, to execute it, we can use <code>./</code> followed by the program name (which
 					shouldn't have any spaces in its name).
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ ./hello-world</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>/mnt/c/users/[username]/dev/hello-world</b></span>$ ./hello-world</span>
 Hello, World!
-<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>/mnt/c/users/[username]/dev/hello-world</b></span>$</span>
 </pre>
 				</div>
 				<p>If you make changes to the source file <code>test.c</code>, then you will have to recompile
 					using the same exact command you used to compile <code>test.c</code> last time.
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>~/dev</b></span>$ gcc test.c -o hello-world</span>
+<span class="terminal-oneline"><span style="color:#3734E2;"><b>joseph@tutorials</b></span>:<span style="color:#FF0070;"><b>/mnt/c/users/[username]/dev/hello-world</b></span>$ gcc test.c -o hello-world</span>
 </pre>
 				</div>
 				<h2 id="summary">Summary</h2>
