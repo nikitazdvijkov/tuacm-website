@@ -173,6 +173,13 @@
 				</ul>
 				<p>These tools are sufficient for us to write our first program: the word counter.
 				</p>
+				<h2 id="what-is-a-word">What is a Word?</h2>
+				<p>Our definition of a word is any sequence of alphanumeric characters.
+					For example, "ji12fsadkl" would be a word but "f1.asd%as1" would be three words
+					because the period and the percent sign will break it apart.
+					You could define a word to mean something else (like anything separated by
+					spaces), but we're going to use this definition.
+				</p>
 				<h2 id="before-we-begin">Before We Begin</h2>
 				<p>This is a short step, but you'll want to create two new directories: one for
 					all the <code>C</code> tutorials in this series and one inside that one for the word
@@ -187,7 +194,7 @@
 					If you're using the Windows Subsystem for Linux, type <code>cd /mnt/c/Users/[your
 					username]</code>, which will bring you to your home directory (i.e. the directory that
 					contains Desktop, Documents, Downloads, etc.).
-					Then, type <code>mkdir c-tutorial</code>, which will then create a new directory in <code>~</code>.
+					Then, type <code>mkdir -p dev/c-tutorial</code>, which will then create a new directory in <code>~</code>.
 					<span style="color: #5500FF"><b>If you want to put your code in another
 					directory, you can use <code>mkdir -p path/to/&#8203;other/&#8203;directory/&#8203;c-tutorial</code></b></span>.
 					You can see a list of all the directories in your current folder by typing <code>ls</code>.
@@ -201,7 +208,7 @@
 				</p>
 				<div class="terminal"><pre>
 <span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/some/random/dir</b></span>$ cd ~</span>
-<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ mkdir c-tutorial</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ mkdir -p dev/c-tutorial</span>
 <span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ ls</span>
 <span class="file">c-tutorial</span>
 <span class="file">Desktop</span>
@@ -211,10 +218,10 @@
 <span class="file">Pictures</span>
 <span class="file">Public</span>
 <span class="file">Videos</span>
-<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ cd c-tutorial</span>
-<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/c-tutorial</b></span>$ mkdir word-counter</span>
-<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/c-tutorial</b></span>$ cd word-counter</span>
-<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/c-tutorial/word-counter</b></span>$</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ cd dev/c-tutorial</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/dev/c-tutorial</b></span>$ mkdir word-counter</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/dev/c-tutorial</b></span>$ cd word-counter</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/dev/c-tutorial/word-counter</b></span>$</span>
 </pre>
 				</div>
 				<div id="creating-a-file">
@@ -454,7 +461,7 @@
 					characters.
 					If a user uses a line longer than <code>4096</code> characters, then <code>fgets</code> will
 					automatically break it into multiple lines every <code>4095</code> characters (remember
-					that the last character is the null terminator <code>'\0'</code>.
+					that the last character is the null terminator <code>'\0'</code>).
 					We also want to keep reading until we reach the end of the file, which <code>fgets</code>
 					will allow us to do.
 				</p>
@@ -591,7 +598,8 @@
 </td></tr></table>				
 				</div>
 				<p>Furthermore, we're going to want to <code>#include &#8203;"str-operations.h"</code> in
-					<code>word-counter.c</code> so that we can use <code>count_word_in_line</code> in <code>word-counter.c</code>.
+					<code>word-counter.c</code> so that we can use <code>count_word&#8203;_in_line</code> in
+					<code>word-counter.c</code>.
 				</p>
 				<div class="code-blocktable">
 <table><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -642,14 +650,219 @@
 </pre></div>
 </td></tr></table>				
 				</div>
-				<p>Now, we're actually done with both <code>str-operations.h</code> and <code>word-counter.c</code>, so
-					the rest of this article will be working on <code>str-operations.c</code>.
+				<p>Now, we're actually done with <code>word-counter.c</code>, so the rest of this article will
+					be working on <code>str-operations.c</code> and <code>str-operations.h</code>.
 				</p>
 				<h3 id="str-operationsc"><code>str-operations.c</code></h3>
-				<p>Our definition of a word is any sequence of alphanumeric characters.
-					For example, "jfsadkl" would be a word but "fasd%as" would be two words because
-					the percent sign will break it apart.
+				<p>Now, we're going to come up with the algorithm to count the word in the line.
 				</p>
+				<ol>
+					<li>Initialize an empty <code>int</code> that will serve as the <code>count</code>.
+					</li>
+					<li>While we haven't reached the end of the line:
+						<ol>
+							<li>find the next word,
+							</li>
+							<li>convert it to uppercase to account for differences in ASCII uppercase and
+								lowercase,
+							</li>
+							<li>and add one to the count if it matches the input word.
+							</li>
+						</ol>
+					</li>
+					<li>return the <code>count</code>.
+					</li>
+				</ol>
+				<h4 id="check_if_strings_differ"><code>check_if_strings_differ</code></h4>
+				<p>We have already written <code>check_if_&#8203;strings_differ</code>, so we can just put it
+					into <code>str-operations.c</code> near the top.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="hll"><span class="kt">int</span> <span class="nf">check_if_strings_differ</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">str1</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">str2</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll">    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="hll">    <span class="k">while</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+</span><span class="hll">        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="hll">    <span class="p">}</span>
+</span><span class="hll">    <span class="k">return</span> <span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span class="hll"><span class="p">}</span>
+</span></pre></div>
+</td></tr></table>				
+				</div>
+				<h4 id="converting-text-to-uppercase">Converting Text to Uppercase</h4>
+				<p>We also want to be able to convert things to the same case so that we match
+					"the" and "The", so we'll need to write a function for it.
+					Since we'll be converting from lowercase to uppercase, we'll call this function
+					<code>to_upper</code>.
+					Since we haven't covered dynamic memory allocation, we'll have to convert the
+					characters to uppercase in place, meaning we're going to modify the original
+					string and we won't need to <code>return</code> anything.
+					Our function declaration will look like
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="hll"><span class="kt">void</span> <span class="nf">to_upper</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">string</span><span class="p">);</span>
+</span><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">);</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>We're going to want to go through all the characters in the string, so we're
+					going to need a <code>while</code> loop like so:
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">void</span> <span class="nf">to_upper</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+        <span class="c1">// TODO: convert string[i] to uppercase if necessary</span>
+        <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>The code above will loop through each character of the string until it reaches
+					the end of the string since <code>'\0'</code> is <code>0</code> and <code>0</code> is false in <code>C</code>.
+					We can access the current character by using <code>string[i]</code>.
+					Lowercase ASCII characters are between <code>'a'</code> and <code>'z'</code> inclusive, so we just
+					need to check if the current character is greater than or equal to <code>'a'</code> and
+					less than or equal to <code>'z'</code>.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">void</span> <span class="nf">to_upper</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+<span class="hll">        <span class="k">if</span> <span class="p">(</span><span class="sc">&#39;a&#39;</span> <span class="o">&lt;=</span> <span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="sc">&#39;z&#39;</span> <span class="o">&gt;=</span> <span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+</span>            <span class="c1">// TODO: convert string[i] to uppercase</span>
+<span class="hll">        <span class="p">}</span>
+</span>        <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>We'll want to subtact <code>32</code> from the character if it is a lowercase ASCII
+					character since the numerical value of a lowercase letter is <code>32</code> more than it's
+					corresponding uppercase letter.
+					We haven't covered bitwise operators, which would also work, but we're going to
+					continue with this method.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">void</span> <span class="nf">to_upper</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="sc">&#39;a&#39;</span> <span class="o">&lt;=</span> <span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="sc">&#39;z&#39;</span> <span class="o">&gt;=</span> <span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+<span class="hll">            <span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">32</span><span class="p">;</span>
+</span>        <span class="p">}</span>
+        <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>Now, we just need to add it to <code>str-operations.c</code>.
+					Since it's declared in <code>str-operations.h</code>, we can just <code>#include</code> it and we
+					won't need to worry about where it is in the file.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="hll"><span class="cp">#include</span> <span class="cpf">&quot;str-operations.h&quot;</span><span class="cp"></span>
+</span>
+<span class="hll"><span class="kt">void</span> <span class="nf">to_upper</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">string</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll">    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="hll">    <span class="k">while</span> <span class="p">(</span><span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+</span><span class="hll">        <span class="k">if</span> <span class="p">(</span><span class="sc">&#39;a&#39;</span> <span class="o">&lt;=</span> <span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="sc">&#39;z&#39;</span> <span class="o">&gt;=</span> <span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+</span><span class="hll">            <span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">32</span><span class="p">;</span>
+</span><span class="hll">        <span class="p">}</span>
+</span><span class="hll">        <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+</span><span class="hll">    <span class="p">}</span>
+</span><span class="hll"><span class="p">}</span>
+</span>
+<span class="kt">int</span> <span class="nf">check_if_strings_differ</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">str1</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">str2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<h4 id="starting-to-write-count_word_in_line">Starting to Write <code>count_word_in_line</code></h4>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;str-operations.h&quot;</span><span class="cp"></span>
+
+<span class="kt">void</span> <span class="nf">to_upper</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="sc">&#39;a&#39;</span> <span class="o">&lt;=</span> <span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="sc">&#39;z&#39;</span> <span class="o">&gt;=</span> <span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+            <span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">32</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">check_if_strings_differ</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">str1</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">str2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="hll"><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll">    <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="hll">    <span class="c1">// TODO: For each word in line:</span>
+</span><span class="hll">        <span class="c1">//   1. Convert the word to uppercase</span>
+</span><span class="hll">        <span class="c1">//   2. Check if the current word matches the input word</span>
+</span><span class="hll">        <span class="c1">//   3. Add one to the count if it matches the input word</span>
+</span><span class="hll">    <span class="k">return</span> <span class="n">count</span><span class="p">;</span>
+</span><span class="hll"><span class="p">}</span>
+</span></pre></div>
+</td></tr></table>				
+				</div>
 				<div class="code-blocktable">
 <table><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -719,6 +932,7 @@
 			</div>
 			<nav id="sidenav">
 				<a href="#making-a-word-counter-in-c" style="padding-left:12px;">Making a Word Counter in C</a>
+				<a href="#what-is-a-word" style="padding-left:24px;">What is a Word?</a>
 				<a href="#before-we-begin" style="padding-left:24px;">Before We Begin</a>
 				<a href="#the-top-level" style="padding-left:24px;">The Top Level</a>
 				<a href="#getting-user-input" style="padding-left:36px;">Getting User Input</a>
@@ -729,6 +943,9 @@
 				<a href="#count-the-word-in-the-line" style="padding-left:48px;">Count the Word in the Line</a>
 				<a href="#getting-the-word-count-for-a-line" style="padding-left:36px;">Getting the Word Count for a Line</a>
 				<a href="#str-operationsc" style="padding-left:36px;"><code>str-operations.c</code></a>
+				<a href="#check_if_strings_differ" style="padding-left:48px;"><code>check_if_strings_differ</code></a>
+				<a href="#converting-text-to-uppercase" style="padding-left:48px;">Converting Text to Uppercase</a>
+				<a href="#starting-to-write-count_word_in_line" style="padding-left:48px;">Starting to Write <code>count_word_in_line</code></a>
 			</nav>
 			<div id="sidenav-activator"></div>
 		</div>

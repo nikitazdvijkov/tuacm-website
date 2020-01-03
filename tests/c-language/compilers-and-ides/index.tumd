@@ -320,13 +320,60 @@ Follow the entire process in the tutorial except for setting up {npm},
 {Node.js}, or {ESlint} since those are JavaScript things that we won't need for
 programming in {C} at all.
 
-Download VSCode.
+Download VSCode or any other text editor, but if you don't know which one to
+get, just download VSCode.
+
+Open up the Ubuntu App
 
 In the Ubuntu App, type the command {sudo apt install gcc g++ gdb git make} to
 install all the programs after the word {install} (you probably already have
 several of them, but it's good to make sure that you have them).
 
+Create a folder somewhere on your computer where you're going to put all your
+projects.
+For example, let's say you put it in {C:\Users\{{zs}}[username]\dev}, where
+{[username]} is your username.
+
+Inside your projects folder, create another folder for a specific project.
+Since we have to do "Hello, World!", we're going to have the folder
+{C:\Users\{{zs}}[username]\dev{{zs}}\hello-world}.
+
+Put all your {.c} and {.h} files in that folder. We will use build tools like
+{make}, {cmake}, or {premake} later in this series, but we're keeping it simple
+for now.
+Use your text editor to create your files in the folder and write the code.
+In our case, we're going to create the file
+{C:\Users\{{zs}}[username]\dev{{zs}}\hello-world\{{zs}}hello-world.c} and we're
+going to put the following code in the file.
+\{{code-block c}}
+
+#include {{lt}}stdio.h{{gt}}
+
+int main(void) {
+    puts("Hello, World!");
+    return 0;
+}
+
+\{{\code-block}}
+
+On the command line in the Ubuntu app, type {cd /mnt/c/[dir]}, where {[dir]} is
+everything after {C:} in the path of the project folder, but with all the
+backslashes replaced with forward slashes.
+In our case, it's {Users/{{zs}}[username]/dev{{zs}}/hello-world}.
+\{{terminal}}
+
+{{prompt}} cd /mnt/c/users/[username]/dev/hello-world
+{{dir}}:="/mnt/c/users/[username]/dev/hello-world"
+{{prompt}}
+
+\{{\terminal}}
+
 \{{\ol}}
+
+From here, compiling on all operating systems is the same and we'll cover it in
+the section on <a href="#compiling-on-the-command-line">Compiling on the Command
+Line</a>.
+For now, we're going to talk about the other operating systems.
 
 ## Linux
 
@@ -334,8 +381,13 @@ If you're on Linux, you should probably use a decent text editor like VSCode and
 the command line for everything else.
 With VSCode, you can actually open a terminal up inside the program itself.
 You'll need to install the packages {gcc}, {g++}, {gdb}, {git}, and {make} for
-this tutorial, so {sudo [package manager] apt install gcc g++ gdb git make},
-where you'll have to use the {[package manager]} for your distro.
+this tutorial, so {sudo [package manager] install gcc g++ gdb git make}, where
+you'll have to use the {[package manager]} for your distro.
+The package managers are {apt} for the Debian family (Ubuntu, Mint, XUbuntu,
+Debian, etc.), {rpm} for Fedora, {yum} for CentOS, {zypper}/{rpm} for openSUSE,
+{urpmi} for Mandriva, and {pacman} for {Arch}.
+If you don't know, it's most likely {apt}, then {rpm}, and then {yum}, but you
+can search "[distro] how to install packages" online if you can't figure it out.
 
 ## MacOS
 
@@ -363,6 +415,9 @@ later.
 
 \{{terminal}}
 
+{{dir}}:="~/dev"
+{{prompt}} cd [folder with your .c files]
+{{dir}}:="~/dev/hello-world/"
 {{prompt}} gcc [files you want to compile] -o [name of executable]
 
 \{{\terminal}}

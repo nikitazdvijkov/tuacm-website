@@ -631,7 +631,7 @@ Use {fgets} when you want to read from a file or get user input.
 
 Use {puts} and {fputs} when you want to print a plain string (i.e. no format
 strings or anything).
-Treat them like shorthand for {printf("%s\n", string)} and {fprintf{"%s",
+Treat them like shorthand for {printf("%s\n", string)} and {fprintf("%s",
 string)}.
 
 \{{\ul}}
