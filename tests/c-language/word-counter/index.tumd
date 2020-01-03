@@ -417,7 +417,7 @@ allocate room for {4096} (i.e. 2<sup>12</sup> or 4 KiB or about 4 kB)
 characters.
 If a user uses a line longer than {4096} characters, then {fgets} will
 automatically break it into multiple lines every {4095} characters (remember
-that the last character is the null terminator {'\0'}.
+that the last character is the null terminator {'\0'}).
 We also want to keep reading until we reach the end of the file, which {fgets}
 will allow us to do.
 
@@ -437,7 +437,7 @@ int main(int argc, char ** argv) {
     FILE * reader = fopen(file_name, "r");
 hl    const int line_sz = 4096;           // There are better ways to do this
 hl    char line[line_sz];                 // but we need features we haven't
-                                        // gone over yet.
+hl                                        // gone over yet.
 hl    while (fgets(line, line_sz, reader)) {
         // TODO: For each line, get the count of the word and add it to
         //       the total count
@@ -585,7 +585,3 @@ int count_word_in_line(const char * line, const char * word) {
 }
 
 \{{\code-block}}
-
-\{{raw-html}}
-</div>
-\{{\raw-html}}
