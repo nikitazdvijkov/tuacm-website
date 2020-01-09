@@ -151,7 +151,8 @@ These tools are sufficient for us to write our first program: the word counter.
 
 # What is a Word?
 
-Our definition of a word is any sequence of alphanumeric characters.
+Our definition of a word is any sequence of alphanumeric characters,
+apostrophes, or dashes.
 For example, "ji12fsadkl" would be a word but "f1.asd%as1" would be three words
 because the period and the percent sign will break it apart.
 You could define a word to mean something else (like anything separated by
@@ -314,7 +315,7 @@ We want to print to {stderr}, so we'll need to use {fprintf} or {fputs} and
 
 int main(int argc, char ** argv) {
 hl    if (3 {{gt}} argc) {
-hl        fprintf(stderr, "./word_counter file_name word_to_find\n");
+hl        fprintf(stderr, "./word_counter file_name word_to_count\n");
 hl        return -1;
 hl    }
     char * program_name = argv[0];
@@ -345,7 +346,7 @@ Since we need to declare a variable before we can use it, we're going to declare
 
 int main(int argc, char ** argv) {
     if (3 {{gt}} argc) {
-        fprintf(stderr, "./word_counter file_name word_to_find\n");
+        fprintf(stderr, "./word_counter file_name word_to_count\n");
         return -1;
     }
     char * program_name = argv[0];
@@ -392,7 +393,7 @@ Since we have to clean up after ourselves, we'll also need a corresponding
 
 int main(int argc, char ** argv) {
     if (3 {{gt}} argc) {
-        fprintf(stderr, "./word_counter file_name word_to_find\n");
+        fprintf(stderr, "./word_counter file_name word_to_count\n");
         return -1;
     }
     char * program_name = argv[0];
@@ -435,7 +436,7 @@ will allow us to do.
 
 int main(int argc, char ** argv) {
     if (3 {{gt}} argc) {
-        fprintf(stderr, "./word_counter file_name word_to_find\n");
+        fprintf(stderr, "./word_counter file_name word_to_count\n");
         return -1;
     }
     char * program_name = argv[0];
@@ -447,8 +448,8 @@ hl    const int line_sz = 4096;           // There are better ways to do this
 hl    char line[line_sz];                 // but we need features we haven't
 hl                                        // gone over yet.
 hl    while (fgets(line, line_sz, reader)) {
-        // TODO: For each line, get the count of the word and add it to
-        //       the total count
+hl        // TODO: For each line, get the count of the word and add it to
+hl        //       the total count
 hl    }
     fclose(reader);
     printf("%d\n", count);
@@ -472,7 +473,7 @@ shows up in the line.
 
 int main(int argc, char ** argv) {
     if (3 {{gt}} argc) {
-        fprintf(stderr, "./word_counter file_name word_to_find\n");
+        fprintf(stderr, "./word_counter file_name word_to_count\n");
         return -1;
     }
     char * program_name = argv[0];
@@ -537,7 +538,7 @@ hl#include "str-operations.h"
 
 int main(int argc, char ** argv) {
     if (3 {{gt}} argc) {
-        fprintf(stderr, "./word_counter file_name word_to_find\n");
+        fprintf(stderr, "./word_counter file_name word_to_count\n");
         return -1;
     }
     char * program_name = argv[0];
@@ -592,7 +593,7 @@ into {str-operations.c} near the top.
 
 \{{code-block c}}
 
-hlint check_if_strings_differ(char * str1, char * str2) {
+hlint check_if_strings_differ(const char * str1, const char * str2) {
 hl    int i = 0;
 hl    while (str1[i] && str2[i] && (str1[i] == str2[i])) {
 hl        i += 1;
@@ -613,10 +614,9 @@ characters to uppercase in place, meaning we're going to modify the original
 string and we won't need to {return} anything.
 Our function declaration will look like
 
-\{{code-block c}}
+\{{code-block c no-line-numbers}}
 
-hlvoid to_upper(char * string);
-int count_word_in_line(const char * line, const char * word);
+void to_upper(char * string);
 
 \{{\code-block}}
 
@@ -629,7 +629,7 @@ void to_upper(char * string) {
     int i = 0;
     while (string[i]) {
         // TODO: convert string[i] to uppercase if necessary
-        i++;
+        i += 1;
     }
 }
 
@@ -650,7 +650,7 @@ void to_upper(char * string) {
 hl        if ('a' {{lt}}= string[i] && 'z' {{gt}}= string[i]) {
             // TODO: convert string[i] to uppercase
 hl        }
-        i++;
+        i += 1;
     }
 }
 
@@ -670,7 +670,7 @@ void to_upper(char * string) {
         if ('a' {{lt}}= string[i] && 'z' {{gt}}= string[i]) {
 hl            string[i] -= 32;
         }
-        i++;
+        i += 1;
     }
 }
 
@@ -690,11 +690,11 @@ hl    while (string[i]) {
 hl        if ('a' {{lt}}= string[i] && 'z' {{gt}}= string[i]) {
 hl            string[i] -= 32;
 hl        }
-hl        i++;
+hl        i += 1;
 hl    }
 hl}
 
-int check_if_strings_differ(char * str1, char * str2) {
+int check_if_strings_differ(const char * str1, const char * str2) {
     int i = 0;
     while (str1[i] && str2[i] && (str1[i] == str2[i])) {
         i += 1;
@@ -719,11 +719,11 @@ void to_upper(char * string) {
         if ('a' {{lt}}= string[i] && 'z' {{gt}}= string[i]) {
             string[i] -= 32;
         }
-        i++;
+        i += 1;
     }
 }
 
-int check_if_strings_differ(char * str1, char * str2) {
+int check_if_strings_differ(const char * str1, const char * str2) {
     int i = 0;
     while (str1[i] && str2[i] && (str1[i] == str2[i])) {
         i += 1;
@@ -733,41 +733,415 @@ int check_if_strings_differ(char * str1, char * str2) {
 
 hlint count_word_in_line(const char * line, const char * word) {
 hl    int count = 0;
+hl    // TODO: Copy word into a local buffer so we can convert it to
+hl    //       uppercase
+hl    //       Convert the local copy of word to uppercase
+hl    //       Create a local buffer to store the current word
+hl    //       Set up something to keep track of where we are in the
+hl    //       current line
 hl    // TODO: For each word in line:
-hl        //   1. Convert the word to uppercase
-hl        //   2. Check if the current word matches the input word
-hl        //   3. Add one to the count if it matches the input word
+hl    //       1. Convert the word to uppercase
+hl    //       2. Check if the current word matches the input word
+hl    //       3. Add one to the count if it matches the input word
 hl    return count;
 hl}
 
 \{{\code-block}}
 
+Since we're going to return the count and we're going to increment it every time
+we see the word, we need a variable to store the count.
 
+### Finding the Next Word
+
+Now, we already have functions to convert each word to uppercase, check if
+they're the same word, and adding one to the count if it matches the input word
+is trivial, so all we have to do is find the next word.
+To make this easy on ourselves, we are going to <b>sanitize</b> our data, which
+means removing characters we don't care about.
+Since the {scanf} functions will find words divided by whitespace, we're going
+to replace non-alphanumeric characters with spaces.
+
+### Replacing Characters with Spaces
+
+We're going to do a simple loop where we go through all the characters in the
+line and make them into spaces if it's not an uppercase letter, lowercase
+letter, or number.
+{{nats}}="{non_alphanumeric{{zs}}_to_spaces}"
+We're going to create a new function called {{nats}}.
+
+\{{aside}}
+#### Reinventing the Wheel
+<hr>
+
+An experienced programmer would likely see what we're trying to do and think of
+<a href="https://www.regular-expressions.info/">regular expressions</a> because
+<a href="https://stackoverflow.com/a/6053606">replacing non-alphanumeric
+characters with spaces is trivial using regular expressions</a>.
+In fact, we could replace a lot of the things we're doing in this tutorial with
+professional code, including functions in the standard library such as <a
+href="http://www.cplusplus.com/reference/cctype/toupper/">{toupper}</a> and <a
+href="http://www.cplusplus.com/reference/cstring/strcmp/">{strcmp}</a>.
+
+Given that experts have written highly optimized code that will beat anything
+we'll cover in this tutorial, why are we reinventing wheels left and right if
+we're not even going to be using them in practice?
+
+Put simply, <b>you have to have something round and roll it on the ground before
+you can understand a wheel</b>.
+
+You might be expected to solve the integral <img src="example-integral.png"
+style="width: 18ch; height: auto"> manually in a Calculus class, but in any
+other class, you would look it up.
+At this part of the tutorial, we're not concerned with writing industry-grade
+code, we're just applying what we've already covered about {C} into making a
+non-trivial program.
+
+In general, you'll find that when learning new fields, you'll find yourself
+starting out neither at the fundamental rules of the field nor at the level of
+"just have a computer do it", but at a healthy middle where you can work to
+either end.
+Just as you start learning addition by memorizing 1 + 1 = 2 instead of
+discussing set theory or plugging numbers into a calculator, we will start in
+the middle and spread towards both ends.
+
+\{{\aside}}
+
+{{nats}} will be almost identical to {to_upper} but with a longer condition in
+the {if} statement and the conversion from lower to upper being replaced.
+Since the condition in the {if} statement is going to be longer, I'm going to
+calculate it outside of the parentheses for the {if} statement.
 
 \{{code-block c}}
 
+#include "str-operations.h"
+
+void to_upper(char * string) {
+    int i = 0;
+    while (string[i]) {
+        if ('a' {{lt}}= string[i] && 'z' {{gt}}= string[i]) {
+            string[i] -= 32;
+        }
+        i += 1;
+    }
+}
+
+hlvoid non_alphanumeric_to_spaces(char * string) {
+hl    int i = 0;
+hl    while (string[i]) {
+hl        // calculating the condition outside the if statement
+hl        int alphanumeric =
+hl            // checking if it's a lowercase letter
+hl            ('a' {{lt}}= string[i] && 'z' {{gt}}= string[i]) ||
+hl            // checking if it's an uppercase letter
+hl            ('A' {{lt}}= string[i] && 'Z' {{gt}}= string[i]) ||
+hl            // checking if it's a digit
+hl            ('0' {{lt}}= string[i] && '9' {{gt}}= string[i]) ||
+hl            ('\'' == string[i]) ||
+hl            ('-' == string[i]);
+hl        if (!alphanumeric) {
+hl            string[i] = ' ';
+hl        }
+hl        i += 1;
+hl    }
+hl}
+
+int check_if_strings_differ(const char * str1, const char * str2) {
+    int i = 0;
+    while (str1[i] && str2[i] && (str1[i] == str2[i])) {
+        i += 1;
+    }
+    return str1[i] != str2[i];
+}
+
 int count_word_in_line(const char * line, const char * word) {
-    const int buff_sz = 1024;
-    char word_buffer[buff_sz];
     int count = 0;
-    int begin = 0;
-    int word_length = 1;
-    while (word_length) {
-        begin += find_next_word_begin(line + begin);
-        // Remember that begin changed in the last line.
-        word_length = find_next_word_end(line + begin);
-        if (word_length {{gt}}= buff_sz) {
-            word_length = buff_sz - 1;
+    // TODO: Copy word into a local buffer so we can convert it to
+    //       uppercase
+    //       Convert the local copy of word to uppercase
+    //       Create a local buffer to store the current word
+    //       Set up something to keep track of where we are in the
+    //       current line
+    // TODO: For each word in line:
+    //       1. Convert the word to uppercase
+    //       2. Check if the current word matches the input word
+    //       3. Add one to the count if it matches the input word
+    return count;
+}
+
+\{{\code-block}}
+
+You can read everything except the generic while loop stuff (anything involving
+{while} or {i}) in {{nats}} as "if the current character is neither a lowercase
+letter nor an uppercase letter nor a digit nor an apostrophe nor a dash, then
+set it to a space".
+
+Now that we have everything set up, we can finish {count_word_in_line}.
+
+### Finishing {count_word_in_line}
+
+First, we have to create two local buffers: one for the current word and one for
+the word we're looking for.
+Then, we need to convert the word we're looking for to uppercase.
+Since the file is getting kind of big, we're going to just focus on
+{count_word_in_line}.
+We're also going to introduce a new function called <a
+href="http://www.cplusplus.com/reference/cstring/strncpy/">{strncpy}</a>, which
+copies up to {n} characters of a string.
+To do so, we'll have to include the header {<string.h>}.
+It has the syntax
+
+\{{code-block c no-line-numbers}}
+
+char * strncpy(char * destination, const char * source, size_t num);
+
+\{{\code-block}}
+
+where {destination} is what you're copying to, {source} is where you're copying
+from, and {num} is the maximum number of characters you can copy.
+The {char *} it returns is just {destination}.
+Don't worry about the <a
+href="http://www.cplusplus.com/reference/cstddef/size_t/">{size_t}</a>, as it's
+just an alias for one of the unsigned integral types in {C} and {C++}.
+It's used mainly in the standard library to represent sizes and counts, and
+we'll be able to provide a positive integer argument without any problem.
+
+\{{code-block c no-line-numbers}}
+
+int count_word_in_line(const char * line, const char * word) {
+    int count = 0;
+    const int buff_sz = 1024;
+    char word_to_count[buff_sz];
+    char current_word[buff_sz];
+    strncpy(word_to_count, word, buff_sz - 1);
+    word_to_count[buff_sz - 1] = '\0';
+    to_upper(current_word);
+    // TODO: Set up something to keep track of where we are in the
+    //       current line
+    // TODO: For each word in line:
+    //       1. Convert the word to uppercase
+    //       2. Check if the current word matches the input word
+    //       3. Add one to the count if it matches the input word
+    return count;
+}
+
+\{{\code-block}}
+
+We subtracted {1} from {buff_sz} and set the last character to {'\0'} to make
+sure {word_to_count} always remains a valid {C} string.
+
+### Using {sscanf}
+
+Now, generally you shouldn't use any of the {scanf} family of functions because
+if your input is even slightly different from what you're expecting then it just
+won't work.
+In fact, the only time you should use any {scanf} function is if you know that
+the input will be in a simple format that {scanf} can parse, such as a bunch of
+words separated by whitespace.
+Since we have a bunch of words separated by whitespace, we're going to use
+{sscanf} (the {scanf} function to parse strings) to get the next word.
+<a href="http://www.cplusplus.com/reference/cstdio/sscanf/">{sscanf}</a> has the
+syntax
+
+\{{code-block c no-line-numbers}}
+
+int sscanf(const char * s, const char * format, ...);
+
+\{{\code-block}}
+
+where it reads from the string {s} according to the format specified by {format}
+and all arguments after {format} are set in the order in which they appear in
+the argument list using the <a
+href="http://www.cplusplus.com/reference/cstdio/scanf/">format specifer to
+determine how to set the argument</a>.
+
+For example
+
+\{{code-block c no-line-numbers}}
+
+char str1[32];
+char str2[32];
+int num;
+sscanf("Hello World 7", "%s %s %d", str1, str2, &num);
+
+\{{\code-block}}
+
+will set {str1} to {"Hello"}, {str2} to {"World"}, and {num} to {7}.
+We had to provide the address of {num} to {sscanf} because it would otherwise
+create a copy of {num} and modify the copy.
+By providing the memory address instead, we can modify the variable directly.
+
+{sscanf} also returns an {int} which indicates the number of arguments filled
+with text from the string.
+In our example, {sscanf} would return {3} since we filled {str1}, {str2} and
+{num} using text from the {string}.
+
+Now, we can and should specify the width of each {%s} to prevent buffer
+overflows, so we should have written
+
+\{{code-block c no-line-numbers}}
+
+sscanf("Hello World 7", "%31s %31s %d", str1, str2, &num);
+
+\{{\code-block}}
+
+because we can copy at most {31} characters into {str1} and {str2} safely since
+we have room for {32} characters and the last one needs to be {'\0'}, so we only
+have room for {31} characters.
+
+### Going Through Each Word
+
+In our case, we have room for {1024} characters reserved for {current_word}, so
+we'll need to use {"%1023s"} to get the next word.
+We'll need to look for our next word starting at the end of the last
+word, so we'll need to know how many characters we read.
+We can use the {%n} format specifier to get the number of characters {sscanf}
+has read after calling it, leaving us with a format string of {"%1023s%n"}.
+We'll need somewhere to store the number of characters we've read, so we'll
+create a variable called {num_characters_read}.
+We need a variable to store our current position in the line, which we'll call
+{cur_pos}, and we'll initialize it with {line}.
+Inside our loop, we'll add {num_characters_read} to {cur_pos} so that {sscanf}
+can start reading from {cur_pos} instead of the beginning of the string.
+
+Lastly, we'll need to keep looping as long as all our arguments have been
+filled.
+I don't use any of the {scanf} functions frequently enough to have known this
+off the top of my head, but you only count the number of arguments filled using
+characters in the text, meaning we should expect a return value of {1} since
+{%n} isn't filled with characters from the text.
+
+\{{code-block c no-line-numbers}}
+
+int count_word_in_line(const char * line, const char * word) {
+    int count = 0;
+    const int buff_sz = 1024;
+    char word_to_count[buff_sz];
+    char current_word[buff_sz];
+    strncpy(word_to_count, word, buff_sz - 1);
+    word_to_count[buff_sz - 1] = '\0';
+    to_upper(word_to_count);
+hl    const char * cur_pos = line;
+hl    int num_characters_read = 0;
+hl    while (sscanf(cur_pos, "%1023s%n", current_word, &num_characters_read) == 1) {
+hl        cur_pos += num_characters_read;
+        // TODO: 1. Convert the word to uppercase
+        //       2. Check if the current word matches the input word
+        //       3. Add one to the count if it matches the input word
+hl    }
+    return count;
+}
+
+\{{\code-block}}
+
+### The Home Stretch
+
+We have four lines of code left, and one of them is just a closing curly brace.
+First, we convert {current_word} to uppercase, which we can do using {to_upper}.
+Then, we check if {current_word} and {word_to_count} match, which we can do
+using an {if} statement whose condition is
+{!check_if_strings_differ(word_to_count, current_word)}.
+Lastly, we just have to put {count += 1;} inside the {if} statement, leaving us
+with
+
+\{{code-block c}}
+
+#include "str-operations.h"
+hl#include {{lt}}stdio.h{{gt}}
+hl#include {{lt}}string.h{{gt}}
+
+void to_upper(char * string) {
+    int i = 0;
+    while (string[i]) {
+        if ('a' {{lt}}= string[i] && 'z' {{gt}}= string[i]) {
+            string[i] -= 32;
         }
-        strncpy(word_buffer, line + begin, word_length);
-        to_upper(word_buffer);
-        word_buffer[word_length] = '\0';
-        if (!check_if_strings_differ(word, word_buffer)) {
-            count += 1;
+        i += 1;
+    }
+}
+
+void non_alphanumeric_to_spaces(char * string) {
+    int i = 0;
+    while (string[i]) {
+        int alphanumeric =
+            ('a' {{lt}}= string[i] && 'z' {{gt}}= string[i]) ||
+            ('A' {{lt}}= string[i] && 'Z' {{gt}}= string[i]) ||
+            ('0' {{lt}}= string[i] && '9' {{gt}}= string[i]) ||
+            ('\'' == string[i]) ||
+            ('-' == string[i]);
+        if (!alphanumeric) {
+            string[i] = ' ';
         }
-        begin += word_length + 1;
+        i += 1;
+    }
+}
+
+int check_if_strings_differ(const char * str1, const char * str2) {
+    int i = 0;
+    while (str1[i] && str2[i] && (str1[i] == str2[i])) {
+        i += 1;
+    }
+    return str1[i] != str2[i];
+}
+
+int count_word_in_line(const char * line, const char * word) {
+    int count = 0;
+    const int buff_sz = 1024;
+    char word_to_count[buff_sz];
+    char current_word[buff_sz];
+    strncpy(word_to_count, word, buff_sz - 1);
+    word_to_count[buff_sz - 1] = '\0';
+    to_upper(word_to_count);
+    const char * cur_pos = line;
+    int num_characters_read = 0;
+    while (sscanf(cur_pos, "%1023s%n", current_word, &num_characters_read) == 1) {
+        cur_pos += num_characters_read;
+hl        to_upper(current_word);
+hl        if (!check_if_strings_differ(word_to_count, current_word)) {
+hl            count += 1;
+hl        }
     }
     return count;
 }
 
 \{{\code-block}}
+
+And we're done.
+For your convenience, here is {word-counter.c}:
+
+\{{code-block c}}
+
+#include "str-operations.h"
+#include {{lt}}stdio.h{{gt}}
+
+int main(int argc, char ** argv) {
+    if (3 {{gt}} argc) {
+        fprintf(stderr, "./word_counter file_name word_to_count\n");
+        return -1;
+    }
+    char * program_name = argv[0];
+    char * file_name = argv[1];
+    char * word = argv[2];
+    unsigned int count = 0;
+    FILE * reader = fopen(file_name, "r");
+    const int line_sz = 4096;           // There are better ways to do this
+    char line[line_sz];                 // but we need features we haven't
+                                        // gone over yet.
+    while (fgets(line, line_sz, reader)) {
+        count += count_word_in_line(line, word);
+    }
+    fclose(reader);
+    printf("%d\n", count);
+    return 0;
+}
+
+\{{\code-block}}
+
+and {str-operations.h}:
+
+\{{code-block c}}
+
+int count_word_in_line(const char * line, const char * word);
+
+\{{\code-block}}
+
+It turns out we didn't need {to_upper} in the header, but it doesn't matter.
