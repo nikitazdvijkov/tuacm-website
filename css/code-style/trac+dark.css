@@ -1,4 +1,4 @@
-.code-block .hll { background-color: #555555 }
+.code-block .hll { background-color: #555555; display: block; }
 .code-block pre { color: #9999FF; }
 .code-block  { background: #000000; }
 .code-block .p { font-weight: bold; }
