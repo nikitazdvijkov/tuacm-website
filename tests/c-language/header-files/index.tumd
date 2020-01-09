@@ -772,7 +772,7 @@ and familiarize ourselves with an IDE/text editor.
 \{{\ul}}
 
 In the next article, we're going to figure out how to work with <a
-href="../files/">Files in C</a> to write our first completed program.
+href="../files-1/">Files in C</a> to write our first completed program.
 After that, we're going to discuss how to interact with files and the terminal
 in {C}.
 Then, we're going to figure out how to put our code into an IDE/compiler/build
