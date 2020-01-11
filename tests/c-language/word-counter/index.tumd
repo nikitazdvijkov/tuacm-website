@@ -32,6 +32,10 @@ Scripts:	highlight-internal-link
 	margin-bottom: 0;
 }
 
+ol ol {
+	margin-bottom: 0;
+}
+
 \{{\style}}
 
 
@@ -160,7 +164,9 @@ spaces), but we're going to use this definition.
 
 # Before We Begin
 
-{{o-path}}="path/to/{{zs}}other/{{zs}}directory/{{zs}}c-tutorial"
+{{o-path}}:="path/to/{{zs}}other/{{zs}}directory/{{zs}}c-tutorial"
+{{win-home}}:="/mnt/c/Users/{{zs}}[your username]"
+{{wc-dir}}:="dev/{{zs}}c-tutorial/{{zs}}word-counter"
 
 This is a short step, but you'll want to create two new directories: one for
 all the {C} tutorials in this series and one inside that one for the word
@@ -172,9 +178,13 @@ C</a> article.
 If you're on Mac or Linux, type in the command {cd ~}, which will put you in the
 home folder (it's exactly like clicking on folders in the Windows or Mac
 file explorer until you get to {Users/[your username]}).
-If you're using the Windows Subsystem for Linux, type {cd /mnt/c/Users/[your
-username]}, which will bring you to your home directory (i.e. the directory that
-contains Desktop, Documents, Downloads, etc.).
+If you're using the Windows Subsystem for Linux, type {cd {{win-home}}}, which
+will bring you to your home directory (i.e. the directory that contains Desktop,
+Documents, Downloads, etc.).
+The {{win-home}} directory is the Windows equivalent of {~} in Linux and Mac,
+and <b>you can replace every instance of {~} in the terminal with {{{win-home}}}
+and have it work</b>.
+
 Then, type {mkdir -p dev/c-tutorial}, which will then create a new directory in {~}.
 <span style="color: #5500FF"><b>If you want to put your code in another
 directory, you can use {mkdir -p {{o-path}}}</b></span>.
@@ -201,14 +211,14 @@ The entire process should look like this:
 {{prompt}} ls
 {{file}}:="<span class="file">{{rest-of-line}}</span>{{end-of-line}}"
 {{exe}}:="<span class="exe">{{rest-of-line}}</span>{{end-of-line}}"
-{{file}}c-tutorial
-{{file}}Desktop
-{{file}}Documents
-{{file}}Downloads
-{{file}}Music
-{{file}}Pictures
-{{file}}Public
-{{file}}Videos
+ {{file}}c-tutorial
+ {{file}}Desktop
+ {{file}}Documents
+ {{file}}Downloads
+ {{file}}Music
+ {{file}}Pictures
+ {{file}}Public
+ {{file}}Videos
 {{prompt}} cd dev/c-tutorial
 {{dir}}:="~/dev/c-tutorial"
 {{prompt}} mkdir word-counter
@@ -237,7 +247,7 @@ with a new file.
 \{{\raw-html}}
 
 \{{aside}}
-#### Command Line Text Editors
+### Command Line Text Editors
 <hr>
 
 Although I personally use {vim} (I'm actually using it right now to write these
@@ -250,6 +260,12 @@ in some effort.
 The same reasoning also applies for {emacs} and {nano}.
 
 \{{\aside}}
+
+<b>Do not close the terminal, as we will use it later to compile and run our
+code.</b>
+If you do close the terminal, you can just type {cd
+~/{{wc-dir}}} on Linux or Mac or {cd
+{{win-home}}/{{wc-dir}}}.
 
 From here, we can start typing our code into our new file.
 
@@ -275,6 +291,18 @@ Count the number of times the word shows up in a file.
 Print the count of the word.
 
 \{{\ol}}
+
+# Boilerplate and Trivial Code
+
+In this section, we're going to handle getting the user input, printing the
+count of the word, getting the file into our program, and reading the file line
+by line.
+Besides printing the count of the word, these tasks will show up commonly and
+you can normally knock them out quite quickly since little changes from project
+to project, which makes it <a
+href="https://en.wikipedia.org/wiki/Boilerplate_code">Boilerplate Code</a>.
+Printing the count of the word, however, is trivial since we just have to call
+{printf} with a simple format string.
 
 ## Getting User Input
 
@@ -377,9 +405,9 @@ For each line, get the count of the word and add it to the total count.
 
 Let's work with this and see what happens.
 
-### Getting the File into {C}
+## Getting the File into {C}
 
-As we went over in the article on <a href="../files/index.html">files in
+As we went over in the article on <a href="../files-1/index.html">files in
 {C}</a>, we can get files from our computer into our program using {fopen},
 which will return a {FILE *} object that we can use to interact with the file.
 We'll want to <b>read</b> the file, so we're going to use {"r"} as the mode
@@ -416,7 +444,7 @@ If I had done something stupid and called it something like {a}, then I could
 end up accidentally confusing it for something else or not recognizing that I'm
 using it incorrectly.
 
-### Reading the File Line by Line
+## Reading the File Line by Line
 
 Now that we have a {FILE *}, we can read the file line by line.
 We're going to need somewhere to store the line, and since the line is made up
@@ -458,12 +486,13 @@ hl    }
 
 \{{\code-block}}
 
-### Count the Word in the Line
+## Making Another Function
 
 Now, we need a function to count the number of times the word shows up in the
 line.
 We can then add it to the {count}.
-For now, we're going to create a function called {count_word_in_line} that takes
+{{cwil}}="count_word_{{zs}}in_line"
+For now, we're going to create a function called {{{cwil}}} that takes
 in a line and the word we want to count and return the number of times the word
 shows up in the line.
 
@@ -494,11 +523,12 @@ hl        count += count_word_in_line(line, word);
 
 \{{\code-block}}
 
-Now, we just have to write {count_word_in_line}.
+Now, we have to write {{{cwil}}}, but before we do that, we're going
+to take care of a few string operations first.
 
-## Getting the Word Count for a Line
+# Setting Up {{{cwil}}}
 
-Since {count_word_in_line} is going to be useful later in other programs, we
+Since {{{cwil}}} is going to be useful later in other programs, we
 might as well put it in another file so we can reuse it.
 Because we're going to put it in another file, we're going to have to also make
 another header file.
@@ -507,10 +537,11 @@ so we're going to create the files {str-operations.h} and {str-operations.c}.
 You can make these files through <a href="#creating-a-file"
 onclick="highlight_link(this, '#EEAAEE')">the same process in which you created
 the {word-counter.c} file</a>.
+<b>Make sure to create these files in the same directory as {word-counter.c}.</b>
 
-For {count_word_in_line}, we're going to need the line, the word we want to
+For {{{cwil}}}, we're going to need the line, the word we want to
 find, and we're going to return an {int} to get the proper count, which means
-{count_word_in_line} has the syntax:
+{{{cwil}}} has the syntax:
 
 \{{code-block c no-line-numbers}}
 
@@ -519,7 +550,7 @@ int count_word_in_line(const char * line, const char * word);
 \{{\code-block}}
 
 We add the {const}s because we'll modify neither the {word} nor the {line}.
-Since we just need {count_word_in_line}, {str-operations.h} will look like
+Since we just need {{{cwil}}}, {str-operations.h} will look like
 
 \{{code-block c}}
 
@@ -528,7 +559,7 @@ hlint count_word_in_line(const char * line, const char * word);
 \{{\code-block}}
 
 Furthermore, we're going to want to {#include {{zs}}"str-operations.h"} in
-{word-counter.c} so that we can use {count_word{{zs}}_in_line} in
+{word-counter.c} so that we can use {{{cwil}}} in
 {word-counter.c}.
 
 \{{code-block c}}
@@ -562,31 +593,13 @@ int main(int argc, char ** argv) {
 Now, we're actually done with {word-counter.c}, so the rest of this article will
 be working on {str-operations.c} and {str-operations.h}.
 
-## {str-operations.c}
+# String Operations
 
-Now, we're going to come up with the algorithm to count the word in the line.
+Before we continue with {{{cwil}}}, we're going to work on a few string
+{{cisd}}="check_if_{{zs}}strings_differ"
+operations we need to implement: including {{{cisd}}} and {to_upper}.
 
-\{{ol}}
-
-Initialize an empty {int} that will serve as the {count}.
-
-While we haven't reached the end of the line:
-\{{ol}}
-
-find the next word,
-
-convert it to uppercase to account for differences in ASCII uppercase and
-lowercase,
-
-and add one to the count if it matches the input word.
-
-\{{\ol}}
-
-return the {count}.
-
-\{{\ol}}
-
-### {check_if_strings_differ}
+## {{{cisd}}}
 
 We have already written {check_if_{{zs}}strings_differ}, so we can just put it
 into {str-operations.c} near the top.
@@ -603,7 +616,7 @@ hl}
 
 \{{\code-block}}
 
-### Converting Text to Uppercase
+## Converting Text to Uppercase
 
 We also want to be able to convert things to the same case so that we match
 "the" and "The", so we'll need to write a function for it.
@@ -704,7 +717,29 @@ int check_if_strings_differ(const char * str1, const char * str2) {
 
 \{{\code-block}}
 
-### Starting to Write {count_word_in_line}
+# {{{cwil}}}
+
+Now, we're going to come up with the algorithm to count the word in the line.
+
+\{{ol}}
+
+Initialize an empty {int} that will serve as the {count}.
+
+While we haven't reached the end of the line:
+\{{ol}}
+
+find the next word,
+
+convert it to uppercase to account for differences in ASCII uppercase and
+lowercase,
+
+and add one to the count if it matches the input word.
+
+\{{\ol}}
+
+return the {count}.
+
+\{{\ol}}
 
 We'll need to take care of the function input and output first, which we've done
 below.
@@ -751,7 +786,7 @@ hl}
 Since we're going to return the count and we're going to increment it every time
 we see the word, we need a variable to store the count.
 
-### Finding the Next Word
+## Finding the Next Word
 
 Now, we already have functions to convert each word to uppercase, check if
 they're the same word, and adding one to the count if it matches the input word
@@ -761,7 +796,7 @@ means removing characters we don't care about.
 Since the {scanf} functions will find words divided by whitespace, we're going
 to replace non-alphanumeric characters with spaces.
 
-### Replacing Characters with Spaces
+## Replacing Characters with Spaces
 
 We're going to do a simple loop where we go through all the characters in the
 line and make them into spaces if it's not an uppercase letter, lowercase
@@ -770,7 +805,7 @@ letter, or number.
 We're going to create a new function called {{nats}}.
 
 \{{aside}}
-#### Reinventing the Wheel
+### Reinventing the Wheel
 <hr>
 
 An experienced programmer would likely see what we're trying to do and think of
@@ -877,15 +912,15 @@ You can read everything except the generic while loop stuff (anything involving
 letter nor an uppercase letter nor a digit nor an apostrophe nor a dash, then
 set it to a space".
 
-Now that we have everything set up, we can finish {count_word_in_line}.
+Now that we have everything set up, we can finish {{{cwil}}}.
 
-### Finishing {count_word_in_line}
+## Finishing {{{cwil}}}
 
 First, we have to create two local buffers: one for the current word and one for
 the word we're looking for.
 Then, we need to convert the word we're looking for to uppercase.
 Since the file is getting kind of big, we're going to just focus on
-{count_word_in_line}.
+{{{cwil}}}.
 We're also going to introduce a new function called <a
 href="http://www.cplusplus.com/reference/cstring/strncpy/">{strncpy}</a>, which
 copies up to {n} characters of a string.
@@ -990,7 +1025,7 @@ because we can copy at most {31} characters into {str1} and {str2} safely since
 we have room for {32} characters and the last one needs to be {'\0'}, so we only
 have room for {31} characters.
 
-### Going Through Each Word
+## Going Through Each Word
 
 In our case, we have room for {1024} characters reserved for {current_word}, so
 we'll need to use {"%1023s"} to get the next word.
@@ -1035,7 +1070,7 @@ hl    }
 
 \{{\code-block}}
 
-### The Home Stretch
+## The Home Stretch
 
 We have four lines of code left, and one of them is just a closing curly brace.
 First, we convert {current_word} to uppercase, which we can do using {to_upper}.
@@ -1145,3 +1180,77 @@ and {str-operations.h}:
 int count_word_in_line(const char * line, const char * word);
 
 \{{\code-block}}
+
+# Compiling the Program
+
+Assuming you followed all the steps up to this point, you should have all the
+source code in the proper directory.
+<b>Remember that if you're using the Windows Subsystem for Linux (the Ubuntu app)
+that instead of {~}, you should see {{{win-home}}}</b>.
+If you go to the terminal and type {ls}, you should see:
+
+\{{terminal}}
+
+{{prompt}} ls
+{{file}}str-operations.c
+{{file}}str-operations.h
+{{file}}word-counter.c
+
+\{{\terminal}}
+
+If you see these three files, then you can compile them into a program using
+{gcc}:
+
+\{{terminal}}
+
+{{prompt}} gcc str-operations.c word-counter.c -o word-counter
+
+\{{\terminal}}
+
+You can then run the program using {./word-counter [file-to-read]
+[word-to-count]}.
+
+# Running Tests
+
+You can create your own test file or you can use <a href="test-file.txt">this
+sample text from this article</a>.
+
+\{{terminal}}
+
+{{prompt}} mv ~/Downloads/test-file.txt .
+{{prompt}} ls
+ {{file}}str-operations.c
+ {{file}}str-operations.h
+ {{file}}test-file.txt
+ {{exe}}word-counter
+ {{file}}word-counter.c
+
+\{{\terminal}}
+
+The {mv} command is what you would get by opening up your file manager GUI,
+moving to {~/Downloads} (or {{{win-home}}/Downloads} on Windows), right-clicking
+on {~/Downloads/test-file.txt} in your file manager GUI, selecting <b>Cut</b>,
+moving to {~/{{wc-dir}}} (or {{{win-home}}/{{wc-dir}}} on Windows), then
+right-clicking and hitting <b>Paste</b>.
+
+Anyway, now that we're here, we can run some tests.
+If you're using {test-file.txt}, then these are the results you should get:
+
+\{{terminal}}
+
+{{prompt}} ./word-counter
+./word_counter file_name word_to_find
+{{prompt}} ./word-counter test-file.txt the
+20
+{{prompt}} ./word-counter test-file.txt THE
+20
+{{prompt}} ./word-counter test-file.txt watermelon
+0
+
+\{{\terminal}}
+
+The first test was with no input to make sure it printed out a usage message,
+the second test was with some input with a known value since the word "the"
+shows up twenty times in {test-file.txt}, the third test was to make sure that
+searching was case insensitive, and the last test was to make sure that words
+that do not show up in {test-file.txt} return a result of zero.

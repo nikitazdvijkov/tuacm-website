@@ -32,6 +32,9 @@
 			#creating-a-file p {
 				margin-bottom: 0;
 			}
+			ol ol {
+				margin-bottom: 0;
+			}
 		</style>
 		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
 		<title>Making a Word Counter in C</title>
@@ -192,10 +195,14 @@
 					If you're on Mac or Linux, type in the command <code>cd ~</code>, which will put you in the
 					home folder (it's exactly like clicking on folders in the Windows or Mac
 					file explorer until you get to <code>Users/[your username]</code>).
-					If you're using the Windows Subsystem for Linux, type <code>cd /mnt/c/Users/[your
-					username]</code>, which will bring you to your home directory (i.e. the directory that
-					contains Desktop, Documents, Downloads, etc.).
-					Then, type <code>mkdir -p dev/c-tutorial</code>, which will then create a new directory in <code>~</code>.
+					If you're using the Windows Subsystem for Linux, type <code>cd /mnt/c/Users/&#8203;[your username]</code>, which
+					will bring you to your home directory (i.e. the directory that contains Desktop,
+					Documents, Downloads, etc.).
+					The /mnt/c/Users/&#8203;[your username] directory is the Windows equivalent of <code>~</code> in Linux and Mac,
+					and <b>you can replace every instance of <code>~</code> in the terminal with <code>/mnt/c/Users/&#8203;[your username]</code>
+					and have it work</b>.
+				</p>
+				<p>Then, type <code>mkdir -p dev/c-tutorial</code>, which will then create a new directory in <code>~</code>.
 					<span style="color: #5500FF"><b>If you want to put your code in another
 					directory, you can use <code>mkdir -p path/to/&#8203;other/&#8203;directory/&#8203;c-tutorial</code></b></span>.
 					You can see a list of all the directories in your current folder by typing <code>ls</code>.
@@ -211,14 +218,14 @@
 <span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/some/random/dir</b></span>$ cd ~</span>
 <span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ mkdir -p dev/c-tutorial</span>
 <span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ ls</span>
-<span class="file">c-tutorial</span>
-<span class="file">Desktop</span>
-<span class="file">Documents</span>
-<span class="file">Downloads</span>
-<span class="file">Music</span>
-<span class="file">Pictures</span>
-<span class="file">Public</span>
-<span class="file">Videos</span>
+ <span class="file">c-tutorial</span>
+ <span class="file">Desktop</span>
+ <span class="file">Documents</span>
+ <span class="file">Downloads</span>
+ <span class="file">Music</span>
+ <span class="file">Pictures</span>
+ <span class="file">Public</span>
+ <span class="file">Videos</span>
 <span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ cd dev/c-tutorial</span>
 <span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/dev/c-tutorial</b></span>$ mkdir word-counter</span>
 <span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/dev/c-tutorial</b></span>$ cd word-counter</span>
@@ -237,7 +244,7 @@
 				</p>
 				</div>
 				<div class="aside" >
-					<h5>Command Line Text Editors</h5>
+					<h4>Command Line Text Editors</h4>
 					<hr>
 					<p>Although I personally use <code>vim</code> (I'm actually using it right now to write these
 						articles.) and would recommend it to an experienced programmer, I don't
@@ -249,6 +256,12 @@
 						The same reasoning also applies for <code>emacs</code> and <code>nano</code>.
 					</p>
 				</div>
+				<p><b>Do not close the terminal, as we will use it later to compile and run our
+					code.</b>
+					If you do close the terminal, you can just type <code>cd
+					~/dev/&#8203;c-tutorial/&#8203;word-counter</code> on Linux or Mac or <code>cd
+					/mnt/c/Users/&#8203;[your username]/dev/&#8203;c-tutorial/&#8203;word-counter</code>.
+				</p>
 				<p>From here, we can start typing our code into our new file.
 				</p>
 				<h2 id="the-top-level">The Top Level</h2>
@@ -271,6 +284,17 @@
 					<li>Print the count of the word.
 					</li>
 				</ol>
+				<h2 id="boilerplate-and-trivial-code">Boilerplate and Trivial Code</h2>
+				<p>In this section, we're going to handle getting the user input, printing the
+					count of the word, getting the file into our program, and reading the file line
+					by line.
+					Besides printing the count of the word, these tasks will show up commonly and
+					you can normally knock them out quite quickly since little changes from project
+					to project, which makes it <a
+					href="https://en.wikipedia.org/wiki/Boilerplate_code">Boilerplate Code</a>.
+					Printing the count of the word, however, is trivial since we just have to call
+					<code>printf</code> with a simple format string.
+				</p>
 				<h3 id="getting-user-input">Getting User Input</h3>
 				<p>For now, let's focus on getting the user input.
 					We can look through our list of tools we have in <code>C</code> (look above) and we find
@@ -398,8 +422,8 @@
 				</ol>
 				<p>Let's work with this and see what happens.
 				</p>
-				<h4 id="getting-the-file-into-c">Getting the File into <code>C</code></h4>
-				<p>As we went over in the article on <a href="../files/index.html">files in
+				<h3 id="getting-the-file-into-c">Getting the File into <code>C</code></h3>
+				<p>As we went over in the article on <a href="../files-1/index.html">files in
 					<code>C</code></a>, we can get files from our computer into our program using <code>fopen</code>,
 					which will return a <code>FILE *</code> object that we can use to interact with the file.
 					We'll want to <b>read</b> the file, so we're going to use <code>"r"</code> as the mode
@@ -453,7 +477,7 @@
 					end up accidentally confusing it for something else or not recognizing that I'm
 					using it incorrectly.
 				</p>
-				<h4 id="reading-the-file-line-by-line">Reading the File Line by Line</h4>
+				<h3 id="reading-the-file-line-by-line">Reading the File Line by Line</h3>
 				<p>Now that we have a <code>FILE *</code>, we can read the file line by line.
 					We're going to need somewhere to store the line, and since the line is made up
 					of characters, we're going to use a <code>char</code> buffer.
@@ -515,11 +539,11 @@
 </pre></div>
 </td></tr></table>				
 				</div>
-				<h4 id="count-the-word-in-the-line">Count the Word in the Line</h4>
+				<h3 id="making-another-function">Making Another Function</h3>
 				<p>Now, we need a function to count the number of times the word shows up in the
 					line.
 					We can then add it to the <code>count</code>.
-					For now, we're going to create a function called <code>count_word_in_line</code> that takes
+					For now, we're going to create a function called <code>count_word_&#8203;in_line</code> that takes
 					in a line and the word we want to count and return the number of times the word
 					shows up in the line.
 				</p>
@@ -570,10 +594,11 @@
 </pre></div>
 </td></tr></table>				
 				</div>
-				<p>Now, we just have to write <code>count_word_in_line</code>.
+				<p>Now, we have to write <code>count_word_&#8203;in_line</code>, but before we do that, we're going
+					to take care of a few string operations first.
 				</p>
-				<h3 id="getting-the-word-count-for-a-line">Getting the Word Count for a Line</h3>
-				<p>Since <code>count_word_in_line</code> is going to be useful later in other programs, we
+				<h2 id="setting-up-count_word_8203in_line">Setting Up <code>count_word_&#8203;in_line</code></h2>
+				<p>Since <code>count_word_&#8203;in_line</code> is going to be useful later in other programs, we
 					might as well put it in another file so we can reuse it.
 					Because we're going to put it in another file, we're going to have to also make
 					another header file.
@@ -582,16 +607,17 @@
 					You can make these files through <a href="#creating-a-file"
 					onclick="highlight_link(this, '#EEAAEE')">the same process in which you created
 					the <code>word-counter.c</code> file</a>.
+					<b>Make sure to create these files in the same directory as <code>word-counter.c</code>.</b>
 				</p>
-				<p>For <code>count_word_in_line</code>, we're going to need the line, the word we want to
+				<p>For <code>count_word_&#8203;in_line</code>, we're going to need the line, the word we want to
 					find, and we're going to return an <code>int</code> to get the proper count, which means
-					<code>count_word_in_line</code> has the syntax:
+					<code>count_word_&#8203;in_line</code> has the syntax:
 				</p>
 <div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">);</span>
 </pre></div>
 				
 				<p>We add the <code>const</code>s because we'll modify neither the <code>word</code> nor the <code>line</code>.
-					Since we just need <code>count_word_in_line</code>, <code>str-operations.h</code> will look like
+					Since we just need <code>count_word_&#8203;in_line</code>, <code>str-operations.h</code> will look like
 				</p>
 				<div class="code-blocktable">
 <table><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="hll"><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">);</span>
@@ -599,7 +625,7 @@
 </td></tr></table>				
 				</div>
 				<p>Furthermore, we're going to want to <code>#include &#8203;"str-operations.h"</code> in
-					<code>word-counter.c</code> so that we can use <code>count_word&#8203;_in_line</code> in
+					<code>word-counter.c</code> so that we can use <code>count_word_&#8203;in_line</code> in
 					<code>word-counter.c</code>.
 				</p>
 				<div class="code-blocktable">
@@ -654,27 +680,11 @@
 				<p>Now, we're actually done with <code>word-counter.c</code>, so the rest of this article will
 					be working on <code>str-operations.c</code> and <code>str-operations.h</code>.
 				</p>
-				<h3 id="str-operationsc"><code>str-operations.c</code></h3>
-				<p>Now, we're going to come up with the algorithm to count the word in the line.
+				<h2 id="string-operations">String Operations</h2>
+				<p>Before we continue with <code>count_word_&#8203;in_line</code>, we're going to work on a few string
+					operations we need to implement: including <code>check_if_&#8203;strings_differ</code> and <code>to_upper</code>.
 				</p>
-				<ol>
-					<li>Initialize an empty <code>int</code> that will serve as the <code>count</code>.
-					</li>
-					<li>While we haven't reached the end of the line:
-						<ol>
-							<li>find the next word,
-							</li>
-							<li>convert it to uppercase to account for differences in ASCII uppercase and
-								lowercase,
-							</li>
-							<li>and add one to the count if it matches the input word.
-							</li>
-						</ol>
-					</li>
-					<li>return the <code>count</code>.
-					</li>
-				</ol>
-				<h4 id="check_if_strings_differ"><code>check_if_strings_differ</code></h4>
+				<h3 id="check_if_8203strings_differ"><code>check_if_&#8203;strings_differ</code></h3>
 				<p>We have already written <code>check_if_&#8203;strings_differ</code>, so we can just put it
 					into <code>str-operations.c</code> near the top.
 				</p>
@@ -695,7 +705,7 @@
 </span></pre></div>
 </td></tr></table>				
 				</div>
-				<h4 id="converting-text-to-uppercase">Converting Text to Uppercase</h4>
+				<h3 id="converting-text-to-uppercase">Converting Text to Uppercase</h3>
 				<p>We also want to be able to convert things to the same case so that we match
 					"the" and "The", so we'll need to write a function for it.
 					Since we'll be converting from lowercase to uppercase, we'll call this function
@@ -800,7 +810,26 @@
 </pre></div>
 </td></tr></table>				
 				</div>
-				<h4 id="starting-to-write-count_word_in_line">Starting to Write <code>count_word_in_line</code></h4>
+				<h2 id="count_word_8203in_line"><code>count_word_&#8203;in_line</code></h2>
+				<p>Now, we're going to come up with the algorithm to count the word in the line.
+				</p>
+				<ol>
+					<li>Initialize an empty <code>int</code> that will serve as the <code>count</code>.
+					</li>
+					<li>While we haven't reached the end of the line:
+						<ol>
+							<li>find the next word,
+							</li>
+							<li>convert it to uppercase to account for differences in ASCII uppercase and
+								lowercase,
+							</li>
+							<li>and add one to the count if it matches the input word.
+							</li>
+						</ol>
+					</li>
+					<li>return the <code>count</code>.
+					</li>
+				</ol>
 				<p>We'll need to take care of the function input and output first, which we've done
 					below.
 				</p>
@@ -878,7 +907,7 @@
 				<p>Since we're going to return the count and we're going to increment it every time
 					we see the word, we need a variable to store the count.
 				</p>
-				<h4 id="finding-the-next-word">Finding the Next Word</h4>
+				<h3 id="finding-the-next-word">Finding the Next Word</h3>
 				<p>Now, we already have functions to convert each word to uppercase, check if
 					they're the same word, and adding one to the count if it matches the input word
 					is trivial, so all we have to do is find the next word.
@@ -887,14 +916,14 @@
 					Since the <code>scanf</code> functions will find words divided by whitespace, we're going
 					to replace non-alphanumeric characters with spaces.
 				</p>
-				<h4 id="replacing-characters-with-spaces">Replacing Characters with Spaces</h4>
+				<h3 id="replacing-characters-with-spaces">Replacing Characters with Spaces</h3>
 				<p>We're going to do a simple loop where we go through all the characters in the
 					line and make them into spaces if it's not an uppercase letter, lowercase
 					letter, or number.
 					We're going to create a new function called <code>non_alphanumeric&#8203;_to_spaces</code>.
 				</p>
 				<div class="aside" >
-					<h5>Reinventing the Wheel</h5>
+					<h4>Reinventing the Wheel</h4>
 					<hr>
 					<p>An experienced programmer would likely see what we're trying to do and think of
 						<a href="https://www.regular-expressions.info/">regular expressions</a> because
@@ -1051,14 +1080,14 @@
 					letter nor an uppercase letter nor a digit nor an apostrophe nor a dash, then
 					set it to a space".
 				</p>
-				<p>Now that we have everything set up, we can finish <code>count_word_in_line</code>.
+				<p>Now that we have everything set up, we can finish <code>count_word_&#8203;in_line</code>.
 				</p>
-				<h4 id="finishing-count_word_in_line">Finishing <code>count_word_in_line</code></h4>
+				<h3 id="finishing-count_word_8203in_line">Finishing <code>count_word_&#8203;in_line</code></h3>
 				<p>First, we have to create two local buffers: one for the current word and one for
 					the word we're looking for.
 					Then, we need to convert the word we're looking for to uppercase.
 					Since the file is getting kind of big, we're going to just focus on
-					<code>count_word_in_line</code>.
+					<code>count_word_&#8203;in_line</code>.
 					We're also going to introduce a new function called <a
 					href="http://www.cplusplus.com/reference/cstring/strncpy/"><code>strncpy</code></a>, which
 					copies up to <code>n</code> characters of a string.
@@ -1147,7 +1176,7 @@
 					we have room for <code>32</code> characters and the last one needs to be <code>'\0'</code>, so we only
 					have room for <code>31</code> characters.
 				</p>
-				<h4 id="going-through-each-word">Going Through Each Word</h4>
+				<h3 id="going-through-each-word">Going Through Each Word</h3>
 				<p>In our case, we have room for <code>1024</code> characters reserved for <code>current_word</code>, so
 					we'll need to use <code>"%1023s"</code> to get the next word.
 					We'll need to look for our next word starting at the end of the last
@@ -1188,7 +1217,7 @@
 <span class="p">}</span>
 </pre></div>
 				
-				<h4 id="the-home-stretch">The Home Stretch</h4>
+				<h3 id="the-home-stretch">The Home Stretch</h3>
 				<p>We have four lines of code left, and one of them is just a closing curly brace.
 					First, we convert <code>current_word</code> to uppercase, which we can do using <code>to_upper</code>.
 					Then, we check if <code>current_word</code> and <code>word_to_count</code> match, which we can do
@@ -1373,6 +1402,70 @@
 </pre></div>
 </td></tr></table>				
 				</div>
+				<h2 id="compiling-the-program">Compiling the Program</h2>
+				<p>Assuming you followed all the steps up to this point, you should have all the
+					source code in the proper directory.
+					<b>Remember that if you're using the Windows Subsystem for Linux (the Ubuntu app)
+					that instead of <code>~</code>, you should see <code>/mnt/c/Users/&#8203;[your username]</code></b>.
+					If you go to the terminal and type <code>ls</code>, you should see:
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/dev/c-tutorial/word-counter</b></span>$ ls</span>
+<span class="file">str-operations.c</span>
+<span class="file">str-operations.h</span>
+<span class="file">word-counter.c</span>
+</pre>
+				</div>
+				<p>If you see these three files, then you can compile them into a program using
+					<code>gcc</code>:
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/dev/c-tutorial/word-counter</b></span>$ gcc str-operations.c word-counter.c -o word-counter</span>
+</pre>
+				</div>
+				<p>You can then run the program using <code>./word-counter [file-to-read]
+					[word-to-count]</code>.
+				</p>
+				<h2 id="running-tests">Running Tests</h2>
+				<p>You can create your own test file or you can use <a href="test-file.txt">this
+					sample text from this article</a>.
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/dev/c-tutorial/word-counter</b></span>$ mv ~/Downloads/test-file.txt .</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/dev/c-tutorial/word-counter</b></span>$ ls</span>
+ <span class="file">str-operations.c</span>
+ <span class="file">str-operations.h</span>
+ <span class="file">test-file.txt</span>
+ <span class="exe">word-counter</span>
+ <span class="file">word-counter.c</span>
+</pre>
+				</div>
+				<p>The <code>mv</code> command is what you would get by opening up your file manager GUI,
+					moving to <code>~/Downloads</code> (or <code>/mnt/c/Users/&#8203;[your username]/Downloads</code> on Windows), right-clicking
+					on <code>~/Downloads/test-file.txt</code> in your file manager GUI, selecting <b>Cut</b>,
+					moving to <code>~/dev/&#8203;c-tutorial/&#8203;word-counter</code> (or <code>/mnt/c/Users/&#8203;[your username]/dev/&#8203;c-tutorial/&#8203;word-counter</code> on Windows), then
+					right-clicking and hitting <b>Paste</b>.
+				</p>
+				<p>Anyway, now that we're here, we can run some tests.
+					If you're using <code>test-file.txt</code>, then these are the results you should get:
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/dev/c-tutorial/word-counter</b></span>$ ./word-counter</span>
+./word_counter file_name word_to_find
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/dev/c-tutorial/word-counter</b></span>$ ./word-counter test-file.txt the</span>
+20
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/dev/c-tutorial/word-counter</b></span>$ ./word-counter test-file.txt THE</span>
+20
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@computer</b></span>:<span style="color:#295FCC;"><b>~/dev/c-tutorial/word-counter</b></span>$ ./word-counter test-file.txt watermelon</span>
+0
+</pre>
+				</div>
+				<p>The first test was with no input to make sure it printed out a usage message,
+					the second test was with some input with a known value since the word "the"
+					shows up twenty times in <code>test-file.txt</code>, the third test was to make sure that
+					searching was case insensitive, and the last test was to make sure that words
+					that do not show up in <code>test-file.txt</code> return a result of zero.
+				</p>
 			</div>
 			<div class="article">
 				<div id="author-description-local">
@@ -1395,23 +1488,26 @@
 				<a href="#what-is-a-word" style="padding-left:24px;">What is a Word?</a>
 				<a href="#before-we-begin" style="padding-left:24px;">Before We Begin</a>
 				<a href="#the-top-level" style="padding-left:24px;">The Top Level</a>
+				<a href="#boilerplate-and-trivial-code" style="padding-left:24px;">Boilerplate and Trivial Code</a>
 				<a href="#getting-user-input" style="padding-left:36px;">Getting User Input</a>
 				<a href="#printing-the-count" style="padding-left:36px;">Printing the Count</a>
 				<a href="#count-how-often-the-word-shows-up-in-the-file" style="padding-left:36px;">Count How Often the Word Shows up in the File</a>
-				<a href="#getting-the-file-into-c" style="padding-left:48px;">Getting the File into <code>C</code></a>
-				<a href="#reading-the-file-line-by-line" style="padding-left:48px;">Reading the File Line by Line</a>
-				<a href="#count-the-word-in-the-line" style="padding-left:48px;">Count the Word in the Line</a>
-				<a href="#getting-the-word-count-for-a-line" style="padding-left:36px;">Getting the Word Count for a Line</a>
-				<a href="#str-operationsc" style="padding-left:36px;"><code>str-operations.c</code></a>
-				<a href="#check_if_strings_differ" style="padding-left:48px;"><code>check_if_strings_differ</code></a>
-				<a href="#converting-text-to-uppercase" style="padding-left:48px;">Converting Text to Uppercase</a>
-				<a href="#starting-to-write-count_word_in_line" style="padding-left:48px;">Starting to Write <code>count_word_in_line</code></a>
-				<a href="#finding-the-next-word" style="padding-left:48px;">Finding the Next Word</a>
-				<a href="#replacing-characters-with-spaces" style="padding-left:48px;">Replacing Characters with Spaces</a>
-				<a href="#finishing-count_word_in_line" style="padding-left:48px;">Finishing <code>count_word_in_line</code></a>
+				<a href="#getting-the-file-into-c" style="padding-left:36px;">Getting the File into <code>C</code></a>
+				<a href="#reading-the-file-line-by-line" style="padding-left:36px;">Reading the File Line by Line</a>
+				<a href="#making-another-function" style="padding-left:36px;">Making Another Function</a>
+				<a href="#setting-up-count_word_8203in_line" style="padding-left:24px;">Setting Up <code>count_word_&#8203;in_line</code></a>
+				<a href="#string-operations" style="padding-left:24px;">String Operations</a>
+				<a href="#check_if_8203strings_differ" style="padding-left:36px;"><code>check_if_&#8203;strings_differ</code></a>
+				<a href="#converting-text-to-uppercase" style="padding-left:36px;">Converting Text to Uppercase</a>
+				<a href="#count_word_8203in_line" style="padding-left:24px;"><code>count_word_&#8203;in_line</code></a>
+				<a href="#finding-the-next-word" style="padding-left:36px;">Finding the Next Word</a>
+				<a href="#replacing-characters-with-spaces" style="padding-left:36px;">Replacing Characters with Spaces</a>
+				<a href="#finishing-count_word_8203in_line" style="padding-left:36px;">Finishing <code>count_word_&#8203;in_line</code></a>
 				<a href="#using-sscanf" style="padding-left:48px;">Using <code>sscanf</code></a>
-				<a href="#going-through-each-word" style="padding-left:48px;">Going Through Each Word</a>
-				<a href="#the-home-stretch" style="padding-left:48px;">The Home Stretch</a>
+				<a href="#going-through-each-word" style="padding-left:36px;">Going Through Each Word</a>
+				<a href="#the-home-stretch" style="padding-left:36px;">The Home Stretch</a>
+				<a href="#compiling-the-program" style="padding-left:24px;">Compiling the Program</a>
+				<a href="#running-tests" style="padding-left:24px;">Running Tests</a>
 			</nav>
 			<div id="sidenav-activator"></div>
 		</div>

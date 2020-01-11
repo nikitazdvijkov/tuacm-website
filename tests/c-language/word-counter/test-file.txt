@@ -1,0 +1,41 @@
+An experienced programmer would likely see what we're trying to do and think of
+regular expressions because replacing non-alphanumeric characters with spaces is
+trivial using regular expressions. In fact, we could replace a lot of the things
+we're doing in this tutorial with code that has already been written by experts,
+including functions in the standard library such as toupper and strcmp. In fact,
+if I were tasked to write a program that counts the number of times a word shows
+up in a document, I would have used a lot more external code.
+
+Given that experts have written highly optimized code that will beat anything
+we'll cover in this tutorial, why are we reinventing wheels left and right if
+we're not even going to be using them in practice?
+
+Put simply, you have to have something round and roll it on the ground before
+you can understand a wheel.
+
+You might be expected to solve the integral  manually in a Calculus class, but
+in any other class, you would look it up. At this part of the tutorial, we're
+not concerned with writing industry-grade code, we're just applying what we've
+already covered about C into making a non-trivial program.
+
+In general, you'll find that when learning new fields, you'll find yourself
+starting out neither at the fundamental rules of the field nor at the level of
+"just have a computer do it", but at a healthy middle where you can work to
+either end. Just as you start learning addition by memorizing 1 + 1 = 2 instead
+of discussing set theory or plugging numbers into a calculator, we will start in
+the middle and spread towards both ends.
+
+The quick brown fox jumped over the lazy dog.
+
+the
+	thE
+ tHE
+tHe
+
+THe
+THE
+ThE
+The
+
+There should be twenty instances of "the_" (underscores added so this instance
+doesn't count).
