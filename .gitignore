@@ -5,3 +5,4 @@ a.out
 *.h
 *.zip
 microsoft.gpg
+tests/c-language/word-counter-code/

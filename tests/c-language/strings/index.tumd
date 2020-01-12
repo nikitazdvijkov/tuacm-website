@@ -46,7 +46,7 @@ beads on a string.
 In the first part of the article, we're going to come up with a system to map
 bits to characters.
 We're going to use a process similar to the process we used in coming up with
-<a href="https://tuacm.com/hardware/integers/">how computers represent integers</a>.
+<a href="https://tuacm.com/blog/integers/">how computers represent integers</a>.
 First, we're going to figure out what characters to represent, then we're going
 to come up with a mapping from bits to characters.
 

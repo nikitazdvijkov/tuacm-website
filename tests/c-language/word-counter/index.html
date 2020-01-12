@@ -57,7 +57,7 @@
 		<div>
 			<div class="article">
 				<div id="article-title"><h1 id="making-a-word-counter-in-c">Making a Word Counter in C</h1></div>
-				<div id="meta-description">We're going to write our first serious program.</div>
+				<div id="meta-description">We're going to write our first nontrivial program.</div>
 				<div id="date-and-tags">Posted 11 November 2019 at 12:45 PM </div>
 				<div id="author-box">
 					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
@@ -66,8 +66,12 @@
 				<hr style="border: 3px solid black;">
 				<p><i>This is the sixteenth article in the </i>Making Sense of C<i> series.
 					In this article, we're going to write a basic word counter, our first goal in
-					programming in <code>C</code>.</i>
+					programming in <code>C</code>.
+					I'll be going through the code in excruciating detail to make sure that at no
+					point anything feels uncovered, meaning this is going to be a long article.
+					</i>
 				</p>
+				<h2 id="everything-weve-introduced">Everything We've Introduced</h2>
 				<p>We had to set up a lot of features in <code>C</code> to get to this point, but we're
 					finally here.
 				</p>
@@ -185,6 +189,14 @@
 					spaces), but we're going to use this definition.
 				</p>
 				<h2 id="before-we-begin">Before We Begin</h2>
+				<p>At certain points, I will discuss what our program needs to do and I would like
+					you to consider how you would solve the problem by <b>breaking each problem into
+					smaller problems until you can use one of the tools we've introduced in this
+					series</b>.
+					In fact, I would like you to record your ideas somewhere so you can compare them
+					to the approaches I'll take.
+				</p>
+				<h2 id="project-setup">Project Setup</h2>
 				<p>This is a short step, but you'll want to create two new directories: one for
 					all the <code>C</code> tutorials in this series and one inside that one for the word
 					counter specifically.
@@ -1466,6 +1478,10 @@
 					searching was case insensitive, and the last test was to make sure that words
 					that do not show up in <code>test-file.txt</code> return a result of zero.
 				</p>
+				<h2 id="summary">Summary</h2>
+				<p>In this article, we wrote and compiled a complete, functioning, nontrivial
+					program from scratch using the tools we've introduced.
+				</p>
 			</div>
 			<div class="article">
 				<div id="author-description-local">
@@ -1485,8 +1501,10 @@
 			</div>
 			<nav id="sidenav">
 				<a href="#making-a-word-counter-in-c" style="padding-left:12px;">Making a Word Counter in C</a>
+				<a href="#everything-weve-introduced" style="padding-left:24px;">Everything We've Introduced</a>
 				<a href="#what-is-a-word" style="padding-left:24px;">What is a Word?</a>
 				<a href="#before-we-begin" style="padding-left:24px;">Before We Begin</a>
+				<a href="#project-setup" style="padding-left:24px;">Project Setup</a>
 				<a href="#the-top-level" style="padding-left:24px;">The Top Level</a>
 				<a href="#boilerplate-and-trivial-code" style="padding-left:24px;">Boilerplate and Trivial Code</a>
 				<a href="#getting-user-input" style="padding-left:36px;">Getting User Input</a>
@@ -1508,6 +1526,7 @@
 				<a href="#the-home-stretch" style="padding-left:36px;">The Home Stretch</a>
 				<a href="#compiling-the-program" style="padding-left:24px;">Compiling the Program</a>
 				<a href="#running-tests" style="padding-left:24px;">Running Tests</a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
 			</nav>
 			<div id="sidenav-activator"></div>
 		</div>

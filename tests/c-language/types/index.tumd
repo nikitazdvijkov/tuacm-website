@@ -56,13 +56,13 @@ specified one type, an {int}.
 We've also never discussed how we can use floating point types in {C}, nor what
 we should do when different types interact.
 
-If you haven't read the <a href="https://tuacm.com/hardware/memory-hierarchy/">article on managing
+If you haven't read the <a href="https://tuacm.com/blog/memory-hierarchy/">article on managing
 memory</a>, you should read it to understand why we have multiple types to
 represent whole numbers.
 If you want to know more about how your computer represents integers, read the
-<a href="https://tuacm.com/hardware/integers/">article on integer representation</a>.
+<a href="https://tuacm.com/blog/integer-representations-binary/">article on integer representation</a>.
 Lastly, if you want to know more about how your computer represents floating
-point numbers, read the <a href="https://tuacm.com/hardware/floating-point/">article on
+point numbers, read the <a href="https://tuacm.com/blog/floating-point/">article on
 representing floating point numbers</a>.
 
 {{imp}}:="&rArr;"
@@ -88,7 +88,7 @@ representing floating point numbers</a>.
 # Integral Types
 
 So, we need to have a few different integral types because we want people to <a
-href="https://tuacm.com/hardware/memory-hierarchy/">use memory effectively</a>.
+href="https://tuacm.com/blog/memory-hierarchy/">use memory effectively</a>.
 If they want big numbers, we can let them use big numbers.
 If they don't need to use big numbers, we can let them use numbers that take up
 less memory to help them write efficient programs.
@@ -213,7 +213,7 @@ to be {64} bits.
 
 Now that we've set up the integral types, let's move onto the floating point
 types.
-Because of how <a href="https://tuacm.com/hardware/floating-point/">floating point numbers
+Because of how <a href="https://tuacm.com/blog/floating-point/">floating point numbers
 work</a>, it won't make sense to have a floating point number be one or two
 bytes.
 Since we do powers of two, let's make floating point types with four bytes and

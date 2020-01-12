@@ -1,7 +1,7 @@
 article
 Title:		Making a Word Counter in C
 Author:		Joseph Mellor
-Tagline:	We're going to write our first serious program.
+Tagline:	We're going to write our first nontrivial program.
 Code Style:	trac+dark
 Import:		code-block terminal aside
 Scripts:	highlight-internal-link
@@ -41,7 +41,12 @@ ol ol {
 
 <i>This is the sixteenth article in the </i>Making Sense of C<i> series.
 In this article, we're going to write a basic word counter, our first goal in
-programming in {C}.</i>
+programming in {C}.
+I'll be going through the code in excruciating detail to make sure that at no
+point anything feels uncovered, meaning this is going to be a long article.
+</i>
+
+# Everything We've Introduced
 
 We had to set up a lot of features in {C} to get to this point, but we're
 finally here.
@@ -164,9 +169,18 @@ spaces), but we're going to use this definition.
 
 # Before We Begin
 
-{{o-path}}:="path/to/{{zs}}other/{{zs}}directory/{{zs}}c-tutorial"
-{{win-home}}:="/mnt/c/Users/{{zs}}[your username]"
-{{wc-dir}}:="dev/{{zs}}c-tutorial/{{zs}}word-counter"
+At certain points, I will discuss what our program needs to do and I would like
+you to consider how you would solve the problem by <b>breaking each problem into
+smaller problems until you can use one of the tools we've introduced in this
+series</b>.
+In fact, I would like you to record your ideas somewhere so you can compare them
+to the approaches I'll take.
+
+# Project Setup
+
+{{o-path}}="path/to/{{zs}}other/{{zs}}directory/{{zs}}c-tutorial"
+{{win-home}}="/mnt/c/Users/{{zs}}[your username]"
+{{wc-dir}}="dev/{{zs}}c-tutorial/{{zs}}word-counter"
 
 This is a short step, but you'll want to create two new directories: one for
 all the {C} tutorials in this series and one inside that one for the word
@@ -1254,3 +1268,8 @@ the second test was with some input with a known value since the word "the"
 shows up twenty times in {test-file.txt}, the third test was to make sure that
 searching was case insensitive, and the last test was to make sure that words
 that do not show up in {test-file.txt} return a result of zero.
+
+# Summary
+
+In this article, we wrote and compiled a complete, functioning, nontrivial
+program from scratch using the tools we've introduced.
