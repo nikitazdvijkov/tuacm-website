@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<style>
+			table {
+				margin-bottom: 1em;
+			}
+			.c-type-list {
+				overflow: auto;
+				margin: 0 auto;
+				margin-bottom: 1em;
+			}
+			.c-type-list th {
+				text-align: center;
+			}
+			.c-type-list th, .c-type-list td {
+				padding: 0 1ch 0 1ch;
+			}
+			.c-type-list tr {
+				text-align: right;
+			}
+			.c-type-head {
+				text-align: center;
+				border-bottom: 1px solid #000000;
+			}
+		</style>
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>Files in C</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="files-in-c">Files in C</h1></div>
+				<div id="meta-description">We're going to get files from our hard drive into our program.</div>
+				<div id="date-and-tags">Posted 15 January 2020 at 1:26 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>This is the thirteenth article in the </i>Making Sense of C<i> series.
+					In this article, we're going to discuss how to open and close files in <code>C</code>.
+					We'll also go into a few topics we haven't mentioned yet, including the <code>const</code>
+					keyword.</i>
+				</p>
+				<p>This article is going to go through two of the standard library functions that
+					we'll use in our first program, <code>fopen</code> and <code>fclose</code>, which will move a file
+					from our hard drive to our program.
+				</p>
+				<h2 id="our-first-attempt-at-fopen">Our First Attempt at <code>fopen</code></h2>
+				<p>First, we're going to need some consistent way to interact with a file, so we
+					need some consistent object to pass to all the file manipulation functions in
+					the future.
+					We also need to specify how we want to interact with a file.
+					For example, we could have permission to read from a file but not modify it,
+					such as a file with system information.
+					Lastly, we're going to need to know the name of the file before we can open it.
+				</p>
+				<h3 id="the-file-type">The <code>FILE</code> Type</h3>
+				<p>Since we need some consistent way to interact with a file, we need to store data
+					about the file, such as where we are in the file, whether we're reading from or
+					writing to the file, etc.
+					We could store this data in separate variables, but doing so would be an
+					absolute nightmare.
+					Even Dennis Ritchie et al couldn't figure out how to write the Unix OS (the
+					original <code>C</code> project) without some way to group everything together.
+					So, they came up with the idea of a <code>struct</code>, which represents some data grouped
+					together.
+					We're going to discuss <code>struct</code>s in more depth later, but for now, just know
+					that a <code>FILE</code> is a <code>struct</code> with a bunch of data relevant to file operations.
+				</p>
+				<h3 id="first-attempt-at-fopens-syntax">First Attempt at <code>fopen</code>'s Syntax</h3>
+				<p>Remeber that we need to create a <code>FILE</code> object from the name of the file (which
+					will be an array of characters or a <code>char *</code>) and how we want to interact with
+					it (which we could represent in multiple ways, so let's leave it unknown for
+					now), which means the declaration of <code>fopen</code> will look something like:
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">FILE</span> <span class="nf">fopen</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">filename</span><span class="p">,</span> <span class="o">???</span> <span class="n">how_to_interact</span><span class="p">);</span>
+</pre></div>
+				
+				<p>where the <code>???</code> means we haven't figured out the type yet.
+				</p>
+				<h3 id="ways-of-interacting-with-files">Ways of Interacting With Files</h3>
+				<p>As we said before, we can read from files and we can write to files.
+					We can also add stuff to the end of files, like if we're recording a log of
+					everything that's happened on a server or something.
+					Lastly, we might be in situations where we want to be able to read and write to
+					a file, such as when we're using save files in a video game (saving is writing
+					or appending to a file and loading is reading from a file) or if we're updating
+					settings in an application.
+				</p>
+				<p>In short, Ritchie et al decided that <code>how_to_interact</code> should be easy for
+					programmers to remember, so he decided to make the input short strings.
+				</p>
+				<table class="c-type-list">
+					<tr class="c-type-head">
+						<th>Operation</th>
+						<th>Input String</th>
+					</tr>
+					<tr style="background: #E0E0E0;">
+						<td style="text-align: left;">Read from a file.</td>
+						<td><code>"r"</code></td>
+					</tr>
+					<tr>
+						<td style="text-align: left;">Write to a file.</td>
+						<td><code>"w"</code></td>
+					</tr>
+					<tr style="background: #E0E0E0;">
+						<td style="text-align: left;">Append to a file.</td>
+						<td><code>"a"</code></td>
+					</tr>
+					<tr>
+						<td style="text-align: left;">Read from and write to a file.</td>
+						<td><code>"r+"</code> or <code>"w+"</code></td>
+					</tr>
+					<tr style="border-bottom: 1px solid #000000; background: #E0E0E0;">
+						<td style="text-align: left;">Read from and append to a file.</td>
+						<td><code>"a+"</code></td>
+					</tr>
+				</table>
+				<p>Read, write, and append are just the first letters of each word, and if you want
+					to read and write, add a <code>+</code> at the end.
+					You can only open a file that already exists with <code>"r+"</code>, but if the file does
+					not exist, then opening a file with <code>"w+"</code> will create a new file with the name
+					you provide.
+					In general, <code>"r"</code> and <code>"r+"</code> can only work on existing files while <code>"w"</code>,
+					<code>"w+"</code>, <code>"a"</code>, and <code>"a+"</code> will create new files if you give it the name of a
+					file that doesn't exist.
+					<code>"w"</code> and <code>"w+"</code> will overwrite files if they already exist, but <code>"a"</code> and
+					<code>"a+"</code> will not.
+					Lastly, <code>"a"</code> and <code>"a+"</code> will always append to a file and they cannot change
+					anything that was in the file before it was opened.
+				</p>
+				<h3 id="second-attempt-at-fopens-syntax">Second Attempt at <code>fopen</code>'s Syntax</h3>
+				<p>Knowing that, we should have something like
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">FILE</span> <span class="nf">fopen</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">filename</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">mode</span><span class="p">);</span>
+</pre></div>
+				
+				<p>right?
+				</p>
+				<p>We actually have a few problems with the declaration of <code>fopen</code> as is.
+					We'll see the first problem when we try to call the function.
+					It was back in the <a href="../memory-addresses/index.html">article on memory
+					addresses</a>, but do you remember how I said that you could only initialize an
+					array once and that just creating a <code>char *</code> will only allocate enough memory to
+					store a memory address?
+					Until this point, I just told you that was a fact of life and didn't offer any
+					explanation and now is a good time to explain it.
+				</p>
+				<h2 id="string-literals">String Literals</h2>
+				<p>When you write the following code
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">char</span> <span class="n">string</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>
+</pre></div>
+				
+				<p>the compiler converts that into machine instructions that say
+				</p>
+				<ol>
+					<li>get fourteen bytes of memory
+					</li>
+					<li>and copy the bytes <code>{ 'H', 'e', 'l', 'l', 'o', ',', ' ', 'W', 'o', 'r', 'l',
+						'd', '!', '\0' }</code> into those fourteen bytes of memory.
+					</li>
+				</ol>
+				<p>That sounds simple enough, but where exactly are the bytes that make up the
+					string?
+					How does the computer know which bytes to copy into <code>string</code>?
+				</p>
+				<p>First, whenever someone runs your program, it is moved into RAM and so it has
+					its own set of memory addresses for things like instructions (what your code
+					becomes) and data (stuff in your program such as strings).
+					Whenever your compiler sees a <b>string literal</b> (i.e., almost anything in
+					double quotes), it will copy it directly into the executable, which you can see
+					if you open it in a text editor like Sublime Text, VS Code, Notepad, etc.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">char</span> <span class="n">string</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>    <span class="c1">// &quot;Hello, World!&quot; is a string literal.</span>
+</pre></div>
+				
+				<p><b>Whenever you use the string literal, it will hand the memory address of the
+					first byte in the string to whatever you're using it for just as it would for a
+					string.
+					Furthermore, when you use a string literal multiple times, it will store the
+					string once and give you the same memory address.</b>
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">char</span> <span class="n">string1</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>   <span class="c1">// Copy the fourteen bytes starting at</span>
+                                    <span class="c1">// memory address 1234 (which contain</span>
+                                    <span class="c1">// &quot;Hello, World!&quot;) into the fourteen bytes</span>
+                                    <span class="c1">// reserved for string1</span>
+<span class="kt">char</span> <span class="n">string2</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>   <span class="c1">// Copy the fourteen bytes starting at</span>
+                                    <span class="c1">// memory address 1234 (which contain</span>
+                                    <span class="c1">// &quot;Hello, World!&quot;) into the fourteen bytes</span>
+                                    <span class="c1">// reserved for string2</span>
+</pre></div>
+				
+				<p>If we try to store the memory address in a <code>char *</code>, we'll get a compiler error
+					in our code because <b>we would be modifying the executable file itself</b> if
+					the compiler let us.
+					A program being able to modify itself is how Skynet or other AIs are supposed to
+					take over the world, but your computer is more likely to produce wrong outputs
+					or delete some data in the worst case.
+					To see how we could modify an executable, let's come up with a simple program
+					and convert it into assembly (a more natural language version of assembly, to be
+					precise) like a compiler.
+					Assume that the bytes "Hello, World!" is stored in memory addresses <code>1234</code> to
+					<code>1247</code> within the program itself.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">char</span> <span class="o">*</span> <span class="n">string1</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>   <span class="c1">// Copy the memory address 1234 into string1</span>
+
+<span class="n">string1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;h&#39;</span><span class="p">;</span>                   <span class="c1">// Set the value at memory address 1234 to</span>
+                                    <span class="c1">// &#39;h&#39;.</span>
+</pre></div>
+				
+				<p>Memory address <code>1234</code> is actually within the program itself, meaning that the
+					next time you run the program, <code>string1</code> will be initialized with <code>"hello,
+					World!"</code> instead of <code>"Hello, World!"</code>.
+					Since your compiler doesn't want you to write such a program, it will throw a
+					compilation error and not make an executable.
+					If we could guarantee the compiler that we would not modify the string literal,
+					then we should be fine to store the memory address.
+				</p>
+				<h2 id="the-const-keyword">The <code>const</code> Keyword</h2>
+				<p>The <code>const</code> keyword guarantees the compiler that we aren't going to modify
+					whatever we apply it to.
+					If the compiler sees us modifying it, then it will throw an error to make sure
+					that everything runs properly.
+				</p>
+<div class="code-block"><pre><span></span><span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>              <span class="c1">// ERROR</span>
+<span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">5</span><span class="p">;</span>      <span class="c1">// No error because we aren&#39;t modifying a</span>
+</pre></div>
+				
+				<p>So for string literals, we need to use a <code>const char *</code> instead.
+				</p>
+<div class="code-block"><pre><span></span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">string</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>      <span class="c1">// No error</span>
+<span class="n">string</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;h&#39;</span><span class="p">;</span>                            <span class="c1">// ERROR</span>
+</pre></div>
+				
+				<p>You should read <code>const char * string;</code> as "<b><code>string</code> stores a memory address
+					to a bunch of <code>char</code>s that we cannot change through the variable <code>string</code></b>.
+				</p>
+				<p>We can also do
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">char</span> <span class="n">string</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>    <span class="c1">// string has copied &quot;Hello, World!&quot;, so it</span>
+                                    <span class="c1">// can do whatever it wants to the copy</span>
+                                    <span class="c1">// without messing up the program.</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="n">string</span><span class="p">;</span>          <span class="c1">// str is a pointer to characters that it</span>
+                                    <span class="c1">// can&#39;t modify.</span>
+<span class="n">string</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;h&#39;</span><span class="p">;</span>                    <span class="c1">// string can modify it since it&#39;s just a</span>
+                                    <span class="c1">// char *</span>
+<span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;H&#39;</span><span class="p">;</span>                       <span class="c1">// ERROR: str is a const char *, which means</span>
+                                    <span class="c1">// it can&#39;t modify the data at the memory</span>
+                                    <span class="c1">// address it stores.</span>
+</pre></div>
+				
+				<p>Declaring a variable <code>const</code> just means that you can't use it to modify the
+					memory it holds, you can use other variables to modify the memory so long as you
+					create it yourself.
+				</p>
+				<p>Lastly, we can store any type into a <code>const</code> version of the type, but we can't
+					store pointers to <code>const</code> types in pointers to regular types.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">char</span> <span class="n">string</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>                <span class="c1">// Valid</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">str_literal</span><span class="p">;</span>                       <span class="c1">// Valid</span>
+<span class="kt">char</span> <span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="n">string</span><span class="p">;</span>                            <span class="c1">// Valid</span>
+<span class="n">str_literal</span> <span class="o">=</span> <span class="n">str</span><span class="p">;</span>                              <span class="c1">// ERROR</span>
+</pre></div>
+				
+				<h2 id="our-correct-attempt-at-fopen">Our Correct Attempt at <code>fopen</code></h2>
+				<p>Well, since we don't plan on modifying either of the arguments, we can declare
+					them <code>const</code> and be done with it.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">FILE</span> <span class="nf">fopen</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">filename</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">mode</span><span class="p">);</span>
+</pre></div>
+				
+				<p>The syntax for <code>fopen</code> is almost right as we have it, but we have a slightly
+					more efficient way of using it.
+					Instead of returning a <code>FILE</code> object, we're going to return a pointer to a
+					<code>FILE</code> object, like so
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">FILE</span> <span class="o">*</span> <span class="nf">fopen</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">filename</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">mode</span><span class="p">);</span>
+</pre></div>
+				
+				<p>If we do this, we can then modify the underlying <code>FILE</code> object with functions
+					instead of having to take the address of the <code>FILE</code> and pass it into the
+					function or modify the <code>FILE</code> object in our code.
+					Furthermore, it allows us to return <code>NULL</code> to indicate a problem in opening the
+					file.
+				</p>
+				<h2 id="fclose"><code>fclose</code></h2>
+				<p>Since we're opening a file, we need to close it when we're done, so we'll have a
+					function called <code>fclose</code>.
+					<code>fclose</code> only needs to know which file to close, so it has the syntax
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">fclose</span><span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span> <span class="n">file_object</span><span class="p">);</span>
+</pre></div>
+				
+				<p>where the return value is <code>0</code> if the file closed properly or the constant <code>EOF</code>
+					if the file was not closed properly.
+				</p>
+				<h2 id="fopen-and-fclose-in-our-program"><code>fopen</code> and <code>fclose</code> in Our Program</h2>
+				<p>Now that we can open and close files in our program, let's add it into our code.
+					We just want to read from a file, so we're going to use <code>"r"</code> as our mode.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">check_if_strings_differ</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">str1</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">str2</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// TODO: Print Usage Message</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="hll">    <span class="kt">FILE</span> <span class="o">*</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">);</span>
+</span>    <span class="c1">// TODO: Count number of occurrences in a file</span>
+<span class="hll">    <span class="n">fclose</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+</span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="hll"><span class="kt">int</span> <span class="nf">check_if_strings_differ</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">str1</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">str2</span><span class="p">)</span> <span class="p">{</span>
+</span>    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>I also modified our <code>check_if_strings_differ</code> function to take in <code>const char
+					*</code>s instead of <code>char *</code>s because we will not modify the strings and it will
+					allow us to call it with <code>const char *</code>s and <code>char *</code>s.
+				</p>
+				<p>Between the first two highlighted lines, we now can use the variable <code>reader</code> to
+					read from the file.
+				</p>
+				<h2 id="summary">Summary</h2>
+				<p>In this article, we learned about
+				</p>
+				<ul>
+					<li>the <code>FILE</code> type, which will allow us to interact with files,
+					</li>
+					<li><code>fopen</code>, which will allow us to create a <code>file</code> object from a filename and a
+						mode,
+					</li>
+					<li>string literals, which we use for text (<code>"Hello, World!"</code>),
+					</li>
+					<li><code>const</code>, which tells the compiler we will not modify something and allows us to
+						use certain things like string literals,
+					</li>
+					<li>and <code>fclose</code>, which will allow us to clean up a <code>file</code> object.
+					</li>
+				</ul>
+				<h2 id="whats-next">What's Next</h2>
+				<p>In the next article, <a href="../compilers-and-ides/">Compilers and IDEs for
+					C</a>, we're going to go through the basics of setting up a compiler and and IDE
+					for <code>C</code> so that we can actually compile programs.
+				</p>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#files-in-c" style="padding-left:12px;">Files in C</a>
+				<a href="#our-first-attempt-at-fopen" style="padding-left:24px;">Our First Attempt at <code>fopen</code></a>
+				<a href="#the-file-type" style="padding-left:36px;">The <code>FILE</code> Type</a>
+				<a href="#first-attempt-at-fopens-syntax" style="padding-left:36px;">First Attempt at <code>fopen</code>'s Syntax</a>
+				<a href="#ways-of-interacting-with-files" style="padding-left:36px;">Ways of Interacting With Files</a>
+				<a href="#second-attempt-at-fopens-syntax" style="padding-left:36px;">Second Attempt at <code>fopen</code>'s Syntax</a>
+				<a href="#string-literals" style="padding-left:24px;">String Literals</a>
+				<a href="#the-const-keyword" style="padding-left:24px;">The <code>const</code> Keyword</a>
+				<a href="#our-correct-attempt-at-fopen" style="padding-left:24px;">Our Correct Attempt at <code>fopen</code></a>
+				<a href="#fclose" style="padding-left:24px;"><code>fclose</code></a>
+				<a href="#fopen-and-fclose-in-our-program" style="padding-left:24px;"><code>fopen</code> and <code>fclose</code> in Our Program</a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
+				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>

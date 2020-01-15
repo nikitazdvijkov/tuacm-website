@@ -1,0 +1,11 @@
+index-page
+Topic:		Making Sense of C
+Import:
+Scripts:
+
+Considering how fundamental the <code>C</code> programming language is to modern
+programming languages, the speed of <code>C</code> programs, and how it helps
+you understand the computer, you would think that finding well-written tutorials
+online would be easy.
+Given that I couldn't find a suitable tutorial online, I decided to write my
+own.

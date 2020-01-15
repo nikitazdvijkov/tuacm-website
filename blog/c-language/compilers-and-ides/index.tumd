@@ -1,0 +1,513 @@
+article
+Title:		Compilers and IDEs for C
+Author:		Joseph Mellor
+Tagline:	We're going to compile our first program!
+Code Style:	trac+dark
+Import:		aside code-block terminal
+Scripts:
+
+<i>This is the fourteenth article in the </i>Making Sense of C<i> series.
+In this article, we're going to discuss text editors, how to use a compiler as
+part of an IDE, and how to use an IDE.</i>
+
+In the last article, we established that we had four things left to do before we
+could write our first program:
+
+\{{ul}}
+
+set up and use a compiler,
+
+familiarize ourselves with an IDE/text editor,
+
+figure out a way to print something out to the terminal,
+
+and figure out a way to read from a file.
+
+\{{\ul}}
+
+In this article, we're going to discuss the main components of an IDE:
+
+\{{ul}}
+
+the project file,
+
+the compiler,
+
+the code executor (i.e. the thing that runs the code),
+
+the text editor,
+
+the file manager,
+
+the output windows.
+
+\{{\ul}}
+
+# General Features of an IDE
+
+In this section, we're going to discuss features that are common across pretty
+much all IDEs.
+To start, an IDE is a program that can do almost anything you would need to do
+to write a program.
+In fact, IDE is short for <b>Integrated Development Environment</b>, which means
+it's a singular programming environment that allows you to write, compile, run,
+and debug code within it.
+
+An IDE will try to look like programs you're used to like, Microsoft Word,
+Excel, or Google Docs.
+I've made a simplified version of an IDE below.
+
+\{{raw-html}}
+{{tab}}:="&nbsp;&nbsp;&nbsp;&nbsp;"
+{{big-tab}}:="{{tab}}{{tab}}{{tab}}{{tab}}{{tab}}{{tab}}{{tab}}{{tab}}"
+{{sp}}:="&nbsp;&nbsp;"
+<div style="width: 100%; color: #FFFFFF; background: #444444; margin-bottom:
+1em; border-radius: 8px;">
+	<div style="background: #220022; padding: 10px; border-radius: 8px 8px 0 0;">File{{sp}}Edit{{sp}}View{{sp}}Project{{sp}}Build{{sp}}Debug
+		<div style="float: right; position: relative;">&#10799;</div><div
+		style="float: right; position: relative; margin-right:
+		8px;">&#9633;</div><div style="float: right; position: relative;
+		margin-right: 8px;">&ndash;</div>
+	</div>
+	<div style="background: #440044; padding:
+	10px;">&#128190;{{tab}}&olarr;{{tab}}&orarr;{{tab}}&#128736;{{tab}}&#128194;{{tab}}&#9654;{{tab}}<span
+	style="border: 1px solid #AAAAAA; border-radius:
+	3px;">{{big-tab}}&#128269;</span></div>
+	<div style="display: inline-block; float: left;">
+		<div style="width: 160px; margin-bottom: 0;">
+			<div style="background: #220055; padding-left: 3px;">Project Explorer
+				<div style="float: right; position: relative;">&#10799;</div>
+			</div>
+			<div style="padding: 3px; background: #444444;">
+				&#128195; Project
+				<br>{{tab}}&#128447; src
+				<br>{{tab}}{{tab}}&#128462; file.c
+				<br>{{tab}}{{tab}}&#128462; other_file.c
+				<br>{{tab}}&#128447; includes
+				<br>{{tab}}{{tab}}&#128462; file.h
+			</div>
+		</div>
+	</div>
+	<div style="background: #000022; height: calc(3em + 245px);">
+		<div style="background: #D0D0D0; float: left; margin-left: 4ch; color:
+		black; margin-right: 1ch; padding: 0 1ch 0 1ch; border-radius: 8px 8px 0 0;">file.c</div>
+		<div style="background: #D0D0D0; float: left; padding: 0 1ch 0 1ch;
+		color: black; border: 1px solid black; height: 1.5em; border-radius: 8px 8px 0 0;">file.h</div><br>
+		<div style="padding-left: 160px; background: #444444;">
+\{{code-block c}}
+
+int main(int argc, char ** argv) {
+    char * program_name = argv[0];
+    if (argc {{lt}} 3) {
+        // TODO: Print Usage Message
+        return -1;
+    }
+    char * file_name = argv[1];
+    char * word = argv[2];
+    // TODO: Count number of occurrences in a file
+    return 0;
+}
+
+\{{\code-block}}
+		</div>
+	</div>
+	<div style="color: black; background: #000022;">
+		<div style="background: #D0D0D0; float: left; margin-left: 1ch;
+		margin-right: 1ch; padding: 0 1ch 0 1ch; border-radius: 8px 8px 0 0;">Output</div>
+		<div style="background: #D0D0D0; float: left; padding: 0 1ch 0 1ch;
+		border: 1px solid black; height: 1.5em; border-radius: 8px 8px 0 0;">Console</div><br>
+	</div>
+\{{terminal}}
+Compiling src/file.c
+Compiling src/other_file.c
+Linking...
+Build Successful!
+
+\{{\terminal}}
+</div>
+\{{\raw-html}}
+
+If the "image" above looks weird on your phone, turn your phone sideways.
+
+As you can see, the top of the IDE will have tabs like "File" and "View" plus
+the minimize, maximize, and close buttons, which will work just like they work
+in almost every other program.
+Under that, you have a bunch of buttons that do things like save your current
+file, undo something, redo something, build the project, do stuff with files,
+run the program, and search through the project for some sort of text.
+You'll also have a project explorer that will display all the relevant files in
+the project, which mainly consist of source code files, on the left.
+To the right of the project explorer, you'll have a text editor with some syntax
+highlighting.
+You type your code in the text editor and save it as you would normally expect.
+Under that, you have at least two tabs: one for the output of building the
+project (which include which files were compiled and any warnings or errors
+that showed up) and one for the output of the program itself.
+
+To be clear, most IDEs have the features I've described, though they allow users
+to do things like move each of the windows around, add and remove tabs, add
+buttons, etc.
+
+## The Project File
+
+Since we want to save information about how to compile our source code and send
+that information to other people, we need some sort of project file.
+The project file consists of anything your computer needs to know about to
+compile your project properly.
+It includes a list of all the source code files (code that you write), libraries
+(code that other people have written and compiled for you that you can use in
+your own projects), and directories you want to include in your project.
+It also includes information you can tell the compiler about how you want to
+compile projects.
+If you're using an IDE, you will go through the settings in the IDE to modify
+the file.
+When you compile and link your project, it will go through the project file and
+figure out what to compile and how to compile it.
+
+While the project file is important under the hood, you as a programmer probably
+don't need to worry about it directly, though we'll discuss how to make one
+first by hand then by using other programs.
+In most IDEs, you'll find the ability to create a new project by going to
+<b>File</b> (Top Left Corner) {{gt}} <b>New</b> {{gt}} <b>Project</b>.
+You can add source files by right-clicking on the project name in the project
+explorer (which you can find in either <b>View</b> or <b>Window</b> in the bar
+at the top of the screen with <b>File</b> and clicking something like <b>Add New
+File</b> or <b>Add</b> {{gt}} <b>File</b>).
+
+These project files are often platform specific, so people will use tools like
+{cmake} and {premake} to generate project files for each platform so you don't
+have to worry about it.
+
+## The Compiler
+
+We'll also want some way of compiling the code within the IDE, so we're going to
+build a compiler into the program or let the user modify the project to use a
+specific compiler.
+Either way, we're going to have a button somewhere on the screen that will
+compile the code and we're probably going to have a tab at the top of the screen
+titled something like <b>Build</b>.
+
+After compiling a file, the IDE will save the compiled file (known as an object
+file) so that it doesn't have to recompile the entire project every time.
+The project file and the compiler will work together to only compile what needs
+to be compiled, which consists of pretty much any source code file that has
+changed since it was last compiled or any source code file that doesn't have a
+corresponding object file.
+You won't see much of a difference for smaller projects, but larger projects can
+sometimes take hours to compile from scratch.
+
+All IDEs have four major options to build code:
+
+\{{ul}}
+
+<b>Build:</b> Compiles all the modified and new files and links everything
+together to get you a working executable, working executables, or a library
+(<b>libraries are just a bunch of compiled object files glued together in one
+file</b>, similar to how you can zip a bunch of files into one file).
+
+<b>Clean:</b> Gets rid of all the object files so that you compile all the files
+the next time you <b>Build</b> your project.
+
+<b>Rebuild:</b> Recompiles all the files specified in the project file and links
+everything together.
+You can get the same results by running <b>Clean</b> then <b>Build</b>.
+
+<b>Compile:</b> Compile a specific file without linking it.
+
+\{{\ul}}
+
+In general, you want to <b>Build</b> your code unless something weird happened
+and you need to <b>Rebuild</b> your code.
+Most IDEs will have a button somewhere that looks like a hammer or some other
+tool you would use to build something that will allow you to build code.
+Also, building will often save any unsaved files, but not necessarily.
+
+## The Code Executor
+
+Compiling is cool and all, but you need to be able to run your code to make sure
+it actually works.
+So somewhere on the screen you'll see a Play button that will run your code.
+Sometimes, it will also save your unsaved files and build what it needs to
+build.
+There's also an option to run the code in the toolbar at the top, but different
+IDEs have it in different places, but <b>Run</b> is a good start if it exists.
+There's also a version of the code executor called the debugger that will run
+the code, but you can tell it to do certain things like watch variables or stop
+at a certain point in the code so you can look at the entire program step by
+step and see what's going wrong.
+It often uses a Bug icon if it's in the button toolbar, but you can also find it
+anywhere you can run the code.
+For example, if you have a play button, it could have a drop down menu to the
+right that will have the option to run the debugger.
+If you have a <b>Run</b> tab at the top of the IDE, you'll find the ability to
+run the debugger in that tab.
+
+## The Text Editor
+
+You write your code in this window.
+Text editors have several features, most notably syntax highlighting, auto
+indentation, some form of autocomplete, an error checking mechanism, line
+numbers, etc.
+They also allow you to edit multiple files at once using tabs like tabs in a
+browser.
+
+## The File Manager
+
+The file manager works just like you would expect.
+It allows you to create files, open files, edit files, etc.
+It's pretty much contained in the <b>File</b> tab at the top of the screen and
+the project manager.
+
+## The Output Windows
+
+These windows serve as output for different parts of the IDE.
+You'll always have one for outputting the status of the build, which consists of
+which files were compiled and any warnings or errors found.
+You can also have another window that prints out the result of your program.
+
+## Other Features
+
+You can often change settings all you want, import plugins, change the
+background and the colors used in syntax highlighting, etc.
+I recommend that you should change the background to some form of dark mode or
+use a theme with a dark background.
+
+# Which IDE to Use?
+
+The IDE you use barely matters.
+They all have the same core features and everything else they have is just a
+minor feature that might make you develop faster, though some IDEs might be
+faster than other IDEs.
+The compiler does matter, however.
+Most compilers are platform dependent, so {gcc} won't compile programs for
+Windows and the {Visual C++} compiler will only compile programs for Windows.
+In short, you need to make sure to pick an IDE that allows you to compile for
+your system and your target system.
+
+## Windows
+
+{{wsl}}:="<a href="https://github.com/michaeltreat/Windows-Subsystem-For-Linux-Setup-Guide/blob/master/readmes/01_preface.md">Windows Subsystem for Linux</a>"
+
+If you're on Windows, you should either use a cross platform IDE like Eclipse or
+Netbeans or install some form of Linux, which you can do by setting up the
+{{wsl}} or by <a
+href="https://tuacm.com/blog/virtual-box-shared-folder-clipboard">installing a
+virtual machine like Virtual Box</a> and installing Linux on the virtual
+machine.
+If you choose to set up either the Windows Subsystem for Linux or install the
+Virtual Machine with a Linux distro, you can use the terminal to install the
+{gcc} compiler (which is necessary for a lot of programs to properly install, so
+you might as well install it) and you can install {mingw} to build programs for
+Windows in {C}.
+If you compile something with {gcc}, then it will work within the Linux part of
+your computer, which includes the Windows Subsytem for Linux or within the
+virtual machine.
+If you compile something with {mingw}, then it will work on the Windows part of
+your computer.
+If you want graphical output, you have to install a virtual machine.
+If you want to use Eclipse on Windows, someone else has already written an
+article on <a
+href="https://www.tutorialspoint.com/How-do-I-set-up-C-Cplusplus-on-Eclipse-in-Windows">setting
+up Eclipse in Windows for C/C++ development</a>.
+
+I threw a lot at you, so if you feel confused at any point, here's <b>the
+simplest way to get our basic {C} programs to compile on Windows</b>:
+
+\{{ol}}
+
+Set up the {{wsl}} using the linked tutorial.
+Follow the entire process in the tutorial except for setting up {npm},
+{Node.js}, or {ESlint} since those are JavaScript things that we won't need for
+programming in {C} at all.
+
+Download VSCode or any other text editor, but if you don't know which one to
+get, just download VSCode.
+
+Open up the Ubuntu App
+
+In the Ubuntu App, type the command {sudo apt install gcc g++ gdb git make} to
+install all the programs after the word {install} (you probably already have
+several of them, but it's good to make sure that you have them).
+
+Create a folder somewhere on your computer where you're going to put all your
+projects.
+For example, let's say you put it in {C:\Users\{{zs}}[username]\dev}, where
+{[username]} is your username.
+
+Inside your projects folder, create another folder for a specific project.
+Since we have to do "Hello, World!", we're going to have the folder
+{C:\Users\{{zs}}[username]\dev{{zs}}\hello-world}.
+
+Put all your {.c} and {.h} files in that folder. We will use build tools like
+{make}, {cmake}, or {premake} later in this series, but we're keeping it simple
+for now.
+Use your text editor to create your files in the folder and write the code.
+In our case, we're going to create the file
+{C:\Users\{{zs}}[username]\dev{{zs}}\hello-world\{{zs}}hello-world.c} and we're
+going to put the following code in the file.
+\{{code-block c}}
+
+#include {{lt}}stdio.h{{gt}}
+
+int main(void) {
+    puts("Hello, World!");
+    return 0;
+}
+
+\{{\code-block}}
+
+On the command line in the Ubuntu app, type {cd /mnt/c/[dir]}, where {[dir]} is
+everything after {C:} in the path of the project folder, but with all the
+backslashes replaced with forward slashes.
+In our case, it's {Users/{{zs}}[username]/dev{{zs}}/hello-world}.
+\{{terminal}}
+
+{{prompt}} cd /mnt/c/users/[username]/dev/hello-world
+{{dir}}:="/mnt/c/users/[username]/dev/hello-world"
+{{prompt}}
+
+\{{\terminal}}
+
+\{{\ol}}
+
+From here, compiling on all operating systems is the same and we'll cover it in
+the section on <a href="#compiling-on-the-command-line">Compiling on the Command
+Line</a>.
+For now, we're going to talk about the other operating systems.
+
+## Linux
+
+If you're on Linux, you should probably use a decent text editor like VSCode and
+the command line for everything else.
+With VSCode, you can actually open a terminal up inside the program itself.
+You'll need to install the packages {gcc}, {g++}, {gdb}, {git}, and {make} for
+this tutorial, so {sudo [package manager] install gcc g++ gdb git make}, where
+you'll have to use the {[package manager]} for your distro.
+The package managers are {apt} for the Debian family (Ubuntu, Mint, XUbuntu,
+Debian, etc.), {rpm} for Fedora, {yum} for CentOS, {zypper}/{rpm} for openSUSE,
+{urpmi} for Mandriva, and {pacman} for {Arch}.
+If you don't know, it's most likely {apt}, then {rpm}, and then {yum}, but you
+can search "[distro] how to install packages" online if you can't figure it out.
+
+## MacOS
+
+If you're on Mac, you should probably use XCode or anything that works on Linux.
+MacOS also has a terminal that works almost exactly like the Linux terminal
+(both were based of the Unix System), so you can use a decent text editor and
+the terminal just like in Linux.
+In the terminal, type the command {brew install gcc g++ gdb git make} to install
+the necessary programs to compile in {C}.
+
+# Which IDE Does the Author Use?
+
+I use Linux, so I use {gcc} in the terminal with a separate text editor and a
+project file known as a {Makefile}, which is what you will use if you set up the
+{{wsl}} (Seriously read that tutorial.).
+The command line also serves as my file manager, code executor, debugger, and
+everything else.
+The file manager and the code executor are some of the basic functions of the
+terminal, while the debugger is a separate command line program, {gdb}.
+
+# Compiling on the Command Line
+
+The command is pretty simple for right now, though we're going to add more to it
+later.
+
+\{{terminal}}
+
+{{dir}}:="~/dev"
+{{prompt}} cd [folder with your .c files]
+{{dir}}:="~/dev/hello-world/"
+{{prompt}} gcc [files you want to compile] -o [name of executable]
+
+\{{\terminal}}
+
+For example, let's say we want to compile this simple program (don't worry about
+the specific function, it will be covered in the next article) that will just
+print out "Hello, World!\n".
+Furthermore, let's call this file {test.c}.
+
+\{{code-block c}}
+
+#include {{lt}}stdio.h{{gt}}
+
+int main(void) {
+    puts("Hello, World!");
+    return 0;
+}
+
+\{{\code-block}}
+
+To compile this file, use the command
+
+\{{terminal}}
+
+{{prompt}} gcc test.c -o hello-world
+
+\{{\terminal}}
+
+Then, to execute it, we can use {./} followed by the program name (which
+shouldn't have any spaces in its name).
+
+\{{terminal}}
+
+{{prompt}} ./hello-world
+Hello, World!
+{{prompt}}
+
+\{{\terminal}}
+
+If you make changes to the source file {test.c}, then you will have to recompile
+using the same exact command you used to compile {test.c} last time.
+
+\{{terminal}}
+
+{{prompt}} gcc test.c -o hello-world
+
+\{{\terminal}}
+
+# Summary
+
+I want to emphasize again that only whether you can compile your code, run your
+code on the target system, debug your code, and manage your files matters when
+choosing an IDE.
+Other than that, most IDEs share probably 95% of the things you would want in an
+IDE, so the choice is over the 5% of features that could probably make it easier
+for you to code.
+For this tutorial, we're going to be focused on using a terminal with an
+external text editor since
+
+\{{ul}}
+
+you either have a terminal built into your OS (Linux and MacOS) or you can
+emulate a terminal using the Windows Subsystem for Linux or a virtual machine,
+
+the best IDE for Windows, Visual Studio, barely supports {C} (if we were
+learning in {C++}, I would absolutely recommend it),
+
+setting up any of the IDEs mentioned in this article for {C} development is
+harder than using a command line,
+
+knowing the command line is a much better skill to have than knowing the
+location of the right button to build a project (though you should still know
+the terms <b>Build</b>, <b>Rebuild</b>, <b>Clean</b>, and <b>Compile</b>) or
+where to change a specific setting,
+
+and I would have to spend time on at least three articles for each IDE that most
+readers won't read simply because they'll only need to install one IDE.
+
+\{{\ul}}
+
+though we will try to indicate where and how to compile programs using other
+IDEs.
+If anyone wants to write an article on setting up a specific IDE for {C} and
+writing programs in it, contact us at <a
+href="mailto:thetuacm@gmail.com">thetuacm@gmail.com</a> and we can talk more
+about it.
+
+# What's Next
+
+Now that we have a way to compile our programs, we're going to finish talking
+about files in <a href="../files-2/">Files in C, Pt. 2</a>.
+After we finish talking about files, we're going to start using them to write
+the word counter.

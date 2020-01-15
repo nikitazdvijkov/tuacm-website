@@ -1,0 +1,625 @@
+article
+Title:		Fundamental Types in C
+Author:		Joseph Mellor
+Tagline:	"I'm very font of you, you must be my type."
+Code Style:	trac+dark
+Import:		aside code-block
+Scripts:
+
+\{{style}}
+
+table {
+	margin-bottom: 1em;
+}
+
+.c-type-list {
+	overflow: auto;
+	margin: 0 auto;
+	margin-bottom: 1em;
+}
+
+.c-type-list th {
+	text-align: center;
+}
+
+.c-type-list th, .c-type-list td {
+	padding: 0 1ch 0 1ch;
+}
+
+.c-type-list tr {
+	text-align: right;
+}
+
+.c-type-head {
+	text-align: center;
+	border-bottom: 1px solid #000000;
+}
+
+\{{\style}}
+
+<i>This is the sixth article in the </i>Making Sense of C<i> series.
+In this article, we're going to discuss the types built into the {C} language.
+We'll focus mainly on the numerical applications of these types and how they
+interact with each other.
+
+I apologize for the <a href="https://en.wikipedia.org/wiki/Type_punning">type
+punning</a> in the tagline above.
+Credit to Jake Doerfler for showing me that pun.
+</i>
+
+So far, we've determined that we're going to give the compiler a file we want it
+to read, we've come up with a few basic rules about the format of the file (e.g.
+ending statements with semicolons), we've come up with a way to tell the
+compiler to ignore our comments within the code, we've established that we can
+do arithmetic, and we've set up a system for declaring variables, but we've only
+specified one type, an {int}.
+We've also never discussed how we can use floating point types in {C}, nor what
+we should do when different types interact.
+
+If you haven't read the <a href="https://tuacm.com/blog/memory-hierarchy/">article on managing
+memory</a>, you should read it to understand why we have multiple types to
+represent whole numbers.
+If you want to know more about how your computer represents integers, read the
+<a href="https://tuacm.com/blog/integer-representations-binary/">article on integer representation</a>.
+Lastly, if you want to know more about how your computer represents floating
+point numbers, read the <a href="https://tuacm.com/blog/floating-point/">article on
+representing floating point numbers</a>.
+
+{{imp}}:="&rArr;"
+{{min32}}:="-2 147 483 648"
+{{max32}}:="2 147 483 647"
+{{min16}}:="-32 768"
+{{max16}}:="32 767"
+
+# Topics Covered
+
+\{{ul}}
+
+<b>Integral Types</b>
+
+<b>Signed vs Unsigned Types</b>
+
+<b>Floating Point Types</b>
+
+<b>Interactions Between Different Types</b>
+
+\{{\ul}}
+
+# Integral Types
+
+So, we need to have a few different integral types because we want people to <a
+href="https://tuacm.com/blog/memory-hierarchy/">use memory effectively</a>.
+If they want big numbers, we can let them use big numbers.
+If they don't need to use big numbers, we can let them use numbers that take up
+less memory to help them write efficient programs.
+If they're using computers with little memory (such as embedded computers), then
+they'll be able to save space.
+We should also let them declare signed and unsigned versions of the types since
+sometimes they won't need negative numbers, and doing so will allow them to use
+twice as many positive numbers.
+
+On most non-embedded computers, you'll find the following setup:
+
+\{{raw-html}}
+{{min32}}:="-2 147 483 648"
+{{max32}}:="2 147 483 647"
+{{min16}}:="-32 768"
+{{max16}}:="32 767"
+<table class="c-type-list">
+	<tr>
+		<th colspan="4" class="c-type-head">Integral Types in C</th>
+	</tr>
+	<tr class="c-type-head">
+		<th>Type&nbsp;&nbsp;</th>
+		<th>Size<br>in<br>Bits</th>
+		<th>Range of<br>Signed</th>
+		<th>Maximum<br>{unsigned}<br>Value</th>
+	</tr>
+	<tr style="background: #E0E0E0;">
+		<td style="text-align: left;">{char}</td>
+		<td>8</td>
+		<td>{-128} to {127}</td>
+		<td>{255}</td>
+	</tr>
+	<tr>
+		<td style="text-align: left;">{short}</td>
+		<td>16</td>
+		<td>{{{min16}}} to {{{max16}}}</td>
+		<td>{65 536}</td>
+	</tr>
+	<tr style="background: #E0E0E0;">
+		<td style="text-align: left;">{int}</td>
+		<td>32</td>
+		<td>{{{min32}}} to {{{max32}}}</td>
+		<td>{4 294 967 295}</td>
+	</tr>
+	<tr style="border-bottom: 1px solid #000000;">
+		<td style="text-align: left;">{long long}</td>
+		<td>64</td>
+		<td>{-9 223 372 036 854 775 808} to<br>{9 223 372 036 854 775 807}</td>
+		<td>{18 446 744 073 709 551 615}</td>
+	</tr>
+</table>
+\{{\raw-html}}
+
+I'm just going to apologize if you're reading on a phone, as I don't have a good
+way to display the table without breaking apart the numbers in an unnatural way.
+Basically, an {unsigned char} can represent numbers up to 255, an {unsigned
+short} can represent numbers up to 64&nbsp;000, an {unsigned int} can represent
+numbers up to four billion, and an {unsigned long long} can represent numbers up
+to eighteen billion billion.
+Signed types can represent numbers half as large as their corresponding unsigned
+types.
+
+## Declaring Signed and Unsigned Variables
+
+If you declare a variable with just the type, it will be signed.
+If you declare a variable with {unsigned} in front of the type, it will be
+unsigned.
+
+\{{code-block c no-line-numbers}}
+{{min32}}:="-2 147 483 648"
+{{max32}}:="2 147 483 647"
+{{min16}}:="-32 768"
+{{max16}}:="32 767"
+
+int a;              // a is a signed int that can go from {{min32}} to
+                    // {{max32}}
+unsigned int b;     // b is an unsigned int that can go from 0 to 4 294 967 295
+
+\{{\code-block}}
+
+You can also put {signed} in front of a type to make it signed, but it doesn't
+add any information since integral types are signed by default.
+Also, {short} and {long long} are technically {short int} and {long long int},
+but adding the {int} is unnecessary.
+
+## Why do Some Types Have Weird Names?
+
+An {int} represents numbers in the normal range for most calculations and a
+{short} represents a smaller range, so both {int} and {short} make sense, but
+why is the eight bit type a {char} and why is the 64 bit type a {long long}?
+What happened to the {long} type?
+
+### The {char} Type
+
+Considering that you can't even store the result of small calculations like
+{12 * 12} in eight bits, why even have an eight bit type?
+While you can still do arithmetic with {char}s, they are mostly used to
+represent characters in text.
+For example, the letter 'A' has the value of {65}, the letter 'B' has the value
+of {66}, etc.
+Since ASCII only uses 128 characters, there's no reason to use more than a byte
+of memory for a character.
+
+### The {long long} Type
+
+{C} actually has a {long} type, but I didn't mention it because the length in
+bits of the {int} and {long} types vary from computer to computer.
+In the case of the lengths of integer types, the {C} standard only specifies a
+minimum length.
+For example, an {int} must be at least {16} bits long and a {long} must be at
+least {32} bits long.
+On some computers, an {int} is only {16} bits instead of {32} bits, which means
+you could see bugs if your program relies on an {int} being {32} bits.
+It's not as much of a problem as you would expect since most compilers use the
+standard {32} bits for an {int} and those that don't will make it explicit that
+they use {16} bits.
+A {long long}, however, is guaranteed to be at least {64} bits long, but most
+compilers don't go beyond {64} bits, so a {long long} is effectively guaranteed
+to be {64} bits.
+
+# Floating Point Types
+
+Now that we've set up the integral types, let's move onto the floating point
+types.
+Because of how <a href="https://tuacm.com/blog/floating-point/">floating point numbers
+work</a>, it won't make sense to have a floating point number be one or two
+bytes.
+Since we do powers of two, let's make floating point types with four bytes and
+eight bytes.
+
+In {C}, we have two standard floating point types:
+
+\{{raw-html}}
+<table class="c-type-list">
+	<tr>
+		<th colspan="4" class="c-type-head">Floating Point Types in C</th>
+	</tr>
+	<tr class="c-type-head">
+		<th>Type</th>
+		<th>Size in Bits</th>
+		<th>Range</th>
+		<th>Precision<br>in Digits</th>
+	</tr>
+	<tr style="background: #E0E0E0">
+		<td>{float}</td>
+		<td>32</td>
+		<td>{&pm;3.40e38}</td>
+		<td>~7</td>
+	</tr>
+	<tr style="border-bottom: 1px solid #000000;">
+		<td>{double}</td>
+		<td>64</td>
+		<td>{&pm;1.79e308}</td>
+		<td>~16</td>
+	</tr>
+</table>
+\{{\raw-html}}
+
+Both floating point types represent numbers in signed scientific notation, which
+is why the ranges for both are in scientific notation.
+A {float} can represent numbers up to a hundred billion billion billion billion
+and a {double} can represent pretty much any number you'll encounter in
+programming.
+<b style="color: #FF0000">Both however, cannot represent large numbers exactly,
+so you shouldn't use either if you're doing anything that requires an exact
+amount, like counting money or doing anything with number theory</b>.
+You should use {float}s and {double}s when you don't need to be exact (physics
+and graphics calculations in video games, sciences where you use scientific
+notation, etc.).
+<a href="https://www.youtube.com/watch?v=PZRI1IfStY0">Tom Scott did a video on
+floating point numbers</a> that you should watch for just some general warnings
+and use cases for floating point numbers.
+
+Unlike with the integral types, these floating point types are standardized,
+meaning you'll never see a 64 bit {float} or a 32 bit {double}.
+
+Since we're dealing with such big numbers, we should be able to initialize
+numbers with scientific notation, so let's add that to the language.
+
+We'll use the syntax {[decimal]e[exponent]} for scientific notation literals,
+like so:
+
+\{{code-block c no-line-numbers}}
+
+double a = 7.03e5;      // a now contains 703 000, as the 'e' can be read
+                        // as "times ten to the"
+float b = a;
+
+\{{\code-block}}
+
+# How do Numbers from Different Types Interact with Each Other?
+
+We've established how arithmetic is going to work for numbers of the same type,
+but what happens if we try to perform arithmetic with numbers of different
+types?
+
+<b>In general, we should avoid making different types interact with each
+other</b>.
+Like different tools in a toolbox, each type has specific scenarios when you
+should use it.
+Just as it doesn't make sense to unscrew a screw with a hammer, it doesn't make
+sense to use an {int} to represent a probability.
+If multiple types are interacting, it's likely that at least one of them is
+being used for the wrong job.
+
+To be clear, there are specific use cases where you need to use multiple types,
+such as converting money (which should be stored in an integral type) between
+countries using an exchange rate (which should be stored in a floating-point
+type).
+
+So that you have no surprises when you do have to have different types interact,
+I will discuss the type interactions in the rest of the section.
+
+To figure out what to do, we should try to follow the <a
+href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment">principle
+of least surprise</a>, which essentially states that anything that a user (in
+our case, a {C} programmer) can interact with should work exactly as the user
+would expect.
+As a simple example, the plus sign should do some kind of addition, but never
+subtraction.
+
+## What Happens if We Add a {short} to a {long long}?
+
+Just because we represent a number with fewer bytes doesn't mean it should stop
+acting like a number.
+The sum of {32} and {7000000000224} should be {7000000000256} if possible, but
+the only way to have that happen is to temporarily convert the {short} into a
+{long long}.
+Since temporarily converting a {short} to a {long long} is trivial, let's just
+temporarily convert the {short} into a {long long}, then do the addition.
+
+When you do arithmetic with two numbers of different types, the number of the
+smaller type will be converted to the larger type, then the two numbers are
+added just as if they were of the same type.
+For example:
+
+\{{code-block c no-line-numbers}}
+
+long long a = 1000000000000;        // one trillion
+short b = 3000;
+long long c = a + b;                // c now contains one trillion three
+                                    // thousand
+
+\{{\code-block}}
+
+In fact, <b>when you perform any arithmetic operation with numbers from two
+different types, the smaller type will get converted to the larger type before
+the operation gets applied</b>.
+
+## What Happens if We Add a {float} to a {double}?
+
+Just like adding a {short} to a {long long}, the smaller type ({float}) will be
+converted to the larger type ({double}), then added together like two doubles.
+
+## What Happens if We Add an {int} to a {float}?
+
+Just like adding a {short} to a {long long}, the smaller type (the non-floating
+point type) will be converted into the larger type (the floating point type),
+then the two types will be added together like two floats.
+
+\{{code-block c no-line-numbers}}
+
+int a = 40;
+float b = 45.6;
+float c = a + b;    // a becomes 40.0 and is added to 45.6 to get 85.6, which is
+                    // then stored in c
+
+\{{\code-block}}
+
+## What Happens if We Try to Store a Smaller Type in a Larger Type?
+
+Since the larger type can completely represent the shorter type, it gets stored
+without a problem.
+This applies to all types, but there can be a loss of precision in converting
+from an integral type to a floating point type.
+
+### Loss of Precision
+
+Because we floating point numbers trade precision for range, there can be a loss
+of precision in converting from an integral type to a floating point type, so
+you will lose some precision of the number if the number is larger than
+<i>2<sup>24</sup></i> if you want to store it in a {float} or
+<i>2<sup>53</sup></i> if you want to store it in a {double}.
+
+\{{code-block c no-line-numbers}}
+
+int a = 2147483611;
+float b = 45.6;
+float c = a + b;        // c does not contain 2147483656.6, but 2.147483648e9
+                        // because a became 2.147483648e9 in the addition (a is
+                        // still 2147483611, it's just being temporarily
+                        // converted to a floating point number for the
+                        // addition) and b was too insignificant to change it,
+                        // just like 2e100 + 1 is still 2e100
+
+\{{\code-block}}
+
+In the last example, although it looks like {2.147483648e9} has 10 sigfigs, it
+only has 8 accurate sigfigs.
+But if it only has 8 sigfigs, then why wasn't it {2.1474836e9}?
+Why did it include the {48} at the end?
+
+Remember that the computer works in binary, not base ten.
+When I said that {a} became {2.147483648e9} in the addition, I was giving you
+the number in a correct, but misleading format.
+To the computer, {a} was actually first converted to {1.111 1111 1111 1111 1111
+1111 1011 011e0001&nbsp;1110}, which corresponds to <i>2<sup>31</sup> -
+37</i>.
+Since the computer can only represent the first twenty four digits as a {float},
+it will round to the nearest representable number it can, which is {1.000 0000
+0000 0000 0000 0000e0001&nbsp;1111} or <i>2<sup>31</sup></i>.
+Notice that the computer version has 24 significant bits with all the zeros.
+In other words, it has the proper number of significant figures <i>in base
+two</i>, not in base ten.
+
+If {b} were instead a {double}, then we would convert {a} to a {double}, which
+actually has the required precision to represent {a}, meaning you would get the
+correct answer of {2147483656.599998}, where the remaining {0.000002} comes from
+the fact that {0.6} can't be represented in a finite number of bits, just as we
+have to represent {2/3} as {0.666...6667} in a finite number of digits.
+For more details, check out <a
+href="https://www.youtube.com/watch?v=PZRI1IfStY0">Tom Scott's video on floating
+point numbers</a>, which I referred to earlier.
+
+## What Happens if We Try to Store a {long long} in a {short}?
+
+First, if you try to directly set a type with a value too large for it to
+handle, the compiler will print out some warning when you try to compile your
+program but it won't throw an error.
+If you set {a} equal to some expression it can't figure out at compile time,
+then it might not print a warning, so you should be on your guard.
+
+\{{code-block c no-line-numbers}}
+
+hlshort a = 1000000000;       // WARNING: overflow in implicit constant conversion
+long long b = 1000000000;
+a = 5 * b;                  // The compiler might not print a warning for this
+                            // line, even though it will overflow.
+
+\{{\code-block}}
+
+In general, the compiler will chop off any digits it can't fit into the assigned
+type.
+In the example above, {1000000000} in base ten is {0011 1011 1001 1010 1100 1010
+0000 0000} in binary, but since a short can only hold {16} bits, it will only
+take the rightmost sixteen bits and treat the rest as overflow, meaning that you
+would be setting {a} to {<s>0011 1011 1001 1010</s> 1100 1010 0000
+0000}{{imp}}{1100 1010 0000 0000}, which is {-13824}.
+You could have replaced the highlighted line with {short a = -13824;} and the
+results of the program would be exactly the same.
+
+\{{aside}}
+#### Undefined Integer Behavior
+<hr>
+
+Because {C} was made way back when people were building computers using
+nonstandard methods like one's compliment and sign-magnitude representation for
+integers and computers with different sizes for {int} and short, {C} wanted to
+accomodate all the different behaviors of computers, so some things are left
+undefined in the {C} standard and it's up to the people building the hardware
+what to do in these cases.
+
+For example, nothing in the {C} standard states that you have to use two's
+compliment to represent integral types, which means overflow for signed integral
+types has to be undefined.
+All three representations of binary agree that {0111 1111 1111 1111 1111 1111
+1111 1111} represents the largest positive signed 32 bit number.
+Adding one to that number, however, leads to three different results.
+{1000 0000 0000 0000 0000 0000 0000 0000} represents {{{min32}}} in two's
+compliment, {-0} in sign-magnitude, and {-{{max32}}} in one's compliment.
+
+Also, the {C} standard actually specifies that both a {short} and an {int} only
+have to represent the numbers from {-{{max16}}} to {{{max16}}} because one's
+compliment and sign-magnitude can't represent {{{min16}}} in sixteen bits and
+some computers represent {int}s with sixteen bits instead of thirty two bits.
+Once again, most computers follow the layout I specified above, with the notable
+exception of embedded computers.
+
+The trick to avoiding this whole mess is just to avoid undefined behavior in the
+first place.
+Don't let numbers overflow and don't rely on needing to use {{{min32}}}.
+
+\{{\aside}}
+
+## What Happens if We Try to Store an {int} in a {float}?
+
+If the value of the {int} is less than <i>2<sup>24</sup></i>, then it can be
+stored in the {float} completely, otherwise, it can be rounded to the nearest
+float that can be represented.
+You already saw an example above in the <a href="#loss-of-precision">Loss of
+Precision</a> section.
+
+## What Happens if We Try to Store a {double} in a {float}?
+
+Simply put, if the value of the {double} can fit into the {float}, then it gets
+stored without a problem.
+If the {double} has more precision than the {float} can store, the extra
+precision is thrown away.
+If the magnitude of the value of the {double} is greater than a {float} can
+store, it just stores {&pm;inf} (which represents infinity) in the {float}.
+
+\{{code-block c no-line-numbers}}
+
+double can_fit_in_float = 1.125;
+float example = can_fit_in_float;   // example is now 1.125
+
+double too_precise = 1.0000000009e7;
+example = too_precise;              // example is now 1e7, where the
+                                    // 0.0000000009e7 is dropped
+
+double too_large = 1e100;           // too_large is now the power of two nearest
+                                    // to 1e100 because of how double precision
+                                    // works
+
+example = too_large;                // example is now inf, which represents
+                                    // infinity, because 1e100 is too large for
+                                    // a float to represent
+
+double set_to_infinity = example;   // set_to_infinity is now inf because
+                                    // example is inf
+
+set_to_infinity = too_large;        // set_to_infinity is now the power of two
+                                    // nearest to 1e100 since too_large can fit
+                                    // into set_to_infinity
+
+\{{\code-block}}
+
+## What Happens if We Try to Store a {double} in an {int}?
+
+If the value of the {double} can fit into an {int}, then the {double} gets
+converted into an {int}, which means it just removes any fractional part.
+
+\{{code-block c no-line-numbers}}
+
+double a = 1.5;
+int b = a;          // b is now 1
+a *= -1;            // a is now -1.5
+b = a;              // b is now -1, since the fractional part gets removed
+
+\{{\code-block}}
+
+If the value of the {double} can't fit into an {int}, then you'll probably get
+some garbage value, so don't try to store a {double} in an {int} if you know
+it won't fit.
+
+# Type Casting
+
+To force a conversion from a type to another type in an expression (you cannot
+change the type of any variable), you can use a <b>type cast</b>, which consists
+of putting the resulting type in front of the variable or expression.
+For example, if you want to exchange 100 USD for some yen, you would multiply
+10000 cents (since the cent is the smallest unit of US currency) by the cents to
+yen conversion rate.
+Both cents and yen are discrete quantities, so it wouldn't make sense for your
+resulting money to be floating point numbers.
+On the other hand, the cents to yen conversion rate is a floating point number,
+meaning that to convert from cents to yen requires multiplying an integral
+number by a floating point number, which results in a <b>floating point</b>
+number, which you have to convert back into an integral number, either
+implicitly by doing anything involving multiple types as specified above or
+explicitly by using a <b>type cast</b>.
+
+Since the only thing the compiler needs to know to convert one type to another
+is what you're converting and the resultant type, it uses the syntax
+{(new_type)variable}.
+In our example:
+
+\{{code-block c no-line-numbers}}
+
+// cents_to_yen has been intialized as a double
+// cents has been initialized as a long long
+
+// Implicit conversion by storing
+long long result = cents * cents_to_yen;
+
+// Explicit conversion using type casting
+(long long)(cents * cents_to_yen)
+
+\{{\code-block}}
+
+Type casts will show up from time to time, so just know that you can convert
+types to other types.
+
+# Summary
+
+Up to this point, we've established that we're going to give our compiler a file
+with a series of statements, but we've only used the plain {int} type.
+In this article, we explained what {int}s are doing under the hood and we
+introduced several new types that function like {int}s.
+We also introduced the concept of signed and unsigned integers.
+Our file should now look like
+
+\{{code-block c no-line-numbers}}
+
+int a = 7;
+unsigned long long b = 1000000000000;
+b *= a;                             // Multiplying an unsigned long long and an
+                                    // int works exactly as expected.
+                                    // b is now seven trillion
+
+other statement;                    // We still can't do anything more than
+                                    // arithmetic.
+
+short c = 32 * a;                   // Since 32 * 7 is less than the maximum
+                                    // value for a short, we're good even though
+                                    // a is an int.
+                                    // c is now 224.
+
+double d = b * 1e7;                 // 1e7 is 10000000.
+                                    // d now contains 70000000000000000000.
+
+b += c;                             // Adding a short to an unsigned long long
+                                    // works as expected.
+                                    // b is now 7000000000224
+d /= b;                             // d now contains 9999999.999680
+
+b *= 0.5;                           // b is now 3500000000112
+
+\{{\code-block}}
+
+# What's Next
+
+Remember that our goal for now is to count the number of times a word shows up
+in some particular text.
+We've set up counting, so now our next move should be to handle and manipulate
+text, which will be the topic of the next article.
+Since text manipulation will be too complicated to fully explain in a single
+article, we will first come up with an abstract, kind of hazy system for
+representing text in the next article, then we will try to come up with features
+in the language that will allow us to implement the system we came up with.
+We might also need to modify our system when future constraints come up.
+
+See you in the next article: <a href="../strings/index.html">Representing Text
+in C</a>.
