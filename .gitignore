@@ -6,3 +6,4 @@ a.out
 *.zip
 microsoft.gpg
 tests/c-language/word-counter-code/
+commit-file
