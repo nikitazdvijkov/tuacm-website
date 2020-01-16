@@ -1,0 +1,1 @@
+This tutorial explains the C programming language from scratch by looking at the problems the creators of C faced and how they solved them.
