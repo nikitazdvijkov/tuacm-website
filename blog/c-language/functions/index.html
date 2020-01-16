@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>Functions in C</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="functions-in-c">Functions in C</h1></div>
+				<div id="meta-description">Functions are the building blocks of programs in C.</div>
+				<div id="date-and-tags">Posted 15 January 2020 at 1:26 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>This in the tenth article in the </i>Making Sense of C<i> series.
+					In this article, we're going to come up with ways to group together statements
+					in code to make it possible to reuse code without copying it, which will improve
+					the legibility of our code and reduce the spread of bugs.</i>
+				</p>
+				<p>So far, we've
+				</p>
+				<ul>
+					<li>determined that we're going to give the compiler a file with a bunch of
+						statements ending in semicolons,
+					</li>
+					<li>established that we can use comments with <code>//</code> for single line comments and <code>/*</code>
+						and <code>*/</code> for multiline comments,
+					</li>
+					<li>reserved the symbols <code>+-*/%</code> for arithmetic,
+					</li>
+					<li>set up variables <code>[type] [variable] = [expression]</code> which will allow us to store
+						values for later use,
+					</li>
+					<li>come up with the integral types (<code>char</code>, <code>short</code>, <code>int</code>, and <code>long long</code>) and
+						the floating point types (<code>float</code> and <code>double</code>),
+					</li>
+					<li>figured out a way to represent characters using the <code>char</code> type and invented the
+						<code>'\0'</code> character, which indicates that we're ending a string,
+					</li>
+					<li>decided to use single quotes around a character to represent the ASCII value for
+						that <code>char</code>,
+					</li>
+					<li>explained how the program uses memory addresses to identify variables,
+					</li>
+					<li>came up with a way to access the memory address of a variable using the <b>
+						address of</b> operator (<code>&amp;</code>),
+					</li>
+					<li>came up with a way to access the value stored at a memory address using the
+						<b>dereference</b> operator (<code>*</code>),
+					</li>
+					<li>created <b>pointer</b> variables to allow us to store memory addresses using the
+						syntax <code>type * variable_name;</code>,
+					</li>
+					<li>came up with a way to tell the computer to get us a block of memory (a.k.a. an
+						<b>array</b> or <b>buffer</b>) using the syntax <code>type
+						array[num_elements];</code>,
+					</li>
+					<li>came up with a way to initialize an array with an <b>initializer list</b>,
+					</li>
+					<li>came up with a way to initialize a <code>char</code> array using double quotes
+						(<code>"Hello!"</code>),
+					</li>
+					<li>came up with a way to access elements of an array using the syntax
+						<code>variable_name[offset]</code>,
+					</li>
+					<li>added the ability to use conditional branches through <code>if else</code> statements,
+					</li>
+					<li>and added the ability to use loop through something with <code>for</code> and <code>while</code>.
+					</li>
+				</ul>
+				<p>In the last article, we established control flow, which is the collective term
+					for conditional branches and loops.
+				</p>
+				<div class="aside" >
+					<p>Technically, functions are also included in control flow, but I didn't include
+						them in the control flow article because you could replace the function with the
+						code in the function and get the same exact result.
+					</p>
+				</div>
+				<p>We also used control flow to come up with some code that can do different things
+					depending on whether two strings match:
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="k">while</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+    <span class="c1">// Do stuff you would want to do if the two strings match</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// Do stuff you would want to do if the two strings don&#39;t match</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>We'll modify it in this article, but not significantly.
+				</p>
+				<p>With just what we have up to this point, we have enough functionality in the
+					language to make any program, but doing so would be tedious for several reasons,
+					most notably the lack of functions and the lack of a standard library.
+					In this article, we're going to add functions to <code>C</code>.
+				</p>
+				<h2 id="what-is-a-function">What is a Function?</h2>
+				<p>A function in mathematics takes in an input and produces an output, with the
+					rule that the same exact input produces the same exact output.
+					Functions in <code>C</code> work just like functions in math, though the input and output
+					are slightly more complicated.
+					To the computer, a function is a set of instructions that the computer will jump
+					to, execute, and jump back from.
+				</p>
+				<h2 id="function-syntax">Function Syntax</h2>
+				<p>Since we used the general syntax
+				</p>
+<div class="code-block"><pre><span></span><span class="n">keyword</span> <span class="p">(</span><span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">code</span> <span class="n">to</span> <span class="n">execute</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>for the other elements of control flow, let's keep it with modifications.
+					We know that we're going to put the code to execute between the curly braces,
+					but functions also have inputs and an output.
+					Like with <code>if</code> statements, <code>for</code> loops, and <code>while</code> loops, we put the input
+					between the parentheses but we need somewhere to put the output.
+					We also need to know the types of everything and we need to be able to provide
+					multiple inputs.
+					Inside the function, we'll need to tell the computer what we want to return from
+					the function, so we'll use the keyword <code>return</code> with the syntax <code>return
+					output;</code>.
+					Finally, when we want to execute the function, we just need to specify the name
+					and the inputs.
+				</p>
+				<p>The syntax for calling a function is
+				</p>
+<div class="code-block"><pre><span></span><span class="n">function_name</span><span class="p">(</span><span class="n">first_input</span><span class="p">,</span> <span class="n">second_input</span><span class="p">);</span>
+</pre></div>
+				
+				<p>If we want to store the output, we can use
+				</p>
+<div class="code-block"><pre><span></span><span class="n">variable</span> <span class="o">=</span> <span class="n">function_name</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+</pre></div>
+				
+				<p>The syntax for declaring a function with one input is
+				</p>
+<div class="code-block"><pre><span></span><span class="n">output_type</span> <span class="nf">function_name</span><span class="p">(</span><span class="n">type</span> <span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">first</span> <span class="n">statement</span><span class="p">;</span>
+    <span class="n">second</span> <span class="n">statement</span><span class="p">;</span>
+    <span class="c1">// and so on</span>
+    <span class="k">return</span> <span class="n">output</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>The syntax for declaring a function with two inputs is
+				</p>
+<div class="code-block"><pre><span></span><span class="n">output_type</span> <span class="nf">function_name</span><span class="p">(</span><span class="n">first_type</span> <span class="n">first_input</span><span class="p">,</span> <span class="n">second_type</span> <span class="n">second_input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">first</span> <span class="n">statement</span><span class="p">;</span>
+    <span class="n">second</span> <span class="n">statement</span><span class="p">;</span>
+    <span class="c1">// and so on</span>
+    <span class="k">return</span> <span class="n">output</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>I'll let you guess the syntax for three inputs.
+				</p>
+				<p>We can also have functions that take in no input using the syntax:
+				</p>
+<div class="code-block"><pre><span></span><span class="n">output_type</span> <span class="nf">function_name</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">first</span> <span class="n">statement</span><span class="p">;</span>
+    <span class="n">second</span> <span class="n">statement</span><span class="p">;</span>
+    <span class="c1">// and so on</span>
+    <span class="k">return</span> <span class="n">output</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>We can have functions that return no output by making the output type <code>void</code>:
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">void</span> <span class="nf">function_name</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">first</span> <span class="n">statement</span><span class="p">;</span>
+    <span class="n">second</span> <span class="n">statement</span><span class="p">;</span>
+    <span class="c1">// and so on</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<div class="aside" >
+					<h5>The <code>void</code> Type</h5>
+					<hr>
+					<p>The <code>void</code> type is different from all other types because you cannot make a
+						variable of <code>void</code> type and you cannot use a <code>void</code> type in any of the
+						operations we've established.
+						It might seem pointless, but it has a few specific usages.
+						Returning nothing from a function and telling the compiler that the function
+						doesn't take inputs are two uses.
+						Later, we'll cover the other main use of <code>void</code>.
+					</p>
+				</div>
+				<p>As you would guess we can use the inputs to our function in our function.
+					Inputs and the output can be any of the types we've established up to this
+					point, including pointer types such as <code>char *</code> and <code>int *</code>.
+				</p>
+				<h2 id="return-statements-exit-the-function-immediately"><code>return</code> Statements Exit the Function Immediately</h2>
+				<p>I want to emphasize that your function will exit as soon as it hits a <code>return</code>
+					statement.
+					For example:
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="nf">smallest_fibonacci_above</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">number</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 12200160415121876738 is the largest Fibonacci number we can represent in</span>
+    <span class="c1">// 64 bits, so if someone gives us a number greater than it, we will have an</span>
+    <span class="c1">// infinite loop below, so we just return some value to indicate that we</span>
+    <span class="c1">// cannot calculate the required Fibonacci number</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">max_fibonacci_number</span> <span class="o">=</span> <span class="mi">12200160415121876738</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">number</span> <span class="o">&gt;</span> <span class="n">max_fibonacci_number</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="c1">// Anything after this point inside the surrounding curly brackets will</span>
+        <span class="c1">// not be executed since the program has already left the function</span>
+    <span class="p">}</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">previous</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">next</span><span class="p">;</span>
+    <span class="n">previous</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">current</span> <span class="o">&lt;</span> <span class="n">number</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// The next three lines are the definition of the Fibonacci sequence</span>
+        <span class="n">next</span> <span class="o">=</span> <span class="n">previous</span> <span class="o">+</span> <span class="n">current</span><span class="p">;</span>
+        <span class="n">previous</span> <span class="o">=</span> <span class="n">current</span><span class="p">;</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">current</span><span class="p">;</span>
+    <span class="c1">// Anything after this point inside the surrounding curly brackets will not</span>
+    <span class="c1">// be executed since the program has already left the function</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>If the value of <code>number</code> is greater than <code>12200160415121876738</code>, then the
+					function will immediately exit with output <code>0</code> without even looking at the other
+					code, otherwise, it will calculate the smallest Fibonacci number above the
+					number you give the function.
+				</p>
+				<p>By the way, here's the code without comments so it's easier to read:
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="nf">smallest_fibonacci_above</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">number</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">max_fibonacci_number</span> <span class="o">=</span> <span class="mi">12200160415121876738</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">number</span> <span class="o">&gt;</span> <span class="n">max_fibonacci_number</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">previous</span><span class="p">,</span> <span class="n">current</span><span class="p">;</span>
+    <span class="n">previous</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">current</span> <span class="o">&lt;</span> <span class="n">number</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">next</span> <span class="o">=</span> <span class="n">previous</span> <span class="o">+</span> <span class="n">current</span><span class="p">;</span>
+        <span class="n">previous</span> <span class="o">=</span> <span class="n">current</span><span class="p">;</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">current</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<h2 id="pass-by-value">Pass by Value</h2>
+				<p>Lastly, I want to make sure that it's clear that when you call a function, you
+					create copies of the inputs and store them into whatever variables you use for
+					the parameter.
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">example</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">result</span> <span class="o">=</span> <span class="n">smallest_fibonacci_above</span><span class="p">(</span><span class="n">example</span><span class="p">);</span>
+</pre></div>
+				
+				<p>Notice that I passed in <code>example</code> to the function even though the function
+					definition uses <code>number</code> as the parameter, and the variables will refer to
+					different memory.
+					The value in <code>example</code> will be copied into <code>number</code>, meaning that if you had a
+					function like
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">void</span> <span class="nf">change_value_to_four</span><span class="p">(</span><span class="kt">int</span> <span class="n">number</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">number</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>and you use it like so
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">random_number</span> <span class="o">=</span> <span class="mi">73</span><span class="p">;</span>
+<span class="n">change_value_to_four</span><span class="p">(</span><span class="n">random_number</span><span class="p">);</span>
+</pre></div>
+				
+				<p><code>random_number</code> is still <code>73</code>, because <code>random_number</code> is copied into <code>number</code>,
+					and, just as modifying a copy of something doesn't affect the original, neither
+					does modifying <code>number</code>.
+					You should have two questions:
+				</p>
+				<ul>
+					<li>Why does <code>C</code> copy the input into a variable?
+					</li>
+					<li>How can I give a function some data and have it modify the data?
+					</li>
+				</ul>
+				<p>We can answer both of them easily.
+				</p>
+				<h3 id="why-does-c-copy-input-into-variables">Why Does <code>C</code> Copy Input into Variables?</h3>
+				<p>I can actually show you with one line:
+				</p>
+<div class="code-block"><pre><span></span><span class="n">change_value_to_four</span><span class="p">(</span><span class="mi">73</span><span class="p">);</span>
+</pre></div>
+				
+				<p>Remember that plain numbers are <b>rvalues</b>, which means they neither have a
+					memory address nor can they be assigned values.
+					If <code>C</code> didn't copy <code>73</code> into a variable, this program would make no sense
+					because we can't store things without somewhere to store it.
+				</p>
+				<h3 id="modifying-data-passed-into-functions">Modifying Data Passed Into Functions</h3>
+				<p>Functions will always copy their inputs into their own local variables, so we
+					can't pass the value as is.
+					In other words, if we want to pass in an <code>int</code> to a function that we can modify,
+					we cannot have it come in as a parameter as an <code>int</code> like so
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">void</span> <span class="nf">example_function</span><span class="p">(</span><span class="kt">int</span> <span class="n">input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// input is a copy of whatever you passed in, so you can&#39;t modify it</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>You're going to need to modify the <code>int input</code> section of the code.
+					If you look through everything we've come up with so far in <code>C</code>, you should be
+					able to figure out some way we can tell the computer <b>what memory we want to
+					modify</b>.
+					For now, I'm going to leave this as an exercise for you to figure out on your
+					own.
+					I'll cover it in the future, but just go through all the features we've covered
+					up to this point and figure out which feature can help us.
+					For example, comments cannot help us because the compiler will ignore them and
+					arithmetic operations cannot help us because any arithmetic we do within the
+					function will be done on the local copy, not the original data.
+				</p>
+				<h2 id="functions-in-our-programs">Functions in Our Programs</h2>
+				<p>For us, we'll need functions to:
+				</p>
+				<ul>
+					<li>check if two words match,
+					</li>
+					<li>read a file word by word,
+					</li>
+					<li>print the output,
+					</li>
+					<li>get the word the user wants to be counted,
+					</li>
+					<li>and get the filename from the user.
+					</li>
+				</ul>
+				<p>Since reading from a file is dependent on your file system and printing output
+					is dependent on your terminal/console/command prompt, you as a programmer
+					shouldn't have to write these functions for yourself, so we'll include them in
+					the standard library, which we'll discuss more in the next few articles.
+				</p>
+				<p>Checking if two words match is common enough that the standard library also has
+					some functions to handle it for you, but since almost all computers use the same
+					character encodings, we can actually write the function ourselves.
+					Of course, the authors of the standard library are going to write
+					platform-specific code that takes advantage of how the computer works at a low
+					level for each platform, CPU architecture, etc., so we probably shouldn't use
+					our code for checking if strings match in code that we're going to publish.
+					We'll write the function ourselves just to get some practice working with
+					functions.
+				</p>
+				<p>In our case, we'll convert our code to check if two words are the same into a
+					function.
+				</p>
+				<p>We'll need the two strings as input and a name for the function.
+					Since we're checking if two strings match/differ, let's call it
+					<code>check_if_strings_differ</code>.
+					We could have also done <code>check_if_strings_match</code>, but <code>check_if_strings_differ</code>
+					is more consistent with how the standard library works, so we won't have to
+					change our code in the future once we replace our function with the standard
+					library.
+				</p>
+				<p>We'll also need to figure out what exactly we want the function to do so we can
+					figure out exactly what code we should write for the function.
+					In our case, we want to follow the Single Responsibility Principle, which states
+					that everything in your code should do one and only one thing.
+				</p>
+				<div class="aside" >
+					<h5>Single Responsibility Principle</h5>
+					<hr>
+					<p>To understand why the Single Responsibility Principle is so important, imagine
+						if you had to go to the store whenever you pick up your children because you
+						had to buy groceries and pick up your children once in the same day.
+						Such a situation never happens in real life because we treat these as separate
+						tasks, but novice programmers often combine tasks into one giant task
+						unnecessarily because they don't follow the Single Responsibility Principle.
+					</p>
+					<p>As an example, let's say you're writing a program that has a screen that allows
+						users to log in at some point in the program.
+						You'll need to display a screen that shows a box for a username and a box for
+						the password and you'll need to check if the password given matches the username
+						given.
+						You should probably not have a singular function that checks if the username and
+						password match and displays what the user sees because now if you need to change
+						either the code for logging in or the code for displaying what the user sees,
+						you will need to waste time figuring out which lines of code are relevant to
+						what you want to do.
+						Furthermore, changing the login checking shouldn't change what the user sees
+						after attempting to log in and changing what the user sees after logging in
+						shouldn't change the login process, but by putting them in the same function,
+						you're coupling them together.
+					</p>
+					<p>They should be two separate functions passing relevant information back and
+						forth between each other.
+						To check if a username and password match, all you need is the username, the
+						password, and some way of checking if they match.
+						You do not need to know where the username and password input boxes are on the
+						screen, the color of the background, etc.
+						Likewise, the function to display the screen doesn't need to know anything about
+						how to determine whether the username and password match, just whether or not
+						the username and password match.
+					</p>
+					<p>To be clear, there might be some security things you need to take into account
+						that would make you write a program differently, but you would still follow the
+						Single Responsibility Principle.
+					</p>
+				</div>
+				<p>For example, we'll want to check if two strings match and do different things
+					depending on whether they match or not.
+					We have four responsibilities:
+				</p>
+				<ol>
+					<li>figuring out whether the strings match,
+					</li>
+					<li>doing something if the strings match,
+					</li>
+					<li>doing something else if the strings don't match,
+					</li>
+					<li>and making sure that the other three responsibilities have everything they need.
+					</li>
+				</ol>
+				<p>The last responsibility is a little bit harder to explain, but it's the easiest
+					to code: it's the <code>if</code> statement that takes the output for responsibility 1 and
+					decides what to do based on the output.
+				</p>
+<div class="code-block"><pre><span></span><span class="c1">// Responsibility 4</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">check_if_strings_differ</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// Responsibility 3</span>
+    <span class="c1">// Do stuff you would want to do if the words differ</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// Responsibility 2</span>
+    <span class="c1">// Do stuff you would want to do if the words match</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>And <code>check_if_strings_differ</code> will take care of responsibility 1.
+					So now, we've decided that <code>check_if_strings_differ</code> will return <code>0</code> if the
+					strings don't match and <code>1</code> if the strings do match.
+					If we kept our version with the <code>if</code> statement at the end, we would be combining
+					responsibilities 1 and 4, which leads to code that's harder to maintain.
+				</p>
+				<p>Anyway, we'll keep our original code but output <code>str1[i] != str2[i]</code> instead of
+					using the <code>if</code> statement.
+				</p>
+<div class="code-block"><pre><span></span><span class="c1">// Responsibility 1</span>
+<span class="kt">int</span> <span class="nf">check_if_strings_differ</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">str1</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">str2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>We've written our first function!
+				</p>
+				<div class="aside" >
+					<h5><code>if (condition_is_true) { return true; } else { return false; }</code></h5>
+					<hr>
+					<p>Generally, when people first learn a programming language and they want to
+						return a true or false value from a function, they write code like
+					</p>
+<div class="code-block"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+					
+					<p>which is valid, but verbose because <b>what you want to return and the result of <code>a
+						== b</code> are identical</b>.
+						You could just as easily write the code as
+					</p>
+<div class="code-block"><pre><span></span><span class="k">return</span> <span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="p">;</span>
+</pre></div>
+					
+					<p>The title of this aside is how you would read the novice code with the <code>if</code>
+						statement, which should make it clear why you can just use the <code>return</code>
+						statement.
+					</p>
+				</div>
+				<h2 id="summary">Summary</h2>
+				<p>In this article, we set up the basic syntax for functions in <code>C</code>, we introduced
+					the <code>void</code> type and two ways to use it, and we introduced a way to call
+					functions.
+					We also wrote our own function to check if two strings differ.
+				</p>
+				<h2 id="whats-next">What's Next</h2>
+				<p>We're almost to the point where we can write our first program!
+					Furthermore, because of the way we've written these articles, once we can write
+					a complete program, we'll be able to write other programs quickly and easily.
+				</p>
+				<p>We just need to know how to
+				</p>
+				<ul>
+					<li>establish some form of an entry point,
+					</li>
+					<li>set up and use a compiler,
+					</li>
+					<li>print something out to the terminal,
+					</li>
+					<li>and read from a file.
+					</li>
+				</ul>
+				<p>Remember that we can write functions that can be executed at any time, but we
+					need some way to tell the program which function to run first, i.e. establish
+					some form of an entry point.
+					We also need some way of getting user input from the command line (later, we
+					will likely cover different graphical user interfaces).
+					In the next article, <a href="../main-function/">The main Function
+					in C</a>, we'll discuss the <code>main</code> function in <code>C</code> and how we can use it to take
+					in user input.
+				</p>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#functions-in-c" style="padding-left:12px;">Functions in C</a>
+				<a href="#what-is-a-function" style="padding-left:24px;">What is a Function?</a>
+				<a href="#function-syntax" style="padding-left:24px;">Function Syntax</a>
+				<a href="#return-statements-exit-the-function-immediately" style="padding-left:24px;"><code>return</code> Statements Exit the Function Immediately</a>
+				<a href="#pass-by-value" style="padding-left:24px;">Pass by Value</a>
+				<a href="#why-does-c-copy-input-into-variables" style="padding-left:36px;">Why Does <code>C</code> Copy Input into Variables?</a>
+				<a href="#modifying-data-passed-into-functions" style="padding-left:36px;">Modifying Data Passed Into Functions</a>
+				<a href="#functions-in-our-programs" style="padding-left:24px;">Functions in Our Programs</a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
+				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>

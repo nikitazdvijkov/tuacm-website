@@ -1,0 +1,174 @@
+article
+Title:		Comments in C
+Author:		Joseph Mellor
+Tagline:	Instead of having a programmer open another file to figure out why you did something, write your explanations directly in the code!
+Code Style:	trac+dark
+Import:		aside code-block
+Scripts:
+
+<i>This is the third article in the </i>Making Sense of C<i> series.</i>
+
+In the last article, we decided that we were going to come up with a way to add
+notes (more commonly known as <b>comments</b>, which we'll use throughout the
+rest of the series) to the file that our compiler was going to ignore.
+In practice, this will allow you to explain things about the code that won't be
+clear from reading the code itself.
+For example, you may need to explain the algorithm you're using, the structure
+of the code, why you did X instead of Y, etc., but the computer doesn't care.
+For this tutorial, I'm going to need to explain what certain lines of code are
+doing, and the best way to do so is to write a note near the line.
+
+# Topics Covered
+
+\{{ul}}
+
+<b>How Should We Tell the Compiler to Ignore Our Comments?</b>
+
+<b>When Should We Use Comments?</b>
+
+\{{\ul}}
+
+## How Should We Tell the Compiler to Ignore Our Comments?
+
+So now, you have a problem: you need to be able to write things that the
+compiler will ignore but other people can read, which we call <b>comments</b>.
+
+Since our computer will only be able to process the keys on the keyboard, our
+file can only have the standard printable ASCII characters (though we'll
+probably add support for Unicode later after we invent it).
+Our only option is to mark the comments with a sequence of ASCII characters.
+
+Since we haven't established what the language looks like, it could be anything.
+Python and bash (which both came after {C}), for instance, use {#} to comment
+out everything after it, which makes sense since many of the other symbols are
+already used up.
+HTML (which also came after {C}) uses {{{lt}}!--} and {--{{gt}}} to comment out
+everything between them, which makes sense since {{{lt}}} and {{{gt}}} are
+the main metacharacters in html.
+
+Dennis Ritchie (the guy who made {C}) decided to support both single line (like
+in python and bash) and multiline (like in html) comments in {C}.
+Single line comments use {//} and comment out the rest of the line while
+multiline comments use {/*} and {*/} and comment out anything between them.
+
+\{{code-block c no-line-numbers}}
+
+Not commented out;      // Commented out
+
+// Entire line is commented out.
+
+/* Also commented out
+but now it can go onto multiple lines.
+The compiler will never do anything with this line, but the person reading the
+source code
+will be able to see it.
+*/
+
+\{{\code-block}}
+
+In the rest of the tutorial, I will mostly use comments to explain how {C} works
+in the code.
+The comments that have {// do stuff} in them indicate that you could do
+anything valid in {C} that you want, so I can't be specific.
+
+## When Should We Use Comments?
+
+Comments should be used sparingly because your code should be clean enough to
+read on its own.
+<b>Good code is self-documenting</b> is thrown around so often that a version of
+it is in the <a
+href="https://en.wikipedia.org/wiki/Comment_(computer_programming)#Code_description">Wikipedia
+article for comments in programming</a>.
+
+The Wikipedia article lists several use cases for comments, but I'll explain two
+easy ways to avoid using unnecessary comments:
+
+\{{ul}}
+
+<b>Whenever you have a chance to name something, you should give it a
+descriptive name</b>.
+If it weren't inefficient to have an entire article consisting of the previous
+sentence repeated hundreds of times, I would write that article.
+As a compromise, I'm just going to repeat it every chance I get in every article
+in the future.
+You don't have to use a long name to name something, but you should have enough
+information in the name to understand how the thing you're naming fits into the
+program.
+For example:
+
+\{{ul}}
+
+You should not name a variable {a} if {a} represents the sum of the first five
+million digits of &pi;.
+You should call it something like {sum_digits_of_pi} or shorten it to {sum_digits} if it's clear that you are referring to the digits of pi.
+
+You should not name a function {calculate} unless it will just evaluate an
+arbitrary expression like a calculator would.
+If you have a function to calculate the sum of the first n digits of {pi}, you
+should call it something like {sum_first_n_digits}.
+Again, you can shorten it if it would still make sense in the context of the
+code.
+
+If you're dealing with an x-coordinate, feel free to call it {x}.
+
+If you're dealing with the index of an element in a list, feel free to use the
+standard {i}, {j}, and {k}.
+If you need to use more than {i}, {j} and {k}, you should probably stop and
+clean up your code.
+
+\{{\ul}}
+
+If a section of code gets so complicated that you feel a need to add comments to
+tell people what it does, you should break it up into smaller parts.
+
+\{{\ul}}
+
+Now, I want to make an explicit exception on what I've said about comments for
+your company policy.
+If your boss tells you to write a comment for every character on the screen, you
+write a comment for every character on the screen.
+Don't blame me if you get fired for not fulfilling a job requirement.
+
+You may try to convince your boss that you shouldn't need to comment everything,
+but do what he or she says until your boss changes his or her mind.
+
+\{{aside}}
+#### Do as I Say, Not as I Do in the Early Parts of the Tutorial
+<hr>
+
+Although I told you to use comments sparingly, I will use them frequently
+throughout this tutorial to help you better understand what's happening.
+If I were to write any of the code I'm going to write for actual use, I would
+have way fewer comments.
+
+\{{\aside}}
+
+# Summary
+
+So far, we've decided that we're going to put our code into a file and give our
+compiler the name of the file so it can turn it into machine code.
+We've also established that if we don't want the compiler to read parts of the
+file we give to it, we either use the character sequence {//} to comment out the
+rest of the line and the two character sequences {/*} and {*/} to comment out
+everything between them.
+
+Our file should now look like
+
+\{{code-block c no-line-numbers}}
+
+first statement;        // Here's why I used the phrase "first statement"
+                        // instead of "statement one"
+second statement;
+third statement;
+
+\{{\code-block}}
+
+# What's Next
+
+I decided to get comments out of the way early on because you don't need to know
+anything about {C} to understand comments and because I'll need to use them
+throughout the tutorial to explain what code does.
+
+In the next article, we're going to be <a
+href="../first-programs/index.html">Coming Up with Our First Program in
+C</a>, which will help us figure out what features we need to implement in {C}.

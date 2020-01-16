@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>The Basics of C</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="the-basics-of-c">The Basics of C</h1></div>
+				<div id="meta-description">If you decided to make a programming language, where would you start?</div>
+				<div id="date-and-tags">Posted 15 January 2020 at 1:26 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>This is the second article in the </i>Making Sense of C<i> series.
+					If you have already programmed before, you won't get too much out of this
+					particular article.
+					Just skip to the <a href="#summary">summary</a> or look for the blocks of
+					code.</i>
+				</p>
+				<p>Put yourself in the shoes of Ritchie et al while they were designing the <code>C</code>
+					language.
+				</p>
+				<ul>
+					<li>You're working on a computer with a few kilobytes of memory that can execute
+						machine code at a decent speed (for the time).
+					</li>
+					<li>You've decided that you want to make a compiler that can read code written in
+						your new programming language and produce a program written in machine code.
+					</li>
+					<li>You only want the compiler to run once per machine per code update and it should
+						run fast without using a bunch of memory.
+					</li>
+					<li>You also want to be able to send code you write in this new language to other
+						people.
+					</li>
+					<li>Sending data to people requires you mailing them physical memory storage like
+						tape or floppy disks, as there is no internet.
+					</li>
+				</ul>
+				<p>These goals will help guide us through the rest of the article.
+				</p>
+				<h2 id="topics-covered">Topics Covered</h2>
+				<ul>
+					<li><b>How Should You Give Code to the Compiler?</b>
+					</li>
+					<li><b>How Should the Code be Formatted?</b>
+					</li>
+					<li><b>How Should the Code Separate Statements?</b>
+					</li>
+				</ul>
+				<h3 id="how-should-you-give-code-to-the-compiler">How Should You Give Code to the Compiler?</h3>
+				<p>You want to organize your code so that your compiler can read it and you can
+					send it to someone else.
+					You can't just give the compiler lines of code on the command line, as
+					sending it to people would be difficult.
+					Since you have to save the code to a tape or a disc for anyone to use it, the
+					only reasonable option for organizing your code is to put it into a file.
+				</p>
+				<p>Now that you've decided that your code is going to be in a file, you need to
+					tell the compiler which file to use.
+					The most straightforward way to do so is to just provide the name of the file to
+					the compiler on the command line, like so:
+				</p>
+				<div class="terminal"><pre>
+$ compiler file
+</pre>
+				</div>
+				<p>Now, it's probably a good idea to distinguish files written in your language
+					from other files, so let's add an extension.
+					Since you're programming in <code>C</code>, let's just add the extension <code>.c</code> to our files.
+				</p>
+				<p>We should also give a short name to our compiler because typing is hard, so
+					let's call it <code>cc</code> for <code>C Compiler</code>.
+				</p>
+				<p>Now, using our compiler should look like:
+				</p>
+				<div class="terminal"><pre>
+$ cc file.c
+</pre>
+				</div>
+				<p>Now that we've figured out how to get the code to our compiler, we should figure
+					out the format of the file.
+				</p>
+				<h3 id="how-should-the-code-be-formatted">How Should the Code be Formatted?</h3>
+				<p>Since you can make the compiler read a file however it wants and you can
+					organize the data in the file however you want, you might as well stick to the
+					standard way we read things (in English, since we're designing <code>C</code> in America).
+				</p>
+				<p>Unless you use something that will modify the order of execution, the compiler
+					will read your code from top to bottom, left to right, just like in English.
+					Blank lines, spacing, and indentation generally don't matter to the compiler,
+					but they do matter to people who try to read your code, which includes you.
+				</p>
+				<p>Now that we've figured out how the compiler should read the program, how should
+					you separate out statements?
+				</p>
+				<h3 id="how-should-the-code-separate-statements">How Should the Code Separate Statements?</h3>
+				<p>In English, we use punctuation marks like commas, periods, question marks, etc.
+					to separate statements, so we'll try to use some sort of punctuation.
+					We could use a period, but periods are needed to represent decimal numbers (among other things).
+					We could use a comma, but we normally use a comma for lists, so that won't work.
+					We could use a newline, but we have a bit of a problem: <a
+					href="https://en.wikipedia.org/wiki/Newline#Representation">newlines vary from
+					operating system to operating system</a>.
+					The only punctuation mark we have left is a semicolon, so we'll use a semicolon.
+					There's also some history with <a
+					href="https://en.wikipedia.org/wiki/Semicolon#Programming">ALGOL 60</a> using
+					semicolons, as they used periods to end files, semicolons to end statements
+					within a file, and commas for lists.
+				</p>
+				<p>When you want to make a statement, you should add a semicolon to the end of the
+					statement so the compiler knows that you want to move to the next statement.
+					You should generally write <b>one statement per line</b>, even though you could
+					write the entire program on one line.
+					If you forget the semicolon, the compiler will likely throw an error and you'll
+					have to find where the semicolon should be.
+				</p>
+				<p>In the code below, each statement will be read in the order that you would
+					normally read them in English.
+				</p>
+<div class="code-block"><pre><span></span><span class="n">first</span> <span class="n">statement</span><span class="p">;</span>
+<span class="n">second</span> <span class="n">statement</span><span class="p">;</span>
+    <span class="n">third</span> <span class="n">statement</span><span class="p">;</span><span class="n">fourth</span> <span class="n">statement</span><span class="p">;</span>       <span class="n">fifth</span> <span class="n">statement</span><span class="p">;</span>
+</pre></div>
+				
+				<h2 id="summary">Summary</h2>
+				<p>We now have a general idea that we want to write the code in a file ending in
+					<code>.c</code> that should look like
+				</p>
+<div class="code-block"><pre><span></span><span class="n">first</span> <span class="n">statement</span><span class="p">;</span>
+<span class="n">second</span> <span class="n">statement</span><span class="p">;</span>
+<span class="n">third</span> <span class="n">statement</span><span class="p">;</span>
+</pre></div>
+				
+				<p>and we're going to convert it into machine code by running the compiler and
+					giving it the name of the file we want to compile.
+				</p>
+				<p>As we move on in the tutorial, we're going to expand upon what we have here
+					while maintaining the general ideas laid out in this program.
+				</p>
+				<h2 id="whats-next">What's Next</h2>
+				<p>Throughout this tutorial, I'm going to need to annotate and explain some of the
+					code within the code itself.
+					So next, we're going to solve another problem: How can we add notes to our code
+					that the compiler will ignore?
+				</p>
+				<p>Find out in the next article: <a href="../comments/index.html">Comments in
+					C</a>.
+				</p>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#the-basics-of-c" style="padding-left:12px;">The Basics of C</a>
+				<a href="#topics-covered" style="padding-left:24px;">Topics Covered</a>
+				<a href="#how-should-you-give-code-to-the-compiler" style="padding-left:36px;">How Should You Give Code to the Compiler?</a>
+				<a href="#how-should-the-code-be-formatted" style="padding-left:36px;">How Should the Code be Formatted?</a>
+				<a href="#how-should-the-code-separate-statements" style="padding-left:36px;">How Should the Code Separate Statements?</a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
+				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>
