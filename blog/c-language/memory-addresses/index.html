@@ -13,9 +13,15 @@
 		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
 		<style>
 			@media screen and (max-width: 420px) {
-				#string-array-image {
+				.string-array-image {
 					width: 100%;
 				}
+			}
+			.big-image {
+				width: 100%;
+			}
+			.red {
+			    color: red;
 			}
 		</style>
 		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
@@ -123,14 +129,27 @@
 				<h3 id="variables-in-machine-code">Variables in Machine Code</h3>
 				<p>Remember that a variable stores a value for later use, and the only way we can
 					store data for later use is by using memory.
-					In essence, when your computer sees something like <code>int a = 84;</code>, it will first
-					tell the operating system to give it four bytes (<code>int</code>s need four bytes for
+					<b>When your computer sees something like <code>int a = 84;</code>, it will first tell the
+					operating system to give it four bytes (<code>int</code>s need four bytes for
 					representation) somewhere in memory, then it will store <code>84</code> in a register, then
 					it will store the value in the register into the four bytes allocated for <code>a</code>.
 					When the computer later sees a statement like <code>a += 17;</code>, it will load the value
 					stored in <code>a</code> from memory into a register, add <code>17</code> to the value in the
-					register, then write the value in the register back to wherever <code>a</code> was stored.
+					register, then write the value in the register back to wherever <code>a</code> was
+					stored</b>.
 				</p>
+				<div class="aside" >
+					<h5>Optimizations</h5>
+					<hr>
+					<p>When I describe what your compiler does at this part of the series, I'm assuming
+						that it's not optimizing everything and converting exactly what you have written
+						in your code into machine code.
+						For example, your compiler will not allocate memory for a variable if it doesn't
+						need to.
+						Instead, it could store it in a register, which increases program speed since it
+						doesn't need to copy anything from memory into its registers.
+					</p>
+				</div>
 				<p>In assembly (the human version of machine code), this process would look
 					something like this:
 				</p>
@@ -151,12 +170,18 @@
 14
 15
 16
-17</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="c1">; Assembly generally uses &#39;;&#39; for comments like how C uses //</span>
+17
+18
+19
+20</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="c1">; Assembly generally uses &#39;;&#39; for comments like how C uses //</span>
 <span class="c1">; This part will first load 84 into register 8 (It doesn&#39;t matter</span>
 <span class="c1">; which register I pick, so I just picked one), then store the value</span>
 <span class="c1">; in register 8 into the memory for a, which is 28($29).</span>
 <span class="c1">; I know 28($29) is some weird syntax, but it will make more sense</span>
 <span class="c1">; once we finish the article.</span>
+<span class="c1">; It means that you should store the value in register 8 into the memory</span>
+<span class="c1">; location with an address of 28 + whatever memory address is stored in</span>
+<span class="c1">; register 29.</span>
 <span class="nf">li</span>      <span class="kc">$</span><span class="mi">8</span><span class="p">,</span>     <span class="mi">84</span>
 <span class="nf">sw</span>      <span class="kc">$</span><span class="mi">8</span><span class="p">,</span>     <span class="mi">28</span><span class="p">(</span><span class="kc">$</span><span class="mi">29</span><span class="p">)</span>
 
@@ -185,6 +210,8 @@
 						want to mention that the technical definition of an lvalue is a value with a
 						memory address and an rvalue is a value without a memory address.
 						For example, variables have memory addresses, but a constant like <code>5</code> does not.
+						This alternative definition should make sense because I can't store a value
+						unless I have memory in which to store it.
 					</p>
 				</div>
 				<h2 id="how-can-memory-addresses-help-us-with-strings">How Can Memory Addresses Help Us With Strings?</h2>
@@ -204,7 +231,7 @@
 				<p>Here's what that would look like:
 				</p>
 				<div class="text-center" style="margin-bottom: 1em; background: #FFFFFF; border-radius: 8px;">
-					<img src="string-as-a-linked-list-in-c.png" style="width: 100%; max-width: 420px;" alt="An image of a linked list of characters in C.">
+					<img class="big-image" style="max-width: 420px" src="string-as-a-linked-list-in-c.png" alt="An image of a linked list of characters in C.">
 				</div>
 				<p>Each arrow represents a memory address that points to the next character in the
 					string that we have to store with the current character.
@@ -229,7 +256,7 @@
 					As with the linked list, here's what that would look like:
 				</p>
 				<div class="text-center" style="margin-bottom: 1em; background: #FFFFFF; border-radius: 8px;">
-					<img id="string-array-image" src="string-as-an-array-in-c.png" alt="An image of an array of characters in C">
+					<img class="string-array-image" src="string-as-an-array-in-c.png" alt="An image of an array of characters in C">
 				</div>
 				<p>Every single character is right next to the other character and to access the
 					string requires only the memory address of the first one, since we just have to
@@ -288,6 +315,8 @@
 					The syntax for a pointer variable is <code>[type] * [variable_name];</code>.
 					Like normal variables, we can assign them on the same line using the syntax
 					<code>[type] * [variable_name] = [memory_address];</code>.
+					A pointer to a <code>[type]</code> has the type <code>[type] *</code>, which is a distinct type from
+					<code>[type]</code> and you generally can't mix them.
 				</p>
 <div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">48</span><span class="p">;</span>             <span class="c1">// a is a normal variable</span>
 <span class="kt">int</span> <span class="o">*</span> <span class="n">b</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">;</span>     <span class="c1">// b is a pointer to a, meaning it contains the</span>
@@ -300,8 +329,8 @@
 				<p>Remember that <code>*(&amp;a)</code> is exactly equivalent to <code>a</code>.
 					Since <code>b</code> is <code>&amp;a</code>, <code>*b</code>&rArr;<code>*(&amp;a)</code>&rArr;<code>a</code>, which means <code>*b =
 					17</code>&rArr;<code>a = 17</code>.
-					In other words, <b>dereferencing a pointer allows us to set the memory it's
-					pointing at</b>.
+					In other words, <b>dereferencing a pointer allows us to set or read the memory
+					it's pointing at</b>.
 				</p>
 				<h3 id="getting-a-block-of-memory">Getting A Block of Memory</h3>
 				<p>In <code>C</code>, blocks of memory are known as <b>arrays</b> (or <b>buffers</b> in some
@@ -361,6 +390,73 @@
 <span class="kt">char</span> <span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="n">string</span><span class="p">;</span>
 </pre></div>
 				
+				<p>When the compiler sees the preceding code, it will:
+				</p>
+				<ol>
+					<li>Allocate enough memory (4 bytes for 32 bit programs or 8 bytes for 64 bit
+						programs) to store a memory address.
+						The value in the memory allocated in this step will be what the compiler uses
+						when you use the variable <code>string</code>.
+						Say the memory allocated in this step has address <code>267506624</code> (which will appear
+						random to you).
+						Currently, the data at <code>267506624</code> and the next three bytes contain random data.
+					</li>
+					<li>Allocate 30 bytes of memory to store the thirty <code>char</code>s (1 byte per <code>char</code> * 30
+						<code>char</code>s).
+						The values in the memory allocated in this step will be the text itself.
+						Say the first byte of memory allocated in this step has address <code>1132985515</code>,
+						which I'll rewrite in hexadecimal as <code>0x4387fcab</code> as every two characters after
+						the <code>0x</code> (the <code>0x</code> just means a hexadecimal number for people reading it) will
+						correspond to a byte.
+					</li>
+					<li>Store the memory address of the first byte of the text in the memory allocated
+						for <code>string</code>.
+						The memory at <code>26750662<b>4</b></code> now contains the byte <code>0x43</code>, the memory at
+						<code>26750662<b>5</b></code> now contains the byte <code>0x87</code>, the memory at
+						<code>26750662<b>6</b></code> now contains the byte <code>0xfc</code>, and the memory at
+						<code>26750662<b>7</b></code> now contains the byte <code>0xab</code>.
+						<div class="aside" >
+							<p>Some computers will do it backwards where <code>26750662<b>7</b></code> will store the byte
+								<code>0x43</code> and <code>26750662<b>4</b></code> will store <code>0xab</code>.
+								<b>It will not change your code unless you're sending data to another
+								computer</b>, in which case you'll be able to use a library that converts it to
+								the proper format.
+							</p>
+						</div>
+					</li>
+					<li>Allocate enough memory to store another memory address.
+						The value stored in the memory allocated in this step will be what the compiler
+						uses when you use the variable <code>str</code>.
+						Say the memory allocated in this step has address <code>2289981636</code>.
+						Currently, the data at <code>2289981636</code> and the next three bytes contain random
+						data.
+					</li>
+					<li>Copy the value stored in the memory allocated for <code>string</code> into the memory
+						allocated for <code>str</code>.
+						Since <code>str</code> has the value <code>2289981636</code>, the memory at <code>228998163<b>6</b></code> now
+						contains the byte <code>0x43</code>, the memory at <code>228998163<b>7</b></code> now contains the
+						byte <code>0x87</code>, the memory at <code>228998163<b>8</b></code> now contains the byte <code>0xfc</code>, and
+						the memory at <code>228998163<b>9</b></code> now contains the byte <code>0xab</code>.
+					</li>
+				</ol>
+				<p>Here is what the memory will look like after these two processes have completed:
+				</p>
+				<div class="text-center" style="margin-bottom: 1em; background: #FFFFFF; border-radius: 8px;">
+					<img class="big-image" src="memory-addresses.png" alt="An image of memory after the two lines
+					of code have been executed.">
+				</div>
+				<div class="aside" >
+					<h4>The Address is Not the Data</h4>
+					<hr>
+					<p><b>I want to emphasize that the thirty bytes of data allocated is not the same
+						as the address of its first element.
+						Your address written down on a piece of paper is not the same as your house and
+						it's in a different place, but it will allow me to get to your house.</b>
+					</p>
+					<p>The inability to distinguish between the two of them is one of the biggest
+						obstacles in <code>C</code>.
+					</p>
+				</div>
 				<p>The previous line of code is entirely valid because <code>string</code> is a <code>char *</code> that
 					points to the first character in the array of thirty characters.
 					In fact, if you wanted to right now, you could set the first character of the

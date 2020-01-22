@@ -9,9 +9,17 @@ Scripts:
 \{{style}}
 
 @media screen and (max-width: 420px) {
-	#string-array-image {
+	.string-array-image {
 		width: 100%;
 	}
+}
+
+.big-image {
+	width: 100%;
+}
+
+.red {
+    color: red;
 }
 
 \{{\style}}
@@ -100,13 +108,28 @@ variable?
 
 Remember that a variable stores a value for later use, and the only way we can
 store data for later use is by using memory.
-In essence, when your computer sees something like {int a = 84;}, it will first
-tell the operating system to give it four bytes ({int}s need four bytes for
+<b>When your computer sees something like {int a = 84;}, it will first tell the
+operating system to give it four bytes ({int}s need four bytes for
 representation) somewhere in memory, then it will store {84} in a register, then
 it will store the value in the register into the four bytes allocated for {a}.
 When the computer later sees a statement like {a += 17;}, it will load the value
 stored in {a} from memory into a register, add {17} to the value in the
-register, then write the value in the register back to wherever {a} was stored.
+register, then write the value in the register back to wherever {a} was
+stored</b>.
+
+\{{aside}}
+#### Optimizations
+<hr>
+
+When I describe what your compiler does at this part of the series, I'm assuming
+that it's not optimizing everything and converting exactly what you have written
+in your code into machine code.
+For example, your compiler will not allocate memory for a variable if it doesn't
+need to.
+Instead, it could store it in a register, which increases program speed since it
+doesn't need to copy anything from memory into its registers.
+
+\{{\aside}}
 
 In assembly (the human version of machine code), this process would look
 something like this:
@@ -119,6 +142,9 @@ something like this:
 ; in register 8 into the memory for a, which is 28($29).
 ; I know 28($29) is some weird syntax, but it will make more sense
 ; once we finish the article.
+; It means that you should store the value in register 8 into the memory
+; location with an address of 28 + whatever memory address is stored in
+; register 29.
 li      $8,     84
 sw      $8,     28($29)
 
@@ -148,6 +174,8 @@ which is an accurate definition, but since I'm bringing up memory addresses, I
 want to mention that the technical definition of an lvalue is a value with a
 memory address and an rvalue is a value without a memory address.
 For example, variables have memory addresses, but a constant like {5} does not.
+This alternative definition should make sense because I can't store a value
+unless I have memory in which to store it.
 
 \{{\aside}}
 
@@ -171,7 +199,7 @@ Here's what that would look like:
 
 \{{raw-html}}
 <div class="text-center" style="margin-bottom: 1em; background: #FFFFFF; border-radius: 8px;">
-	<img src="string-as-a-linked-list-in-c.png" style="width: 100%; max-width: 420px;" alt="An image of a linked list of characters in C.">
+	<img class="big-image" style="max-width: 420px" src="string-as-a-linked-list-in-c.png" alt="An image of a linked list of characters in C.">
 </div>
 \{{\raw-html}}
 
@@ -200,7 +228,7 @@ As with the linked list, here's what that would look like:
 
 \{{raw-html}}
 <div class="text-center" style="margin-bottom: 1em; background: #FFFFFF; border-radius: 8px;">
-	<img id="string-array-image" src="string-as-an-array-in-c.png" alt="An image of an array of characters in C">
+	<img class="string-array-image" src="string-as-an-array-in-c.png" alt="An image of an array of characters in C">
 </div>
 \{{\raw-html}}
 
@@ -270,6 +298,8 @@ Since we're already using {*} for dereferencing, let's use it in our types.
 The syntax for a pointer variable is {[type] * [variable_name];}.
 Like normal variables, we can assign them on the same line using the syntax
 {[type] * [variable_name] = [memory_address];}.
+A pointer to a {[type]} has the type {[type] *}, which is a distinct type from
+{[type]} and you generally can't mix them.
 
 \{{code-block c no-line-numbers}}
 
@@ -285,8 +315,8 @@ float * d = {{amp}}c;   // d is a pointer to c, meaning it contains the
 Remember that {*(&amp;a)} is exactly equivalent to {a}.
 Since {b} is {&amp;a}, {*b}{{imp}}{*(&amp;a)}{{imp}}{a}, which means {*b =
 17}{{imp}}{a = 17}.
-In other words, <b>dereferencing a pointer allows us to set the memory it's
-pointing at</b>.
+In other words, <b>dereferencing a pointer allows us to set or read the memory
+it's pointing at</b>.
 
 ## Getting A Block of Memory
 
@@ -358,6 +388,81 @@ char string[30];
 char * str = string;
 
 \{{\code-block}}
+
+When the compiler sees the preceding code, it will:
+
+\{{ol}}
+
+Allocate enough memory (4 bytes for 32 bit programs or 8 bytes for 64 bit
+programs) to store a memory address.
+The value in the memory allocated in this step will be what the compiler uses
+when you use the variable {string}.
+Say the memory allocated in this step has address {267506624} (which will appear
+random to you).
+Currently, the data at {267506624} and the next three bytes contain random data.
+
+Allocate 30 bytes of memory to store the thirty {char}s (1 byte per {char} * 30
+{char}s).
+The values in the memory allocated in this step will be the text itself.
+Say the first byte of memory allocated in this step has address {1132985515},
+which I'll rewrite in hexadecimal as {0x4387fcab} as every two characters after
+the {0x} (the {0x} just means a hexadecimal number for people reading it) will
+correspond to a byte.
+
+Store the memory address of the first byte of the text in the memory allocated
+for {string}.
+The memory at {26750662<b>4</b>} now contains the byte {0x43}, the memory at
+{26750662<b>5</b>} now contains the byte {0x87}, the memory at
+{26750662<b>6</b>} now contains the byte {0xfc}, and the memory at
+{26750662<b>7</b>} now contains the byte {0xab}.
+\{{aside}}
+
+Some computers will do it backwards where {26750662<b>7</b>} will store the byte
+{0x43} and {26750662<b>4</b>} will store {0xab}.
+<b>It will not change your code unless you're sending data to another
+computer</b>, in which case you'll be able to use a library that converts it to
+the proper format.
+
+\{{\aside}}
+
+Allocate enough memory to store another memory address.
+The value stored in the memory allocated in this step will be what the compiler
+uses when you use the variable {str}.
+Say the memory allocated in this step has address {2289981636}.
+Currently, the data at {2289981636} and the next three bytes contain random
+data.
+
+Copy the value stored in the memory allocated for {string} into the memory
+allocated for {str}.
+Since {str} has the value {2289981636}, the memory at {228998163<b>6</b>} now
+contains the byte {0x43}, the memory at {228998163<b>7</b>} now contains the
+byte {0x87}, the memory at {228998163<b>8</b>} now contains the byte {0xfc}, and
+the memory at {228998163<b>9</b>} now contains the byte {0xab}.
+
+\{{\ol}}
+
+Here is what the memory will look like after these two processes have completed:
+
+\{{raw-html}}
+<div class="text-center" style="margin-bottom: 1em; background: #FFFFFF; border-radius: 8px;">
+	<img class="big-image" src="memory-addresses.png" alt="An image of memory after the two lines
+	of code have been executed.">
+</div>
+\{{\raw-html}}
+
+\{{aside}}
+### The Address is Not the Data
+<hr>
+
+<b>I want to emphasize that the thirty bytes of data allocated is not the same
+as the address of its first element.
+Your address written down on a piece of paper is not the same as your house and
+it's in a different place, but it will allow me to get to your house.</b>
+
+The inability to distinguish between the two of them is one of the biggest
+obstacles in {C}.
+
+\{{\aside}}
 
 The previous line of code is entirely valid because {string} is a {char *} that
 points to the first character in the array of thirty characters.

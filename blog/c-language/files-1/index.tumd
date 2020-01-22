@@ -73,7 +73,7 @@ that a {FILE} is a {struct} with a bunch of data relevant to file operations.
 
 ## First Attempt at {fopen}'s Syntax
 
-Remeber that we need to create a {FILE} object from the name of the file (which
+Remember that we need to create a {FILE} object from the name of the file (which
 will be an array of characters or a {char *}) and how we want to interact with
 it (which we could represent in multiple ways, so let's leave it unknown for
 now), which means the declaration of {fopen} will look something like:
