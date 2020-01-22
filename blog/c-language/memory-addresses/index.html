@@ -20,8 +20,10 @@
 			.big-image {
 				width: 100%;
 			}
-			.red {
-			    color: red;
+			code .highlight {
+				color: #BF00FF;
+				font-weight: bold;
+				text-decoration: underline;
 			}
 		</style>
 		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
@@ -319,10 +321,10 @@
 					<code>[type]</code> and you generally can't mix them.
 				</p>
 <div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">48</span><span class="p">;</span>             <span class="c1">// a is a normal variable</span>
-<span class="kt">int</span> <span class="o">*</span> <span class="n">b</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">;</span>     <span class="c1">// b is a pointer to a, meaning it contains the</span>
+<span class="kt">int</span> <span class="o">*</span> <span class="n">b</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">;</span>           <span class="c1">// b is a pointer to a, meaning it contains the</span>
                         <span class="c1">// memory address of a</span>
 <span class="kt">float</span> <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">48</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">;</span> <span class="c1">// c is a normal variable</span>
-<span class="kt">float</span> <span class="o">*</span> <span class="n">d</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">;</span>   <span class="c1">// d is a pointer to c, meaning it contains the</span>
+<span class="kt">float</span> <span class="o">*</span> <span class="n">d</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">;</span>         <span class="c1">// d is a pointer to c, meaning it contains the</span>
                         <span class="c1">// memory address of c</span>
 </pre></div>
 				
@@ -411,13 +413,15 @@
 					</li>
 					<li>Store the memory address of the first byte of the text in the memory allocated
 						for <code>string</code>.
-						The memory at <code>26750662<b>4</b></code> now contains the byte <code>0x43</code>, the memory at
-						<code>26750662<b>5</b></code> now contains the byte <code>0x87</code>, the memory at
-						<code>26750662<b>6</b></code> now contains the byte <code>0xfc</code>, and the memory at
-						<code>26750662<b>7</b></code> now contains the byte <code>0xab</code>.
+						The memory at <code>26750662<span class="highlight">4</span></code> now contains the byte
+						<code>0x43</code>, the memory at <code>26750662<span class="highlight">5</span></code> now contains
+						the byte <code>0x87</code>, the memory at <code>26750662<span class="highlight">6</span></code> now
+						contains the byte <code>0xfc</code>, and the memory at <code>26750662<span
+						class="highlight">7</span></code> now contains the byte <code>0xab</code>.
 						<div class="aside" >
-							<p>Some computers will do it backwards where <code>26750662<b>7</b></code> will store the byte
-								<code>0x43</code> and <code>26750662<b>4</b></code> will store <code>0xab</code>.
+							<p>Some computers will do it backwards where <code>26750662<span
+								class="highlight">7</span></code> will store the byte <code>0x43</code> and <code>26750662<span
+								class="highlight">4</span></code> will store <code>0xab</code>.
 								<b>It will not change your code unless you're sending data to another
 								computer</b>, in which case you'll be able to use a library that converts it to
 								the proper format.
@@ -433,10 +437,12 @@
 					</li>
 					<li>Copy the value stored in the memory allocated for <code>string</code> into the memory
 						allocated for <code>str</code>.
-						Since <code>str</code> has the value <code>2289981636</code>, the memory at <code>228998163<b>6</b></code> now
-						contains the byte <code>0x43</code>, the memory at <code>228998163<b>7</b></code> now contains the
-						byte <code>0x87</code>, the memory at <code>228998163<b>8</b></code> now contains the byte <code>0xfc</code>, and
-						the memory at <code>228998163<b>9</b></code> now contains the byte <code>0xab</code>.
+						Since <code>str</code> has the value <code>2289981636</code>, the memory at <code>228998163<span
+						class="highlight">6</span></code> now contains the byte <code>0x43</code>, the memory at
+						<code>228998163<span class="highlight">7</span></code> now contains the byte <code>0x87</code>, the
+						memory at <code>228998163<span class="highlight">8</span></code> now contains the byte
+						<code>0xfc</code>, and the memory at <code>228998163<span class="highlight">9</span></code> now
+						contains the byte <code>0xab</code>.
 					</li>
 				</ol>
 				<p>Here is what the memory will look like after these two processes have completed:

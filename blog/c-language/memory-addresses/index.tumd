@@ -18,8 +18,10 @@ Scripts:
 	width: 100%;
 }
 
-.red {
-    color: red;
+code .highlight {
+	color: #BF00FF;
+	font-weight: bold;
+	text-decoration: underline;
 }
 
 \{{\style}}
@@ -304,10 +306,10 @@ A pointer to a {[type]} has the type {[type] *}, which is a distinct type from
 \{{code-block c no-line-numbers}}
 
 int a = 48;             // a is a normal variable
-int * b = {{amp}}a;     // b is a pointer to a, meaning it contains the
+int * b = {{amp}}a;           // b is a pointer to a, meaning it contains the
                         // memory address of a
 float c = a * 48 / 2.0; // c is a normal variable
-float * d = {{amp}}c;   // d is a pointer to c, meaning it contains the
+float * d = {{amp}}c;         // d is a pointer to c, meaning it contains the
                         // memory address of c
 
 \{{\code-block}}
@@ -411,14 +413,16 @@ correspond to a byte.
 
 Store the memory address of the first byte of the text in the memory allocated
 for {string}.
-The memory at {26750662<b>4</b>} now contains the byte {0x43}, the memory at
-{26750662<b>5</b>} now contains the byte {0x87}, the memory at
-{26750662<b>6</b>} now contains the byte {0xfc}, and the memory at
-{26750662<b>7</b>} now contains the byte {0xab}.
+The memory at {26750662<span class="highlight">4</span>} now contains the byte
+{0x43}, the memory at {26750662<span class="highlight">5</span>} now contains
+the byte {0x87}, the memory at {26750662<span class="highlight">6</span>} now
+contains the byte {0xfc}, and the memory at {26750662<span
+class="highlight">7</span>} now contains the byte {0xab}.
 \{{aside}}
 
-Some computers will do it backwards where {26750662<b>7</b>} will store the byte
-{0x43} and {26750662<b>4</b>} will store {0xab}.
+Some computers will do it backwards where {26750662<span
+class="highlight">7</span>} will store the byte {0x43} and {26750662<span
+class="highlight">4</span>} will store {0xab}.
 <b>It will not change your code unless you're sending data to another
 computer</b>, in which case you'll be able to use a library that converts it to
 the proper format.
@@ -434,10 +438,12 @@ data.
 
 Copy the value stored in the memory allocated for {string} into the memory
 allocated for {str}.
-Since {str} has the value {2289981636}, the memory at {228998163<b>6</b>} now
-contains the byte {0x43}, the memory at {228998163<b>7</b>} now contains the
-byte {0x87}, the memory at {228998163<b>8</b>} now contains the byte {0xfc}, and
-the memory at {228998163<b>9</b>} now contains the byte {0xab}.
+Since {str} has the value {2289981636}, the memory at {228998163<span
+class="highlight">6</span>} now contains the byte {0x43}, the memory at
+{228998163<span class="highlight">7</span>} now contains the byte {0x87}, the
+memory at {228998163<span class="highlight">8</span>} now contains the byte
+{0xfc}, and the memory at {228998163<span class="highlight">9</span>} now
+contains the byte {0xab}.
 
 \{{\ol}}
 
