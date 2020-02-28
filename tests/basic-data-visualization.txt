@@ -1,0 +1,474 @@
+commit e21797171988c2743ab5d11332c54e71daf34349
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Mon Feb 17 11:41:55 2020 -0600
+
+    Added Contribution Guide
+
+commit 82fecca2c46067b0600aab9d288f2fef1e231d1b
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Sat Feb 22 17:34:18 2020 -0600
+
+    Created Empty Executable
+
+    1.  Created the file word_counter.py
+    2.  Added the first line, which tells the terminal to run the file with the
+        python3 program.
+    3.  Used the command "chmod +x word_counter.py" in the terminal to allow users
+        to execute it with "./word_counter.py".
+
+commit baa7c3604bcbe227d1f8ea965bc1c6c9229a82aa
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Sat Feb 22 17:41:14 2020 -0600
+
+    Created Our First Function
+
+    1.  Used the syntax
+
+            def function_name(parameter0, parameter1, ...):
+
+        to create a function. Instead of classic languages like C or Java (which
+        use curly braces), python uses indentation to indicate things like scope.
+        In general, whenever you would want to use curly braces in a classic
+        language, you should indent in python. You can see that the two other lines
+        we added were indented.
+    2.  Created an empty dictionary (a.k.a. a hash table, an unordered map, or an
+        associative array), which will allow us to associate words with counts
+        efficiently. Note that we did not give it a type as python does not use
+        explicitly declared types. Instead, the type is determined automatically by
+        what you store in it.
+    3.  We currently return it as is without modifying it, but the function will
+        return a dictionary containing each word and its count.
+
+commit ccbd847ea6edc4a19f36db97e330f8e98be37ab0
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Sat Feb 22 18:14:12 2020 -0600
+
+    Opened a File for Reading
+
+    1.  The "pass" statement in python does nothing. Instead, it normally
+        functions as a placeholder for things you want to do in the future. For
+        example, after we've opened the file, we want to do things with it, but
+        we currently haven't gotten that far. If we left the line blank, we
+        would get the error
+
+              File "./word_counter.py", line 7
+                return word_counts
+                     ^
+            IndentationError: expected an indented block
+
+        since anything after a line ending in a colon must be indented and have
+        at least one statement.
+    2.  "as" lets you call or rename whatever is on the left of it to whatever
+        is on the right of it in this case, it will allow us to rename the
+        output of 'open(filename, "r")' to "reader".
+    3.  "with" statements in python take the form
+
+            with _________ as _________:
+
+        where the first blank is something you want to set up and the second
+        blank is what you want to call it. When you open a file, programs need
+        to allocate new memory to store the contents and some metadata about the
+        file. Furthermore, like most, if not all, other programming languages,
+        python cannot figure out when you're done with the file unless you tell
+        it explicitly. As you can imagine, there is a function in python that
+        can close a file. Runtime errors and exceptions can stop your program
+        from running before it gets to close the file, so you would have to
+        write some code to catch all exceptions and write a ton of boilerplate
+        whenever you wanted to open a file. To circumvent this, the people
+        behind python added the with statement, which will handle catching the
+        exceptions and cleaning everything up for you automatically. If you want
+        to read more, check out
+        https://effbot.org/zone/python-with-statement.htm for more information.
+    4.  The "open" function in python takes in two parameters, the file that
+        you want to interact with and how you want to interact with it. We
+        just want to read the file, so we give it the string "r". If we wanted
+        to write to the file, we would give it "w". If we wanted to append to
+        the end of the file, we would give it "a".
+    5.  Strings in python are denoted with either surrounding single quotes,
+        double quotes, three single quotes, or three double quotes, and you
+        choose the one that fits the string.
+
+commit 276aee2efd37972c5595b4149f960455e752662a
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Sat Feb 22 18:22:19 2020 -0600
+
+    Added for Loop to go Through the File Line by Line
+
+    1.  for loops in python are for each loops by default, so the line we've written
+        can be read almost literally as "for each line in the file:". Like the "def"
+        and "with" statements, it ends with a colon. Instead of an iteration
+        variable that you have to increment, we use the elements in the list
+        themselves. For example, if you wanted to iterate through a list of numbers
+        stored in an array, you would use
+
+            for number in array:
+
+        For file objects (i.e. reader), the lines in the files themselves are the
+        elements in the "list". Technically, "list" is the wrong term since a list
+        in python is equivalent to an ArrayList in Java or an std::vector in C++,
+        but it fits the abstract data type of a list.
+    2.  Moved "pass" statement into for loop since we don't have anything to do yet.
+
+commit 4367d03ec4cb63cc57dd96db581e9edc23c88010
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Sat Feb 22 18:26:01 2020 -0600
+
+    Used the split Function
+
+    1.  The split function takes a string and breaks it apart into a list of strings.
+        If it receives an argument, it will use whatever the argument was to break
+        it apart. Otherwise, it will use whitespace (spaces, tabs, newlines, and
+        carriage returns) to break words apart. We're using it right now because we
+        want to break the line into individual words so that we can count them.
+
+commit 8f99ac045047d425a129a4531b454b6967c1bb80
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Sat Feb 22 18:30:21 2020 -0600
+
+    Getting Individual Words
+
+    1.  We took the line and split it up into a list of individual words. Now that
+        we have a list of individual words, we can loop through those too to do
+        stuff with the individual words.
+    2.  Added the pass statement because we're not doing anything yet.
+
+commit a2d99cb68fc1f1ce264bc50c47d695d7acbec24a
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Sat Feb 22 18:35:46 2020 -0600
+
+    Making an Indicator
+
+    1.  At this stage, I just want to show off how python dictionaries work. Just
+        like hash tables/unordered maps/associative arrays in other languages, you
+        can access the data associated with a key by using "dictionary[key]". In our
+        case, we're just adding the word we're currently looking at (which is stored
+        in word) into the dictionary and setting it to the intial value of 1. If you
+        just wanted a list of all the words that show up in a text, you could stop
+        with what we have now, though you probably should have used a set, which we
+        won't cover in this talk.
+
+commit 16337813b96b3bcc3b0c6ba2cfd956564d46b69c
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Sat Feb 22 18:45:11 2020 -0600
+
+    Making a Counter
+
+    1.  As you would imagine, python has if statements just like most other
+        languages and they follow the same style as def, with, and for statements
+        where they end in a colon and are followed by indentation. The general
+        syntax is
+
+            if condition:
+                # do stuff if condition is True
+            elif other condition:
+                # do stuff if condition is False and other condition is True
+            else:
+                # do stuff if all previous conditions were false
+
+    2.  The condition _______ in _______ will return true if the first blank is an
+        element of the second blank. In our case, we're checking if we've already
+        seen the word because we can't add one to something unless it exists.
+    3.  Python has arithmetic operators just like every other language, and this is
+        an arithmetic/assignment operator that can be expanded out as
+
+            word_counts[word] = word_counts[word] + 1
+
+        which makes sense because if we see the word again, we want to add one to
+        the count.
+
+commit dc4d4cc3248a218375fde0c2a5b8ac5e8624836f
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Tue Feb 25 18:34:11 2020 -0600
+
+    Added a New Function
+
+    1.  Added the function main, which calls the function count_words and stores its
+        output in a local variable so we can do stuff with it. I'm trying to
+        separate out responsibilities so our code can be modular.
+    2.  Unlike C, C++, or Java, we do not need a main function in our program, but
+        I'm carrying this over from how I think about programs. This main function
+        will call other functions that do the heavy lifting. Each of the other
+        functions will only have to worry about doing their job, while main can
+        control how they interact with each other.
+
+commit ed7ea38449e9caa1dc3bd9f7f8d606980db3e758
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Thu Feb 27 09:55:13 2020 -0600
+
+    Sorted the Word Counts by Decreasing Frequency
+
+    1.  A tuple is a fixed length collection of ordered data that cannot be changed.
+        You can access elements in the same exact way as you access elements of a
+        list, but you can't modify them.
+
+            a = (1, 2)
+            b = a[0] + a[1]    # Valid
+            a[0] = b           # Invalid
+
+    2.  word_counts is a dictionary, as we've already established, but
+        word_counts.items() will return a list containing all the key-value pairs in
+        word_counts as a list of tuples.
+    3.  sorted is a function that takes in a list and returns a sorted list using
+        the function provided to its argument to key. Since sorted has a default
+        behavior (namely by looking at the first element of every tuple in the
+        list), it allows you to not supply any argument to key. In our case, we want
+        the words sorted in decreasing frequency, meaning the most common word is at
+        the top of the list.
+    4.  A lambda is a simple one line function without a name (a.k.a. an anonymous
+        function), and you can declare one using the syntax
+
+            lambda arg0, arg1: stuff to do
+            lambda x: -x[1]    # Get the second element of the argument and flip its
+                               # sign.
+            # Check if a point (x, y, z) is inside a sphere of radius r centered at
+            # the origin
+            lambda x, y, z, r: x * x + y * y + z * z < r * r
+
+        We're using one here because we don't want to declare the equivalent
+        function
+
+            def sort_by_second_decreasing(element):
+                return -element[1]
+
+        Lastly, we're sorting by -x[1] instead of x[1] since sorted only sorts in
+        ascending order, but by flipping the sign we can effectively make larger
+        numbers smaller and smaller numbers larger.
+    5.  sorted_word_counts is a list containing all the words and their counts in
+        word_counts sorted by decreasing frequency, meaning sorted_word_counts[0]
+        returns the most frequent word and its count as a tuple,
+        sorted_word_counts[1] returns the next most frequent word and its count as a
+        tuple.
+
+commit 8c2999abaf5d4bcdffac934d743c8789397ac671
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Thu Feb 27 10:52:55 2020 -0600
+
+    Added a New Function to Save Data to a File
+
+    1.  We're creating a new function to separate the responsibility of managing the
+        file format from the main flow of the program and the name of the file.
+    2.  Instead of reading from the file with open(filename, "r"), we're writing to
+        a file with open(filename, "w"), which will overwrite filename if it exists
+        or create a new empty file if it doesn't.
+    3.  To write to a file, we can use the file variable (writer) method write,
+        whose argument is the text that you want to write to the file. In our case,
+        we want to write the word (word[0]), a space (" "), the count
+        (str(word[1])), and a newline ("\n").
+    4.  We have to convert word[1] to a string using the str() function since it
+        doesn't make sense in python to add a number to a string.
+    5.  The newline is a special character that tells the file to move down a line
+        when printing.
+
+commit 90c4887489012decec4a98913839f33f0c31029e
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Thu Feb 27 10:53:28 2020 -0600
+
+    Made the Program Actually Do Things
+
+    1.  Without the added lines, the python interpreter would read the script as
+        exprected. We have only told it to define things, however, not actually use
+        them. We currently don't have an entry point into the program, so we needed
+        to add one.
+    2.  Python has a lot of meta variables containing information about the program,
+        function information, etc. and usually they're denoted with double
+        underscores on both sides. In our case, __name__ refers to the module. As
+        you might expect, python lets you write your code in multiple files and
+        connects them using import statements, which will execute the imported file.
+        When python imports a file, it will set the variable __name__ to the name of
+        the module. For example, if we had a module named foo and we imported it,
+        when executing foo, the python interpreter would set the __name__ variable
+        in the foo module to "foo". If we instead run the foo module like we've been
+        running our word_count.py, the python interpreter would set the __name__
+        variable in the foo module to "__main__", which allows you to write a
+        complete program and use functions defined in that module without running
+        its program.
+    3.  In short, __name__ == "module_name" if it was imported and "__name__" ==
+        "__main__" if it wasn't.
+    4.  We also call main(). Running the program will give us an error because it's
+        trying to read a file that doesn't exist, so it throws an exception and
+        exits the program.
+
+commit 7269d48948eeb2596eb0552ee9ed8ef1c54c4127
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Thu Feb 27 11:24:19 2020 -0600
+
+    Added sample-text.txt (Moby Dick)
+
+commit 05e1752acd7070d4bb67f5ccea5a7d0ed116175e
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Thu Feb 27 11:26:22 2020 -0600
+
+    Accidentally Used Wrong Parameter in save_data_to_file
+
+commit 673d9221a8210031852d98a87b45ed978f07ce27
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Thu Feb 27 12:02:52 2020 -0600
+
+    Sanitized Data for Better Analysis
+
+    1.  If you looked at the output file (specifically near the bottom of the file),
+        you would see that we would count two words that are clearly the same word
+        ("THEE and THEE and thee and thee.) as separate words because 'E' and 'e'
+        are different characters and we're breaking words apart using spaces,
+        meaning "thee and thee would be considered different because they're
+        different strings.
+    2.  To fix this, we're going to use re.sub(), which uses a pattern known as a
+        regular expression to determine what text to substitute. First, we need to
+        import re (line 2) so we can use the re module. Then, we need to create a
+        new variable to store the cleaned line (cleaned_lin). Then, we call the
+        re.sub function, which has the syntax
+
+            re.sub(what_to_replace, what_to_replace_it_with, what_to_read_from)
+
+        In our case, we're using
+
+            re.sub(r"[^a-zA-Z0-9\s]", "", line)
+
+        which means we're going to read from line and replace anything that matches
+        the pattern r"[^a-zA-Z0-9\s]" with the empty string "", effectively removing
+        it. You can read the regular expression as
+
+            r"                # r" means we don't have to escape the \ character
+                [^            # Everything but the following characters
+                    a-z       # All characters from unicode a to unicode z
+                              # (lowercase letters)
+                    A-Z       # All characters from unicode A to unicode Z
+                              # (uppercase letters)
+                    0-9       # All characters from unicode 0 to unicode 9 (digits)
+                    \s        # Any whitespace character (spaces, tabs, newlines,
+                              # etc.)
+                ]             # Close square bracket
+            "                 # Close string
+
+        In other words, replace every character that isn't a letter, digit, or
+        whitespace with "".
+    3.  re.sub returns a string without modifying line, and we want the and The to
+        be considered the same word, so let's make them lowercase using lower(),
+        which has the syntax
+
+            example_sting.lower()
+
+    4.  Then we split the clean_line just like we used to split line.
+
+commit bd9ff9754dbacdb3171b7c793a73a8cf9e7d912f
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Thu Feb 27 13:12:40 2020 -0600
+
+    Using scipy to Generate a Fit for Our Data
+
+    1.  We're going to use an external library known as scipy to generate a fit for
+        our data. To install it from the terminal (Linux, Mac, or Windows Subsystem
+        for Linux), we can use the command
+
+            pip3 install scipy
+
+        Once it's installed, we can use it in our code in a similar way to how we
+        used the re module.
+
+            from scipy.optimize import curve_fit as fit
+
+        Doing so will let us take the function curve_fit in the scipy.optimize
+        submodule and rename it to fit.
+    2.  We also created a new function called pareto_fit, which will try to fit the
+        Pareto distribution (the continuous version of the Zipf distribution) to our
+        data. Since we haven't normalized our data (divided by the total number of
+        words), we can't use the normal Pareto distribution. Instead, I have
+        modified it to better fit the data.
+    3.  Only the ** operator in the pareto function is new, and it's just "to the
+        power of".
+
+            2 ** 10 is 1024
+            25 ** 0.5 is 5.
+
+    4.  For fit, we need a function, x values, and y values. We already have our
+        function (pareto) and we already have our y values (counts), so we just need
+        our x values, which is the rank of the word in the frequency table.
+        range(a, b) generates a range that goes from a to b - 1, and we need to
+        convert it to a list since fit expects a list.
+    5.  fit returns a tuple containing two values, an array for what it considers to
+        be the best parameters and the covariance matrix. In our case, we only care
+        about the diagonal elements of the covariance matrix since they're the
+        variances of each variable, which is a measure of how spread out the data
+        is (and can also be considered a measure of error). We can get the results
+        using
+
+            popt, pcov = fit(function, x_vals, y_vals)
+
+        Lastly, we can set p0 equal to what we would guess the parameters would be
+        to help it out. As long as we're in the ballpark, we'll be fine. Natural
+        languages have an alpha close to one and x_m should be near the count of the
+        most common word raised to the (1 / alpha) power, so guessing the count of
+        the most common word should get us in the ballpark.
+    6.  perc_std_dev is another lambda that returns the standard deviation as a
+        percentage of the actual value converted to a string.
+    7.  Next, we're going to print out the parameters with their standard deviation
+        as a percentage of the parameter. The "\t" is a tab character, the u in
+        front of the quotes means read the string in Unicode, and \u00B1 is the plus
+        minus symbol.
+    8.  We return popt, which contains the parameters so we can graph the function.
+    9.  Lastly, we call the function in main(). Since we just need to get the counts
+        of the words, we use list comprehension for the statement
+
+            counts = [k[1] for k in sorted_word_counts]
+
+        List comprehension uses the syntax
+
+            [some_func(k) for k in list]
+
+        and returns a list containing some_func applied to all the elements of k.
+        For example, if we wanted to add 7 to each element of a list named example,
+        we could do
+
+            [k + 7 for k in example]
+
+        In our case, we just wanted the second element of each element in
+        sorted_word_counts, which we can access by using k[1].
+
+commit b4032c6e3537866363aa39441ee07029bb5350ab
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Thu Feb 27 13:28:50 2020 -0600
+
+    Using pyplot to Plot Our Results
+
+    1.  We can use matplotlib.pyplot to graph our results and write them to a png
+        file. First, we have to install it using
+
+            pip3 install matplotlib
+
+        Once that finishes running, we can add the line
+
+            import matplotlib.pyplot as plt
+
+        to use it.
+    2.  We then create the function gen_plot, which will take the parameters of the
+        Pareto distribution generated by the fit function and the word counts and
+        plot the word counts along with the predicted word counts.
+    3.  plt.plot needs a list of x_vals and y_vals to plot our data, so we need to
+        generate a list of x_vals, which we can do in the same way we did when
+        calculating the fit.
+
+            word_ranks = list(range(1, len(counts) + 1))
+    4.  plt.plot has the syntax
+
+            plt.plot(x_vals, y_vals)
+
+        and will store it on its plot. If we call plot multiple times, it will plot
+        multiple things.
+    5.  Then, we can use list comprehension to generate the y_vals for the Pareto
+        fit, using
+
+            [pareto(k, popt[0], popt[1] for k in word_ranks]
+    6.  Lastly, we just need to save it to a file, which we can do with savefig,
+        which takes the filename as a parameter.
+
+commit 16072c9b4291d642567286c5268951e4fdbe73ef
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Thu Feb 27 13:34:02 2020 -0600
+
+    Plotted Data on a Log-Log Scale
+
+commit 98356c013438e82f40f9c8975c22b60cabc84d9c
+Author: Joseph Mellor <the.landfill.coding@gmail.com>
+Date:   Thu Feb 27 13:34:42 2020 -0600
+
+    Added Labels and Legend to Plot
