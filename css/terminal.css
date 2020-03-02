@@ -8,6 +8,16 @@
 	margin-bottom: 1em;
 }
 
+.mac-terminal {
+	padding: 10px 10px 10px 10px;
+	background-color: #FFFFFF;
+	border-width: 3px;
+	border-color: #B0B0B0;
+	border-style: solid;
+	border-radius: 8px;
+	margin-bottom: 1em;
+}
+
 .terminal-oneline {
 	white-space: pre;
 }
@@ -20,6 +30,18 @@
 	margin-bottom: 0;
 }
 
+.mac-terminal pre {
+	color: #000000;
+	white-space: pre-wrap;
+	font-family: "Menlo", "Lucidia Console",monospace,"Courier New";
+	word-wrap: break-word;
+	margin-bottom: 0;
+}
+
 .aside .terminal {
+	box-shadow: 0px 0px 0 2px #F0F0F0;
+}
+
+.aside .mac-terminal {
 	box-shadow: 0px 0px 0 2px #F0F0F0;
 }
