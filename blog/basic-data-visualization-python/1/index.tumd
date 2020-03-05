@@ -1,0 +1,519 @@
+article
+Title:		Basic Data Visualization in Python, Pt. 1
+Author:		Joseph Mellor
+Tagline:	Let's set up a basic python program.
+Code Style:	trac+dark
+Import:		aside code-block terminal
+Scripts:
+
+\{{style}}
+
+.terminal pre {
+	color: #AAAAAA;
+}
+
+.normal .terminal pre {
+	color: #EC1111;
+}
+
+.terminal .file {
+	color: #295FCC;
+	font-weight: bold;
+}
+
+.terminal .exe {
+	color: #4CE64C;
+	font-weight: bold;
+}
+
+\{{\style}}
+
+<i>We're going to break this tutorial into three articles: one to set up a
+python program, one to cover the features of python we'll use, and one to
+actually write the program. This article will focus on our general goal for the
+program and setting you up for python starting from scratch.</i>
+
+# An Unusual Pattern
+
+Zipf's Law predicts that the n<sup>th</sup> most common item in a data set shows
+up 1/n times as often the most common item. For example, the second most common
+item should show up half as often as the most common item and the twentieth most
+common item should show up one twentieth as often as the most common element.
+This empirical law was originally derived from word counts, but it seems to
+apply to many other things like cities and their populations (the second most
+populous city has half as many people as the most populous people, etc.). In
+this tutorial, we're going to try to verify this law for a large body of text
+(specifically, <i>Moby Dick</i> because it's public domain and uses mostly ASCII
+characters).
+
+We're going to focus mainly on the python in this tutorial, so we won't go
+into Zipf's Law any more than we have to, but if you want to know more, you can
+check out the <a href="https://en.wikipedia.org/wiki/Zipf%27s_law">Wikipedia
+article on Zipf's Law</a> or the more entertaining <a
+href="https://www.youtube.com/watch?v=fCn8zs912OE">Vsauce video "The Zipf
+Mystery"</a>. We're also going to be using a modified, continuous version of the
+Zipf Distribution in this article, known as the <a
+href="https://en.wikipedia.org/wiki/Pareto_distribution">Pareto Distribution</a>
+(a.k.a. the 80-20 Rule).
+
+# Getting Started with Python
+
+You will need:
+
+\{{ol}}
+
+A text editor.
+
+A python interpreter which you can easily get using the Windows Subsytem for
+Linux or any POSIX (Linux, MacOS, etc.) terminal.
+
+\{{\ol}}
+
+You can also get started with python (though I wouldn't recommend it as a
+permanent solution) using <a href="repl.it">repl.it</a>. You don't need to
+create an account, but not doing so means you might not be able to access your
+programs later. Doing so means you would neither need a text editor nor a python
+interpreter, but you will need both in the future, so you might as well get them
+set up now.
+
+# How to Read the Terminals
+
+Since this tutorial will focus on using the terminal for many reasons (most
+notably installing what you need to write programs in almost any language with
+any libraries just requires that you know the name of what you need and that
+using multiple programming languages together in one environment is trivial
+using the terminal), we are going to type stuff in the terminal.
+
+I will display the full terminal after you've typed in everything, including
+output. You should only type things that come after the dollar sign and on the
+same line. For example, if you were on Mac and you should type the phrase {mkdir
+-p example} and hit the Return key, then type the phrase {cd example} and hit
+the Return key, the terminal would look like
+
+\{{terminal mac}}
+
+{{user}}:="user"
+{{computer-name}}:="comp"
+{{dir-color}}:="#295FCC"
+{{u-and-c-color}}:="#4CE64C"
+
+{{mac-prompt}} mkdir -p example
+{{mac-prompt}} cd example
+{{mac-dir}}="example"
+{{mac-prompt}}
+
+\{{\terminal}}
+
+If it turns out to be a lot of output, then I'll say something like {A bunch of
+text output discussing ...} and I'll indent it. For example, if you're on Linux
+or the Windows Subsystem for Linux, I'll do something like
+
+\{{terminal}}
+{{bunch}}:="{{nl}}    A bunch of text discussing{{rest-of-line}} information{{end-of-line}}"
+
+{{dir}}="~"
+{{prompt}} sudo apt update
+[sudo] password for {{user}}:
+{{bunch}} update
+
+{{prompt}}
+
+\{{\terminal}}
+
+## Text Editors
+
+First, <b>you are going to need a <a
+href="https://en.wikipedia.org/wiki/Text_editor">text editor</a></b>. You will
+not be able to write python code without a text editor or an IDE that includes a
+text editor. Put simply, a text editor will take the characters you type and put
+them directly into a file. It will not add anything else but the characters. If
+you type the letters "abcd" into a file in a text editor and save it, the file
+will contain just those four characters (maybe some metadata about the file
+itself, too). <b>Microsoft Word (Windows), Google Docs (Browsers), Libre Office
+(Linux), Pages (Mac), etc. are not text editors</b>, as they save additional
+data about the text, such as the font, color, which text is bold, which text is
+italicized, whether you have formulas, etc. I will list several text editors
+along with a brief description. If you do not see a program on this list, it is
+probably not a text editor.
+
+\{{ul}}
+
+GUI (Graphical) Text Editors
+\{{ul}}
+
+<b>Visual Studio Code:</b> A small lightweight text editor that is closest to
+what you would expect from other products like Microsoft Word or Google Drive.
+It has the standard <b>File</b>, <b>Edit</b>, <b>View</b>, etc. at the top of
+the screen. Saving and creating files is just like in most other programs,
+though it also has other information, like directory structures, displayed on
+the screen.
+
+<b>Sublime Text:</b> The same as Visual Studio Code with how you interact with
+it and what it can do for you. Eventually you might find that Visual Studio Code
+or Sublime Text has plugins or features that you would choose over the other,
+but not at this level.
+
+<b>Notepad:</b> No syntax highlighting or any useful features at all, but it's
+already installed on most of your computers.
+
+\{{\ul}}
+
+IDEs (Includes text editors and other stuff)
+\{{ul}}
+
+<b>Eclipse:</b> Slower than both Visual Studio Code and Sublime Text, but most
+students already have it to program in Java. Either way, it will work.
+
+<b>Visual Studio Community Edition:</b> Slowest one to start up and it's
+supposed to be way more powerful than most other text editors, but I've never
+needed any of the more powerful features, so it just slowed down my computer.
+
+\{{\ul}}
+
+Terminal Text Editors
+\{{ul}}
+
+<b>vim:</b> A powerful, if slightly unintuitive text editor. It also has the
+nice benefit of being directly integrated into the terminal, so you can switch
+back and forth pretty quickly between writing code and running code.
+
+<b>emacs:</b> Practically an operating system with a bad text editor (though it
+can be made better by using evil mode, which gives it vim keybindings).
+
+<b>nano:</b> Slightly better version of Notepad in the terminal since it has
+syntax highlighting.
+
+\{{\ul}}
+
+\{{\ul}}
+
+If you are totally new to programming, I would recommend using a GUI text editor
+so you don't have to learn two things at once. If you have Eclipse, go ahead and
+use it. If you don't like Eclipse, use Visual Studio Code.
+
+### Installing Visual Studio Code
+
+On MacOS, type
+
+\{{terminal mac}}
+
+{{mac-dir}}="~"
+{{mac-prompt}} brew update
+{{bunch}} update
+
+{{mac-prompt}} brew cask install visual-studio-code
+{{bunch}} installation
+
+\{{\terminal}}
+
+On Linux, follow these instructions on <a
+href="https://code.visualstudio.com/docs/setup/linux">installing Visual Studio
+Code on Linux</a>.
+
+On Windows, follow these instructions on <a
+href="https://code.visualstudio.com/docs/setup/windows">installing Visual Studio
+Code on Windows</a>.
+
+## Python Interpreter
+
+{{wsl}}:="<a href="https://www.dataquest.io/blog/tutorial-install-linux-on-windows-wsl/">Windows Subsystem for Linux</a>"
+
+If you're on Windows, get the {{wsl}}, which only requires you to download the
+Ubuntu app from the Windows store, turn on a setting (shown in the linked
+article), restart your computer, and enter a username and a password into the
+Ubuntu app and you're all set. <b>Remember this username and password, as you
+will need it later</b>. After this point, the rest of the tutorial will focus on
+using a Linux, MacOS, or Windows Subsystem for Linux terminal. While the
+{python} code is independent of how you run it, there are certain operations
+that you need to do for every setup you have to make sure it runs properly, and
+I currently want to focus on the terminal.
+
+\{{aside}}
+### Independent Python Interpreter
+<hr>
+
+While there is an independent python interpreter for Windows, I would strongly
+recommend that you use the {{wsl}} because as soon as you want to do anything
+outside of {python}, you're stuck, especially if you want the programs to
+interact in any way.
+
+\{{\aside}}
+
+If you're on Ubuntu, Debian, Linux Mint (or any derived distro), or the Windows
+Subsystem for Linux, type the following into the terminal.
+
+\{{terminal}}
+
+{{prompt}} sudo apt update
+{{bunch}} update
+
+{{prompt}} sudo apt install -y python python3 python-pip python3-pip
+{{bunch}} installation
+
+\{{\terminal}}
+
+The {-y} just answers "yes" to the prompt that comes up. If you're on another
+Linux distro, replace {sudo apt install} with whatever package manager you use
+for your distro.
+
+If you're on MacOS, use the command
+
+\{{terminal mac}}
+
+{{mac-prompt}} brew install python python3 python-pip python3-pip
+
+\{{\terminal}}
+
+<b>Once you've sucessfully gotten to this point, you will not have to do any
+part of this process again as long as you don't uninstall anything.</b> You will
+have to do everything after this point for each project, but it's not nearly as
+much.
+
+## Making the Directory
+
+If you're on Windows, open up Ubuntu and type
+
+\{{terminal}}
+
+{{dir}}="~"
+{{win-path}}="win-home/dev/py_data_vis"
+
+{{prompt}} ln -s /mnt/c/Users/[user] win-home
+{{prompt}} mkdir -p {{win-path}}
+{{prompt}} cd {{win-path}}
+{{dir}}="~/{{win-path}}"
+{{prompt}}
+
+\{{\terminal}}
+
+where {[user]} is your username on your Windows computer.
+
+If you're on Linux, open up the terminal and type
+
+\{{terminal}}
+
+{{dir}}="~"
+{{prompt}} mkdir -p dev/py_data_vis
+{{prompt}} cd dev/py_data_vis
+{{dir}}="~/dev/py_data_vis"
+{{prompt}}
+
+\{{\terminal}}
+
+If you're on Mac, open up the terminal and type
+
+\{{terminal mac}}
+
+{{mac-dir}}="~"
+{{mac-prompt}} mkdir -p dev/py_data_vis
+{{mac-prompt}} cd dev/py_data_vis
+{{mac-dir}}="py_data_vis"
+{{mac-prompt}}
+
+\{{\terminal}}
+
+From this point onwards, you should remain in this directory and there should be
+no difference between operating systems. We have created an actual directory
+(a.k.a. a folder) on your system that you can access normally, through the file
+explorer. For Windows, this folder will be {C:\Users\[user]\dev\py_data_vis}.
+
+## Creating Our New Python Script
+
+In your text editor of choice, create a new file called {word_counter.py} and
+put it in the {py_data_vis} directory. This directory is {~/dev/py_data_vis} on
+Linux and Mac and it is {C:\Users\[user]\dev\py_data_vis} on Windows. If you're
+using a graphical text editor, click <b>File</b> in the top left corner and
+click <b>New File</b> (there may be shortcuts like Ctrl+N, but this method works
+for almost all graphical text editors). If it prompts you to give the file a
+name and a place to save it, set the name to {word_counter.py} and save it in
+the {py_data_vis} directory. If you're on Linux or Mac and you start out in a
+directory called {/} with folders like {bin}, {boot}, {dev}, {etc}, and {home},
+move to {/home/[user]/dev/py_data_vis}, where {[user]} is your username.
+
+Visual Studio Code will prompt you for the name and where to save the file only
+after you save the file. I would suggest saving immediately and following the
+instructions in the previous paragraph.
+
+If you're using a terminal text editor, you can type the command {[editor]
+word_counter.py}, where {[editor]} is {vim}, {emacs}, or {nano}.
+
+On Linux, your terminal should look like
+
+\{{terminal}}
+
+{{dir}}="~"
+{{prompt}} sudo apt update
+{{bunch}} update
+
+{{prompt}} sudo apt install -y python python3 python-pip python3-pip
+{{bunch}} installation
+
+{{prompt}} mkdir -p dev/py_data_vis
+{{prompt}} cd dev/py_data_vis
+{{dir}}="~/dev/py_data_vis"
+{{prompt}}
+
+\{{\terminal}}
+
+On Mac, your terminal should look like
+
+\{{terminal mac}}
+
+{{mac-dir}}="~"
+{{mac-prompt}} brew update
+{{bunch}} update
+
+{{mac-prompt}} brew cask install visual-studio-code
+{{bunch}} installation
+
+{{mac-prompt}} brew install python python3 python-pip python3-pip
+{{bunch}} installation
+
+{{mac-prompt}} mkdir -p dev/py_data_vis
+{{mac-prompt}} cd dev/py_data_vis
+{{mac-dir}}="py_data_vis"
+{{mac-prompt}}
+
+\{{\terminal}}
+
+On Windows, your terminal should look like
+
+\{{terminal}}
+
+{{dir}}="~"
+{{prompt}} sudo apt update
+{{bunch}} installation
+
+{{prompt}} sudo apt install -y python python3 python-pip python3-pip
+{{bunch}} installation
+
+{{prompt}} ln -s /mnt/c/Users/[user] win-home
+{{prompt}} mkdir -p {{win-path}}
+{{prompt}} cd {{win-path}}
+{{dir}}="~/{{win-path}}"
+{{prompt}}
+
+\{{\terminal}}
+
+Once you have the file opened and your current directory in the terminal is the
+{py_data_vis} directory, there will be no differences in this tutorial between
+operating systems and I will refer exclusively to either the terminal or the
+text editor.
+
+# Making an Executable Python Script
+
+We'll have to tell the computer two things to make {word_counter.py} execute
+properly:
+
+\{{ol}}
+
+We have permission to execute the file.
+
+Use the {python3} interpreter to execute the file.
+
+\{{\ol}}
+
+### Changing Permissions
+
+In your terminal, type
+
+\{{terminal}}
+
+{{dir}}="~/dev/py_data_vis"
+{{prompt}} ls -l word_counter.py
+-rw-r--r-- 1 {{user}} group     23 Mar  3 14:52 word_counter.py
+{{prompt}} sudo chmod +x word_counter.py
+[sudo] password for {{user}}:
+{{prompt}} ls -l word_counter.py
+-rwxr-xr-x 1 {{user}} group     23 Mar  3 14:52 <span class="exe">word_counter.py</span>
+
+\{{\terminal}}
+
+{ls -l word_counter.py} will list the <b>read/{{zs}}write/{{zs}}execute</b>
+permissions {for word_counter.py} along with the date of the last change to the
+file. The leftmost {-} means that the file is just a regular file (as opposed to
+a directory or other things). After that, every three characters refers to
+different classes of users: current user, current group, and everyone else. {r}
+refers to <b>read</b> permissions, {w} refers to <b>write</b> permissions, and
+{x} refers to <b>execute</b> permissions. You can therefore read the output of
+{ls -l word_counter.py} as
+
+<blockquote>
+A normal file can be read and modified by {user}, read by users in the group
+{group}, and read by everyone else. It has {23} bytes. It was last modified on
+{March 3} at {14:52} (i.e. 2:52 PM) and the name of the file is
+{word_counter.py}.
+</blockquote>
+
+You'll see that there's a bit of a problem since we want to execute the program
+but no one has permission to execute the program. We can change this with the
+{chmod} command. Since we'll have to run it as an admin (a.k.a. root on Linux
+and MacOS), we'll put {sudo} in front of the command, which stands for "{s}uper
+{u}ser {do}". We add the option {+x} to {add} e{x}ecute permissions for everyone
+(you can do it for individual users but it won't matter here). Lastly, we want
+to change the permissions for the file {word_counter.py}, so we'll need to add
+that into the command, meaning we have to type {sudo chmod +x word_counter.py}.
+
+You'll see the password prompt pop up for your password. On the Windows
+Susbsytem for Linux, type in the password that you first typed into the
+terminal. On Linux or Mac, type in the same password you use to log into your
+computer. Do not be worried if nothing shows up when you type &mdash; it's a
+security measure to prevent people from seeing any information about your
+password. Hit Enter/Return to confirm your password.
+
+After running {ls -l word_counter.py} again, you'll see that the script now has
+a bunch of {x}'s, meaning anyone can execute it.
+
+### Telling the Computer to Use {python3} to Execute {word_{{zs}}counter{{zs}}.py}
+
+In {word_counter.py} in your text editor, type
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+
+\{{\code-block}}
+
+This line of code is a <b>comment</b> in {python} since comments start with a
+{#} in {python}, but scripts executed from the terminal will read the first line
+and look for a {#!} (known as a <b>shebang</b>), which tells the terminal to use
+the {python3} interpreter when executing this file.
+
+{{hw}}="{Hello, World!}"
+
+### Obligatory {{hw}}
+
+Since your first program that does anything must print {{hw}} by tradition,
+we're going to modify {word_counter.py} to print out {{hw}}, but then we're
+going to remove it immediately afterwards since we don't need it. In {python},
+we just need to type {print("Hello, World")} in {word_counter.py}, so our file
+should now look like
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+
+hlprint("Hello, World!")
+
+\{{\code-block}}
+
+Save this file and run it from the terminal using {./word_counter.py}, which
+should look like
+
+\{{terminal}}
+
+{{prompt}} ./word_counter.py
+Hello, World!
+{{prompt}}
+
+\{{\terminal}}
+
+Then, remove the {{hw}} line and save the file again.
+
+# Summary
+
+Now that we have an executable {python} script, we could start writing some
+{python} code. First, I would like to devote an article to <a
+href="../2/">covering the features of {python} we'll use</a> in this program
+since these features are independent of this specific program and you can use
+them in any {python} program.

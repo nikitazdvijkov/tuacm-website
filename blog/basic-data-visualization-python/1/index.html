@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
+		<style>
+			.terminal pre {
+				color: #AAAAAA;
+			}
+			.normal .terminal pre {
+				color: #EC1111;
+			}
+			.terminal .file {
+				color: #295FCC;
+				font-weight: bold;
+			}
+			.terminal .exe {
+				color: #4CE64C;
+				font-weight: bold;
+			}
+		</style>
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>Basic Data Visualization in Python, Pt. 1</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="basic-data-visualization-in-python-pt-1">Basic Data Visualization in Python, Pt. 1</h1></div>
+				<div id="meta-description">Let's set up a basic python program.</div>
+				<div id="date-and-tags">Posted 29 February 2020 at 12:36 AM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>We're going to break this tutorial into three articles: one to set up a
+					python program, one to cover the features of python we'll use, and one to
+					actually write the program. This article will focus on our general goal for the
+					program and setting you up for python starting from scratch.</i>
+				</p>
+				<h2 id="an-unusual-pattern">An Unusual Pattern</h2>
+				<p>Zipf's Law predicts that the n<sup>th</sup> most common item in a data set shows
+					up 1/n times as often the most common item. For example, the second most common
+					item should show up half as often as the most common item and the twentieth most
+					common item should show up one twentieth as often as the most common element.
+					This pattern was originally derived from word counts, but it seems to apply to
+					many other things like cities and their populations (the second most populous
+					city has half as many people as the most populous people, etc.). In this
+					tutorial, we're going to try to verify this pattern for a large body of text
+					(specifically, <i>Moby Dick</i> because it's public domain and uses mostly ASCII
+					characters).
+				</p>
+				<p>We're going to focus mainly on the python in this tutorial, so we won't go
+					into Zipf's Law any more than we have to, but if you want to know more, you can
+					check out the <a href="https://en.wikipedia.org/wiki/Zipf%27s_law">Wikipedia
+					article on Zipf's Law</a> or the more entertaining <a
+					href="https://www.youtube.com/watch?v=fCn8zs912OE">Vsauce video "The Zipf
+					Mystery"</a>. We're also going to be using a modified, continuous version of the
+					Zipf Distribution in this article, known as the <a
+					href="https://en.wikipedia.org/wiki/Pareto_distribution">Pareto Distribution</a>
+					(a.k.a. the 80-20 Rule).
+				</p>
+				<h2 id="getting-started-with-python">Getting Started with Python</h2>
+				<p>You will need:
+				</p>
+				<ol>
+					<li>A text editor.
+					</li>
+					<li>A python interpreter which you can easily get using the Windows Subsytem for
+						Linux or any POSIX (Linux, MacOS, etc.) terminal.
+					</li>
+				</ol>
+				<p>You can also get started with python (though I wouldn't recommend it as a
+					permanent solution) using <a href="repl.it">repl.it</a>. You don't need to
+					create an account, but not doing so means you might not be able to access your
+					programs later. Doing so means you would neither need a text editor nor a python
+					interpreter, but you will need both in the future, so you might as well get them
+					set up now.
+				</p>
+				<h2 id="how-to-read-the-terminals">How to Read the Terminals</h2>
+				<p>Since this tutorial will focus on using the terminal for many reasons (most
+					notably installing what you need to write programs in almost any language with
+					any libraries just requires that you know the name of what you need and that
+					using multiple programming languages together in one environment is trivial
+					using the terminal), we are going to type stuff in the terminal.
+				</p>
+				<p>I will display the full terminal after you've typed in everything, including
+					output. You should only type things that come after the dollar sign and on the
+					same line. For example, if you were on Mac and you should type the phrase <code>mkdir
+					-p example</code> and hit the Return key, then type the phrase <code>cd example</code> and hit
+					the Return key, the terminal would look like
+				</p>
+				<div class="mac-terminal"><pre>
+<span class="terminal-oneline">comp:~ user$ mkdir -p example</span>
+<span class="terminal-oneline">comp:~ user$ cd example</span>
+<span class="terminal-oneline">comp:example user$</span>
+</pre>
+				</div>
+				<p>If it turns out to be a lot of output, then I'll say something like <code>A bunch of
+					text output discussing ...</code> and I'll indent it. For example, if you're on Linux
+					or the Windows Subsystem for Linux, I'll do something like
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ sudo apt update</span>
+[sudo] password for user:
+
+    A bunch of text discussing update information
+
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$</span>
+</pre>
+				</div>
+				<h3 id="text-editors">Text Editors</h3>
+				<p>First, <b>you are going to need a <a
+					href="https://en.wikipedia.org/wiki/Text_editor">text editor</a></b>. You will
+					not be able to write python code without a text editor or an IDE that includes a
+					text editor. Put simply, a text editor will take the characters you type and put
+					them directly into a file. It will not add anything else but the characters. If
+					you type the letters "abcd" into a file in a text editor and save it, the file
+					will contain just those four characters (maybe some metadata about the file
+					itself, too). <b>Microsoft Word (Windows), Google Docs (Browsers), Libre Office
+					(Linux), Pages (Mac), etc. are not text editors</b>, as they save additional
+					data about the text, such as the font, color, which text is bold, which text is
+					italicized, whether you have formulas, etc. I will list several text editors
+					along with a brief description. If you do not see a program on this list, it is
+					probably not a text editor.
+				</p>
+				<ul>
+					<li>GUI (Graphical) Text Editors
+						<ul>
+							<li><b>Visual Studio Code:</b> A small lightweight text editor that is closest to
+								what you would expect from other products like Microsoft Word or Google Drive.
+								It has the standard <b>File</b>, <b>Edit</b>, <b>View</b>, etc. at the top of
+								the screen. Saving and creating files is just like in most other programs,
+								though it also has other information, like directory structures, displayed on
+								the screen.
+							</li>
+							<li><b>Sublime Text:</b> The same as Visual Studio Code with how you interact with
+								it and what it can do for you. Eventually you might find that Visual Studio Code
+								or Sublime Text has plugins or features that you would choose over the other,
+								but not at this level.
+							</li>
+							<li><b>Notepad:</b> No syntax highlighting or any useful features at all, but it's
+								already installed on most of your computers.
+							</li>
+						</ul>
+					</li>
+					<li>IDEs (Includes text editors and other stuff)
+						<ul>
+							<li><b>Eclipse:</b> Slower than both Visual Studio Code and Sublime Text, but most
+								students already have it to program in Java. Either way, it will work.
+							</li>
+							<li><b>Visual Studio Community Edition:</b> Slowest one to start up and it's
+								supposed to be way more powerful than most other text editors, but I've never
+								needed any of the more powerful features, so it just slowed down my computer.
+							</li>
+						</ul>
+					</li>
+					<li>Terminal Text Editors
+						<ul>
+							<li><b>vim:</b> A powerful, if slightly unintuitive text editor. It also has the
+								nice benefit of being directly integrated into the terminal, so you can switch
+								back and forth pretty quickly between writing code and running code.
+							</li>
+							<li><b>emacs:</b> Practically an operating system with a bad text editor (though it
+								can be made better by using evil mode, which gives it vim keybindings).
+							</li>
+							<li><b>nano:</b> Slightly better version of Notepad in the terminal since it has
+								syntax highlighting.
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<p>If you are totally new to programming, I would recommend using a GUI text editor
+					so you don't have to learn two things at once. If you have Eclipse, go ahead and
+					use it. If you don't like Eclipse, use Visual Studio Code.
+				</p>
+				<h4 id="installing-visual-studio-code">Installing Visual Studio Code</h4>
+				<p>On MacOS, type
+				</p>
+				<div class="mac-terminal"><pre><span class="terminal-oneline">comp:~ user$ brew update</span>
+
+    A bunch of text discussing update information
+
+<span class="terminal-oneline">comp:~ user$ brew cask install visual-studio-code</span>
+
+    A bunch of text discussing installation information
+</pre>
+				</div>
+				<p>On Linux, follow these instructions on <a
+					href="https://code.visualstudio.com/docs/setup/linux">installing Visual Studio
+					Code on Linux</a>.
+				</p>
+				<p>On Windows, follow these instructions on <a
+					href="https://code.visualstudio.com/docs/setup/windows">installing Visual Studio
+					Code on Windows</a>.
+				</p>
+				<h3 id="python-interpreter">Python Interpreter</h3>
+				<p>If you're on Windows, get the <a href="https://www.dataquest.io/blog/tutorial-install-linux-on-windows-wsl/">Windows Subsystem for Linux</a>, which only requires you to download the
+					Ubuntu app from the Windows store, turn on a setting (shown in the linked
+					article), restart your computer, and enter a username and a password into the
+					Ubuntu app and you're all set. <b>Remember this username and password, as you
+					will need it later</b>. After this point, the rest of the tutorial will focus on
+					using a Linux, MacOS, or Windows Subsystem for Linux terminal. While the
+					<code>python</code> code is independent of how you run it, there are certain operations
+					that you need to do for every setup you have to make sure it runs properly, and
+					I currently want to focus on the terminal.
+				</p>
+				<div class="aside" >
+					<h4>Independent Python Interpreter</h4>
+					<hr>
+					<p>While there is an independent python interpreter for Windows, I would strongly
+						recommend that you use the <a href="https://www.dataquest.io/blog/tutorial-install-linux-on-windows-wsl/">Windows Subsystem for Linux</a> because as soon as you want to do anything
+						outside of <code>python</code>, you're stuck, especially if you want the programs to
+						interact in any way.
+					</p>
+				</div>
+				<p>If you're on Ubuntu, Debian, Linux Mint (or any derived distro), or the Windows
+					Subsystem for Linux, type the following into the terminal.
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ sudo apt update</span>
+
+    A bunch of text discussing update information
+
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ sudo apt install -y python python3 python-pip python3-pip</span>
+
+    A bunch of text discussing installation information
+</pre>
+				</div>
+				<p>The <code>-y</code> just answers "yes" to the prompt that comes up. If you're on another
+					Linux distro, replace <code>sudo apt install</code> with whatever package manager you use
+					for your distro.
+				</p>
+				<p>If you're on MacOS, use the command
+				</p>
+				<div class="mac-terminal"><pre>
+<span class="terminal-oneline">comp:~ user$ brew install python python3 python-pip python3-pip</span>
+</pre>
+				</div>
+				<p><b>Once you've sucessfully gotten to this point, you will not have to do any
+					part of this process again as long as you don't uninstall anything.</b> You will
+					have to do everything after this point for each project, but it's not nearly as
+					much.
+				</p>
+				<h3 id="making-the-directory">Making the Directory</h3>
+				<p>If you're on Windows, open up Ubuntu and type
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ ln -s /mnt/c/Users/[user] win-home</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ mkdir -p win-home/dev/py_data_vis</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ cd win-home/dev/py_data_vis</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~/win-home/dev/py_data_vis</b></span>$</span>
+</pre>
+				</div>
+				<p>where <code>[user]</code> is your username on your Windows computer.
+				</p>
+				<p>If you're on Linux, open up the terminal and type
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ mkdir -p dev/py_data_vis</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ cd dev/py_data_vis</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~/dev/py_data_vis</b></span>$</span>
+</pre>
+				</div>
+				<p>If you're on Mac, open up the terminal and type
+				</p>
+				<div class="mac-terminal"><pre><span class="terminal-oneline">comp:~ user$ mkdir -p dev/py_data_vis</span>
+<span class="terminal-oneline">comp:~ user$ cd dev/py_data_vis</span>
+<span class="terminal-oneline">comp:py_data_vis user$</span>
+</pre>
+				</div>
+				<p>From this point onwards, you should remain in this directory and there should be
+					no difference between operating systems. We have created an actual directory
+					(a.k.a. a folder) on your system that you can access normally, through the file
+					explorer. For Windows, this folder will be <code>C:\Users\[user]\dev\py_data_vis</code>.
+				</p>
+				<h3 id="creating-our-new-python-script">Creating Our New Python Script</h3>
+				<p>In your text editor of choice, create a new file called <code>word_counter.py</code> and
+					put it in the <code>py_data_vis</code> directory. This directory is <code>~/dev/py_data_vis</code> on
+					Linux and Mac and it is <code>C:\Users\[user]\dev\py_data_vis</code> on Windows. If you're
+					using a graphical text editor, click <b>File</b> in the top left corner and
+					click <b>New File</b> (there may be shortcuts like Ctrl+N, but this method works
+					for almost all graphical text editors). If it prompts you to give the file a
+					name and a place to save it, set the name to <code>word_counter.py</code> and save it in
+					the <code>py_data_vis</code> directory. If you're on Linux or Mac and you start out in a
+					directory called <code>/</code> with folders like <code>bin</code>, <code>boot</code>, <code>dev</code>, <code>etc</code>, and <code>home</code>,
+					move to <code>/home/[user]/dev/py_data_vis</code>, where <code>[user]</code> is your username.
+				</p>
+				<p>Visual Studio Code will prompt you for the name and where to save the file only
+					after you save the file. I would suggest saving immediately and following the
+					instructions in the previous paragraph.
+				</p>
+				<p>If you're using a terminal text editor, you can type the command <code>[editor]
+					word_counter.py</code>, where <code>[editor]</code> is <code>vim</code>, <code>emacs</code>, or <code>nano</code>.
+				</p>
+				<p>On Linux, your terminal should look like
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ sudo apt update</span>
+
+    A bunch of text discussing update information
+
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ sudo apt install -y python python3 python-pip python3-pip</span>
+
+    A bunch of text discussing installation information
+
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ mkdir -p dev/py_data_vis</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ cd dev/py_data_vis</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~/dev/py_data_vis</b></span>$</span>
+</pre>
+				</div>
+				<p>On Mac, your terminal should look like
+				</p>
+				<div class="mac-terminal"><pre><span class="terminal-oneline">comp:~ user$ brew update</span>
+
+    A bunch of text discussing update information
+
+<span class="terminal-oneline">comp:~ user$ brew cask install visual-studio-code</span>
+
+    A bunch of text discussing installation information
+
+<span class="terminal-oneline">comp:~ user$ brew install python python3 python-pip python3-pip</span>
+
+    A bunch of text discussing installation information
+
+<span class="terminal-oneline">comp:~ user$ mkdir -p dev/py_data_vis</span>
+<span class="terminal-oneline">comp:~ user$ cd dev/py_data_vis</span>
+<span class="terminal-oneline">comp:py_data_vis user$</span>
+</pre>
+				</div>
+				<p>On Windows, your terminal should look like
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ sudo apt update</span>
+
+    A bunch of text discussing installation information
+
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ sudo apt install -y python python3 python-pip python3-pip</span>
+
+    A bunch of text discussing installation information
+
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ ln -s /mnt/c/Users/[user] win-home</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ mkdir -p win-home/dev/py_data_vis</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~</b></span>$ cd win-home/dev/py_data_vis</span>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~/win-home/dev/py_data_vis</b></span>$</span>
+</pre>
+				</div>
+				<p>Once you have the file opened and your current directory in the terminal is the
+					<code>py_data_vis</code> directory, there will be no differences in this tutorial between
+					operating systems and I will refer exclusively to either the terminal or the
+					text editor.
+				</p>
+				<h2 id="making-an-executable-python-script">Making an Executable Python Script</h2>
+				<p>We'll have to tell the computer two things to make <code>word_counter.py</code> execute
+					properly:
+				</p>
+				<ol>
+					<li>We have permission to execute the file.
+					</li>
+					<li>Use the <code>python3</code> interpreter to execute the file.
+					</li>
+				</ol>
+				<h4 id="changing-permissions">Changing Permissions</h4>
+				<p>In your terminal, type
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~/dev/py_data_vis</b></span>$ ls -l word_counter.py</span>
+-rw-r--r-- 1 user group     23 Mar  3 14:52 word_counter.py
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~/dev/py_data_vis</b></span>$ sudo chmod +x word_counter.py</span>
+[sudo] password for user:
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~/dev/py_data_vis</b></span>$ ls -l word_counter.py</span>
+-rwxr-xr-x 1 user group     23 Mar  3 14:52 <span class="exe">word_counter.py</span>
+</pre>
+				</div>
+				<p><code>ls -l word_counter.py</code> will list the <b>read/&#8203;write/&#8203;execute</b>
+					permissions <code>for word_counter.py</code> along with the date of the last change to the
+					file. The leftmost <code>-</code> means that the file is just a regular file (as opposed to
+					a directory or other things). After that, every three characters refers to
+					different classes of users: current user, current group, and everyone else. <code>r</code>
+					refers to <b>read</b> permissions, <code>w</code> refers to <b>write</b> permissions, and
+					<code>x</code> refers to <b>execute</b> permissions. You can therefore read the output of
+					<code>ls -l word_counter.py</code> as
+				</p>
+				<p><blockquote>
+					A normal file can be read and modified by <code>user</code>, read by users in the group
+					<code>group</code>, and read by everyone else. It has <code>23</code> bytes. It was last modified on
+					<code>March 3</code> at <code>14:52</code> (i.e. 2:52 PM) and the name of the file is
+					<code>word_counter.py</code>.
+					</blockquote>
+				</p>
+				<p>You'll see that there's a bit of a problem since we want to execute the program
+					but no one has permission to execute the program. We can change this with the
+					<code>chmod</code> command. Since we'll have to run it as an admin (a.k.a. root on Linux
+					and MacOS), we'll put <code>sudo</code> in front of the command, which stands for "<code>s</code>uper
+					<code>u</code>ser <code>do</code>". We add the option <code>+x</code> to <code>add</code> e<code>x</code>ecute permissions for everyone
+					(you can do it for individual users but it won't matter here). Lastly, we want
+					to change the permissions for the file <code>word_counter.py</code>, so we'll need to add
+					that into the command, meaning we have to type <code>sudo chmod +x word_counter.py</code>.
+				</p>
+				<p>You'll see the password prompt pop up for your password. On the Windows
+					Susbsytem for Linux, type in the password that you first typed into the
+					terminal. On Linux or Mac, type in the same password you use to log into your
+					computer. Do not be worried if nothing shows up when you type &mdash; it's a
+					security measure to prevent people from seeing any information about your
+					password. Hit Enter/Return to confirm your password.
+				</p>
+				<p>After running <code>ls -l word_counter.py</code> again, you'll see that the script now has
+					a bunch of <code>x</code>'s, meaning anyone can execute it.
+				</p>
+				<h4 id="telling-the-computer-to-use-python3-to-execute-word_8203counter8203py">Telling the Computer to Use <code>python3</code> to Execute <code>word_&#8203;counter&#8203;.py</code></h4>
+				<p>In <code>word_counter.py</code> in your text editor, type
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>This line of code is a <b>comment</b> in <code>python</code> since comments start with a
+					<code>#</code> in <code>python</code>, but scripts executed from the terminal will read the first line
+					and look for a <code>#!</code> (known as a <b>shebang</b>), which tells the terminal to use
+					the <code>python3</code> interpreter when executing this file.
+				</p>
+				<h4 id="obligatory-hello-world">Obligatory <code>Hello, World!</code></h4>
+				<p>Since your first program that does anything must print <code>Hello, World!</code> by tradition,
+					we're going to modify <code>word_counter.py</code> to print out <code>Hello, World!</code>, but then we're
+					going to remove it immediately afterwards since we don't need it. In <code>python</code>,
+					we just need to type <code>print("Hello, World")</code> in <code>word_counter.py</code>, so our file
+					should now look like
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="hll"><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello, World!&quot;</span><span class="p">)</span>
+</span></pre></div>
+</td></tr></table>				
+				</div>
+				<p>Save this file and run it from the terminal using <code>./word_counter.py</code>, which
+					should look like
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~/dev/py_data_vis</b></span>$ ./word_counter.py</span>
+Hello, World!
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~/dev/py_data_vis</b></span>$</span>
+</pre>
+				</div>
+				<p>Then, remove the <code>Hello, World!</code> line and save the file again.
+				</p>
+				<h2 id="summary">Summary</h2>
+				<p>Now that we have an executable <code>python</code> script, we could start writing some
+					<code>python</code> code. First, I would like to devote an article to covering the features
+					of <code>python</code> we'll use in this program since these features are independent of
+					this specific program and you can use them in any <code>python</code> program.
+				</p>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#basic-data-visualization-in-python-pt-1" style="padding-left:12px;">Basic Data Visualization in Python, Pt. 1</a>
+				<a href="#an-unusual-pattern" style="padding-left:24px;">An Unusual Pattern</a>
+				<a href="#getting-started-with-python" style="padding-left:24px;">Getting Started with Python</a>
+				<a href="#how-to-read-the-terminals" style="padding-left:24px;">How to Read the Terminals</a>
+				<a href="#text-editors" style="padding-left:36px;">Text Editors</a>
+				<a href="#installing-visual-studio-code" style="padding-left:48px;">Installing Visual Studio Code</a>
+				<a href="#python-interpreter" style="padding-left:36px;">Python Interpreter</a>
+				<a href="#making-the-directory" style="padding-left:36px;">Making the Directory</a>
+				<a href="#creating-our-new-python-script" style="padding-left:36px;">Creating Our New Python Script</a>
+				<a href="#making-an-executable-python-script" style="padding-left:24px;">Making an Executable Python Script</a>
+				<a href="#changing-permissions" style="padding-left:48px;">Changing Permissions</a>
+				<a href="#telling-the-computer-to-use-python3-to-execute-word_8203counter8203py" style="padding-left:48px;">Telling the Computer to Use <code>python3</code> to Execute <code>word_&#8203;counter&#8203;.py</code></a>
+				<a href="#obligatory-hello-world" style="padding-left:48px;">Obligatory <code>Hello, World!</code></a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>

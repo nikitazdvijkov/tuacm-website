@@ -1,0 +1,11 @@
+index-page
+Topic:		Basic Data Visualization in Python
+Import:
+Scripts:
+
+In this tutorial, I want to take you from not knowing anything about python and
+having a computer that has never done anything with python to being able to
+write a simple (~50 lines), but actually useful program to test whether or not
+some text follows the <a
+href="https://www.youtube.com/watch?v=fCn8zs912OE">Zipf's Law</a> and graph the
+fitted curve along with the data.

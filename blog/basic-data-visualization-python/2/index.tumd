@@ -1,0 +1,16 @@
+article
+Title:		Basic Data Visualization in Python, Pt. 2
+Author:		Joseph Mellor
+Tagline:	A crash course on python (emphasis on the crash).
+Code Style:	trac+dark
+Import:		aside code-block terminal
+Scripts:
+
+<i>This is the second article in the series <a href="../index.html">Basic Data
+Visualization in Python</a>. If you haven't read <a href="../1/index.html">the
+first article</a> yet, I would suggest reading it so you can set up python for
+this project.</i>
+
+<b>This article will go through the absolute bare minimum you would need to
+understand the code we'll write in the project and is not a substitute for an
+actual course on python.</b>
