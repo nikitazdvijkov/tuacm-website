@@ -1,0 +1,23 @@
+.spoiler {
+	border: 3px solid #B0B0B0;
+	padding: 1em;
+	border-radius: 8px;
+	background: #E6E6FA;
+	margin-bottom: 1em;
+}
+
+.spoiler .content {
+	opacity: 0;
+}
+
+.spoiler .content:hover {
+	opacity: 1;
+}
+
+.spoiler .terminal {
+    margin-bottom: 0;
+}
+
+.spoiler b {
+	color: #DC143C;
+}
