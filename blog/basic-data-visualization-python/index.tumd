@@ -8,4 +8,9 @@ having a computer that has never done anything with python to being able to
 write a simple (~50 lines), but actually useful program to test whether or not
 some text follows the <a
 href="https://www.youtube.com/watch?v=fCn8zs912OE">Zipf's Law</a> and graph the
-fitted curve along with the data.
+fitted curve along with the data. I intend for this tutorial to give you a
+strong starting point for you to learn python as you will have installed a
+python interpreter and a text editor, you will understand how to make an
+executable and run the python code, you will see features of the language with
+some practical applications, and you will have everything you would need to
+experiment on your own.

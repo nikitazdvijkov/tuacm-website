@@ -12,10 +12,6 @@ Scripts:
 	color: #AAAAAA;
 }
 
-.normal .terminal pre {
-	color: #EC1111;
-}
-
 .terminal .file {
 	color: #295FCC;
 	font-weight: bold;
@@ -92,10 +88,10 @@ the Return key, the terminal would look like
 
 \{{terminal mac}}
 
-{{user}}:="user"
-{{computer-name}}:="comp"
-{{dir-color}}:="#295FCC"
-{{u-and-c-color}}:="#4CE64C"
+{{user}}="user"
+{{computer-name}}="comp"
+{{dir-color}}="#295FCC"
+{{u-and-c-color}}="#4CE64C"
 
 {{mac-prompt}} mkdir -p example
 {{mac-prompt}} cd example
