@@ -1,4 +1,5 @@
 
+Basic Data Visualization in Python|Joseph Mellor|In this tutorial, you will go from knowing nothing about python to writing a program to test a hypothesis and graph the results.|basic-data-visualization-python/
 Making Sense of C|Joseph Mellor|A tutorial for the C programming language from the ground up.|c-language/
 The Memory Hierarchy|Joseph Mellor|Picking the best algorithm for the task will make your code run fast. Using memory properly will make it even faster.|memory-hierarchy/
 Setting Up a VirtualBox VM With a Shared Folder and Clipboard|Nikita Zdvijkov|Running Linux on Windows has never been easier!|virtual-box-shared-folder-clipboard/
