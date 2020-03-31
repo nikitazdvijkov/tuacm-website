@@ -1,7 +1,7 @@
 article
 Title:		Basic Data Visualization in Python, Pt. 4
 Author:		Joseph Mellor
-Tagline:	Using features built into python.
+Tagline:	We're going to cover a few features built into python.
 Code Style:	trac+dark
 Import:		aside code-block terminal spoiler
 Scripts:
@@ -315,6 +315,8 @@ Yeah, it's a list of words in the string.
 
 \{{\spoiler}}
 
+## More Complex Splitting
+
 Notice that {'dog.'} includes the period because {split} used whitespace to
 separate the words. If we want to split on something other than whitespace and
 something that isn't just a specific sequence of characters, we normally replace
@@ -419,3 +421,18 @@ print(sorted_list)
 
 \{{\code-block}}
 
+If you wanted to sort the list in place, you could use the {sort()} method,
+which works just like split in that you use the syntax {list_to_sort.sort()}.
+Other than that, it's exactly the same and you can use {key =...} and {reversed
+= ...}. If you want to know more, look up "sort list python ..." where the "..."
+are other conditions you want to put on it.
+
+# What's Next
+
+While there are a lot of functions and other constructs built into python, it
+would kind of suck if those functions and constructs were all you can use.
+Luckily, python has a huge repository of libraries that will allow us to use
+functionality that we ourselves haven't written. In the next article, <a
+href="../5/index.html">Basic Data Visualization, Pt. 5</a>. We're going to talk
+about program structure, a few specific libraries, and how to install libraries
+from the command line using {pip3}.

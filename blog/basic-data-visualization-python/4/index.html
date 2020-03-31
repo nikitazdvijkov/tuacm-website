@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
+		<meta name="description" content="We'll need to cover some of the many useful features built into python, including file manipulation, sorting, splitting text, lambda functions.">
 		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
 		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
 		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
@@ -53,7 +53,7 @@
 		<div>
 			<div class="article">
 				<div id="article-title"><h1 id="basic-data-visualization-in-python-pt-4">Basic Data Visualization in Python, Pt. 4</h1></div>
-				<div id="meta-description">Using features built into python.</div>
+				<div id="meta-description">We're going to cover a few features built into python.</div>
 				<div id="date-and-tags">Posted 30 March 2020 at 6:27 PM </div>
 				<div id="author-box">
 					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
@@ -326,6 +326,7 @@
 					</p>
 					</div>
 				</div>
+				<h3 id="more-complex-splitting">More Complex Splitting</h3>
 				<p>Notice that <code>'dog.'</code> includes the period because <code>split</code> used whitespace to
 					separate the words. If we want to split on something other than whitespace and
 					something that isn't just a specific sequence of characters, we normally replace
@@ -436,6 +437,21 @@
 </pre></div>
 </td></tr></table>				
 				</div>
+				<p>If you wanted to sort the list in place, you could use the <code>sort()</code> method,
+					which works just like split in that you use the syntax <code>list_to_sort.sort()</code>.
+					Other than that, it's exactly the same and you can use <code>key =...</code> and <code>reversed
+					= ...</code>. If you want to know more, look up "sort list python ..." where the "..."
+					are other conditions you want to put on it.
+				</p>
+				<h2 id="whats-next">What's Next</h2>
+				<p>While there are a lot of functions and other constructs built into python, it
+					would kind of suck if those functions and constructs were all you can use.
+					Luckily, python has a huge repository of libraries that will allow us to use
+					functionality that we ourselves haven't written. In the next article, <a
+					href="../5/index.html">Basic Data Visualization, Pt. 5</a>. We're going to talk
+					about program structure, a few specific libraries, and how to install libraries
+					from the command line using <code>pip3</code>.
+				</p>
 			</div>
 			<div class="article">
 				<div id="author-description-local">
@@ -464,8 +480,10 @@
 				<a href="#the-with--as-statement" style="padding-left:36px;">The <code>with ... as</code> Statement</a>
 				<a href="#the-pass-statement" style="padding-left:24px;">The <code>pass</code> Statement</a>
 				<a href="#the-split-function" style="padding-left:24px;">The <code>split</code> Function</a>
+				<a href="#more-complex-splitting" style="padding-left:36px;">More Complex Splitting</a>
 				<a href="#lambda-functions" style="padding-left:24px;"><code>lambda</code> Functions</a>
 				<a href="#the-sorted-function" style="padding-left:24px;">The <code>sorted</code> Function</a>
+				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
 			</nav>
 			<div id="sidenav-activator"></div>
 		</div>

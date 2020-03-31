@@ -1,0 +1,539 @@
+article
+Title:		Basic Data Visualization in Python, Pt. 5
+Author:		Joseph Mellor
+Tagline:	We're going to cover how to bring in features not built into python.
+Code Style:	trac+dark
+Import:		aside code-block terminal spoiler
+Scripts:
+
+\{{style}}
+
+ul ul {
+	margin-bottom: 0;
+}
+
+.terminal pre {
+	color: #AAAAAA;
+}
+
+.terminal .file {
+	color: #295FCC;
+	font-weight: bold;
+}
+
+.terminal .exe {
+	color: #4CE64C;
+	font-weight: bold;
+}
+
+.spoiler *:last-child {
+    margin-bottom: 0em;
+}
+
+\{{\style}}
+
+<i>This is the fifth article in the series <a href="../index.html">Basic Data
+Visualization in Python</a>. In this article, we're going to go beyond the
+features built into the python language. If you haven't read <a
+href="../4/index.html">the previous article</a> yet, I would suggest reading
+it.</i>
+
+# Topics Covered
+
+\{{ul}}
+
+<b>{import} and Modules</b>
+
+<b>{re} and Regular Expressions</b>
+
+<b>Installing Libraries with {pip3}</b>
+
+\{{\ul}}
+
+It's kind of a weird article because we're combining program entry points with
+the more general topic of importing modules, but they should flow into each
+other.
+
+# {import} and Modules
+
+You might notice that up until this point, we've been writing everything we need
+in one file. As our programs grow in size and complexity, we'll often want to
+break it apart into multiple files for both ease on the programmers who'll work
+on the project and reuse of code.
+
+For example, say you're writing a large project and you end up writing some
+graphing software in your code. Once you move onto another project, you notice
+that you're going to need the same graphing software from last time. If you had
+a separate file or directory/folder in which you put everything related to the
+graphing software, you would just need to copy the graphing software files into
+your directory (or better yet, put them in some sort of shared directory). If,
+instead, you had put everything into one file, you would have to scour the file
+for all the relevant functions and then copy them into the file for the second
+program. It's not going to be fun for you.
+
+All programming languages have ways to combat this problem. In {C/C++}, you use
+the {#include} macro, declarations, and linking (see the <a
+href="https://tuacm.com/blog/c-language/">C series I've written</a> for more
+information). In {Java}, you have one class per file and you have to use {import}
+statements to use them. In {python}, you also use an {import} statement but it
+works differently from the {import} statement in {Java}.
+
+Put simply, the {import} statement in python will run a python file from top to
+bottom as if you were to execute it like we normally have and add it to the blob
+that is your program.
+
+To see this process in action, create another file in the same directory as
+{example.py} (which should be {py_data_vis} if you were following this
+tutorial). Let's call this new file {impex.py} for {imp}ort {ex}ample. In
+{impex.py}, type the following code:
+
+\{{code-block python}}
+
+print("This was printed from impex.py!")
+
+\{{\code-block}}
+
+Notice that we didn't put {#!/usr/bin/env python3} in {impex.py}. Once we've
+started the python interpreter, which we'll do by running {example.py}, anything
+{example.py} imports will be run with the python interpreter, anything imported
+by anything imported by {example.py} will also be run with the python
+interpreter, etc. If we wanted to run {impex.py}, we would have to add
+{#!/usr/bin/env python3} as the first line and then make it an executable with
+{sudo chmod +x impex.py} from the terminal. See <a
+href="../1/index.html#making-an-executable-python-script">The first article in
+this series</a> for more detailed information.
+
+In {example.py}, type the following code:
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import impex
+
+print("This was printed from example.py!")
+
+\{{\code-block}}
+
+<span style="color: red; font-weight: bold;">WARNING: {impex.py} and
+{example.py} must be in the same directory or else this program will not
+work.</span>
+
+Anyway, if you run {example.py}, the exact sequence of events will be
+
+\{{ol}}
+
+{example.py} starts running
+
+{example.py} imports {impex.py}
+
+{impex.py} will run from top to bottom
+
+{impex.py} finishes running
+
+{example.py} starts up again after the {import} statement
+
+{example.py} runs until it reaches the end of the file
+
+\{{\ol}}
+
+which will give you the output
+
+\{{terminal mac}}
+
+{{user}}="user"
+{{computer-name}}="comp"
+{{dir}}="~/dev/py_data_vis"
+{{dir-color}}="#295FCC"
+{{u-and-c-color}}="#4CE64C"
+{{mac-dir}}="py_data_vis"
+
+{{mac-prompt}} ./example.py
+This was printed from impex.py!
+This was printed from example.py!
+
+\{{\terminal}}
+
+If, instead, you were to flip the order of the {import} statement and the
+{print} statement in {example.py}, you'll see that they print in the opposite
+order, assuming you don't modify {impex.py}. The following code
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+
+print("This was printed from example.py!")
+
+import impex
+
+\{{\code-block}}
+
+will output
+
+\{{terminal}}
+
+{{prompt}} ./example.py
+This was printed from example.py!
+This was printed from impex.py!
+
+\{{\terminal}}
+
+Lastly, try running the following code and see what happens:
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import impex
+import impex
+
+print("This was printed from example.py!")
+
+\{{\code-block}}
+
+\{{spoiler}}
+
+\{{terminal}}
+
+{{prompt}} ./example.py
+This was printed from impex.py!
+This was printed from example.py!
+
+\{{\terminal}}
+
+<b>Once a file has been imported, it will not run again for the rest of the
+program, no matter how many times you import it</b>. It might not make sense yet
+because we haven't actually gone over the main use of importing. Once we go over
+it, it should make sense.
+
+\{{\spoiler}}
+
+## Why Use {import}
+
+You're probably thinking to yourself that all we've really done is split our
+file into two files which execute one after another, and you might be asking
+yourself why we would even have an import statement. In general, though, we
+don't run functions like {print} in files we want to {import}, we just define
+functions, classes, and other things. A more realistic example of importing
+would have {impex.py} look like
+
+\{{code-block python}}
+
+def area_of_circle(r):
+    return 3.1415926 * r ** 2
+
+def volume_of_cylinder(radius, height):
+    return height * area_of_circle(radius)
+
+# A bunch of other functions
+
+\{{\code-block}}
+
+and {example.py} look like
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import impex
+
+print(impex.volume_of_cylinder(10, 2))
+
+\{{\code-block}}
+
+We defined multiple functions in {impex.py}, then used those functions using the
+syntax {impex.func}, where {func} is the function we want to access. Knowing
+that this is how we intend to use {import} statements, it should make sense that
+we only want to run a file once. It doesn't make sense to rerun the file to
+create new functions, objects, and classes just because some other file wants
+to also access them.
+
+## {import} Shortcuts
+
+Take the last example, in which we imported a function from another file. Let's
+also say that we only want that one function. We can use the syntax {from _____
+import _____}, where the first blank is the file from which we want to import
+the second blank. For example, we want to import {volume_of_cylinder} from
+{impex.py}, so we would type
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+from impex import volume_of_cylinder
+
+print(volume_of_cylinder(10, 2))
+
+\{{\code-block}}
+
+which would produce the same output. {volume_of_cylinder} is a bit long and
+we're only calculating one volume, so we might actually want to shorted it if
+possible. We can use our old friend {as} to rename the function, like so
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+from impex import volume_of_cylinder as vc
+
+print(vc(10, 2))
+
+\{{\code-block}}
+
+Note that if we tried using {impex.volume_of_cylinder}, {impex.area_of_circle},
+{impex.vc}, or {volume_of_cylinder} in the last example instead of {vc}, we
+would get an error because we've told the python interpreter only to recognize
+{vc}. We could have added the previous {import} statements {import impex} and
+{from impex import volume_of_cylinder} to be able to use everything except
+{impex.vc}.
+
+Now, let's change it up and say we want both {volume_of_cylinder} and
+{area_of_circle}. In that case, we can combine the {from impex import ...}
+statements into one, like so
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+from impex import volume_of_cylinder as vc, area_of_circle as ac
+
+print(vc(10, 2) + ac(4))
+
+\{{\code-block}}
+
+We might get naming collisions if we're not careful and by making the names too
+small, we may not see the problem in adding a volume to an area. You still have
+to pick good variable names when importing functions.
+
+Lastly, let's say we want to keep everything under the {impex} name, but we
+might want to shorten the name {impex}. In that case, we can use
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import impex as im
+
+print(im.volume_of_cylinder(10, 2) + im.area_of_circle(4))
+
+\{{\code-block}}
+
+Use whatever works best for your project and keeps the meaning clear.
+
+## What's a Module?
+
+A module is another name for a python file. That's it.
+
+# {re} and Regular Expressions
+
+<b>Regular Expressions</b> are a powerful programming tool for searching text.
+For example, let's say you want to search a large file for all the email
+addresses. In English an email address is a username (one or more letters,
+digits, underscores, periods, plus signs, or dashes), followed by an {@},
+followed by a website name (one or more of letters, digits, or dashes)
+followed by a {.}, followed by what is apparently known as a <a
+href="https://en.wikipedia.org/wiki/Top-level_domain">top-level domain</a> like
+com or org (letters, digits, dashes, or periods).  To search the file, you could
+use the following regular expression:
+{r"[-a-zA-Z0-9_.+]+{{zs}}@{{zs}}[-a-zA-Z0-9]+{{zs}}\.{{zs}}[-a-zA-Z0-9.]+"},
+which you can read as
+
+\{{code-block text}}
+
+[               Any characters between the square brackets
+    -           The - character
+    a-z         The lowercase ASCII letters
+    A-Z         The uppercase ASCII letters
+    0-9         Any of the digits from 0 to 9
+    _           The _ character
+    .           The . character
+    +           The + character
+]
++               One or more of whatever came before the +.
+                In this case, one or more of any of the
+                characters in the preceding square brackets
+
+@               The @ character
+[               Any characters between the square brackets
+    -
+    a-z
+    A-Z
+    0-9
+]
++               One or more of the whatever came before the +.
+
+\.              The . character
+[
+    -
+    a-z
+    A-Z
+    0-9
+    .
+]
++
+
+\{{\code-block}}
+
+Regular expressions can get kind of complicated, but in our case, we're just
+going to replace a bunch of characters with spaces so we can {split} on more
+than just whitespace, <a href="../4/index.html#more-complex-splitting">which I
+brought up in the last article</a>.
+
+Anyway, to use regexes in python, we have to import the module {re}, which is a
+python file somewhere deep in your system files. In {example.py}, type the
+following and see what happens.
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import re
+
+string = '''I heard him say, "Hey, John! Come over here.", then John said, "Why?", then he said "I saw 7 chickens."'''
+print("Without Replacing Irrelevant Characters")
+print("------------------------------------------")
+print(string)
+print('\n'.join(map(str, string.split())))
+print()
+print("With Replacing Irrelevant Characters"
+print("------------------------------------------")
+cleaned_string = re.sub(r"[^a-zA-Z0-9\s]", " ", string)
+print(cleaned_string)
+print('\n'.join(map(str, cleaned_string.split())))
+
+\{{\code-block}}
+
+I understand that the code is a little weird, but the output should be the
+original string, then each word found using {string.split()} on its own line,
+then the string with all the irrelevant characters replaced with spaces, then
+each word found using {cleaned_string.split()} with each word on its own line.
+
+I had to use the <b>{str.join}</b> function (works in almost the exact opposite
+way as {split} by joining together a list of strings into one string separated
+by some delimeter (the newline, {\n}, in this case)), the <b>{map}</b> function
+(which returns a new list using the function provided as its first argument on
+each of the elements of the list provided as its second argument), and the
+<b>{str}</b> function (which converts its argument into a string). None of it is
+relevant to the current project of writing a program to verify Zipf's Law for
+some sample text, but it's the easiest way to print out each word on its own
+line. It also serves as a reminder that python has a lot of features that we
+can't cover everything.
+
+\{{spoiler}}
+
+\{{terminal mac}}
+
+{{mac-prompt}} ./example.py
+Without Replacing Irrelevant Characters
+------------------------------------------
+I heard him say, "Hey, John! Come over here.", then John said, "Why?", then he said "I saw 7 chickens."
+
+I
+heard
+him
+say,
+"Hey,
+John!
+Come
+over
+here.",
+then
+John
+said,
+"Why?",
+then
+he
+said
+"I
+saw
+7
+chickens."
+
+With Replacing Irrelevant Characters
+------------------------------------------
+I heard him say   Hey  John  Come over here    then John said   Why    then he said  I saw 7 chickens  {{empty}}
+
+I
+heard
+him
+say
+Hey
+John
+Come
+over
+here
+then
+John
+said
+Why
+then
+he
+said
+I
+saw
+7
+chickens
+
+\{{\terminal}}
+
+Notice that {re.sub} seems to have substituted a space (second argument to
+{re.sub}) for everything (square brackets {[]}) that wasn't (carat as first
+character in square brackets {[^]}) a letter ({a-zA-Z}), a number ({0-9}), or
+whitespace ({\s}) in the string {string} (third argument to {re.sub}). You
+should also notice that all the words in {cleaned_string} only contain letters
+or numbers, but some of the words in {string} contain punctuation. For the basic
+word counter we're going to implement, we'll need words without punctuation so
+that we count {"I} and {I} as the same word.
+
+\{{\spoiler}}
+
+Although regular expressions are extremely useful, we will only need them for
+the purpose of removing all punctuation.
+
+# Installing Libraries with {pip3}
+
+To end this article, let's discuss how you can get more libraries using {pip3}.
+First, make sure you have it installed (See the first article <a
+href="../1/index.html#python-interpreter">where we type commands involving the
+word "install" into the terminal</a>). If you don't and you're on Windows or
+Linux, type the command {sudo apt install -y python-pip python3-pip} into the
+terminal. If you're on Mac, type the command {brew install python-pip
+python3-pip}. You should already have python in the terminal, otherwise you
+wouldn't be able to run any of these scripts.
+
+Anyway, using {pip3} is easy. If you're on Linux, Windows, or Mac, use the
+command {pip3 install [libraries]}, where libraries is a list of libraries you
+want to install, separated by spaces. We're going to need the libraries
+{matplotlib} and {scipy}, so we should type the command
+
+\{{terminal}}
+
+{{prompt}} pip3 install matplotlib scipy
+
+    A bunch of text relating to installing matplotlib and scipy
+
+\{{\terminal}}
+
+Just for fun, here's what it would look like in the Mac terminal:
+
+\{{terminal mac}}
+
+{{mac-prompt}} pip3 install matplotlib scipy
+
+    A bunch of text relating to installing matplotlib and scipy
+
+\{{\terminal}}
+
+Then, all you have to do to use these libraries is import them like you did with
+{re}. To be clear, these libraries have submodules, which you can access using
+{.}, like so
+
+\{{code-block python no-line-numbers}}
+
+import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit as fit
+
+\{{\code-block}}
+
+As you can imagine, these are the two functions and modules we'll need.
+{scipy.optimize.curve_fit} will allow us to fit a curve to some data and
+{matplotlib.pyplot} will allow us to plot the data.
+
+# What's Next
+
+I think we should have enough to actually write {word_counter.py}, so we're
+going to write it in the next article <a href="../6/index.html">Basic Data
+Visualization, Pt. 6</a>. After that, I'm going to try to recommend a few useful
+libraries and send you on your way.

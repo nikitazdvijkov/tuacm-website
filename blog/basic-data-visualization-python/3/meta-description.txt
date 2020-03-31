@@ -1,0 +1,1 @@
+We can't have a program that does anything useful without control flow, so we'll introduce if statements, for and while loops, and functions in this article.

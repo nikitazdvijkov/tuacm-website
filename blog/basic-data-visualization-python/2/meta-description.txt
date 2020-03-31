@@ -1,0 +1,1 @@
+In order to write our program, we'll need to cover a few fundamental objects (including strings, lists, tuples, and dictionaries) and what we can do with them.

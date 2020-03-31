@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="To avoid writing code ourselves, we're going to use modules from the python standard library and modules downloaded using pip, the python package installer.">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/spoiler.css">
+		<style>
+			ul ul {
+				margin-bottom: 0;
+			}
+			.terminal pre {
+				color: #AAAAAA;
+			}
+			.terminal .file {
+				color: #295FCC;
+				font-weight: bold;
+			}
+			.terminal .exe {
+				color: #4CE64C;
+				font-weight: bold;
+			}
+			.spoiler *:last-child {
+			    margin-bottom: 0em;
+			}
+		</style>
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>Basic Data Visualization in Python, Pt. 5</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="basic-data-visualization-in-python-pt-5">Basic Data Visualization in Python, Pt. 5</h1></div>
+				<div id="meta-description">We're going to cover how to bring in features not built into python.</div>
+				<div id="date-and-tags">Posted 31 March 2020 at 9:33 AM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>This is the fifth article in the series <a href="../index.html">Basic Data
+					Visualization in Python</a>. In this article, we're going to go beyond the
+					features built into the python language. If you haven't read <a
+					href="../4/index.html">the previous article</a> yet, I would suggest reading
+					it.</i>
+				</p>
+				<h2 id="topics-covered">Topics Covered</h2>
+				<ul>
+					<li><b><code>import</code> and Modules</b>
+					</li>
+					<li><b><code>re</code> and Regular Expressions</b>
+					</li>
+					<li><b>Installing Libraries with <code>pip3</code></b>
+					</li>
+				</ul>
+				<p>It's kind of a weird article because we're combining program entry points with
+					the more general topic of importing modules, but they should flow into each
+					other.
+				</p>
+				<h2 id="import-and-modules"><code>import</code> and Modules</h2>
+				<p>You might notice that up until this point, we've been writing everything we need
+					in one file. As our programs grow in size and complexity, we'll often want to
+					break it apart into multiple files for both ease on the programmers who'll work
+					on the project and reuse of code.
+				</p>
+				<p>For example, say you're writing a large project and you end up writing some
+					graphing software in your code. Once you move onto another project, you notice
+					that you're going to need the same graphing software from last time. If you had
+					a separate file or directory/folder in which you put everything related to the
+					graphing software, you would just need to copy the graphing software files into
+					your directory (or better yet, put them in some sort of shared directory). If,
+					instead, you had put everything into one file, you would have to scour the file
+					for all the relevant functions and then copy them into the file for the second
+					program. It's not going to be fun for you.
+				</p>
+				<p>All programming languages have ways to combat this problem. In <code>C/C++</code>, you use
+					the <code>#include</code> macro, declarations, and linking (see the <a
+					href="https://tuacm.com/blog/c-language/">C series I've written</a> for more
+					information). In <code>Java</code>, you have one class per file and you have to use <code>import</code>
+					statements to use them. In <code>python</code>, you also use an <code>import</code> statement but it
+					works differently from the <code>import</code> statement in <code>Java</code>.
+				</p>
+				<p>Put simply, the <code>import</code> statement in python will run a python file from top to
+					bottom as if you were to execute it like we normally have and add it to the blob
+					that is your program.
+				</p>
+				<p>To see this process in action, create another file in the same directory as
+					<code>example.py</code> (which should be <code>py_data_vis</code> if you were following this
+					tutorial). Let's call this new file <code>impex.py</code> for <code>imp</code>ort <code>ex</code>ample. In
+					<code>impex.py</code>, type the following code:
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;This was printed from impex.py!&quot;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>Notice that we didn't put <code>#!/usr/bin/env python3</code> in <code>impex.py</code>. Once we've
+					started the python interpreter, which we'll do by running <code>example.py</code>, anything
+					<code>example.py</code> imports will be run with the python interpreter, anything imported
+					by anything imported by <code>example.py</code> will also be run with the python
+					interpreter, etc. If we wanted to run <code>impex.py</code>, we would have to add
+					<code>#!/usr/bin/env python3</code> as the first line and then make it an executable with
+					<code>sudo chmod +x impex.py</code> from the terminal. See <a
+					href="../1/index.html#making-an-executable-python-script">The first article in
+					this series</a> for more detailed information.
+				</p>
+				<p>In <code>example.py</code>, type the following code:
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">import</span> <span class="nn">impex</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;This was printed from example.py!&quot;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p><span style="color: red; font-weight: bold;">WARNING: <code>impex.py</code> and
+					<code>example.py</code> must be in the same directory or else this program will not
+					work.</span>
+				</p>
+				<p>Anyway, if you run <code>example.py</code>, the exact sequence of events will be
+				</p>
+				<ol>
+					<li><code>example.py</code> starts running
+					</li>
+					<li><code>example.py</code> imports <code>impex.py</code>
+					</li>
+					<li><code>impex.py</code> will run from top to bottom
+					</li>
+					<li><code>impex.py</code> finishes running
+					</li>
+					<li><code>example.py</code> starts up again after the <code>import</code> statement
+					</li>
+					<li><code>example.py</code> runs until it reaches the end of the file
+					</li>
+				</ol>
+				<p>which will give you the output
+				</p>
+				<div class="mac-terminal"><pre>
+<span class="terminal-oneline">comp:py_data_vis user$ ./example.py</span>
+This was printed from impex.py!
+This was printed from example.py!
+</pre>
+				</div>
+				<p>If, instead, you were to flip the order of the <code>import</code> statement and the
+					<code>print</code> statement in <code>example.py</code>, you'll see that they print in the opposite
+					order, assuming you don't modify <code>impex.py</code>. The following code
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;This was printed from example.py!&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">impex</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>will output
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">~/dev/py_data_vis</span></b>$ ./example.py</span>
+This was printed from example.py!
+This was printed from impex.py!
+</pre>
+				</div>
+				<p>Lastly, try running the following code and see what happens:
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">import</span> <span class="nn">impex</span>
+<span class="kn">import</span> <span class="nn">impex</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;This was printed from example.py!&quot;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<div class="spoiler">
+					<div class="content">
+					<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">~/dev/py_data_vis</span></b>$ ./example.py</span>
+This was printed from impex.py!
+This was printed from example.py!
+</pre>
+					</div>
+					<p><b>Once a file has been imported, it will not run again for the rest of the
+						program, no matter how many times you import it</b>. It might not make sense yet
+						because we haven't actually gone over the main use of importing. Once we go over
+						it, it should make sense.
+					</p>
+					</div>
+				</div>
+				<h3 id="why-use-import">Why Use <code>import</code></h3>
+				<p>You're probably thinking to yourself that all we've really done is split our
+					file into two files which execute one after another, and you might be asking
+					yourself why we would even have an import statement. In general, though, we
+					don't run functions like <code>print</code> in files we want to <code>import</code>, we just define
+					functions, classes, and other things. A more realistic example of importing
+					would have <code>impex.py</code> look like
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="k">def</span> <span class="nf">area_of_circle</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">3.1415926</span> <span class="o">*</span> <span class="n">r</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">volume_of_cylinder</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">height</span> <span class="o">*</span> <span class="n">area_of_circle</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+
+<span class="c1"># A bunch of other functions</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>and <code>example.py</code> look like
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">import</span> <span class="nn">impex</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">impex</span><span class="o">.</span><span class="n">volume_of_cylinder</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>We defined multiple functions in <code>impex.py</code>, then used those functions using the
+					syntax <code>impex.func</code>, where <code>func</code> is the function we want to access. Knowing
+					that this is how we intend to use <code>import</code> statements, it should make sense that
+					we only want to run a file once. It doesn't make sense to rerun the file to
+					create new functions, objects, and classes just because some other file wants
+					to also access them.
+				</p>
+				<h3 id="import-shortcuts"><code>import</code> Shortcuts</h3>
+				<p>Take the last example, in which we imported a function from another file. Let's
+					also say that we only want that one function. We can use the syntax <code>from _____
+					import _____</code>, where the first blank is the file from which we want to import
+					the second blank. For example, we want to import <code>volume_of_cylinder</code> from
+					<code>impex.py</code>, so we would type
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">from</span> <span class="nn">impex</span> <span class="kn">import</span> <span class="n">volume_of_cylinder</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">volume_of_cylinder</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>which would produce the same output. <code>volume_of_cylinder</code> is a bit long and
+					we're only calculating one volume, so we might actually want to shorted it if
+					possible. We can use our old friend <code>as</code> to rename the function, like so
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">from</span> <span class="nn">impex</span> <span class="kn">import</span> <span class="n">volume_of_cylinder</span> <span class="k">as</span> <span class="n">vc</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">vc</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>Note that if we tried using <code>impex.volume_of_cylinder</code>, <code>impex.area_of_circle</code>,
+					<code>impex.vc</code>, or <code>volume_of_cylinder</code> in the last example instead of <code>vc</code>, we
+					would get an error because we've told the python interpreter only to recognize
+					<code>vc</code>. We could have added the previous <code>import</code> statements <code>import impex</code> and
+					<code>from impex import volume_of_cylinder</code> to be able to use everything except
+					<code>impex.vc</code>.
+				</p>
+				<p>Now, let's change it up and say we want both <code>volume_of_cylinder</code> and
+					<code>area_of_circle</code>. In that case, we can combine the <code>from impex import ...</code>
+					statements into one, like so
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">from</span> <span class="nn">impex</span> <span class="kn">import</span> <span class="n">volume_of_cylinder</span> <span class="k">as</span> <span class="n">vc</span><span class="p">,</span> <span class="n">area_of_circle</span> <span class="k">as</span> <span class="n">ac</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">vc</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">ac</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>We might get naming collisions if we're not careful and by making the names too
+					small, we may not see the problem in adding a volume to an area. You still have
+					to pick good variable names when importing functions.
+				</p>
+				<p>Lastly, let's say we want to keep everything under the <code>impex</code> name, but we
+					might want to shorten the name <code>impex</code>. In that case, we can use
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">import</span> <span class="nn">impex</span> <span class="kn">as</span> <span class="nn">im</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">volume_of_cylinder</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">im</span><span class="o">.</span><span class="n">area_of_circle</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>Use whatever works best for your project and keeps the meaning clear.
+				</p>
+				<h3 id="whats-a-module">What's a Module?</h3>
+				<p>A module is another name for a python file. That's it.
+				</p>
+				<h2 id="re-and-regular-expressions"><code>re</code> and Regular Expressions</h2>
+				<p><b>Regular Expressions</b> are a powerful programming tool for searching text.
+					For example, let's say you want to search a large file for all the email
+					addresses. In English an email address is a username (one or more letters,
+					digits, underscores, periods, plus signs, or dashes), followed by an <code>@</code>,
+					followed by a website name (one or more of letters, digits, or dashes)
+					followed by a <code>.</code>, followed by what is apparently known as a <a
+					href="https://en.wikipedia.org/wiki/Top-level_domain">top-level domain</a> like
+					com or org (letters, digits, dashes, or periods).  To search the file, you could
+					use the following regular expression:
+					<code>r"[-a-zA-Z0-9_.+]+&#8203;@&#8203;[-a-zA-Z0-9]+&#8203;\.&#8203;[-a-zA-Z0-9.]+"</code>,
+					which you can read as
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31</pre></div></td><td class="code"><div class="code-block"><pre><span></span>[               Any characters between the square brackets
+    -           The - character
+    a-z         The lowercase ASCII letters
+    A-Z         The uppercase ASCII letters
+    0-9         Any of the digits from 0 to 9
+    _           The _ character
+    .           The . character
+    +           The + character
+]
++               One or more of whatever came before the +.
+                In this case, one or more of any of the
+                characters in the preceding square brackets
+
+@               The @ character
+[               Any characters between the square brackets
+    -
+    a-z
+    A-Z
+    0-9
+]
++               One or more of the whatever came before the +.
+
+\.              The . character
+[
+    -
+    a-z
+    A-Z
+    0-9
+    .
+]
++
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>Regular expressions can get kind of complicated, but in our case, we're just
+					going to replace a bunch of characters with spaces so we can <code>split</code> on more
+					than just whitespace, <a href="../4/index.html#more-complex-splitting">which I
+					brought up in the last article</a>.
+				</p>
+				<p>Anyway, to use regexes in python, we have to import the module <code>re</code>, which is a
+					python file somewhere deep in your system files. In <code>example.py</code>, type the
+					following and see what happens.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;I heard him say, &quot;Hey, John! Come over here.&quot;, then John said, &quot;Why?&quot;, then he said &quot;I saw 7 chickens.&quot;&#39;&#39;&#39;</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Without Replacing Irrelevant Characters&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;------------------------------------------&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">())))</span>
+<span class="k">print</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;With Replacing Irrelevant Characters&quot;</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;------------------------------------------&quot;</span><span class="p">)</span>
+<span class="n">cleaned_string</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[^a-zA-Z0-9\s]&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cleaned_string</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">cleaned_string</span><span class="o">.</span><span class="n">split</span><span class="p">())))</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>I understand that the code is a little weird, but the output should be the
+					original string, then each word found using <code>string.split()</code> on its own line,
+					then the string with all the irrelevant characters replaced with spaces, then
+					each word found using <code>cleaned_string.split()</code> with each word on its own line.
+				</p>
+				<p>I had to use the <b><code>str.join</code></b> function (works in almost the exact opposite
+					way as <code>split</code> by joining together a list of strings into one string separated
+					by some delimeter (the newline, <code>\n</code>, in this case)), the <b><code>map</code></b> function
+					(which returns a new list using the function provided as its first argument on
+					each of the elements of the list provided as its second argument), and the
+					<b><code>str</code></b> function (which converts its argument into a string). None of it is
+					relevant to the current project of writing a program to verify Zipf's Law for
+					some sample text, but it's the easiest way to print out each word on its own
+					line. It also serves as a reminder that python has a lot of features that we
+					can't cover everything.
+				</p>
+				<div class="spoiler">
+					<div class="content">
+					<div class="mac-terminal"><pre>
+<span class="terminal-oneline">comp:py_data_vis user$ ./example.py</span>
+Without Replacing Irrelevant Characters
+------------------------------------------
+I heard him say, "Hey, John! Come over here.", then John said, "Why?", then he said "I saw 7 chickens."
+
+I
+heard
+him
+say,
+"Hey,
+John!
+Come
+over
+here.",
+then
+John
+said,
+"Why?",
+then
+he
+said
+"I
+saw
+7
+chickens."
+
+With Replacing Irrelevant Characters
+------------------------------------------
+I heard him say   Hey  John  Come over here    then John said   Why    then he said  I saw 7 chickens  
+
+I
+heard
+him
+say
+Hey
+John
+Come
+over
+here
+then
+John
+said
+Why
+then
+he
+said
+I
+saw
+7
+chickens
+</pre>
+					</div>
+					<p>Notice that <code>re.sub</code> seems to have substituted a space (second argument to
+						<code>re.sub</code>) for everything (square brackets <code>[]</code>) that wasn't (carat as first
+						character in square brackets <code>[^]</code>) a letter (<code>a-zA-Z</code>), a number (<code>0-9</code>), or
+						whitespace (<code>\s</code>) in the string <code>string</code> (third argument to <code>re.sub</code>). You
+						should also notice that all the words in <code>cleaned_string</code> only contain letters
+						or numbers, but some of the words in <code>string</code> contain punctuation. For the basic
+						word counter we're going to implement, we'll need words without punctuation so
+						that we count <code>"I</code> and <code>I</code> as the same word.
+					</p>
+					</div>
+				</div>
+				<p>Although regular expressions are extremely useful, we will only need them for
+					the purpose of removing all punctuation.
+				</p>
+				<h2 id="installing-libraries-with-pip3">Installing Libraries with <code>pip3</code></h2>
+				<p>To end this article, let's discuss how you can get more libraries using <code>pip3</code>.
+					First, make sure you have it installed (See the first article <a
+					href="../1/index.html#python-interpreter">where we type commands involving the
+					word "install" into the terminal</a>). If you don't and you're on Windows or
+					Linux, type the command <code>sudo apt install -y python-pip python3-pip</code> into the
+					terminal. If you're on Mac, type the command <code>brew install python-pip
+					python3-pip</code>. You should already have python in the terminal, otherwise you
+					wouldn't be able to run any of these scripts.
+				</p>
+				<p>Anyway, using <code>pip3</code> is easy. If you're on Linux, Windows, or Mac, use the
+					command <code>pip3 install [libraries]</code>, where libraries is a list of libraries you
+					want to install, separated by spaces. We're going to need the libraries
+					<code>matplotlib</code> and <code>scipy</code>, so we should type the command
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">~/dev/py_data_vis</span></b>$ pip3 install matplotlib scipy</span>
+
+    A bunch of text relating to installing matplotlib and scipy
+</pre>
+				</div>
+				<p>Just for fun, here's what it would look like in the Mac terminal:
+				</p>
+				<div class="mac-terminal"><pre>
+<span class="terminal-oneline">comp:py_data_vis user$ pip3 install matplotlib scipy</span>
+
+    A bunch of text relating to installing matplotlib and scipy
+</pre>
+				</div>
+				<p>Then, all you have to do to use these libraries is import them like you did with
+					<code>re</code>. To be clear, these libraries have submodules, which you can access using
+					<code>.</code>, like so
+				</p>
+<div class="code-block"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span> <span class="k">as</span> <span class="n">fit</span>
+</pre></div>
+				
+				<p>As you can imagine, these are the two functions and modules we'll need.
+					<code>scipy.optimize.curve_fit</code> will allow us to fit a curve to some data and
+					<code>matplotlib.pyplot</code> will allow us to plot the data.
+				</p>
+				<h2 id="whats-next">What's Next</h2>
+				<p>I think we should have enough to actually write <code>word_counter.py</code>, so we're
+					going to write it in the next article <a href="../6/index.html">Basic Data
+					Visualization, Pt. 6</a>. After that, I'm going to try to recommend a few useful
+					libraries and send you on your way.
+				</p>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#basic-data-visualization-in-python-pt-5" style="padding-left:12px;">Basic Data Visualization in Python, Pt. 5</a>
+				<a href="#topics-covered" style="padding-left:24px;">Topics Covered</a>
+				<a href="#import-and-modules" style="padding-left:24px;"><code>import</code> and Modules</a>
+				<a href="#why-use-import" style="padding-left:36px;">Why Use <code>import</code></a>
+				<a href="#import-shortcuts" style="padding-left:36px;"><code>import</code> Shortcuts</a>
+				<a href="#whats-a-module" style="padding-left:36px;">What's a Module?</a>
+				<a href="#re-and-regular-expressions" style="padding-left:24px;"><code>re</code> and Regular Expressions</a>
+				<a href="#installing-libraries-with-pip3" style="padding-left:24px;">Installing Libraries with <code>pip3</code></a>
+				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>

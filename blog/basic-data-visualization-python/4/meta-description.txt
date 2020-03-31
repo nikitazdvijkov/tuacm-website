@@ -1,0 +1,1 @@
+We'll need to cover some of the many useful features built into python, including file manipulation, sorting, splitting text, lambda functions.

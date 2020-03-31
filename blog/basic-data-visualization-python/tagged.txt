@@ -1,4 +1,6 @@
 
 Basic Data Visualization in Python, Pt. 1|Joseph Mellor|Let's set up a basic python program.|1/
-Basic Data Visualization in Python, Pt. 2|Joseph Mellor|A crash course on python (emphasis on the crash).|2/
-Basic Data Visualization in Python, Pt. 3|Joseph Mellor|Writing the simplest useful program I can think of|3/
+Basic Data Visualization in Python, Pt. 2|Joseph Mellor|The basic ways of organizing and manipulating data in python.|2/
+Basic Data Visualization in Python, Pt. 3|Joseph Mellor|Implementing control flow with compound statements.|3/
+Basic Data Visualization in Python, Pt. 4|Joseph Mellor|We're going to cover a few features built into python.|4/
+Basic Data Visualization in Python, Pt. 5|Joseph Mellor|We're going to cover how to bring in features not built into python.|5/
