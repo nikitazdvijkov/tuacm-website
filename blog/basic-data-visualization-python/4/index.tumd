@@ -1,0 +1,421 @@
+article
+Title:		Basic Data Visualization in Python, Pt. 4
+Author:		Joseph Mellor
+Tagline:	Using features built into python.
+Code Style:	trac+dark
+Import:		aside code-block terminal spoiler
+Scripts:
+
+\{{style}}
+
+ul ul {
+	margin-bottom: 0;
+}
+
+.terminal pre {
+	color: #AAAAAA;
+}
+
+.terminal .file {
+	color: #295FCC;
+	font-weight: bold;
+}
+
+.terminal .exe {
+	color: #4CE64C;
+	font-weight: bold;
+}
+
+.spoiler *:last-child {
+    margin-bottom: 0em;
+}
+
+\{{\style}}
+
+<i>This is the fourth article in the series <a href="../index.html">Basic Data
+Visualization in Python</a>. In this article, we're going to cover several
+features built into the python language. If you haven't read <a
+href="../2/index.html">the previous article</a> yet, I would suggest reading
+it.</i>
+
+# Topics Covered
+
+\{{ul}}
+
+<b>{open}:</b> (file handling)
+
+<b>{with}:</b> (automatic cleanup)
+
+<b>{as}:</b> (renaming)
+
+<b>{pass}:</b> (does nothing, no-op)
+
+<b>{split}:</b> (string tokenization)
+
+<b>{lambda}:</b> (lambda or anonymous functions)
+
+<b>{sorted}:</b> (sorting)
+
+\{{\ul}}
+
+I'm going to have to combine {with} and {as} since {with} generally needs an
+{as} and we won't cover the other big use of {as}.
+
+# The {open} Statement
+
+{open}, put simply, allows us to open files. It takes two arguments:
+
+\{{ol}}
+
+The <b>name of the file</b> you want to open (either with a relative or an
+absolute path).
+
+The <b>mode</b>, or what you want to do with the file (read, write, append).
+
+\{{\ol}}
+
+## Relative and Absolute Paths
+
+An <b>absolute path</b> is the easiest to explain, but it's usually not used as
+often. An <b>absolute uses</b> a universally defined location as its base. On
+Mac and Linux, {/} or {~} are the most common ways to start an absolute path. On
+Windows, {C:\{{empty}}} is the most common way.
+
+A <b>relative path</b> uses the current location as a base. It uses {../} on Mac
+and Linux and {..\{{empty}}} on Windows (<span style="color: red">but not the
+Windows Subsystem for Linux</span>) to move up a directory. Other than that,
+they're the same. If you had a file in {~/dev/py_data_vis} and you were
+currently in the directory {~/dev/py_data_vis}, you could access it using either
+{~/dev/{{zs}}py_data_vis/{{zs}}filename} or just {filename}. If you were in
+{~/dev/} and you wanted to access the same file, you could use
+{py_data_vis/{{zs}}filename} or {~/dev/{{zs}}py_data_vis/{{zs}}filename}.
+Lastly, if you were in {py_data_vis} and you wanted to access a file in {dev},
+you could use {../filename}.
+
+## The {mode}
+
+A mode is a short string that tells {open} how to process the file. There are
+several modes, all of which are explained by this <a
+href="https://stackoverflow.com/a/23566951">StackOverflow answer</a>. I'll do a
+quick summary:
+
+\{{ol}}
+
+{"r"}: Open the file just for reading and not modifying. If the file does not
+exist, it will throw an error.
+
+{"w"}: Open the file just for writing. If the file does not exist, the file will
+be created. Lastly, {"w"} will <span style="color: red; font-weight:
+bold;">overwrite the file if it already exists</span>.
+
+{"a"}: Open the file just for appending. Unlike {"w"}, {"a"} will not overwrite
+the file and instead append to the end of the file. If the file does not exist,
+it will be created.
+
+\{{\ol}}
+
+You can add a {"b"} after every one of these to use binary mode, something I've
+never personally used. More importantly, you can add a {"+"} at the end, which
+will adds the ability to both read and write the file, with everything else
+remaining the same. For example, {"r+"} will not overwrite the file, but {"w+"}
+will. {"a+"} will open the file for both appending and reading.
+
+## Acutally Using {open}
+
+Download <a href="../sample-text.txt">sample-text.txt</a>, the file we'll be
+analyzing. It's the text of the novel <i>Moby Dick</i> from <a
+href="www.gutenberg.org">Project Gutenberg</a>, but I removed some of the
+Gutenberg stuff because it could intefere with the data. Then, move it into
+{py_data_vis}. On Linux, use:
+
+\{{terminal}}
+
+{{user}}="user"
+{{computer-name}}="comp"
+{{dir}}="~/dev/py_data_vis"
+{{dir-color}}="#295FCC"
+{{u-and-c-color}}="#4CE64C"
+{{prompt}} mv ~/Downloads/sample-text.txt .
+
+\{{\terminal}}
+
+That last line uses the {mv} command to move {~/Downloads/{{zs}}sample-text.txt}
+to the current directory, {~/dev/{{zs}}py_data_vis}.
+
+On Mac, use:
+
+\{{terminal}}
+
+{{mac-dir}}="py_data_vis"
+{{mac-prompt}} mv ~/Downloads/sample-text.txt .
+
+\{{\terminal}}
+
+On Windows, use:
+
+\{{terminal}}
+
+{{win-path}}="win-home/dev/py_data_vis"
+{{dir}}="{{win-path}}"
+{{prompt}} mv ~/win-home/Downloads/sample-text.txt .
+
+\{{\terminal}}
+
+If you don't have a file called {win-home} in {~} on the Windows Susbsystem for
+Linux, use the following commands.
+
+\{{terminal}}
+
+{{dir}}="/mnt/c/Users/[user]/dev/py_data_vis"
+{{prompt}} ln -s /mnt/c/Users/[user] win-home
+{{prompt}} cd ~/{{win-path}}
+{{dir}}="~/{{win-path}}"
+{{prompt}} mv ~/win-home/Downloads/sample-text.txt .
+
+\{{\terminal}}
+
+Anyway, now that we have a file in {py_data_vis} to mess with, let's create a
+basic program to read from the file and tell us if the word {the} shows up
+anywhere in the file. Open up {py_data_vis/example.py} and type the following.
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+
+reader = open("sample-text.txt", "r")
+have_seen_the = False
+for line in reader:
+    if "the" in line:
+        have_seen_the = True
+        break
+
+if have_seen_the:
+    print('The word "the" is in the file "sample-text.txt".')
+else:
+    print('The word "the" is NOT in the file "sample-text.txt".')
+
+\{{\code-block}}
+
+All good, right?
+
+# The {with} Statement
+
+There's acutally a large mistake I'm making in the code that won't harm your
+computer in this case, but it could lead to memory leaks if you coded like this
+all the time, as the computer may not realize that you're done reading the file
+and keep it open. You need a corresponding {close} call, which you can add after
+the for loop. Even adding the {close} has its own problems, so we're going to
+turn to the {with} statemen, which will always clean up the file after we're
+done with it. If we were to rewrite the previous code with a {with} statement,
+it would look like
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+
+have_seen_the = False
+with open("sample-text.txt", "r") as reader:
+    for line in reader:
+        if "the" in line:
+            have_seen_the = True
+            break
+
+# reader has been closed
+
+if have_seen_the:
+    print('The word "the" is in the file "sample-text.txt".')
+else:
+    print('The word "the" is NOT in the file "sample-text.txt".')
+
+\{{\code-block}}
+
+In general, you want to open files using a {with open(..., ...) as variable:}
+statement. Once you exit the indentation, the {with} statement will close the
+file.
+
+## The {with ... as} Statement
+
+In a few specific circumstances, you can use {as} to create an alias for the
+output of whatever comes before it. The {with} statement is the only situation
+in which we can use an {as} statement.
+
+# The {pass} Statement
+
+{pass} does literally nothing. It's used as a placeholder for code you haven't
+written yet to make sure the code you do have still works without crashing. As
+an example, we're going to need to open a file in later, but we won't have
+established what we need to do, so we're going to add a {pass} statement so our
+code still runs. It isn't strictly necessary, as you can always just wait to
+write the code, but it might be useful if you want to debug a program. Here's an
+example usage:
+
+\{{code-block python no-line-numbers}}
+
+with open("sample-text.txt", "r") as reader:
+    pass
+
+\{{\code-block}}
+
+The above code will open {sample-text.txt} for reading, do nothing, and then
+clean up. If we didn't have the {pass} statement, we would get an error.
+
+# The {split} Function
+
+The {split} function will take a string and split it into a list based on its
+first argument. If it has no arguments, it will split based on whitespace. You
+can also specify the number of splits you want to perform with another argument.
+Check out the <a
+href="https://www.w3schools.com/python/ref_string_split.asp">full specification
+for the python split function</a> if you have more questions. Also, you might
+want to reread the <a href="../3/index.html">previous article</a>.
+
+For example, type the following in {example.py}:
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+
+string = "The quick brown fox jumped over the lazy dog."
+list_of_words = string.split()
+print(list_of_words)
+
+\{{\code-block}}
+
+\{{aside}}
+### Why is the Order of {split} Wrong?
+<hr>
+
+Unlike all the functions we've seen up to this point, we call this function
+using the syntax {string.split()} instead of {split(string)}, where {string} is
+the text we want to split. Under the hood, it's essentially {str.split(string)},
+where {str} is the string class in python, {str.split} is the {split} method in
+the {str} class, and its first argument is {string}. I'll say it again for
+clarity: when you see {object.method(args)}, it is equivalent to
+{class.method(object, args)}, where {object} is an instance of {class}. It's not
+really a big deal. Until you actually make a class yourself, you may not
+understand what exactly is happening, but it's not a big deal.
+
+\{{\aside}}
+
+I know the name {list of words} might give away what {string.split()} will
+return (which is how you name variables well), but try to guess what this will
+output.
+
+\{{spoiler}}
+
+\{{terminal}}
+
+{{prompt}} ./example.py
+['The', 'quick', 'brown', 'fox', 'jumped', 'over', 'the', 'lazy', 'dog.']
+{{prompt}}
+
+\{{\terminal}}
+
+Yeah, it's a list of words in the string.
+
+\{{\spoiler}}
+
+Notice that {'dog.'} includes the period because {split} used whitespace to
+separate the words. If we want to split on something other than whitespace and
+something that isn't just a specific sequence of characters, we normally replace
+all the characters we want to split with spaces and then just use {split}
+without an argument. We're going to need to do this later, so keep this fact in
+mind.
+
+# {lambda} Functions
+
+{lambda} functions are short, one line functions usually to implement simple
+tasks or mathematical functions. The have the syntax:
+
+\{{code-block python no-line-numbers}}
+
+#!/usr/bin/env python3
+
+length_func = lambda a, b, c: (a ** 2 + b ** 2 + c ** 2) ** (1 / 2)
+print(length_func(3, 4, 12))
+
+\{{\code-block}}
+
+which will print out
+
+\{{terminal}}
+
+{{prompt}} ./example.py
+13.0
+{{prompt}}
+
+\{{\terminal}}
+
+Once you define the {lambda} function and store it in a variable, you can then
+use that variable like a function. You can also do the same thing with functions
+since everything in python is an object, but it doesn't come up as often.
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+
+def length(a, b, c):
+    return (a ** 2 + b ** 2 + c ** 2) ** (1 / 2)
+
+length_func = length
+print(length_func(3, 4, 12))
+
+\{{\code-block}}
+
+The above code and the {lambda} code will print out the same exact result. Just
+think of {lambda} functions as unnamed, one line functions and you'll be fine.
+
+# The {sorted} Function
+
+The {sorted} function takes in a list and returns a sorted list in ascending
+order. Here's an example:
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+
+unsorted_list = [ 15, 25, 62, 1, 25, 85, 41, 95 ]
+sorted_list = sorted(unsorted_list)
+print(sorted_list)
+
+\{{\code-block}}
+
+I'm not going to ask you for the output because it's too obvious: it's a list
+sorted in ascending order.
+
+\{{terminal mac}}
+
+{{mac-prompt}} ./example.py
+[1, 15, 25, 25, 41, 62, 85, 95]
+{{mac-prompt}}
+
+\{{\terminal}}
+
+Now, let's say you wanted to sort the list in descending order. You could sort
+the list, then reverse it, but you can also tell {sorted} to sort the list in
+descending order directly, using the {reversed} keyword argument.
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+
+unsorted_list = [ 15, 25, 62, 1, 25, 85, 41, 95 ]
+sorted_list = sorted(unsorted_list, reversed=True)
+print(sorted_list)
+
+\{{\code-block}}
+
+Say instead of numbers, you had a list of tuples and you wanted to sort them by
+the second element. You could then use the {key} keyword argument.
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+
+unsorted_list = [ (15, "apple"), (25, "bottom"), (62, "jeans"), (1, "boots"),
+(25, "with"), (85, "the"), (41, "fur"), (95, "and") ]
+sorted_list = sorted(unsorted_list, key = lambda x: x[1])
+print(sorted_list)
+
+\{{\code-block}}
+

@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/spoiler.css">
+		<style>
+			ul ul {
+				margin-bottom: 0;
+			}
+			.terminal pre {
+				color: #AAAAAA;
+			}
+			.terminal .file {
+				color: #295FCC;
+				font-weight: bold;
+			}
+			.terminal .exe {
+				color: #4CE64C;
+				font-weight: bold;
+			}
+			.spoiler *:last-child {
+			    margin-bottom: 0em;
+			}
+		</style>
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>Basic Data Visualization in Python, Pt. 2</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="basic-data-visualization-in-python-pt-2">Basic Data Visualization in Python, Pt. 2</h1></div>
+				<div id="meta-description">The basic ways of organizing and manipulating data in python.</div>
+				<div id="date-and-tags">Posted 5 March 2020 at 8:33 AM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>This is the second article in the series <a href="../index.html">Basic Data
+					Visualization in Python</a>. In this article, we're going to cover the basics of
+					data manipulation in python using the data structures built into the language.
+					If you haven't read <a href="../1/index.html">the first article</a> yet, I would
+					suggest reading it so you can set up python for this project.</i>
+				</p>
+				<h2 id="topics-covered">Topics Covered</h2>
+				<ul>
+					<li><b>How <code>python</code> Handles Statements</b>
+					</li>
+					<li><b>Experimenting with the Python Interpreter</b>
+					</li>
+					<li><b>Objects</b>
+						<ul>
+							<li><b>Numbers:</b> (integer and floating point)
+							</li>
+							<li><b>Lists:</b> (arrays, vectors, etc.)
+							</li>
+							<li><b>Strings:</b> (text)
+							</li>
+							<li><b>Tuples:</b> (immutable ordered lists)
+							</li>
+							<li><b>Dictionaries:</b> (hash tables, unordered maps, associative arrays, etc.)
+							</li>
+						</ul>
+					</li>
+					<li><b>Program Structure</b>
+						<ul>
+							<li><b>Entry Points</b> (first statement your program reads)
+							</li>
+							<li><b><code>import</code> and Modules</b>
+							</li>
+						</ul>
+					</li>
+					<li><b><code>re</code> and Regular Expressions</b>
+					</li>
+					<li><b>Installing Libraries with <code>pip3</code></b>
+					</li>
+				</ul>
+				<p>Since <b>How <code>python</code> Handles Statements</b> is a short but necessary topic, I'm
+					including it within this article instead of putting it in its own article.
+				</p>
+				<h2 id="how-python-handles-statements">How <code>python</code> Handles Statements</h2>
+				<p><code>python</code> will read your statements from top to bottom in the file.
+				</p>
+				<p>Unlike languages like <code>C</code>, <code>C++</code>, and <code>Java</code>, statements in <code>python</code> end when
+					the line ends. Furthermore, instead of using curly braces, <code>python</code> uses
+					indentation and a colon to indicate which statements are grouped together.
+				</p>
+				<p>Statements in <code>C</code>, <code>C++</code>, and <code>Java</code>:
+				</p>
+<div class="code-block"><pre><span></span><span class="n">statement</span><span class="p">;</span>
+
+<span class="n">control_statement</span> <span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">statement</span><span class="p">;</span>
+    <span class="n">statement</span><span class="p">;</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>Statements in <code>python</code>:
+				</p>
+<div class="code-block"><pre><span></span><span class="n">statement</span>
+
+<span class="n">compound_statement</span> <span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">statement</span>
+    <span class="n">statement</span>
+    <span class="o">...</span>
+</pre></div>
+				
+				<p>We'll go into more detail for the <code>compound_statement</code> syntax later in the
+					<a href="../3/index.html">next article</a>.
+				</p>
+				<h2 id="experimenting">Experimenting</h2>
+				<p>I encourage you to use the <code>python</code> interpreter to experiment with any of these
+					concepts that I'll introduce in this article. You can start it up using the
+					command <code>python3</code> in the terminal (Terminal/Terminal Emulator on Linux and Mac
+					and the Ubuntu App if you're using the <a href="https://www.dataquest.io/blog/tutorial-install-linux-on-windows-wsl/">Windows Subsystem for Linux</a>. Read the linked article for how
+					to set up the Windows Subsystem for Linux) like so:
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~/dev/py_data_vis</b></span>$ python3</span>
+Python 3.7.3 (default, Mar 27 2019, 22:11:17)
+[GCC 4.8.2] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt;
+</pre>
+				</div>
+				<p>The next three lines after you type Enter/Return are just version information
+					about which python you're using. As long as you see a <code>&gt;&gt;&gt;</code>,
+					you're probably fine. You can then type any expression and see the result pop
+					up. For example, if you were on MacOS and you wanted to see the result of <code>3 +
+					2</code>, you would type
+				</p>
+				<div class="mac-terminal"><pre>
+<span class="terminal-oneline">comp:py_data_vis user$ python3</span>
+Python 3.7.3 (default, Mar 27 2019, 22:11:17)
+[GCC 4.8.2] on mac
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt; 3 + 2
+5
+</pre>
+				</div>
+				<p>If you want to see the value of a variable, you can just type the name of the
+					variable like so:
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><span style="color:#4CE64C;"><b>user@comp</b></span>:<span style="color:#295FCC;"><b>~/dev/py_data_vis</b></span>$ python3</span>
+Python 3.7.3 (default, Mar 27 2019, 22:11:17)
+[GCC 4.8.2] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt; a = 3 + 2
+&gt;&gt;&gt; a
+5
+</pre>
+				</div>
+				<p>Once you're finished experimenting, exit using <code>Ctrl + D</code> to return to the
+					terminal.
+				</p>
+				<h2 id="objects">Objects</h2>
+				<p>Unlike languages like <code>C</code>, <code>C++</code>, and <code>Java</code>, there are no explicitly declared
+					types. Instead (if you'll excuse the analogy), each variable is like a large box
+					that can hold anything of any type inside it, where the box is completely
+					separate from its contents. Objects can have types, but the variables themselves
+					do not. When you use a variable in your code, the <code>python</code> interpreter will take
+					whatever object is stored in the variable and do what the code says to do.
+				</p>
+				<p>You can assign variables using the syntax <code>[variable] = [Object]</code>, like so:
+				</p>
+<div class="code-block"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">b</span> <span class="o">=</span> <span class="s2">&quot;Test&quot;</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mf">1.3</span>
+<span class="n">a</span> <span class="o">=</span> <span class="s2">&quot;Test 2&quot;</span>
+</pre></div>
+				
+				<p>If <code>&bull;</code> represents an arbitrary operation (such as <code>+</code>, <code>-</code>, <code>*</code>, etc.,
+					which we'll discuss more in the next section), then <code>a &bull;= b</code> is equivalent
+					to <code>a = a &bull; b</code>. For example,
+				</p>
+				<div class="mac-terminal"><pre>
+<span class="terminal-oneline">comp:py_data_vis user$ python3</span>
+Python 3.7.3 (default, Mar 27 2019, 22:11:17)
+[GCC 4.8.2] on mac
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt; a = 5
+&gt;&gt;&gt; a += 6
+&gt;&gt;&gt; a
+11
+</pre>
+				</div>
+				<p>since <code>a += 6</code> would expand out to <code>a = a + 6</code> &rArr; <code>a = 5 + 6</code> &rArr; <code>a =
+					11</code>.
+				</p>
+				<h3 id="numbers">Numbers</h3>
+				<p>As in most programming languages, there are two types of numbers: integers and
+					floating point numbers. Integers are the the numbers {0, 1, 2, 3, ...} and
+					their negatives and they convert directly into <a
+					href="../../integer-representations-binary/index.html">Two's Complement
+					Integers</a>. Unlike other languages, they don't have a fixed width, meaning you
+					don't have to worry about integer overflow. Floating point numbers are built
+					into the hardware, so they generally follow the IEEE-754 floating point
+					precision format, specifically the <a
+					href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">Double-Precision
+					Floating-Point Format</a>. Floating point numbers are numbers written in
+					scientific notation (1.23400 &times; 10<sup>3</sup>, but in base two. You have
+					~16 decimal digits of precision and you can represent numbers from
+					~10<sup>-308</sup> to 10<sup>308</sup>.
+				</p>
+				<p><b>If you would not describe something using scientific notation, you probably
+					should use an integer</b>. To elaborate, if a value is discrete, like the number
+					of elements in a list, the number of people in a store, or the amount of money
+					you have (you can't have half a cent and you wouldn't say "I have $1.23400
+					&times; 10<sup>3</sup> in my bank account), use an integer. If a value is
+					continuous, like the amount of water you have in a bottle, the average height of
+					all the people in a store, or the exchange rates between currencies, use a
+					floating point number.
+				</p>
+				<p>You can make an integer by declaring a number without a decimal point and a
+					floating point number by declaring a number with a decimal point, like so:
+				</p>
+<div class="code-block"><pre><span></span><span class="n">integer</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">floating_point</span> <span class="o">=</span> <span class="mf">1.</span>
+</pre></div>
+				
+				<p>As you would expect, you can add, subtract, multiply, divide, and use
+					parentheses to group numbers, but you can also take the remainder of a division,
+					raise them to powers, and perform integer division (rounds to the integer
+					closest to zero), like so
+				</p>
+<div class="code-block"><pre><span></span><span class="n">addition_example</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span>                <span class="c1"># 1 + 2         -&gt;   3</span>
+<span class="n">subtraction_example</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span>             <span class="c1"># 1 - 2         -&gt;  -1</span>
+<span class="n">multiplication_example</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">3</span>          <span class="c1"># 2 * 3         -&gt;   6</span>
+<span class="n">division_example</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span>                <span class="c1"># 1 / 2         -&gt;   0.5</span>
+<span class="n">remainder_example</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">%</span> <span class="mi">7</span>              <span class="c1"># 20 % 7        -&gt;   6</span>
+<span class="n">square_example</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">**</span> <span class="mi">2</span>                 <span class="c1"># 5 ** 2        -&gt;  25</span>
+<span class="n">cube_example</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">**</span> <span class="mi">3</span>                   <span class="c1"># 5 ** 3        -&gt; 125</span>
+<span class="n">square_root_example</span> <span class="o">=</span> <span class="mi">25</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>     <span class="c1"># 25 ** (1 / 2) -&gt;   5.0</span>
+<span class="n">integer_division_example</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">//</span> <span class="mi">2</span>       <span class="c1"># 1 // 2        -&gt;   0</span>
+<span class="n">parentheses_example</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>       <span class="c1"># (1 + 2) / 2   -&gt;   1.5</span>
+</pre></div>
+				
+				<p>If you want, you can experiment with this after this article to learn more. Try
+					using the <code>python</code> interpreter (instructions are found in the section <a
+					href="#experimenting">Experimenting</a> above) to answer the following
+					questions (mouse over the rectangles below to see the solutions):
+				</p>
+				<ul>
+					<li>Using the Pythagorean Theorem, calculate the length of the diagonal of a
+						rectangle with a length of 9 units and a width of 40 units. In other words,
+						rewrite the expression <img src="pythagorean.png"> in <code>python</code> code.
+						<div class="spoiler">
+							<div class="content">
+							<div class="terminal"><pre>
+&gt;&gt;&gt; (9 ** 2 + 40 ** 2) ** (1 / 2)
+41.0
+&gt;&gt;&gt;
+</pre>
+							</div>
+							</div>
+						</div>
+					</li>
+					<li>If you were to buy 200 toys and divide them evenly between 14 schools, how many
+						would each school have? How many would be left over?
+						<div class="spoiler">
+							<div class="content">
+							<div class="mac-terminal"><pre>
+&gt;&gt;&gt; toys_per_school = 200 // 14
+&gt;&gt;&gt; toys_left_over = 200 % 14
+&gt;&gt;&gt; toys_per_school
+14
+&gt;&gt;&gt; toys_left_over
+4
+&gt;&gt;&gt;
+</pre>
+							</div>
+							<p>Note that we used integer division (<code>//</code>) because we wanted an integer number of
+								toys and we wanted to round to zero.
+							</p>
+							</div>
+						</div>
+					</li>
+					<li>Evaluate the expressions <code>10.5 / 1.25</code>, <code>10.5 // 1.25</code>, and <code>10.5 % 1.25</code>, and
+						explain the reasons for their outputs.
+						<div class="spoiler">
+							<div class="content">
+							<div class="terminal"><pre>
+&gt;&gt;&gt; 10.5 // 1.25
+8.0
+&gt;&gt;&gt; 10.5 % 1.25
+0.5
+&gt;&gt;&gt; 10.5 / 1.25
+8.4
+</pre>
+							</div>
+							<p><code>10.5 / 1.25</code> is exactly what you would get from just dividing the numbers,
+								<code>10.5 // 1.25</code> rounds the result of <code>10.5 / 1.25</code> towards zero, and <code>10.5 %
+								1.25</code> is <code>10.5 - (10.5 // 1.25) * 1.25</code>, or the remainder when you divide <code>10.5</code>
+								by an integer multiple of <code>1.25</code>.
+							</p>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<h3 id="lists">Lists</h3>
+				<p><b>Lists</b> in python are modifiable ordered collections of objects of
+					modifiable length. You can create a list using <code>[e0, e1, e2,...]</code>, and you
+					access elements from that list using <code>a[i]</code>, where <code>a</code> is the list and <code>i</code> is
+					the number of elements after the first element. You can treat <code>a[i]</code> just like a
+					variable. For example,
+				</p>
+				<div class="mac-terminal"><pre>
+&gt;&gt;&gt; a = [ 1, 2, 3 ]
+&gt;&gt;&gt; a[0]
+1
+&gt;&gt;&gt; a[1]
+2
+&gt;&gt;&gt; a[0] = 7
+&gt;&gt;&gt; a[0]
+7
+&gt;&gt;&gt; a
+[ 7, 2, 3 ]
+</pre>
+				</div>
+				<p>As you can see, we created a list with elements {1, 2, 3}, printed out the
+					first two, and changed the first element using <code>a[0] = 7</code>. <span
+					id="reversing-sequential-data">We can also go backwards through the list using
+					<code>a[i]</code>, with <code>i</code> being negative</span>. The last element is <code>-1</code>, the second to
+					last element is <code>-2</code>, etc. Lastly, we can take sections of a list (known as
+					<b>list slicing</b>) using <code>a[start:stop:step]</code>, where <code>start</code> is the first
+					element we want, <code>stop</code> is the element after the last element we want, and
+					<code>step</code> is how many elements we want to go over. The easiest way to see this in
+					action is to see a bunch of examples, so try to guess what the following
+					statements will print out:
+				</p>
+				<div class="terminal"><pre>
+&gt;&gt;&gt; a = [ 1, 2, 3, 4, 5, 6 ]
+&gt;&gt;&gt; a[-1]
+&gt;&gt;&gt; a[0:3]
+&gt;&gt;&gt; a[2:-1]
+&gt;&gt;&gt; a[2:]
+&gt;&gt;&gt; a[::2]
+&gt;&gt;&gt; a[1::2]
+&gt;&gt;&gt; a[::-1]
+&gt;&gt;&gt; a[1::-1]
+&gt;&gt;&gt; a[-1:0:-1]
+&gt;&gt;&gt; a[:0:-1]
+&gt;&gt;&gt; a[-1:0:-2]
+</pre>
+				</div>
+				<p>You can see what they actually print out by typing them into the <code>python</code>
+					interpreter in the terminal, but <b>you should write out your guesses first so
+					you can see exactly what you think these statements will do</b>. In doing so,
+					you'll be able to seewhere you're making your mistakes in understanding this
+					topic and then fix them. If you can't access a terminal but you want to
+					continue, the answers are below. Mouse over them to see them.
+				</p>
+				<div class="spoiler">
+					<div class="content">
+					<div class="terminal"><pre>
+&gt;&gt;&gt; a = [ 1, 2, 3, 4, 5, 6 ]
+&gt;&gt;&gt; a[-1]
+6
+&gt;&gt;&gt; a[0:3]
+[1, 2, 3]
+&gt;&gt;&gt; a[2:-1]
+[3, 4, 5]
+&gt;&gt;&gt; a[2:]
+[3, 4, 5, 6]
+&gt;&gt;&gt; a[::2]
+[1, 3, 5]
+&gt;&gt;&gt; a[1::2]
+[2, 4, 6]
+&gt;&gt;&gt; a[::-1]
+[6, 5, 4, 3, 2, 1]
+&gt;&gt;&gt; a[1::-1]
+[2, 1]
+&gt;&gt;&gt; a[-1:0:-1]
+[6, 5, 4, 3, 2]
+&gt;&gt;&gt; a[:0:-1]
+[6, 5, 4, 3, 2]
+&gt;&gt;&gt; a[-1:0:-2]
+[6, 4, 2]
+&gt;&gt;&gt;
+</pre>
+					</div>
+					</div>
+				</div>
+				<p>You can concatenate lists using <code>list_a + list_b</code>. For example:
+				</p>
+				<div class="mac-terminal"><pre>
+&gt;&gt;&gt; a = [1, 2, 3]
+&gt;&gt;&gt; b = [4, 5, 6]
+&gt;&gt;&gt; a + b
+[1, 2, 3, 4, 5, 6]
+&gt;&gt;&gt;
+</pre>
+				</div>
+				<p>Lists can also have duplicated elements, like so
+				</p>
+				<div class="terminal"><pre>
+&gt;&gt;&gt; a = [1, 1, 2]
+&gt;&gt;&gt; a[0]
+1
+&gt;&gt;&gt; a[1]
+1
+&gt;&gt;&gt;
+</pre>
+				</div>
+				<p>Since lists are objects, you can make a list of lists:
+				</p>
+				<div class="mac-terminal"><pre>
+&gt;&gt;&gt; a = [ [1, 2], [3, 4] ]
+&gt;&gt;&gt; a[0]
+[1, 2]
+&gt;&gt;&gt; a[0][1]
+2
+&gt;&gt;&gt; a[1]
+[3, 4]
+&gt;&gt;&gt; a[1][0]
+3
+&gt;&gt;&gt;
+</pre>
+				</div>
+				<p>Lastly, since each element of a list is a variable, lists can hold different
+					types of objects (though doing so likely means you should rethink your
+					approach).
+				</p>
+				<div class="terminal"><pre>
+&gt;&gt;&gt; [1, 1.5, 'This is a string.']
+[1, 1.5, 'This is a string.']
+&gt;&gt;&gt;
+</pre>
+				</div>
+				<h3 id="strings">Strings</h3>
+				<p>Strings, as in most programming languages, represent text in <code>python</code>. Unlike
+					other languages, there are four ways to declare a string in <code>python</code>:
+				</p>
+				<ul>
+					<li><b>single quotes (<code>'Example'</code>):</b> Allow you to use double quotes inside a
+						string without escaping them.
+					</li>
+					<li><b>double quotes (<code>"Example"</code>):</b> Allow you to use single quotes inside a
+						string without escaping them.
+					</li>
+					<li><b>three single quotes (<code>'''Example'''</code>):</b> Allow you to use single quotes,
+						double quotes, and newlines (what happens when you hit Enter/Return on your
+						computer) without escaping them.
+					</li>
+					<li><b>three double quotes (<code>"""Example"""</code>):</b> Allow you to use single quotes,
+						double quotes, and newlines (what happens when you hit Enter/Return on your
+						computer) without escaping them.
+					</li>
+				</ul>
+				<p>After you declare a string using one of these four ways, there is no difference
+					between how you use them.
+				</p>
+				<p>Try typing the following phrases into the terminal to see what I mean:
+				</p>
+				<div class="mac-terminal"><pre>
+&gt;&gt;&gt; 'example'
+&gt;&gt;&gt; "example"
+&gt;&gt;&gt; '''example'''
+&gt;&gt;&gt; """example"""
+
+&gt;&gt;&gt; 'There's an error here.'
+&gt;&gt;&gt; "There's no error here."
+&gt;&gt;&gt; "He said, "This will cause an error.""
+&gt;&gt;&gt; 'He said, "This will not cause an error."'
+
+&gt;&gt;&gt; 'He said, "There's an error here."'
+&gt;&gt;&gt; "He said, "There's an error here.""
+&gt;&gt;&gt; """He said, "There's no error here.""""
+&gt;&gt;&gt; '''He said, "There's no error here."'''
+
+&gt;&gt;&gt; 'This statement
+...
+... will have an error.'
+&gt;&gt;&gt; "This statement
+...
+... will have an error."
+&gt;&gt;&gt; """This statement
+...
+... will not have an error."""
+&gt;&gt;&gt; '''This statement
+...
+... will not have an error.'''
+&gt;&gt;&gt;
+</pre>
+				</div>
+				<p>The empty lines are just to divide the exercises into small chunks and the <code>...</code>
+					will show up when you type a statement that goes onto the next line. For
+					example, you should try (stop if you have an error) to type <code>'This statement</code>,
+					hit Enter/Return twice, then type <code>will have an error.'</code>. Try to predict what
+					will happen when you type these statements and then explain the results.
+				</p>
+				<p>As before, answers are below if you can't type it into your terminal.
+				</p>
+				<p>First four:
+				</p>
+				<div class="spoiler">
+					<div class="content">
+					<div class="terminal"><pre>&gt;&gt;&gt; 'example'
+'example'
+&gt;&gt;&gt; "example"
+'example'
+&gt;&gt;&gt; '''example'''
+'example'
+&gt;&gt;&gt; """example"""
+'example'
+</pre>
+					</div>
+					<p>As you can see, all four produce the same output.
+					</p>
+					</div>
+				</div>
+				<p>Next four:
+				</p>
+				<div class="spoiler">
+					<div class="content">
+					<div class="terminal"><pre>&gt;&gt;&gt; 'There's an error here.'
+  File "&lt;stdin&gt;", line 1
+    'There's an error here.'
+           ^
+SyntaxError: invalid syntax
+&gt;&gt;&gt; "There's no error here."
+"There's no error here."
+&gt;&gt;&gt; "He said, "This will cause an error.""
+  File "&lt;stdin&gt;", line 1
+    "He said, "This will cause an error.""
+                  ^
+SyntaxError: invalid syntax
+&gt;&gt;&gt; 'He said, "This will not cause an error."'
+'He said, "This will not cause an error."'
+</pre>
+					</div>
+					<p>The first string throws an error because it reaches a single quote, meaning it's
+						reached the end of the string (since the string started with a single quote) and
+						it doesn't know what to do with everything after the second single quote. It's
+						reading the text as <code>('There')s</code>, where the parentheses represent where strings
+						start and end and it stops reading the line when it hits an error.
+					</p>
+					<p>The third string throws an error because it reaches a double quote, meaning it's
+						reached the end of the string (since the string started with a double quote) and
+						it doesn't know what to do with everything after the second double quote. Like
+						with the first string, it will read the text as <code>("He said, ")This</code> and stops
+						reading the line once it hits an error.
+					</p>
+					</div>
+				</div>
+				<p>Next four:
+				</p>
+				<div class="spoiler">
+					<div class="content">
+					<div class="terminal"><pre>
+&gt;&gt;&gt; 'He said, "There's an error here."'
+  File "&lt;stdin&gt;", line 1
+    'He said, "There's an error here."'
+                     ^
+SyntaxError: invalid syntax
+&gt;&gt;&gt; "He said, "There's an error here.""
+  File "&lt;stdin&gt;", line 1
+    "He said, "There's an error here.""
+                   ^
+SyntaxError: invalid syntax
+&gt;&gt;&gt; """He said, "There's an error here.""""
+  File "&lt;stdin&gt;", line 1
+    """He said, "There's an error here.""""
+                                          ^
+SyntaxError: EOL while scanning string literal
+&gt;&gt;&gt; '''He said, "There's no error here."'''
+'He said, "There\'s no error here."'
+</pre>
+					</div>
+					<p>There's an error in the first three because the strings are terminated on the
+						text before the next space immediately after the quote marks. The first two are
+						explained in the last answer, but the third one happens because <code>""""</code> is split
+						up like <code>""" "</code> instead of <code>" """</code>. You'll also notice that the last one prints
+						out the quote mark in the string with a <code>\'</code> before it, which tells the
+						interpreter that the quote mark should not be interpreted as ending the string.
+					</p>
+					</div>
+				</div>
+				<p>Last four:
+				</p>
+				<div class="spoiler">
+					<div class="content">
+					<div class="terminal"><pre>
+&gt;&gt;&gt; 'This statement
+  File "&lt;stdin&gt;", line 1
+    'This statement
+                  ^
+SyntaxError: EOL while scanning string literal
+&gt;&gt;&gt; "This statement
+  File "&lt;stdin&gt;", line 1
+    "This statement
+                  ^
+SyntaxError: EOL while scanning string literal
+&gt;&gt;&gt; """This statement
+...
+... will not have an error."""
+'This statement\n\nwill not have an error.'
+&gt;&gt;&gt; '''This statement
+...
+... will not have an error.'''
+'This statement\n\nwill not have an error.'
+&gt;&gt;&gt;
+</pre>
+					</div>
+					<p>You can't go onto the next line when using single quote and double quote
+						strings, but you can with three single quotes or three double quotes.
+					</p>
+					</div>
+				</div>
+				<p>After typing in the last two statements, you'll notice that the outputs seem to
+					stay on the next line but they have two <code>\n</code>'s where you hit Enter/Return twice.
+					The <code>\n</code> is a special character that means go onto the next line and will not be
+					displayed if you were to use the <code>print</code> function or you put one in a file.
+					Instead, everything after the <code>\n</code> would move down a line. There are other
+					special characters like <code>\t</code> for tab, but we won't go into them here.
+				</p>
+				<p>Once you've declared a string, you can access it just like a list, with slicing,
+					accessing individual elements, etc. You cannot, however, modify a string in
+					place.
+				</p>
+				<div class="mac-terminal"><pre>
+&gt;&gt;&gt; a = "Test"
+&gt;&gt;&gt; a[0]
+'T'
+&gt;&gt;&gt; a[0:2]
+'Te'
+&gt;&gt;&gt; a[0] = 't'
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+TypeError: 'str' object does not support item assignment
+</pre>
+				</div>
+				<p>You can, however concatenate strings using <code>+</code> like you would a list:
+				</p>
+				<div class="terminal"><pre>
+&gt;&gt;&gt; 'a' + 'b'
+'ab'
+</pre>
+				</div>
+				<h3 id="tuples">Tuples</h3>
+				<p>Tuples are immutable, ordered collections of data. They are denoted with
+					parentheses around data:
+				</p>
+				<div class="mac-terminal"><pre>
+&gt;&gt;&gt; a = ('Joseph', 20)
+&gt;&gt;&gt; a[0]
+'Joseph'
+&gt;&gt;&gt; a[1]
+20
+&gt;&gt;&gt; a[1] + 1
+21
+&gt;&gt;&gt; a[0] = 'Patrick'
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+TypeError: 'tuple' object does not support item assignment
+</pre>
+				</div>
+				<p>Tuples can also be concatenated like strings:
+				</p>
+				<div class="terminal"><pre>
+&gt;&gt;&gt; ('Joseph', [1, 2, 3], (1, 2)) + ('Jacob', 1, [1, 2])
+('Joseph', [1, 2, 3], (1, 2), 'Jacob', 1, [1, 2])
+</pre>
+				</div>
+				<h3 id="dictionaries">Dictionaries</h3>
+				<p>Dictionaries are known by many names (associative arrays, hash tables, unordered
+					maps, etc.), but they match a key to a value. For example, let's say we want to
+					associate a person with his/her age. We could use the person's name as a key and
+					their age as a value, like so:
+				</p>
+				<div class="mac-terminal"><pre>
+&gt;&gt;&gt; people = { 'Joseph' : 20, 'Jacob' : 21, 'Patrick' : 20 }
+&gt;&gt;&gt;
+</pre>
+				</div>
+				<p>We can access elements of <code>people</code> similar to how we accessed elements of a
+					list, except that instead of using an index, we use the key, like so:
+				</p>
+				<div class="terminal"><pre>
+&gt;&gt;&gt; people['Joseph']
+20
+&gt;&gt;&gt; people['Patrick'] = 21
+&gt;&gt;&gt; people
+{'Joseph': 20, 'Jacob': 21, 'Patrick': 21}
+&gt;&gt;&gt;
+</pre>
+				</div>
+				<p>As you can see above, we set the value corresponding to <code>'Patrick'</code> to be <code>21</code>,
+					which we would need to do when he reaches his 21<sup>th</sup> birthday. To add
+					elements to a dictionary, we can use the same syntax we used to change the value
+					for the key <code>'Patrick'</code>, namely <code>dictionary[key] = value</code>. For example,
+				</p>
+				<div class="mac-terminal"><pre>
+&gt;&gt;&gt; people['Jake'] = 46
+&gt;&gt;&gt; people
+{'Joseph': 20, 'Jacob': 21, 'Patrick': 21, 'Jake': 46}
+&gt;&gt;&gt;
+</pre>
+				</div>
+				<p>Notice that the elements are in the order in which we added them and not any
+					sorted order.
+				</p>
+				<h2 id="exercises">Exercises</h2>
+				<p>Just to make sure we're on the same page, I'm going to ask a few questions about
+					the properties and uses of various objects in python.
+				</p>
+				<ol>
+					<li>How would you store the text <code>I don't really know what I want to do.</code>?
+						<div class="spoiler">
+							<div class="content">
+							<p>Any of the following would work:
+							</p>
+							<div class="terminal"><pre>
+&gt;&gt;&gt; string = "I don't really know what I want to do."
+&gt;&gt;&gt; string = """I don't really know what I want to do."""
+&gt;&gt;&gt; string = '''I don't really know what I want to do.'''
+&gt;&gt;&gt; string = 'I don\'t really know what I want to do.'
+</pre>
+							</div>
+							<p>Note that the last one escapes the single quote in <code>don't</code> so it can use single
+								quotes to enclose the string.
+							</p>
+							</div>
+						</div>
+					</li>
+					<li>How would you store the song lyrics exactly as shown below:<br>
+						<code>Do you remember when<br>
+						Things seemed so eternal?<br>
+						Heroes were so real<br>
+						Their magic frozen in time</code>
+						<div class="spoiler">
+							<div class="content">
+							<div class="mac-terminal"><pre>
+&gt;&gt;&gt; lyrics = """Do you remember when
+... Things seemed so eternal?
+... Heroes were so real
+... Their magic frozen in time"""
+&gt;&gt;&gt; lyrics = '''Do you remember when
+... Things seemed so eternal?
+... Heroes were so real
+... Their magic frozen in time'''
+&gt;&gt;&gt; lyrics = 'Do you remember when\nThings seemed so eternal?\nHeroes were so real\nTheir magic frozen in time'
+&gt;&gt;&gt; lyrics = "Do you remember when\nThings seemed so eternal?\nHeroes were so real\nTheir magic frozen in time"
+</pre>
+							</div>
+							<p>The first two use triple quotes to include the newlines, while the last two use
+								the <code>\n</code> escape character.
+							</p>
+							</div>
+						</div>
+					</li>
+					<li>List all the objects mentioned in this article and whether you can change them
+						after you create them.
+						<div class="spoiler">
+							<div class="content">
+							<ul>
+								<li><b>Lists:</b> Yes
+								</li>
+								<li><b>Strings:</b> No
+								</li>
+								<li><b>Tuples:</b> No
+								</li>
+								<li><b>Dictionaries:</b> Yes
+								</li>
+							</ul>
+							<p>Numbers are primitive to the point that there is no difference between changing
+								them after you create them and replacing them with new ones.
+							</p>
+							</div>
+						</div>
+					</li>
+					<li>Assume that you have a program that will read temperature over the course of an
+						hour over equally spaced intervals and then graph the results. What object
+						should you use to store this information and what object should you use to
+						represent temperature?
+						<div class="spoiler">
+							<div class="content">
+							<p>First, you should be using <b>floating point numbers</b> to represent
+								temperature since temperature is continuous.  You should use a <b>list</b> to
+								store all the information since you aren't working with text (which precludes
+								strings) you need it to be ordered (which precludes dictionaries), and you need
+								it to be mutable (which precludes tuples).
+							</p>
+							</div>
+						</div>
+					</li>
+					<li>If the temperature were not read over equally spaced intervals, but instead read
+						at random times, what object should you use to store each individual data point
+						(time and temperature)? Assume that the time recorded is in milliseconds after
+						starting the measurement.
+						<div class="spoiler">
+							<div class="content">
+							<p>Either <b>two separate lists</b>, with one containing time of measurement and
+								the other containing temperature, or a <b>list of tuples</b>, with each tuple
+								containing a time and a temperature. It's trivial to convert from one to the
+								other, so you should choose the one that works best with your interface.
+							</p>
+							</div>
+						</div>
+					</li>
+					<li>What object would be best to store data for an event, assuming the event is
+						defined by an event name, date, start time, end time, and place? Don't worry
+						about the specific types of name, date, etc.
+						<div class="spoiler">
+							<div class="content">
+							<p>Technically, you can use a list, dictionary, or a tuple, using an implicit
+								ordering for the list and the tuple so that the first element is something like
+								the name, the second element is the date, etc.
+							</p>
+							<div class="terminal"><pre>
+&gt;&gt;&gt; event = [ 'Event Name', date, start, end, place ]
+&gt;&gt;&gt; event = ( 'Event Name', date, start, end, place )
+&gt;&gt;&gt; event = { 'Name' : 'Event Name',
+... 'Date' : date,
+... 'Start Time' : start,
+... 'End Time' : end,
+... 'Place' : place
+... }
+...
+&gt;&gt;&gt;
+</pre>
+							</div>
+							<p>To me, I would probably use an extension of a tuple known as a <b>named
+								tuple</b> or a <b>class</b>, which allows me to get the name using <code>event.name</code>,
+								but we haven't covered them. With tuples, you have a nice regularity of your
+								data that will allow you to easily map it to a database and back. Plus, it uses
+								the least amount of memory to store data. With dictionaries, you can update the
+								structure of your events (say by adding something like a notes section) without
+								having to update all the events. Plus, it makes it easier to find relevant data
+								by topic. I wouldn't use a list as you end up getting the worst of both worlds.
+							</p>
+							</div>
+						</div>
+					</li>
+					<li>You are writing a program for a school that keeps track of students by a unique
+						id number, their name, their grades, what year they'll graduate, and their
+						majors. What would you use to store this information such that you can update
+						and read information about a student given an id?
+						<div class="spoiler">
+							<div class="content">
+							<p>If you are only going to read and modify data about a student given an id, then
+								you should use a <b>dictionary, with the key being the id and the value being a
+								tuple (preferably a named tuple) with all the other information.</b> It's
+								important to note that as soon as you want something more complicated, such as
+								printing out all the students with a 3.0 GPA or above, you'll probably want to
+								switch to a database.
+							</p>
+							</div>
+						</div>
+					</li>
+					<li>What object should you use to store words and the number of times each word
+						shows up in some text?
+						<div class="spoiler">
+							<div class="content">
+							<p>A <b>dictionary with the key for the word and the count as its value</b>.
+							</p>
+							</div>
+						</div>
+					</li>
+				</ol>
+				<h2 id="whats-next">What's Next</h2>
+				<p>In the next article, <a href="../3/index.html">Basic Data Visualization, Pt.
+					3</a>, we're going to cover <b>Compound Statements</b>, specifically the ones
+					that focus on <b>Control Flow</b>.
+				</p>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#basic-data-visualization-in-python-pt-2" style="padding-left:12px;">Basic Data Visualization in Python, Pt. 2</a>
+				<a href="#topics-covered" style="padding-left:24px;">Topics Covered</a>
+				<a href="#how-python-handles-statements" style="padding-left:24px;">How <code>python</code> Handles Statements</a>
+				<a href="#experimenting" style="padding-left:24px;">Experimenting</a>
+				<a href="#objects" style="padding-left:24px;">Objects</a>
+				<a href="#numbers" style="padding-left:36px;">Numbers</a>
+				<a href="#lists" style="padding-left:36px;">Lists</a>
+				<a href="#strings" style="padding-left:36px;">Strings</a>
+				<a href="#tuples" style="padding-left:36px;">Tuples</a>
+				<a href="#dictionaries" style="padding-left:36px;">Dictionaries</a>
+				<a href="#exercises" style="padding-left:24px;">Exercises</a>
+				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>

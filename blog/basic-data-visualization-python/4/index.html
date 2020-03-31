@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/spoiler.css">
+		<style>
+			ul ul {
+				margin-bottom: 0;
+			}
+			.terminal pre {
+				color: #AAAAAA;
+			}
+			.terminal .file {
+				color: #295FCC;
+				font-weight: bold;
+			}
+			.terminal .exe {
+				color: #4CE64C;
+				font-weight: bold;
+			}
+			.spoiler *:last-child {
+			    margin-bottom: 0em;
+			}
+		</style>
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>Basic Data Visualization in Python, Pt. 4</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="basic-data-visualization-in-python-pt-4">Basic Data Visualization in Python, Pt. 4</h1></div>
+				<div id="meta-description">Using features built into python.</div>
+				<div id="date-and-tags">Posted 30 March 2020 at 6:27 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p><i>This is the fourth article in the series <a href="../index.html">Basic Data
+					Visualization in Python</a>. In this article, we're going to cover several
+					features built into the python language. If you haven't read <a
+					href="../2/index.html">the previous article</a> yet, I would suggest reading
+					it.</i>
+				</p>
+				<h2 id="topics-covered">Topics Covered</h2>
+				<ul>
+					<li><b><code>open</code>:</b> (file handling)
+					</li>
+					<li><b><code>with</code>:</b> (automatic cleanup)
+					</li>
+					<li><b><code>as</code>:</b> (renaming)
+					</li>
+					<li><b><code>pass</code>:</b> (does nothing, no-op)
+					</li>
+					<li><b><code>split</code>:</b> (string tokenization)
+					</li>
+					<li><b><code>lambda</code>:</b> (lambda or anonymous functions)
+					</li>
+					<li><b><code>sorted</code>:</b> (sorting)
+					</li>
+				</ul>
+				<p>I'm going to have to combine <code>with</code> and <code>as</code> since <code>with</code> generally needs an
+					<code>as</code> and we won't cover the other big use of <code>as</code>.
+				</p>
+				<h2 id="the-open-statement">The <code>open</code> Statement</h2>
+				<p><code>open</code>, put simply, allows us to open files. It takes two arguments:
+				</p>
+				<ol>
+					<li>The <b>name of the file</b> you want to open (either with a relative or an
+						absolute path).
+					</li>
+					<li>The <b>mode</b>, or what you want to do with the file (read, write, append).
+					</li>
+				</ol>
+				<h3 id="relative-and-absolute-paths">Relative and Absolute Paths</h3>
+				<p>An <b>absolute path</b> is the easiest to explain, but it's usually not used as
+					often. An <b>absolute uses</b> a universally defined location as its base. On
+					Mac and Linux, <code>/</code> or <code>~</code> are the most common ways to start an absolute path. On
+					Windows, <code>C:\</code> is the most common way.
+				</p>
+				<p>A <b>relative path</b> uses the current location as a base. It uses <code>../</code> on Mac
+					and Linux and <code>..\</code> on Windows (<span style="color: red">but not the
+					Windows Subsystem for Linux</span>) to move up a directory. Other than that,
+					they're the same. If you had a file in <code>~/dev/py_data_vis</code> and you were
+					currently in the directory <code>~/dev/py_data_vis</code>, you could access it using either
+					<code>~/dev/&#8203;py_data_vis/&#8203;filename</code> or just <code>filename</code>. If you were in
+					<code>~/dev/</code> and you wanted to access the same file, you could use
+					<code>py_data_vis/&#8203;filename</code> or <code>~/dev/&#8203;py_data_vis/&#8203;filename</code>.
+					Lastly, if you were in <code>py_data_vis</code> and you wanted to access a file in <code>dev</code>,
+					you could use <code>../filename</code>.
+				</p>
+				<h3 id="the-mode">The <code>mode</code></h3>
+				<p>A mode is a short string that tells <code>open</code> how to process the file. There are
+					several modes, all of which are explained by this <a
+					href="https://stackoverflow.com/a/23566951">StackOverflow answer</a>. I'll do a
+					quick summary:
+				</p>
+				<ol>
+					<li><code>"r"</code>: Open the file just for reading and not modifying. If the file does not
+						exist, it will throw an error.
+					</li>
+					<li><code>"w"</code>: Open the file just for writing. If the file does not exist, the file will
+						be created. Lastly, <code>"w"</code> will <span style="color: red; font-weight:
+						bold;">overwrite the file if it already exists</span>.
+					</li>
+					<li><code>"a"</code>: Open the file just for appending. Unlike <code>"w"</code>, <code>"a"</code> will not overwrite
+						the file and instead append to the end of the file. If the file does not exist,
+						it will be created.
+					</li>
+				</ol>
+				<p>You can add a <code>"b"</code> after every one of these to use binary mode, something I've
+					never personally used. More importantly, you can add a <code>"+"</code> at the end, which
+					will adds the ability to both read and write the file, with everything else
+					remaining the same. For example, <code>"r+"</code> will not overwrite the file, but <code>"w+"</code>
+					will. <code>"a+"</code> will open the file for both appending and reading.
+				</p>
+				<h3 id="acutally-using-open">Acutally Using <code>open</code></h3>
+				<p>Download <a href="../sample-text.txt">sample-text.txt</a>, the file we'll be
+					analyzing. It's the text of the novel <i>Moby Dick</i> from <a
+					href="www.gutenberg.org">Project Gutenberg</a>, but I removed some of the
+					Gutenberg stuff because it could intefere with the data. Then, move it into
+					<code>py_data_vis</code>. On Linux, use:
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">~/dev/py_data_vis</span></b>$ mv ~/Downloads/sample-text.txt .</span>
+</pre>
+				</div>
+				<p>That last line uses the <code>mv</code> command to move <code>~/Downloads/&#8203;sample-text.txt</code>
+					to the current directory, <code>~/dev/&#8203;py_data_vis</code>.
+				</p>
+				<p>On Mac, use:
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline">comp:py_data_vis user$ mv ~/Downloads/sample-text.txt .</span>
+</pre>
+				</div>
+				<p>On Windows, use:
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">win-home/dev/py_data_vis</span></b>$ mv ~/win-home/Downloads/sample-text.txt .</span>
+</pre>
+				</div>
+				<p>If you don't have a file called <code>win-home</code> in <code>~</code> on the Windows Susbsystem for
+					Linux, use the following commands.
+				</p>
+				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">/mnt/c/Users/[user]/dev/py_data_vis</span></b>$ ln -s /mnt/c/Users/[user] win-home</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">/mnt/c/Users/[user]/dev/py_data_vis</span></b>$ cd ~/win-home/dev/py_data_vis</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">~/win-home/dev/py_data_vis</span></b>$ mv ~/win-home/Downloads/sample-text.txt .</span>
+</pre>
+				</div>
+				<p>Anyway, now that we have a file in <code>py_data_vis</code> to mess with, let's create a
+					basic program to read from the file and tell us if the word <code>the</code> shows up
+					anywhere in the file. Open up <code>py_data_vis/example.py</code> and type the following.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="n">reader</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;sample-text.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">have_seen_the</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;the&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+        <span class="n">have_seen_the</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">break</span>
+
+<span class="k">if</span> <span class="n">have_seen_the</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;The word &quot;the&quot; is in the file &quot;sample-text.txt&quot;.&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;The word &quot;the&quot; is NOT in the file &quot;sample-text.txt&quot;.&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>All good, right?
+				</p>
+				<h2 id="the-with-statement">The <code>with</code> Statement</h2>
+				<p>There's acutally a large mistake I'm making in the code that won't harm your
+					computer in this case, but it could lead to memory leaks if you coded like this
+					all the time, as the computer may not realize that you're done reading the file
+					and keep it open. You need a corresponding <code>close</code> call, which you can add after
+					the for loop. Even adding the <code>close</code> has its own problems, so we're going to
+					turn to the <code>with</code> statemen, which will always clean up the file after we're
+					done with it. If we were to rewrite the previous code with a <code>with</code> statement,
+					it would look like
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="n">have_seen_the</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;sample-text.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;the&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">have_seen_the</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">break</span>
+
+<span class="c1"># reader has been closed</span>
+
+<span class="k">if</span> <span class="n">have_seen_the</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;The word &quot;the&quot; is in the file &quot;sample-text.txt&quot;.&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;The word &quot;the&quot; is NOT in the file &quot;sample-text.txt&quot;.&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>In general, you want to open files using a <code>with open(..., ...) as variable:</code>
+					statement. Once you exit the indentation, the <code>with</code> statement will close the
+					file.
+				</p>
+				<h3 id="the-with--as-statement">The <code>with ... as</code> Statement</h3>
+				<p>In a few specific circumstances, you can use <code>as</code> to create an alias for the
+					output of whatever comes before it. The <code>with</code> statement is the only situation
+					in which we can use an <code>as</code> statement.
+				</p>
+				<h2 id="the-pass-statement">The <code>pass</code> Statement</h2>
+				<p><code>pass</code> does literally nothing. It's used as a placeholder for code you haven't
+					written yet to make sure the code you do have still works without crashing. As
+					an example, we're going to need to open a file in later, but we won't have
+					established what we need to do, so we're going to add a <code>pass</code> statement so our
+					code still runs. It isn't strictly necessary, as you can always just wait to
+					write the code, but it might be useful if you want to debug a program. Here's an
+					example usage:
+				</p>
+<div class="code-block"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;sample-text.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+				
+				<p>The above code will open <code>sample-text.txt</code> for reading, do nothing, and then
+					clean up. If we didn't have the <code>pass</code> statement, we would get an error.
+				</p>
+				<h2 id="the-split-function">The <code>split</code> Function</h2>
+				<p>The <code>split</code> function will take a string and split it into a list based on its
+					first argument. If it has no arguments, it will split based on whitespace. You
+					can also specify the number of splits you want to perform with another argument.
+					Check out the <a
+					href="https://www.w3schools.com/python/ref_string_split.asp">full specification
+					for the python split function</a> if you have more questions. Also, you might
+					want to reread the <a href="../3/index.html">previous article</a>.
+				</p>
+				<p>For example, type the following in <code>example.py</code>:
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;The quick brown fox jumped over the lazy dog.&quot;</span>
+<span class="n">list_of_words</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">list_of_words</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<div class="aside" >
+					<h4>Why is the Order of <code>split</code> Wrong?</h4>
+					<hr>
+					<p>Unlike all the functions we've seen up to this point, we call this function
+						using the syntax <code>string.split()</code> instead of <code>split(string)</code>, where <code>string</code> is
+						the text we want to split. Under the hood, it's essentially <code>str.split(string)</code>,
+						where <code>str</code> is the string class in python, <code>str.split</code> is the <code>split</code> method in
+						the <code>str</code> class, and its first argument is <code>string</code>. I'll say it again for
+						clarity: when you see <code>object.method(args)</code>, it is equivalent to
+						<code>class.method(object, args)</code>, where <code>object</code> is an instance of <code>class</code>. It's not
+						really a big deal. Until you actually make a class yourself, you may not
+						understand what exactly is happening, but it's not a big deal.
+					</p>
+				</div>
+				<p>I know the name <code>list of words</code> might give away what <code>string.split()</code> will
+					return (which is how you name variables well), but try to guess what this will
+					output.
+				</p>
+				<div class="spoiler">
+					<div class="content">
+					<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">~/win-home/dev/py_data_vis</span></b>$ ./example.py</span>
+['The', 'quick', 'brown', 'fox', 'jumped', 'over', 'the', 'lazy', 'dog.']
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">~/win-home/dev/py_data_vis</span></b>$</span>
+</pre>
+					</div>
+					<p>Yeah, it's a list of words in the string.
+					</p>
+					</div>
+				</div>
+				<p>Notice that <code>'dog.'</code> includes the period because <code>split</code> used whitespace to
+					separate the words. If we want to split on something other than whitespace and
+					something that isn't just a specific sequence of characters, we normally replace
+					all the characters we want to split with spaces and then just use <code>split</code>
+					without an argument. We're going to need to do this later, so keep this fact in
+					mind.
+				</p>
+				<h2 id="lambda-functions"><code>lambda</code> Functions</h2>
+				<p><code>lambda</code> functions are short, one line functions usually to implement simple
+					tasks or mathematical functions. The have the syntax:
+				</p>
+<div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="n">length_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="p">(</span><span class="n">a</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">length_func</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+</pre></div>
+				
+				<p>which will print out
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">~/win-home/dev/py_data_vis</span></b>$ ./example.py</span>
+13.0
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">~/win-home/dev/py_data_vis</span></b>$</span>
+</pre>
+				</div>
+				<p>Once you define the <code>lambda</code> function and store it in a variable, you can then
+					use that variable like a function. You can also do the same thing with functions
+					since everything in python is an object, but it doesn't come up as often.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">b</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">length_func</span> <span class="o">=</span> <span class="n">length</span>
+<span class="k">print</span><span class="p">(</span><span class="n">length_func</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>The above code and the <code>lambda</code> code will print out the same exact result. Just
+					think of <code>lambda</code> functions as unnamed, one line functions and you'll be fine.
+				</p>
+				<h2 id="the-sorted-function">The <code>sorted</code> Function</h2>
+				<p>The <code>sorted</code> function takes in a list and returns a sorted list in ascending
+					order. Here's an example:
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="n">unsorted_list</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">95</span> <span class="p">]</span>
+<span class="n">sorted_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">unsorted_list</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sorted_list</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>I'm not going to ask you for the output because it's too obvious: it's a list
+					sorted in ascending order.
+				</p>
+				<div class="mac-terminal"><pre>
+<span class="terminal-oneline">comp:py_data_vis user$ ./example.py</span>
+[1, 15, 25, 25, 41, 62, 85, 95]
+<span class="terminal-oneline">comp:py_data_vis user$</span>
+</pre>
+				</div>
+				<p>Now, let's say you wanted to sort the list in descending order. You could sort
+					the list, then reverse it, but you can also tell <code>sorted</code> to sort the list in
+					descending order directly, using the <code>reversed</code> keyword argument.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="n">unsorted_list</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">95</span> <span class="p">]</span>
+<span class="n">sorted_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">unsorted_list</span><span class="p">,</span> <span class="nb">reversed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sorted_list</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>Say instead of numbers, you had a list of tuples and you wanted to sort them by
+					the second element. You could then use the <code>key</code> keyword argument.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="n">unsorted_list</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;apple&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">62</span><span class="p">,</span> <span class="s2">&quot;jeans&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;boots&quot;</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="s2">&quot;with&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">85</span><span class="p">,</span> <span class="s2">&quot;the&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">41</span><span class="p">,</span> <span class="s2">&quot;fur&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">95</span><span class="p">,</span> <span class="s2">&quot;and&quot;</span><span class="p">)</span> <span class="p">]</span>
+<span class="n">sorted_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">unsorted_list</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sorted_list</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#basic-data-visualization-in-python-pt-4" style="padding-left:12px;">Basic Data Visualization in Python, Pt. 4</a>
+				<a href="#topics-covered" style="padding-left:24px;">Topics Covered</a>
+				<a href="#the-open-statement" style="padding-left:24px;">The <code>open</code> Statement</a>
+				<a href="#relative-and-absolute-paths" style="padding-left:36px;">Relative and Absolute Paths</a>
+				<a href="#the-mode" style="padding-left:36px;">The <code>mode</code></a>
+				<a href="#acutally-using-open" style="padding-left:36px;">Acutally Using <code>open</code></a>
+				<a href="#the-with-statement" style="padding-left:24px;">The <code>with</code> Statement</a>
+				<a href="#the-with--as-statement" style="padding-left:36px;">The <code>with ... as</code> Statement</a>
+				<a href="#the-pass-statement" style="padding-left:24px;">The <code>pass</code> Statement</a>
+				<a href="#the-split-function" style="padding-left:24px;">The <code>split</code> Function</a>
+				<a href="#lambda-functions" style="padding-left:24px;"><code>lambda</code> Functions</a>
+				<a href="#the-sorted-function" style="padding-left:24px;">The <code>sorted</code> Function</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>
