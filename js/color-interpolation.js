@@ -158,7 +158,7 @@ function color_squares() {
 	colors = interpolate_colors(c1, c2, num_intermediates);
 	squares = "";
 	for (var i = 0; i < num_intermediates + 2; i++) {
-		squares += "<div class=\"color-interpolation-square\" style=\"width: calc(100% / " + (num_intermediates + 2) + " - 2px); background: " + colors[i] + "\">"
+		squares += "<div class=\"color-interpolation-square\" style=\"width: calc(100% / " + (num_intermediates + 2) + " - 1px); background: " + colors[i] + "\">"
 			+ "<div class=\"color-interpolation-data\"><div class=\"color-interpolation-textbox\">"
 			+ colors[i]
 			+ "</div></div>"

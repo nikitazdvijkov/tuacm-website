@@ -19,9 +19,9 @@
 }
 
 .color-interpolation-data:hover {
-	width: 8ch;
-	height: 2ch;
-	padding: 1ch;
+	width: 9ch;
+	height: 4ch;
+	padding: 0.75ch;
 	margin-top: calc((100px - 4ch) / 2);
 	border-radius: 8px;
 }
