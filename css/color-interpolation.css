@@ -6,6 +6,17 @@
 
 .color-interpolation-textbox {
 	opacity: 0;
+	font-weight: bold;
+	font-size: 8pt;
+	font-family: "Lucidia Console","Monaco Regular",monospace,"Courier New";
+}
+
+#color-squares {
+	background: #FF00FF;
+	height: 100px;
+	width: 100%;
+	margin-top: 1em;
+	margin-bottom: 1em;
 }
 
 .color-interpolation-data {
@@ -19,13 +30,14 @@
 }
 
 .color-interpolation-data:hover {
-	width: 9ch;
+	width: 80%;
+	max-width: 7ch;
+	min-width: 5.5ch;
 	height: 4ch;
-	padding: 0.75ch;
+	padding-top: 1ch;
 	margin-top: calc((100px - 4ch) / 2);
 	border-radius: 8px;
 }
-
 
 .color-interpolation-data:hover .color-interpolation-textbox {
 	opacity: 1;
