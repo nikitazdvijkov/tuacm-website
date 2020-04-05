@@ -133,3 +133,16 @@
 		width: 95%;
 	}
 }
+
+@media screen and (min-width: 1220px) {
+	.article {
+		margin: 0 auto;
+	}
+	#sidenav, #sidenav-activator {
+		width: calc(200px + 5% - 61px);
+	}
+	#sidenav a {
+		width: 90%;
+		margin: 0 auto;
+	}
+}
