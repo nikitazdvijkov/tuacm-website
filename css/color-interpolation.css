@@ -46,9 +46,9 @@
 
 .color-interpolation-data {
 	margin: 0 auto;
-	margin-top: calc((100px - 3ch) / 2);
-	width: 3ch;
-	height: 3ch;
+	margin-top: calc((100px - 2ch) / 2);
+	width: 2ch;
+	height: 2ch;
 	background: #FFFFFF;
 	border-radius: 1000px;
 	text-align: center;
@@ -58,9 +58,8 @@
 	width: 80%;
 	max-width: 7ch;
 	min-width: 5.5ch;
-	height: 4ch;
-	padding-top: 1ch;
-	margin-top: calc((100px - 4ch) / 2);
+	height: 2ch;
+	margin-top: calc((100px - 2ch) / 2);
 	border-radius: 8px;
 }
 
