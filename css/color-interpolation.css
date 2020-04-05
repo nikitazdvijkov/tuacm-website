@@ -4,9 +4,13 @@
 	border: 1px solid #444444;
 }
 
-.color-interpolation-input {
+.color-interpolation-input-box {
 	float: left;
 	width: calc(100% / 3);
+}
+
+.color-interpolation-input {
+	margin: 0 auto;
 }
 
 .color-interpolation-textbox {
