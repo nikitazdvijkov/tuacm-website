@@ -59,6 +59,7 @@
 	max-width: 7ch;
 	min-width: 5.5ch;
 	height: 2ch;
+	padding-top: 0.1em;
 	margin-top: calc((100px - 2ch) / 2);
 	border-radius: 8px;
 }
