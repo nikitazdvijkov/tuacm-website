@@ -4,6 +4,11 @@
 	border: 1px solid #444444;
 }
 
+.color-interpolation-input {
+	float: left;
+	width: calc(100% / 3);
+}
+
 .color-interpolation-textbox {
 	opacity: 0;
 	font-weight: bold;
