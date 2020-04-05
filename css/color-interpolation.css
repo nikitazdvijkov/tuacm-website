@@ -1,0 +1,32 @@
+.color-interpolation-square {
+	float: left;
+	height: 100%;
+	border: 1px solid #444444;
+}
+
+.color-interpolation-textbox {
+	opacity: 0;
+}
+
+.color-interpolation-data {
+	margin: 0 auto;
+	margin-top: calc((100px - 3ch) / 2);
+	width: 3ch;
+	height: 3ch;
+	background: #FFFFFF;
+	border-radius: 1000px;
+	text-align: center;
+}
+
+.color-interpolation-data:hover {
+	width: 8ch;
+	height: 2ch;
+	padding: 1ch;
+	margin-top: calc((100px - 4ch) / 2);
+	border-radius: 8px;
+}
+
+
+.color-interpolation-data:hover .color-interpolation-textbox {
+	opacity: 1;
+}
