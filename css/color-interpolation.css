@@ -10,7 +10,9 @@
 }
 
 .color-interpolation-input {
-	margin: 0 auto;
+	text-align: center;
+	padding-top: 2.5em;
+	margin-top: -2em;
 }
 
 .color-interpolation-textbox {
@@ -24,7 +26,7 @@
 	background: #FF00FF;
 	height: 100px;
 	width: 100%;
-	margin-top: 1em;
+	margin-top: 5.5em;
 	margin-bottom: 1em;
 }
 
