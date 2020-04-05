@@ -37,7 +37,7 @@
 .code-block .no { color: #00FFFF } /* Name.Constant */
 .code-block .ni { color: #800080 } /* Name.Entity */
 .code-block .ne { color: #990000; font-weight: bold } /* Name.Exception */
-.code-block .nf { color: #9DFDD3; font-weight: bold } /* Name.Function */
+.code-block .nf { color: #80ffc8; font-weight: bold } /* Name.Function */
 .code-block .nn { color: #AAAAAA } /* Name.Namespace */
 .code-block .nt { color: #7373FF } /* Name.Tag */
 .code-block .nv { color: #FF2020 } /* Name.Variable */
