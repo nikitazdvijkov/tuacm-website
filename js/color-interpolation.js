@@ -143,14 +143,20 @@ function interpolate_colors(color2, color1, num_intermediates) {
 	min_color = Math.min(c1[0], c2[0]);
 	max_color = Math.max(c1[0], c2[0]);
 	if (max_color - min_color > min_color - max_color + 360) {
-		console.log("Weird Colors");
+		temp_color = max_color;
+		temp_color[0] -= 360;
+		max_color = min_color;
+		min_color = temp_color;
 	}
 
 	out_array = [];
 
 	var i;
 	for (i = 0; i <= num_intermediates + 1; i++) {
-		interpolated_color = interpolate(c1, c2, (1.0 * i) / (num_intermediates + 1));
+		interpolated_color = interpolate(min_color, max_color, (1.0 * i) / (num_intermediates + 1));
+		if (interpolated_color[0] < 0) {
+			interpolated_color[0] += 360;
+		}
 		console.log(interpolated_color);
 		out_array.push(HSLToHex(interpolated_color[0], interpolated_color[1], interpolated_color[2]));
 	}
