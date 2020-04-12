@@ -148,6 +148,7 @@ function interpolate_colors(color1, color2, num_intermediates) {
 	var i;
 	for (i = 0; i <= num_intermediates + 1; i++) {
 		interpolated_color = interpolate(c1, c2, (1.0 * i) / (num_intermediates + 1));
+		console.log(interpolated_color);
 		out_array.push(HSLToHex(interpolated_color[0], interpolated_color[1], interpolated_color[2]));
 	}
 	return out_array;
