@@ -77,9 +77,9 @@ function RGBToHSL(r,g,b) {
 
 	h = Math.round(h * 60);
 
-	//// Make negative hues positive behind 360°
-	//if (h < 0)
-	//	h += 360;
+	// Make negative hues positive behind 360°
+	if (h < 0)
+		h += 360;
 
 	// Calculate lightness
 	l = (cmax + cmin) / 2;
@@ -96,8 +96,6 @@ function RGBToHSL(r,g,b) {
 
 function HSLToHex(h,s,l) {
 	// Must be fractions of 1
-	if (h < 0)
-		h += 360;
 	s /= 100;
 	l /= 100;
 
@@ -137,11 +135,16 @@ function interpolate(c1, c2, t) {
 	return new_color;
 }
 
-function interpolate_colors(color1, color2, num_intermediates) {
+function interpolate_colors(color2, color1, num_intermediates) {
 	c1 = hexToRGB(color1);
 	c2 = hexToRGB(color2);
 	c1 = RGBToHSL(c1[0], c1[1], c1[2]);
 	c2 = RGBToHSL(c2[0], c2[1], c2[2]);
+	min_color = min(c1, c2);
+	max_color = max(c1, c2);
+	if (max_color - min_color < min_color - max_color + 360) {
+		console.log("Weird Colors")
+	}
 
 	out_array = [];
 
