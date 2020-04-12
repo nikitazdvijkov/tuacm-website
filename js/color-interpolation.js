@@ -140,10 +140,10 @@ function interpolate_colors(color2, color1, num_intermediates) {
 	c2 = hexToRGB(color2);
 	c1 = RGBToHSL(c1[0], c1[1], c1[2]);
 	c2 = RGBToHSL(c2[0], c2[1], c2[2]);
-	min_color = min(c1, c2);
-	max_color = max(c1, c2);
+	min_color = Math.min(c1, c2);
+	max_color = Math.max(c1, c2);
 	if (max_color - min_color < min_color - max_color + 360) {
-		console.log("Weird Colors")
+		console.log("Weird Colors");
 	}
 
 	out_array = [];
