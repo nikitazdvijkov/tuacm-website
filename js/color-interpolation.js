@@ -77,9 +77,9 @@ function RGBToHSL(r,g,b) {
 
 	h = Math.round(h * 60);
 
-	// Make negative hues positive behind 360°
-	if (h < 0)
-			h += 360;
+	//// Make negative hues positive behind 360°
+	//if (h < 0)
+	//	h += 360;
 
 	// Calculate lightness
 	l = (cmax + cmin) / 2;
@@ -96,6 +96,8 @@ function RGBToHSL(r,g,b) {
 
 function HSLToHex(h,s,l) {
 	// Must be fractions of 1
+	if (h < 0)
+		h += 360;
 	s /= 100;
 	l /= 100;
 
