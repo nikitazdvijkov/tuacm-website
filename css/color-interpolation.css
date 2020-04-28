@@ -4,11 +4,19 @@
 	border: 1px solid #444444;
 }
 
-#color-squares .color-interpolation-square:last-of-type {
+#color-squares-interpolation .color-interpolation-square:last-of-type {
 	border-radius: 0 0 8px 0;
 }
 
-#color-squares .color-interpolation-square:first-of-type {
+#color-squares-interpolation .color-interpolation-square:first-of-type {
+	border-radius: 0 0 0 8px;
+}
+
+#color-squares-extrapolation .color-interpolation-square:last-of-type {
+	border-radius: 0 0 8px 0;
+}
+
+#color-squares-extrapolation .color-interpolation-square:first-of-type {
 	border-radius: 0 0 0 8px;
 }
 
@@ -35,7 +43,7 @@
 	font-family: "Lucidia Console","Monaco Regular",monospace,"Courier New";
 }
 
-#color-squares {
+#color-squares-interpolation, #color-squares-extrapolation {
 	background: #FF00FF;
 	height: 100px;
 	width: 100%;

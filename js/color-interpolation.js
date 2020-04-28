@@ -217,7 +217,7 @@ function color_squares_interpolation() {
 			+ "</div></div>"
 		+ "</div>";
 	}
-	document.getElementById("color-squares").innerHTML = squares;
+	document.getElementById("color-squares-interpolation").innerHTML = squares;
 }
 
 function color_squares_extrapolation() {
@@ -233,7 +233,7 @@ function color_squares_extrapolation() {
 			+ "</div></div>"
 		+ "</div>";
 	}
-	document.getElementById("color-squares").innerHTML = squares;
+	document.getElementById("color-squares-extrapolation").innerHTML = squares;
 }
 
 addLoadEvent(color_squares_interpolation);
