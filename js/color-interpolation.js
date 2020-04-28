@@ -237,3 +237,4 @@ function color_squares_extrapolation() {
 }
 
 addLoadEvent(color_squares_interpolation);
+addLoadEvent(color_squares_extrapolation);
