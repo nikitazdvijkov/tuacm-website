@@ -174,27 +174,29 @@ function extrapolate_colors(color2, color1, num_intermediates) {
 	c2 = hexToRGB(color2);
 	c1 = RGBToHSL(c1[0], c1[1], c1[2]);
 	c2 = RGBToHSL(c2[0], c2[1], c2[2]);
-	var min_color, max_color;
-	if (c1[0] < c2[0]) {
-		min_color = c1;
-		max_color = c2;
-	} else {
-		min_color = c2;
-		max_color = c1;
-	}
-	if (max_color[0] - min_color[0] > min_color[0] - max_color[0] + 360) {
-		temp_color = max_color;
-		temp_color[0] -= 360;
-		max_color = min_color;
-		min_color = temp_color;
-	}
+	//var min_color, max_color;
+	//if (c1[0] < c2[0]) {
+	//	min_color = c1;
+	//	max_color = c2;
+	//} else {
+	//	min_color = c2;
+	//	max_color = c1;
+	//}
+	//if (max_color[0] - min_color[0] > min_color[0] - max_color[0] + 360) {
+	//	temp_color = max_color;
+	//	temp_color[0] -= 360;
+	//	max_color = min_color;
+	//	min_color = temp_color;
+	//}
 
 	out_array = [];
 
 	var i;
 	for (i = 0; i <= num_intermediates + 1; i++) {
-		interpolated_color = interpolate(min_color, max_color, (2.0 * i) / (num_intermediates + 1));
-		if (interpolated_color[0] < 0) {
+		interpolated_color = interpolate(c1, c2, (2.0 * i) / (num_intermediates + 1));
+		if (interpolated_color[0] >= 360) {
+			interpolated_color[0] -= 360;
+		} else if (interpolated_color[0] < 0) {
 			interpolated_color[0] += 360;
 		}
 		console.log(interpolated_color);
