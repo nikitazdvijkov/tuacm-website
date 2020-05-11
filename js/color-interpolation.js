@@ -173,16 +173,16 @@ function interpolate_colors(color2, color1, num_intermediates) {
 	return out_array;
 }
 
-function circular_extrapolation(color1, color2, t) {
+function circular_extrapolation(color2, color1, t) {
 	var new_color = [0, 0, 0]
 	var i;
 	var min_hue = Math.min(color1[0], color2[0]);
 	var max_hue = Math.max(color1[0], color2[0]);
-	var direction = 1;
+	var hue_offset = color2[0] - color1[0];
 	if (max_hue - min_hue > min_hue - max_hue + 360) {
-		direction = -1;
+		hue_offset += 360;
 	}
-	new_color[0] = color1[0] + direction * (color2[0] - color1[0]) * t;
+	new_color[0] = color1[0] + hue_offset * t;
 	new_color[1] = color1[1] + (color2[1] - color1[1]) * t;
 	new_color[2] = color1[2] + (color2[2] - color1[2]) * t;
 	return new_color
