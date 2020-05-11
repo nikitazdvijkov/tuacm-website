@@ -185,6 +185,7 @@ function circular_extrapolation(color1, color2, t) {
 	new_color[0] = color1[0] + direction * (color2[0] - color1[0]) * t;
 	new_color[1] = color1[1] + (color2[1] - color1[1]) * t;
 	new_color[2] = color1[2] + (color2[2] - color1[2]) * t;
+	return new_color
 }
 
 function extrapolate_colors(color2, color1, num_intermediates) {
