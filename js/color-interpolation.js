@@ -14,6 +14,10 @@ function addLoadEvent(func) {
 	}
 }
 
+function clamp(value, min, max) {
+	return Math.min(Math.max(value, min), max);
+}
+
 function hexToRGB(h) {
 	let r = 0, g = 0, b = 0;
 
@@ -119,9 +123,9 @@ function HSLToHex(h,s,l) {
 	} else if (300 <= h && h < 360) {
 		r = c; g = 0; b = x;
 	}
-	r = Math.round((r + m) * 255);
-	g = Math.round((g + m) * 255);
-	b = Math.round((b + m) * 255);
+	r = clamp(Math.round((r + m) * 255), 0, 255);
+	g = clamp(Math.round((g + m) * 255), 0, 255);
+	b = clamp(Math.round((b + m) * 255), 0, 255);
 
 	return RGBToHex(r, g, b);
 }

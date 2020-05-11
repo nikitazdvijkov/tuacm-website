@@ -1,0 +1,64 @@
+article
+Title:		Color Interpolation Using HTML, CSS, and Javascript
+Author:		Joseph Mellor
+Tagline:	tbd
+Code Style:	trac+dark
+Import:		aside code-block terminal color-interpolation
+Scripts:	color-interpolation
+
+Example
+
+\{{raw-html}}
+<form>
+	<div class="color-interpolation-input-box" style="border-radius: 8px 0 0 0">
+		<div class="color-interpolation-input">
+			<label for="first-color">First Color:</label>
+			<input type="color" id="first-color" value="#DC143C"
+			onchange="color_squares_interpolation()">
+		</div>
+	</div>
+	<div class="color-interpolation-input-box">
+		<div class="color-interpolation-input">
+			<label for="second-color">Second Color:</label>
+			<input type="color" id="second-color" value="#000077" onchange="color_squares_interpolation()">
+		</div>
+	</div>
+	<div class="color-interpolation-input-box" style="border-radius: 0 8px 0 0">
+		<div class="color-interpolation-input">
+			<label for="num-intermediates-interpolation">Num Colors:</label>
+			<input type="number" id="num-intermediates-interpolation" min="3"
+			max="12" value="5" onchange="color_squares_interpolation()">
+		</div>
+	</div>
+</form>
+<div id="color-squares-interpolation">
+</div>
+\{{\raw-html}}
+
+
+\{{raw-html}}
+<form>
+	<div class="color-interpolation-input-box" style="border-radius: 8px 0 0 0">
+		<div class="color-interpolation-input">
+			<label for="end-color">End Color:</label>
+			<input type="color" id="end-color" value="#DC143C"
+			onchange="color_squares_extrapolation()">
+		</div>
+	</div>
+	<div class="color-interpolation-input-box">
+		<div class="color-interpolation-input">
+			<label for="middle-color">Middle Color:</label>
+			<input type="color" id="middle-color" value="#000077" onchange="color_squares_extrapolation()">
+		</div>
+	</div>
+	<div class="color-interpolation-input-box" style="border-radius: 0 8px 0 0">
+		<div class="color-interpolation-input">
+			<label for="num-intermediates-extrapolation">Num Colors:</label>
+			<input type="number" id="num-intermediates-extrapolation" min="0"
+			max="12" value="5" onchange="color_squares_extrapolation()">
+		</div>
+	</div>
+</form>
+<div id="color-squares-extrapolation">
+</div>
+\{{\raw-html}}
