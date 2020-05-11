@@ -173,31 +173,31 @@ function interpolate_colors(color2, color1, num_intermediates) {
 	return out_array;
 }
 
+function circular_extrapolation(color1, color2, t) {
+	var new_color = [0, 0, 0]
+	var i;
+	var min_hue = Math.min(color1[0], color2[0]);
+	var max_hue = Math.max(color1[0], color2[0]);
+	var direction = 1;
+	if (max_hue - min_hue > min_hue - max_hue + 360) {
+		direction = -1;
+	}
+	new_color[0] = color1[0] + direction * (color2[0] - color1[0]) * t;
+	new_color[1] = color1[1] + (color2[1] - color1[1]) * t;
+	new_color[2] = color1[2] + (color2[2] - color1[2]) * t;
+}
+
 function extrapolate_colors(color2, color1, num_intermediates) {
 	c1 = hexToRGB(color1);
 	c2 = hexToRGB(color2);
 	c1 = RGBToHSL(c1[0], c1[1], c1[2]);
 	c2 = RGBToHSL(c2[0], c2[1], c2[2]);
-	//var min_color, max_color;
-	//if (c1[0] < c2[0]) {
-	//	min_color = c1;
-	//	max_color = c2;
-	//} else {
-	//	min_color = c2;
-	//	max_color = c1;
-	//}
-	//if (max_color[0] - min_color[0] > min_color[0] - max_color[0] + 360) {
-	//	temp_color = max_color;
-	//	temp_color[0] -= 360;
-	//	max_color = min_color;
-	//	min_color = temp_color;
-	//}
 
 	out_array = [];
 
 	var i;
 	for (i = 0; i <= num_intermediates + 1; i++) {
-		interpolated_color = interpolate(c1, c2, (2.0 * i) / (num_intermediates + 1));
+		interpolated_color = circular_extrapolation(c1, c2, (2.0 * i) / (num_intermediates + 1));
 		if (interpolated_color[0] >= 360) {
 			interpolated_color[0] -= 360;
 		} else if (interpolated_color[0] < 0) {
