@@ -201,6 +201,14 @@ function extrapolate_colors(color2, color1, num_intermediates) {
 	c1 = RGBToHSL(c1[0], c1[1], c1[2]);
 	c2 = RGBToHSL(c2[0], c2[1], c2[2]);
 
+	if (c2[1] * c2[2] < 150) {
+		c1[0] = c2[0];
+	}
+
+	if (c2[1] * c2[2] < 150) {
+		c2[0] = c1[0];
+	}
+
 	out_array = [];
 
 	var i;
