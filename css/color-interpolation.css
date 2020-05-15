@@ -92,7 +92,19 @@
 }
 
 #text-background-contrast {
-	height: 2em;
+	height: 3em;
 	border-radius: 8px;
 	border: solid grey 2px;
+}
+
+#text-background-contrast .color-interpolation-square {
+	margin-top: 0.5em;
+}
+
+#text-background-contrast .color-interpolation-square:first-of-type {
+	border-radius: 6px 0 0 6px;
+}
+
+#text-background-contrast .color-interpolation-square:last-of-type {
+	border-radius: 0 6px 6px 0;
 }

@@ -253,7 +253,7 @@ function color_squares_extrapolation() {
 	text_examples = "";
 	for (var i = 0; i < num_intermediates + 2; i++) {
 		text_examples += "<div class=\"color-interpolation-square\" style=\"width: calc(100% / " + (num_intermediates + 2) + "); background: " + colors[0] + "\">"
-			+ "<div style=\"color: " + colors[i] + "\">Text</div>"
+			+ "<div style=\"text-align:center; color: " + colors[i] + "\">Text</div>"
 		+ "</div>";
 	}
 	document.getElementById("text-background-contrast").innerHTML = text_examples;

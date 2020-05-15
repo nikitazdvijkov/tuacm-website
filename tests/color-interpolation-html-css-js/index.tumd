@@ -80,3 +80,6 @@ an End Color background.
 <div id="text-background-contrast">
 </div>
 \{{\raw-html}}
+
+As you might notice, the closer two colors are together, the harder they are to
+read, which is partly where color extrapolation can be useful.
