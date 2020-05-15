@@ -49,7 +49,7 @@ if you mouse over the white dot.
 		<div class="color-interpolation-input color-interpolation-number-input">
 			<label for="num-intermediates-interpolation">Num Colors:</label>
 			<input type="number" id="num-intermediates-interpolation" min="3"
-			max="12" value="5" onchange="color_squares_interpolation()" onsubmit="blur();return false;">
+			max="12" value="5" onchange="color_squares_interpolation()">
 		</div>
 	</div>
 </form>
@@ -70,14 +70,14 @@ if you mouse over the white dot.
 	<div class="color-interpolation-input-box">
 		<div class="color-interpolation-input">
 			<label for="middle-color">Middle Color:</label>
-			<input type="color" id="middle-color" value="" onchange="color_squares_extrapolation()">
+			<input type="color" id="middle-color" value="#101FC9" onchange="color_squares_extrapolation()">
 		</div>
 	</div>
 	<div class="color-interpolation-input-box" style="border-radius: 0 8px 0 0">
 		<div class="color-interpolation-input color-interpolation-number-input">
 			<label for="num-intermediates-extrapolation">Num Colors:</label>
-			<input type="number" id="num-intermediates-extrapolation" min="0"
-			max="12" value="5" onchange="color_squares_extrapolation()" onsubmit="blur();return false;">
+			<input type="number" id="num-intermediates-extrapolation" min="3"
+			max="12" value="5" onchange="color_squares_extrapolation()">
 		</div>
 	</div>
 </form>
