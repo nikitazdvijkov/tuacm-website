@@ -31,7 +31,7 @@
 }
 
 @-moz-document url-prefix() {
-	.color-interpolation-input[type=number] {
+	.color-interpolation-input input[type=number] {
 		width: 64px;
 	}
 }
