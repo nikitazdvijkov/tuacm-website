@@ -30,10 +30,25 @@
 	background: #E0E0E0;
 }
 
+@-moz-document url-prefix() {
+	.color-interpolation-input[type=number] {
+		width: 64px;
+	}
+}
+
 .color-interpolation-input {
 	text-align: center;
 	padding-top: 2.5em;
 	margin-top: -2em;
+}
+
+.color-interpolation-number-input {
+}
+
+@-moz-document url-prefix() {
+	.color-interpolation-number-input {
+		padding-top: calc(2.5em - 5px);
+	}
 }
 
 .color-interpolation-textbox {
