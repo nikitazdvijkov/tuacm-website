@@ -1,7 +1,7 @@
 article
 Title:		Color Interpolation Using HTML, CSS, and Javascript
 Author:		Joseph Mellor
-Tagline:	tbd
+Tagline:	The most basic useful web app I could think of.
 Code Style:	trac+dark
 Import:		aside code-block terminal color-interpolation
 Scripts:	color-interpolation
@@ -110,8 +110,8 @@ level. If you want another example, here's a figure I made for a project in one
 of my classes.
 
 \{{raw-html}}
-<a href="pics/LED-Model.png"><img src="pics/LED-Model.png" alt="A model of the
-LED showing how we can model them with virtual point sources."></a>
+<a href="pics/LED-Model.png"><img src="pics/LED-Model-small.png" alt="A model
+of the LED showing how we can model them with virtual point sources."></a>
 \{{\raw-html}}
 
 The sky being blue, the LED being a yellow-green, and the two sets of arrows

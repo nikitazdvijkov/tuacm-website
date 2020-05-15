@@ -1,0 +1,1 @@
+This is just a simple web app that actually does something useful to do a minimal demonstration of how to use Javascript.
