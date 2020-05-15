@@ -95,6 +95,7 @@
 	height: 3em;
 	border-radius: 8px;
 	border: solid grey 2px;
+	margin-bottom: 1em;
 }
 
 #text-background-contrast .color-interpolation-square {
