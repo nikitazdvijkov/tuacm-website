@@ -6,7 +6,18 @@ Code Style:	trac+dark
 Import:		aside code-block terminal color-interpolation
 Scripts:	color-interpolation
 
-Example
+Here are two basic tools for designing color schemes by using the HSL (Hue,
+Saturation, and Lightness) colorspace. I won't be able to explain too much right
+now, but the first box interpolates between two colors, meaning if you have a
+red and a blue that you like, the first box will display colors that are a mix
+of both. The second tool extrapolates across colors, meaning if you have two
+colors and one is too similar to the other (e.g. dark blue text on a dark purple
+background), you can generate colors that are more different from each otheri
+without completely changing your color scheme.
+
+
+The boxes below will display the colors along with the hex code for that color
+if you mouse over the white dot.
 
 \{{raw-html}}
 <form>
@@ -35,20 +46,19 @@ Example
 </div>
 \{{\raw-html}}
 
-
 \{{raw-html}}
 <form>
 	<div class="color-interpolation-input-box" style="border-radius: 8px 0 0 0">
 		<div class="color-interpolation-input">
 			<label for="end-color">End Color:</label>
-			<input type="color" id="end-color" value="#DC143C"
+			<input type="color" id="end-color" value="#510B82"
 			onchange="color_squares_extrapolation()">
 		</div>
 	</div>
 	<div class="color-interpolation-input-box">
 		<div class="color-interpolation-input">
 			<label for="middle-color">Middle Color:</label>
-			<input type="color" id="middle-color" value="#000077" onchange="color_squares_extrapolation()">
+			<input type="color" id="middle-color" value="" onchange="color_squares_extrapolation()">
 		</div>
 	</div>
 	<div class="color-interpolation-input-box" style="border-radius: 0 8px 0 0">
@@ -60,5 +70,13 @@ Example
 	</div>
 </form>
 <div id="color-squares-extrapolation">
+</div>
+\{{\raw-html}}
+
+As an example, here are all the different color combinations of X text on an End
+Color background.
+
+\{{raw-html}}
+<div id="text-background-contrast">
 </div>
 \{{\raw-html}}

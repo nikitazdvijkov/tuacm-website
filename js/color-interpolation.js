@@ -249,6 +249,14 @@ function color_squares_extrapolation() {
 		+ "</div>";
 	}
 	document.getElementById("color-squares-extrapolation").innerHTML = squares;
+
+	text_examples = "";
+	for (var i = 0; i < num_intermediates + 2; i++) {
+		text_examples += "<div class=\"color-interpolation-square\" style=\"width: calc(100% / " + (num_intermediates + 2) + "); background: " + colors[0] + "\">"
+			+ "<div style=\"color: " + colors[i] + "\">Sample Text</div>"
+		+ "</div>";
+	}
+	document.getElementById("text-background-contrast").innerHTML = text_examples;
 }
 
 addLoadEvent(color_squares_interpolation);
