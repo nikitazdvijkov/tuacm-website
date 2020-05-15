@@ -61,6 +61,7 @@
 					if you mouse over the white dot.
 				</p>
 				<form>
+					<button type="submit" disabled style="display: none" aria-hidden="true"></button>
 					<div class="color-interpolation-input-box" style="border-radius: 8px 0 0 0">
 						<div class="color-interpolation-input">
 							<label for="first-color">First Color:</label>
@@ -85,6 +86,7 @@
 				<div id="color-squares-interpolation">
 				</div>
 				<form>
+					<button type="submit" disabled style="display: none" aria-hidden="true"></button>
 					<div class="color-interpolation-input-box" style="border-radius: 8px 0 0 0">
 						<div class="color-interpolation-input">
 							<label for="end-color">End Color:</label>
@@ -115,9 +117,10 @@
 				</div>
 				<h2 id="examples">Examples</h2>
 				<p>As you might notice, the closer two colors are together, the harder they are to
-					read, which is partly where color extrapolation can be useful. For example, I
-					frequently used color extrapolation in designing my own color scheme for my text
-					editor, as you can see below:
+					read (sometimes this effect also happens with colors that are farther apart,
+					but not as often), which is partly where color extrapolation can be useful. For
+					example, I frequently used color extrapolation in designing my own color scheme
+					for my text editor, as you can see below:
 				</p>
 				<a href="pics/colorscheme.png"><img src="pics/colorscheme-small.png"
 				alt="Several different files of several different file types open with my color
