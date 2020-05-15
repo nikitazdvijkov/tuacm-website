@@ -94,9 +94,10 @@ an End Color background.
 # Examples
 
 As you might notice, the closer two colors are together, the harder they are to
-read, which is partly where color extrapolation can be useful. For example, I
-frequently used color extrapolation in designing my own color scheme for my text
-editor, as you can see below:
+read (sometimes this effect also happens with colors that are farther apart,
+but not as often), which is partly where color extrapolation can be useful. For
+example, I frequently used color extrapolation in designing my own color scheme
+for my text editor, as you can see below:
 
 \{{raw-html}}
 <a href="pics/colorscheme.png"><img src="pics/colorscheme-small.png"
