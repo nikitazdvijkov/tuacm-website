@@ -180,8 +180,15 @@ function circular_extrapolation(color2, color1, t) {
 	var max_hue = Math.max(color1[0], color2[0]);
 	var hue_offset = color2[0] - color1[0];
 	if (max_hue - min_hue > min_hue - max_hue + 360) {
-		hue_offset -= 360;
+		if (color2[0] > color1[0]) {
+			hue_offset -= 360;
+		} else {
+			hue_offset += 360;
+		}
 	}
+	console.log("Hue Offset: " + hue_offset);
+	console.log("Min Hue:    " + min_hue);
+	console.log("Max Hue:    " + max_hue);
 	new_color[0] = color1[0] + hue_offset * t;
 	new_color[1] = color1[1] + (color2[1] - color1[1]) * t;
 	new_color[2] = color1[2] + (color2[2] - color1[2]) * t;
