@@ -90,3 +90,9 @@
 .color-interpolation-data:hover .color-interpolation-textbox {
 	opacity: 1;
 }
+
+#text-background-contrast {
+	height: 2em;
+	border-radius: 8px;
+	border: solid grey 2px;
+}
