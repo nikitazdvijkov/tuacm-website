@@ -25,7 +25,7 @@
 .terminal pre {
 	color: #EC1111;
 	white-space: pre-wrap;
-	font-family: "Lucidia Console",monospace,"Courier New";
+	font-family: monospace,"Lucidia Console","Courier New";
 	word-wrap: break-word;
 	margin-bottom: 0;
 }
@@ -33,7 +33,7 @@
 .mac-terminal pre {
 	color: #000000;
 	white-space: pre-wrap;
-	font-family: "Menlo", "Lucidia Console",monospace,"Courier New";
+	font-family: "Menlo",monospace,"Lucidia Console","Courier New";
 	word-wrap: break-word;
 	margin-bottom: 0;
 }

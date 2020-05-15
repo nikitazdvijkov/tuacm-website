@@ -1,5 +1,5 @@
 .code-block pre {
-	font-family: "Lucidia Console","Monaco Regular",monospace,"Courier New";
+	font-family: monospace,"Lucidia Console","Monaco Regular","Courier New";
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-smooth: antialiased;
