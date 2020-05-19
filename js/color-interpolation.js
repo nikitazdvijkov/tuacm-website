@@ -231,6 +231,14 @@ function color_squares_interpolation() {
 	c1 = document.getElementById("first-color").value;
 	c2 = document.getElementById("second-color").value;
 	num_intermediates = +document.getElementById("num-intermediates-interpolation").value;
+	if (num_intermediates > 12) {
+		document.getElementById("num-intermediates-extrapolation").value = 12;
+		num_intermediates = 12;
+	}
+	if (num_intermediates < 3) {
+		document.getElementById("num-intermediates-extrapolation").value = 3;
+		num_intermediates = 3;
+	}
 	colors = interpolate_colors(c1, c2, num_intermediates);
 	squares = "";
 	for (var i = 0; i < num_intermediates + 2; i++) {
