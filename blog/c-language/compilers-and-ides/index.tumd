@@ -286,7 +286,7 @@ your system and your target system.
 
 ## Windows
 
-{{wsl}}:="<a href="https://github.com/michaeltreat/Windows-Subsystem-For-Linux-Setup-Guide/blob/master/readmes/01_preface.md">Windows Subsystem for Linux</a>"
+{{wsl}}:="<a href="https://www.dataquest.io/blog/tutorial-install-linux-on-windows-wsl/">Windows Subsystem for Linux</a>"
 
 If you're on Windows, you should either use a cross platform IDE like Eclipse or
 Netbeans or install some form of Linux, which you can do by setting up the
@@ -316,9 +316,6 @@ simplest way to get our basic {C} programs to compile on Windows</b>:
 \{{ol}}
 
 Set up the {{wsl}} using the linked tutorial.
-Follow the entire process in the tutorial except for setting up {npm},
-{Node.js}, or {ESlint} since those are JavaScript things that we won't need for
-programming in {C} at all.
 
 Download VSCode or any other text editor, but if you don't know which one to
 get, just download VSCode.
@@ -424,7 +421,7 @@ later.
 
 For example, let's say we want to compile this simple program (don't worry about
 the specific function, it will be covered in the next article) that will just
-print out "Hello, World!\n".
+print out {"Hello, World!\n"}.
 Furthermore, let's call this file {test.c}.
 
 \{{code-block c}}
