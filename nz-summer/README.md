@@ -11,7 +11,7 @@ If it's not clickable, it's a work in progress.
 1. Personal Website
    1. [Deploy a "hello world" Website to your Custom Domain in 5 Minutes](01-01.md)
    2. [Development Environment Setup](01-02.md) <!-- VSCode and plugins, emmet, refer heavily to WDS -->
-   3. [HTML, CSS, and Bootstrap](01-03.md) <!-- learn markdown just as a useful skill (intro to markup languages) -- bonus: google fonts and fontawesome icons -->
+   3. [HTML, CSS, and Bootstrap](01-03.md) <!-- learn markdown just as a useful skill (intro to markup languages); bonus: google fonts and fontawesome icons -->
    4. Google Analytics & Search Console for your Website <!--  -->
    5. DIY Short URLs Server in 5 Minutes
    6. Subdomains
