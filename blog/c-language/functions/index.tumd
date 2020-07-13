@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Functions in C
 Author:		Joseph Mellor
 Tagline:	Functions are the building blocks of programs in C.

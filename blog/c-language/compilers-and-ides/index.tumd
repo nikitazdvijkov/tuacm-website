@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Compilers and IDEs for C
 Author:		Joseph Mellor
 Tagline:	We're going to compile our first program!

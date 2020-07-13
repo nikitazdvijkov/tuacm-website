@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		The Memory Hierarchy
 Author:		Joseph Mellor
 Tagline:	Picking the best algorithm for the task will make your code run fast. Using memory properly will make it even faster.

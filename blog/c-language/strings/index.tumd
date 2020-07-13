@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Representing Text in C
 Author:		Joseph Mellor
 Tagline:	Computers only speak binary, so how can we represent text?

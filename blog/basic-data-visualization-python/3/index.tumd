@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Basic Data Visualization in Python, Pt. 3
 Author:		Joseph Mellor
 Tagline:	Implementing control flow with compound statements.

@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Coming Up with Our First Program in C
 Author:		Joseph Mellor
 Tagline:	Before we can figure out what we want C to do, we need to figure out what we want to do.

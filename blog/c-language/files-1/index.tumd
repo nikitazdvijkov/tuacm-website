@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Files in C
 Author:		Joseph Mellor
 Tagline:	We're going to get files from our hard drive into our program.

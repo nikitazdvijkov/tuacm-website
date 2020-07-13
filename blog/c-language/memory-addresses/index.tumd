@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Memory Addresses in C
 Author:		Joseph Mellor
 Tagline:	How does the computer know which bits to use for what?

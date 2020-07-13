@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		The main Function in C
 Author:		Joseph Mellor
 Tagline:	As you can guess, the main function is quite an important function in C.

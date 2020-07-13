@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Basic Data Visualization in Python, Pt. 5
 Author:		Joseph Mellor
 Tagline:	We're going to cover how to bring in features not built into python.

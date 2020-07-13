@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Setting Up a VirtualBox VM With a Shared Folder and Clipboard
 Author:		Nikita Zdvijkov
 Tagline:	Running Linux on Windows has never been easier!

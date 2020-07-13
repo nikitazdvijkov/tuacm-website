@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Comments in C
 Author:		Joseph Mellor
 Tagline:	Instead of having a programmer open another file to figure out why you did something, write your explanations directly in the code!

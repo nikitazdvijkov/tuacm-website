@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Basic Data Visualization in Python, Pt. 1
 Author:		Joseph Mellor
 Tagline:	Let's set up a basic python program.

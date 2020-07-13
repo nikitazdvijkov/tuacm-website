@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Files in C, Pt. 2
 Author:		Joseph Mellor
 Tagline:	Now that we can open files in our program, let's interact with them.

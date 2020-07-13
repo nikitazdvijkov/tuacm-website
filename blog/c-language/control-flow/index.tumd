@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Control Flow in C
 Author:		Joseph Mellor
 Tagline:	We still need some way of changing the behavior of the program based on the user input.

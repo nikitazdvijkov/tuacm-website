@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Making a Word Counter in C
 Author:		Joseph Mellor
 Tagline:	We're going to write our first nontrivial program.

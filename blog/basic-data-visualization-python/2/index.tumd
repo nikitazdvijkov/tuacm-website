@@ -1,4 +1,4 @@
-article
+templates/article
 Title:		Basic Data Visualization in Python, Pt. 2
 Author:		Joseph Mellor
 Tagline:	The basic ways of organizing and manipulating data in python.
