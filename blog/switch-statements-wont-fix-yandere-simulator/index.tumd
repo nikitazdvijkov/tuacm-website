@@ -297,7 +297,7 @@ branch per {if} statement), but the amount of time they take to run grows
 linearly with the number of cases (double the cases means around double the
 time).
 
-## How Much Faster are {Switch} Statements
+## How Much Faster are {Switch} Statements?
 
 As far as I can tell, none of the people who said to use {switch} statements
 instead of if else chains actually tested how much faster {switch} statements are,
