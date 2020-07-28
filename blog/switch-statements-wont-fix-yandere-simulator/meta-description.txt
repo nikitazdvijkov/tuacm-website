@@ -1,0 +1,1 @@
+Many have rightly criticized the overuse of if-else statements in Yandere Simulator, but wrongly believe switch statements will fix the problem. They won't.
