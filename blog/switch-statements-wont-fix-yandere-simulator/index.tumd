@@ -6,7 +6,32 @@ Code Style:	trac+dark
 Import:		code-block
 Scripts:
 
-## Disclaimer
+\{{style}}
+
+img {
+	width: 100%;
+	margin-bottom: 1em;
+}
+
+\{{\style}}
+
+\{{raw-html}}
+<figure>
+	<a href="pics/yandere-simulator-if-else-statements.png">
+		<img src="pics/yandere-simulator-if-else-statements.png" alt="A
+		character model from Yandere Simulator dressed as a graduate standing in
+		front of an if else chain from the game's code.">
+	</a>
+	<figcaption>
+		<a
+		href="https://www.reddit.com/r/ProgrammerHumor/comments/53uhsw/the_code_behind_yandere_simulator/?utm_source=share&utm_medium=web2x">
+			From u/Apterygiformes through r/ProgrammerHumor
+		</a>
+	</figcaption>
+</figure>
+\{{\raw-html}}
+
+# Disclaimer
 
 {{ys}}="<i>Yandere Simulator</i>"
 
