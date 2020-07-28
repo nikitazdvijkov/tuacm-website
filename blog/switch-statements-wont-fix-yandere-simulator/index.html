@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>Switch Statements Won't Fix Yandere Simulator</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="switch-statements-wont-fix-yandere-simulator">Switch Statements Won't Fix Yandere Simulator</h1></div>
+				<div id="meta-description">Many people have rightly criticized Yandere Simulator's overuse of if statements, but theh issue is much more than switch statements can fix.</div>
+				<div id="date-and-tags">Posted 28 July 2020 at 1:30 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<h3 id="disclaimer">Disclaimer</h3>
+				<p>In this article, I won't comment on anything related to <i>Yandere Simulator</i> or its
+					development process except for some basic context, the code of <i>Yandere Simulator</i>, and a few
+					specific criticisms people have with the code of <i>Yandere Simulator</i> in order to highlight
+					what I believe to be a major disconnect between why the code is poor and why
+					people think the code is poor.
+				</p>
+				<h2 id="the-context">The Context</h2>
+				<p><i>Yandere Simulator</i> is filled to the brim with <code>if else</code> chains (sections of code in which
+					the computer goes down a list of conditions to check and executes the code for
+					the first satisfied condition) and extremely nested <code>if</code> statements (<code>if</code>
+					statements inside <code>if</code> statements inside <code>if</code> statements, etc.), both of which
+					are bad practice.
+				</p>
+				<p>With the exception of one or two people I've seen on the internet, most
+					criticisms that mention the excessive uses of <code>if</code> statements in Yandere
+					Simulator follow the general idea that "<a
+					href="https://www.youtube.com/watch?v=7qz5GefNwh4&feature=youtu.be&t=120">long
+					<code>if else</code> chains</a> are a <a
+					href="https://www.youtube.com/watch?v=qQwmNdYS6W0&feature=youtu.be&t=405">major
+					performance problem</a> and <a
+					href="https://www.youtube.com/watch?v=HHJrhACgmSA&feature=youtu.be&t=392">they
+					should be replaced</a> with <code>switch</code> statements <a
+					href="https://www.reddit.com/r/yandere_simulator/comments/8x0arv/a_few_critical_coding_mistakes_that_yandere_dev/">to
+					improve the performance</a>." To be fair, some of these critics propose much
+					better solutions than <code>switch</code> statements (specifically DarkDax and the Reddit
+					post), but I will focus specifically on the idea that using switch statements
+					will improve the performance significantly. For the same reason, I'll also
+					ignore subjective arguments about style and readability.
+				</p>
+				<h2 id="the-code">The Code</h2>
+				<p>In the code for the function <code>UpdateRoutine</code>, the largest and most complicated function
+					that will run for around a hundred students every frame in the largest file in
+					the project, <code>StudentScript.cs</code>, there are around
+				</p>
+				<ul>
+					<li>6000 lines of code
+					</li>
+					<li>731 <code>if</code> statements (not including <code>else if</code> and the <code>if</code> statements in loops)
+					</li>
+					<li>220 <code>else if</code> statements
+					</li>
+					<li>124 <code>else</code> statements
+					</li>
+					<li>4 loops that contain exactly one <code>if</code> statement each
+					</li>
+					<li>A few more loops that won't matter for our analysis
+					</li>
+				</ul>
+				<p>Within <code>UpdateRoutine</code>, there are many instances of code that look like
+				</p>
+<div class="code-block"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">EatingSnack</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">SnackPhase</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">CharacterAnimation</span><span class="p">.</span><span class="n">CrossFade</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">EatChipsAnim</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">SmartPhone</span><span class="p">.</span><span class="n">SetActive</span><span class="p">(</span><span class="k">false</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">Pathfinding</span><span class="p">.</span><span class="n">canSearch</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">Pathfinding</span><span class="p">.</span><span class="n">canMove</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">SnackTimer</span> <span class="p">+=</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">SnackTimer</span> <span class="p">&gt;</span> <span class="m">10f</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">UnityEngine</span><span class="p">.</span><span class="n">Object</span><span class="p">.</span><span class="n">Destroy</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">BagOfChips</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">!=</span> <span class="k">this</span><span class="p">.</span><span class="n">StudentManager</span><span class="p">.</span><span class="n">RivalID</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="n">StudentManager</span><span class="p">.</span><span class="n">GetNearestFountain</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+                <span class="k">this</span><span class="p">.</span><span class="n">Pathfinding</span><span class="p">.</span><span class="n">target</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">DrinkingFountain</span><span class="p">.</span><span class="n">DrinkPosition</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="n">CurrentDestination</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">DrinkingFountain</span><span class="p">.</span><span class="n">DrinkPosition</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="n">Pathfinding</span><span class="p">.</span><span class="n">canSearch</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="n">Pathfinding</span><span class="p">.</span><span class="n">canMove</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+                <span class="k">this</span><span class="p">.</span><span class="n">SnackTimer</span> <span class="p">=</span> <span class="m">0f</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">SnackPhase</span><span class="p">++;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">SnackPhase</span> <span class="p">==</span> <span class="m">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">CharacterAnimation</span><span class="p">.</span><span class="n">CrossFade</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">WalkAnim</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">Persona</span> <span class="p">==</span> <span class="n">PersonaType</span><span class="p">.</span><span class="n">PhoneAddict</span> <span class="p">&amp;&amp;</span> <span class="p">!</span><span class="k">this</span><span class="p">.</span><span class="n">Phoneless</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">SmartPhone</span><span class="p">.</span><span class="n">SetActive</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">DistanceToDestination</span> <span class="p">&lt;</span> <span class="m">1f</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">SmartPhone</span><span class="p">.</span><span class="n">SetActive</span><span class="p">(</span><span class="k">false</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">Pathfinding</span><span class="p">.</span><span class="n">canSearch</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">Pathfinding</span><span class="p">.</span><span class="n">canMove</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">SnackPhase</span><span class="p">++;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">SnackPhase</span> <span class="p">==</span> <span class="m">2</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">CharacterAnimation</span><span class="p">.</span><span class="n">cullingType</span> <span class="p">=</span>
+<span class="n">AnimationCullingType</span><span class="p">.</span><span class="n">AlwaysAnimate</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">CharacterAnimation</span><span class="p">.</span><span class="n">CrossFade</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">DrinkFountainAnim</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">MoveTowardsTarget</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">DrinkingFountain</span><span class="p">.</span><span class="n">DrinkPosition</span><span class="p">.</span><span class="n">position</span><span class="p">);</span>
+        <span class="k">base</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span> <span class="p">=</span> <span class="n">Quaternion</span><span class="p">.</span><span class="n">Slerp</span><span class="p">(</span><span class="k">base</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span><span class="p">,</span>
+<span class="k">this</span><span class="p">.</span><span class="n">DrinkingFountain</span><span class="p">.</span><span class="n">DrinkPosition</span><span class="p">.</span><span class="n">rotation</span><span class="p">,</span> <span class="m">10f</span> <span class="p">*</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">CharacterAnimation</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="n">DrinkFountainAnim</span><span class="p">].</span><span class="n">time</span> <span class="p">&gt;=</span>
+<span class="k">this</span><span class="p">.</span><span class="n">CharacterAnimation</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="n">DrinkFountainAnim</span><span class="p">].</span><span class="n">length</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">CharacterAnimation</span><span class="p">.</span><span class="n">cullingType</span> <span class="p">=</span>
+<span class="n">AnimationCullingType</span><span class="p">.</span><span class="n">BasedOnRenderers</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">DrinkingFountain</span><span class="p">.</span><span class="n">Occupied</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">EquipCleaningItems</span><span class="p">();</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">EatingSnack</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">Private</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">Routine</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">StudentManager</span><span class="p">.</span><span class="n">UpdateMe</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">CurrentDestination</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">Destinations</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="n">Phase</span><span class="p">];</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">Pathfinding</span><span class="p">.</span><span class="n">target</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">Destinations</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="n">Phase</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">CharacterAnimation</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="n">DrinkFountainAnim</span><span class="p">].</span><span class="n">time</span> <span class="p">&gt;</span> <span class="m">0.5f</span> <span class="p">&amp;&amp;</span>
+<span class="k">this</span><span class="p">.</span><span class="n">CharacterAnimation</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="n">DrinkFountainAnim</span><span class="p">].</span><span class="n">time</span> <span class="p">&lt;</span> <span class="m">1.5f</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">DrinkingFountain</span><span class="p">.</span><span class="n">WaterStream</span><span class="p">.</span><span class="n">Play</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>With just the <code>if</code>, <code>else</code>, and <code>else if</code> statements, you get a structure that
+					looks like
+				</p>
+<div class="code-block"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">EatingSnack</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">SnackPhase</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Code</span>
+        <span class="k">if</span> <span class="p">(</span><span class="cm">/*time in range*/</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Code</span>
+            <span class="k">if</span> <span class="p">(</span><span class="cm">/*check if student is rival*/</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// Code</span>
+            <span class="p">}</span>
+            <span class="c1">// Code</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">SnackPhase</span> <span class="p">==</span> <span class="m">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Code</span>
+        <span class="k">if</span> <span class="p">(</span><span class="cm">/*Check details of current object*/</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Code</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="cm">/*Check distance in range*/</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Code</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">SnackPhase</span> <span class="p">==</span> <span class="m">2</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Code</span>
+        <span class="k">if</span> <span class="p">(</span><span class="cm">/*time in range*/</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Code</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="cm">/*time in range*/</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Code</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<h2 id="the-proposed-solution-switch-statements">The Proposed Solution: Switch Statements</h2>
+				<p>A problem with the above code might jump out at you: if <code>this.SnackPhase</code> is 2, then it
+					can't also equal 0 or 1, but you have to check all of them. You might be
+					thinking it may make more sense to just get the value of <code>this.SnackPhase</code> and then execute
+					the code that corresponds to the case where <code>this.SnackPhase</code> is 2.  You can do using the
+					titular switch statement, like so
+				</p>
+<div class="code-block"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">EatingSnack</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">SnackPhase</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">case</span> <span class="m">0</span><span class="p">:</span>
+        <span class="c1">// Code</span>
+        <span class="k">if</span> <span class="p">(</span><span class="cm">/*time in range*/</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Code</span>
+            <span class="k">if</span> <span class="p">(</span><span class="cm">/*check if student is rival*/</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// Code</span>
+            <span class="p">}</span>
+            <span class="c1">// Code</span>
+        <span class="p">}</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="m">1</span><span class="p">:</span>
+        <span class="c1">// Code</span>
+        <span class="k">if</span> <span class="p">(</span><span class="cm">/*Check details of current object*/</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Code</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="cm">/*Check distance in range*/</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Code</span>
+        <span class="p">}</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="m">2</span><span class="p">:</span>
+        <span class="c1">// Code</span>
+        <span class="k">if</span> <span class="p">(</span><span class="cm">/*time in range*/</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Code</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="cm">/*time in range*/</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Code</span>
+        <span class="p">}</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">default</span><span class="p">:</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>For those that don't know, a <code>switch</code> statement will tell the computer to map
+					its input to relevant locations (memory addresses of specific instructions) in
+					the code through a jump table. For example, the computer sees <code>this.SnackPhase</code> is 2, looks
+					at the third entry in the jump table (0 is the first entry), and moves to the
+					specified location (i.e. where the <code>case 2:</code> line is, though I'm simplifying
+					slightly).
+				</p>
+				<p>In this specific case, you might not see much benefit because switch statements
+					have to do a little more work up front to do what they need to do, but they will
+					execute within a constant amount of time. On the other hand <code>if else</code> chains
+					have little start up time (an instruction to compare and an instruction to
+					branch per <code>if</code> statement), but the amount of time they take to run grows
+					linearly with the number of cases (double the cases means around double the
+					time).
+				</p>
+				<h3 id="how-much-faster-are-switch-statements">How Much Faster are <code>Switch</code> Statements</h3>
+				<p>As far as I can tell, none of the people who said to use <code>switch</code> statements
+					instead of if else chains actually tested how much faster <code>switch</code> statements are,
+					so I took it upon myself to get a decent estimate.
+				</p>
+				<p>I wanted to see just how much performance I could get out of a <code>switch</code>
+					statement vs an <code>if else</code> chain, so I wrote some <code>C</code> code (I already have <code>C</code>
+					set up on my computer and compilers don't need to do much to convert <code>if</code> and
+					<code>switch</code> statements to optimal machine code, so it should be a good estimate.)
+					that ran a large number of iterations in which the program would pick a random
+					number from a list of 16 specified numbers (partly to avoid the <code>if</code> statement
+					using branch prediction), where the code looked like
+				</p>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="n">array</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">97</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">99</span> <span class="p">};</span>
+<span class="kt">int</span> <span class="n">dummy_variable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="c1">// start timer</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_iterations</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">rand</span><span class="p">()</span> <span class="o">&amp;</span> <span class="mi">0</span><span class="n">b1111</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">dummy_variable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">dummy_variable</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">...</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">==</span> <span class="mi">99</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">dummy_variable</span> <span class="o">=</span> <span class="mi">99</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">// end timer</span>
+<span class="c1">// Do something with dummy_variable so it doesn&#39;t optimize the for loop out</span>
+<span class="c1">// entirely</span>
+<span class="c1">// start timer</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_iterations</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">rand</span><span class="p">()</span> <span class="o">&amp;</span> <span class="mi">0</span><span class="n">b1111</span><span class="p">];</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+        <span class="n">dummy_variable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="mi">3</span><span class="o">:</span>
+        <span class="n">dummy_variable</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="mi">5</span><span class="o">:</span>
+<span class="p">...</span>
+    <span class="k">case</span> <span class="mi">99</span><span class="o">:</span>
+        <span class="n">dummy_variable</span> <span class="o">=</span> <span class="mi">99</span><span class="p">;</span>
+    <span class="k">default</span><span class="o">:</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">// end timer</span>
+<span class="c1">// Do something with dummy_variable so it doesn&#39;t optimize the for loop out</span>
+<span class="c1">// entirely</span>
+<span class="c1">// start timer</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_iterations</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">dummy_variable</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">&amp;</span> <span class="mi">0</span><span class="n">b1111</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// end timer</span>
+<span class="c1">// Do something with dummy_variable so it doesn&#39;t optimize the for loop out</span>
+<span class="c1">// entirely</span>
+</pre></div>
+				
+				<p>I also added another timed loop that just ran the random number generator in a
+					loop so that I could subtract out the cost of looping and random number
+					generation. After running the test, I found that <b>the <code>switch</code> statement
+					consistently ran around 20 times faster</b>.
+				</p>
+				<h2 id="the-problem-with-switch-statements">The Problem with <code>Switch</code> Statements</h2>
+				<p>The <code>if else</code> chain took an average of around 24.5 nanoseconds to execute per
+					iteration and around 8 <code>if</code> statements are hit on average per iteration (it's
+					equivalent to a <a href="https://en.wikipedia.org/wiki/Linear_search">linear
+					search</a> so each individual <code>if</code> statement took around 3 nanoseconds per case
+					while the <code>switch</code> statement took around 1.25 nanoseconds for any number of
+					cases. For a game to run at 120 FPS, it has to do everything it needs to do for
+					the next frame within 8.3 milliseconds. For <code>if</code> statements to take up a
+					significant amount of that time (say 5%), over 130,000 <code>if</code> statements would
+					have to be executed on at least one thread every frame.o
+				</p>
+				<p>As I said earlier, <code>UpdateRoutine</code> has around 1000 <code>if</code> statements and there are arount
+					100 students, so you might be thinking that we've accounted for around 100,000
+					<code>if</code> statements. This reasoning fails to consider that the computer will execute
+					relatively few <code>if</code> statements in the function. For example, if we look back at
+					the sample code from <code>UpdateRoutine</code>, you should notice that the inner <code>if</code> statements
+					won't execute unless this.EatingSnack is true. If students are only eating a
+					snack 5% of the time, we've removed around 1,000 <code>if</code> statements per frame.
+				</p>
+				<p>Assuming each <code>if</code> and <code>else if</code> statement has a 50% of being true (a pretty
+					good estimate for an upper bound since I don't have any prior knowledge of the
+					probability and individual <code>if</code> statements in an if else chain have a lower
+					chance of being true), I get around 63 <code>if</code> and <code>else if</code> statements evaluated
+					on average for the entire function, meaning the computer will only evaluate
+					6,300 <code>if</code> statements per frame in <code>UpdateRoutine</code> for all the students. Given that
+					<code>UpdateRoutine</code> likely has the most <code>if</code> statements out of all the functions that execute
+					frequently and it is guaranteed to run for around 100 different entities, I
+					doubt most other frequently executing functions would even come close to the
+					upper bound 6,300 <code>if</code> statements of <code>UpdateRoutine</code>, meaning that <b>replacing all the
+					<code>if</code> statements with <code>switch</code> statements wouldn't come close to netting a 5%
+					performance boost even at 120 FPS</b>. At the current ~20-50 FPS <i>Yandere Simulator</i> runs at,
+					<b>it wouldn't even increase the FPS by a single frame</b>.
+				</p>
+				<h3 id="but-switch-statements-make-your-code-fast">But switch Statements Make Your Code Fast!</h3>
+				<p>If your program was just a long chain of <code>if else</code> statements in a loop, then
+					sure, but <b>most of your program's time isn't going to be in evaluating <code>if</code>
+					statements</b>. <a href="https://en.wikipedia.org/wiki/Amdahl's_law">If you want
+					to make your code run fast, you need to optimize the slowest parts of your
+					program first</a>. As an example, if you have one function that takes up 1
+					second and another function that takes up an hour, a 50% speedup in the first
+					task will only save you half a second but a 50% speedup in the second task will
+					save you half an hour.
+				</p>
+				<p>I would honestly go as far as to assume that using <code>switch</code> statements for
+					performance is a premature optimization unless you could prove that you would
+					get significant performance benefits, and even then you can replace them with an
+					array or a map/dictionary most of the time. In my <code>switch</code> vs <code>if else</code> test
+					program, I actually had another test where I just get the value directly from an
+					array, like so
+				</p>
+<div class="code-block"><pre><span></span><span class="c1">// start timer</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_iterations</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">dummy_variable</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">rand</span><span class="p">()</span> <span class="o">&amp;</span> <span class="mi">0</span><span class="n">b1111</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="c1">// end timer</span>
+<span class="c1">// Do something with dummy_variable so it doesn&#39;t optimize the for loop out</span>
+<span class="c1">// entirely</span>
+</pre></div>
+				
+				<p>The above code saves me 50 lines of code and the direct array access runs around
+					2.5x faster than the <code>switch</code> statement.
+				</p>
+				<p>If you need more proof, YouTuber dyc3 <a
+					href="https://www.youtube.com/watch?v=LleJbZ3FOPU">actually profiled the
+					code</a> (and did an entire code review with deeper analysis and suggestions
+					about coding architecture) and proved that the entire <code>StudentScript.Update()</code>
+					function (which includes the function we looked at, <code>UpdateRoutine()</code> and every
+					other update function) took less than a millisecond, which would be around 5% of
+					the runtime at 50 FPS. Rendering poorly optimized assets took far more time than
+					anything else, with poorly optimized physics, pathfinding, and UI interactions.
+					dyc3 didn't stop there, however. <b><a
+					href="https://www.youtube.com/watch?v=LleJbZ3FOPU&feature=youtu.be&t=964">He
+					went through and replaced as many of the of the <code>if else</code> chains as possible
+					with <code>switch</code> statements and only decreased the time by 80 microseconds</a></b>.
+					The game would have to be running at around 600 FPS for that improvement to be
+					significant (above 5%).
+				</p>
+				<h2 id="the-real-problem">The Real Problem</h2>
+				<p>To be clear, the overuse of <code>if</code> statements is a major problem for
+					maintainability and architecture (specifically the unnecessary coupling of data
+					and code), not necessarily performance. For example, let's analyze a top
+					competitor for the most infamous section of code in <i>Yandere Simulator</i>, the main body of
+					<code>SubtitleType TaskLineResponseType()</code> in <code>StudentScript.cs</code>.
+				</p>
+<div class="code-block"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">6</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(!</span><span class="k">false</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">TaskGenericLine</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task6Line</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">else</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">8</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task8Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">11</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task11Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">13</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task13Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">14</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task14Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">15</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task15Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">25</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task25Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">28</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task28Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">30</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task30Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">36</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task36Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">37</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task37Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">38</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task38Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">52</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task52Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">76</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task76Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">77</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task77Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">78</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task78Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">79</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task79Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">80</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task80Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">StudentID</span> <span class="p">==</span> <span class="m">81</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">Task81Line</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">SubtitleType</span><span class="p">.</span><span class="n">TaskGenericLine</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+				
+				<p>Remember that the long chain of if statements is equivalent to a chain of if
+					else statements since the return statements will exit out as soon as one of the
+					if statements are satisfied.
+				</p>
+				<p>I think it would be best to separate our analysis into different levels that
+					take progressively more information into account.
+				</p>
+				<h3 id="first-level-analysis">First-Level Analysis</h3>
+				<p>Look for the specific feature of the language that would make this code faster
+					without considering anything else. In this case, replace the <code>if else</code> chain with
+					a <code>switch</code> statement, netting you a few microseconds (making this replacement a
+					literal micro-optimization) for maybe 30 seconds of your time. I think people
+					who have suggested using <code>switch</code> statements without first proposing architectural
+					issues have gotten stuck here.
+				</p>
+				<h3 id="second-level-analysis">Second-Level Analysis</h3>
+				<p>Look for the specific feature of the language that would make this code faster
+					without considering anything else. In this case, replace the <code>if else</code> chain with
+					a <code>switch</code> statement, netting you a few microseconds (making this replacement a
+					literal micro-optimization) for maybe 30 seconds of your time. I think people
+					who have suggested using <code>switch</code> statements without first proposing architectural
+					issues have gotten stuck here.
+				</p>
+				<h3 id="third-level-analysis">Third-Level Analysis</h3>
+				<p>Add the intended goal of this code into your analysis. Since you just want each
+					student to have the proper <code>SubtitleType</code>, just get the rid of the IDs entirely
+					and just create a class called <code>Student</code> with the field <code>task_line</code> with the
+					default value <code>SubtitleType.TaskGenericLine</code>. When you want to know the
+					<code>SubtitleType</code> for the student, just ask the student with
+					<code>student.getSubtitleType()</code>. Doing so removes unnecessary coupling between the
+					<code>task_line</code> data for all students and some external function and gets rid of any
+					operation except fetching a value from a known memory address. Alternatively,
+					you could also just use the fact that enums can be converted to integers and
+					vice versa to make this entire function unnecessary.
+				</p>
+				<h3 id="fourth-level-analysis">Fourth-Level Analysis</h3>
+				<p>Add the work of other people into your analysis. Third-level analysis is
+					sufficient for <code>TaskLineResponseType()</code>, but the code of <i>Yandere Simulator</i> needs just a
+					small amount of fourth-level analysis, which would get rid of most of the if
+					statements and clean up the code quickly and easily. Specifically, he's
+					implementing a <a
+					href="https://medium.com/@mlbors/what-is-a-finite-state-machine-6d8dec727e2c">Finite
+					State Machine</a>, which have been <a
+					href="https://www.hanselman.com/blog/Stateless30AStateMachineLibraryForNETCore.aspx">implemented</a>
+					<a
+					href="https://www.codeproject.com/Articles/43356/A-Simple-State-Machine">countless</a>
+					<a
+					href=""https://gist.github.com/W4RH4WK/5dea8f55532e0526da8b6e60c566c259>times</a>
+					in almost every language (all three links are in <code>C#</code> or work with <code>C#</code> and have
+					existed for years) and explained in multiple tutorials. Unlike these other FSMs,
+					which generally use dictionaries/arrays that map states to functions and other
+					states, the FSM in <i>Yandere Simulator</i> is built implicitly with if statements, which can
+					easily become unmaintainable as it loses any sense of regularity and can often
+					lead to massive amounts of code duplication.
+				</p>
+				<h2 id="summary">Summary</h2>
+				<ul>
+					<li>Despite what you may have read in a dusty tome, writing good code is not about
+						trying to trick the computer into running quickly with magic words like <code>switch</code>
+						or by manually unrolling loops. Instead, good code consists of using the right
+						tools for the job, maintaining a modular architecture, general separation of data
+						and code, giving things descriptive names, etc.
+					</li>
+					<li><code>if else</code> chains are usually an architectural issue, but rarely a performance
+						issue. <code>switch</code> statements generally make minor improvements to performance
+						without fixing the underlying architectural issue, though they can be required
+						in languages without objects, such as <code>C</code>.
+					</li>
+					<li>There are no better experts on why your code is slow than a profiler. Profile
+						your code to find the slowest parts, and make those parts faster.
+					</li>
+				</ul>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+							Math.
+							He is also the chief editor of the website and the author of the tumd markdown
+							compiler.
+							If you want to see more of his work, check out his <a
+							href="https://github.com/TheLandfill">github repository</a>.
+							<br>
+							Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#switch-statements-wont-fix-yandere-simulator" style="padding-left:12px;">Switch Statements Won't Fix Yandere Simulator</a>
+				<a href="#disclaimer" style="padding-left:36px;">Disclaimer</a>
+				<a href="#the-context" style="padding-left:24px;">The Context</a>
+				<a href="#the-code" style="padding-left:24px;">The Code</a>
+				<a href="#the-proposed-solution-switch-statements" style="padding-left:24px;">The Proposed Solution: Switch Statements</a>
+				<a href="#how-much-faster-are-switch-statements" style="padding-left:36px;">How Much Faster are <code>Switch</code> Statements</a>
+				<a href="#the-problem-with-switch-statements" style="padding-left:24px;">The Problem with <code>Switch</code> Statements</a>
+				<a href="#but-switch-statements-make-your-code-fast" style="padding-left:36px;">But switch Statements Make Your Code Fast!</a>
+				<a href="#the-real-problem" style="padding-left:24px;">The Real Problem</a>
+				<a href="#first-level-analysis" style="padding-left:36px;">First-Level Analysis</a>
+				<a href="#second-level-analysis" style="padding-left:36px;">Second-Level Analysis</a>
+				<a href="#third-level-analysis" style="padding-left:36px;">Third-Level Analysis</a>
+				<a href="#fourth-level-analysis" style="padding-left:36px;">Fourth-Level Analysis</a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>
