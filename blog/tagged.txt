@@ -1,4 +1,5 @@
 
+Switch Statements Won't Fix Yandere Simulator|Joseph Mellor|Many people have rightly criticized Yandere Simulator's overuse of if statements, but the issue is much more than switch statements can fix.|switch-statements-wont-fix-yandere-simulator/
 Basic Data Visualization in Python|Joseph Mellor|In this tutorial, you will go from knowing nothing about python to writing a program to test a hypothesis and graph the results.|basic-data-visualization-python/
 Making Sense of C|Joseph Mellor|A tutorial for the C programming language from the ground up.|c-language/
 The Memory Hierarchy|Joseph Mellor|Picking the best algorithm for the task will make your code run fast. Using memory properly will make it even faster.|memory-hierarchy/
