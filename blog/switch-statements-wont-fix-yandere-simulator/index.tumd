@@ -1,7 +1,7 @@
 templates/article
 Title:		Switch Statements Won't Fix Yandere Simulator
 Author:		Joseph Mellor
-Tagline:	Many people have rightly criticized Yandere Simulator's overuse of if statements, but theh issue is much more than switch statements can fix.
+Tagline:	Many people have rightly criticized Yandere Simulator's overuse of if statements, but the issue is much more than switch statements can fix.
 Code Style:	trac+dark
 Import:		code-block
 Scripts:
@@ -48,11 +48,9 @@ charset="UTF-8"></script>
 
 {{ys}}="<i>Yandere Simulator</i>"
 
-In this article, I won't comment on anything related to {{ys}} or its
-development process except for some basic context, the code of {{ys}}, and a few
-specific criticisms people have with the code of {{ys}} in order to highlight
-what I believe to be a major disconnect between why the code is poor and why
-people think the code is poor.
+I am only going to talk about one commonly proposed solution to the excessive
+use of {if} statements in the code of {{ys}} and nothing else about its
+development or any controversy surrounding {{ys}}.
 
 # The Context
 
@@ -63,8 +61,8 @@ statements inside {if} statements inside {if} statements, etc.), both of which
 are bad practice.
 
 With the exception of one or two people I've seen on the internet, most
-criticisms that mention the excessive uses of {if} statements in Yandere
-Simulator follow the general idea that "<a
+criticisms that mention the excessive uses of {if} statements in {{ys}} follow
+the general idea that "<a
 href="https://www.youtube.com/watch?v=7qz5GefNwh4&feature=youtu.be&t=120">long
 {if else} chains</a> are a <a
 href="https://www.youtube.com/watch?v=qQwmNdYS6W0&feature=youtu.be&t=405">major
@@ -80,7 +78,7 @@ ignore subjective arguments about style and readability.
 
 # The Code
 
-{{ur}}="{UpdateRoutine}"
+{{ur}}="{UpdateRoutine()}"
 
 In the code for the function {{ur}}, the largest and most complicated function
 that will run for around a hundred students every frame in the largest file in
@@ -231,8 +229,8 @@ if (this.EatingSnack)
 
 A problem with the above code might jump out at you: if {{sp}} is 2, then it
 can't also equal 0 or 1, but you have to check all of them. You might be
-thinking it may make more sense to just get the value of {{sp}} and then execute
-the code that corresponds to the case where {{sp}} is 2.  You can do using the
+thinking it may make more sense to get the value of {{sp}} and then execute the
+code that corresponds to the case where {{sp}} is 2.  You can do using the
 titular switch statement, like so
 
 \{{code-block c# no-line-numbers}}
@@ -282,12 +280,11 @@ if (this.EatingSnack)
 
 \{{\code-block}}
 
-For those that don't know, a {switch} statement will tell the computer to map
-its input to relevant locations (memory addresses of specific instructions) in
-the code through a jump table. For example, the computer sees {{sp}} is 2, looks
-at the third entry in the jump table (0 is the first entry), and moves to the
-specified location (i.e. where the {case 2:} line is, though I'm simplifying
-slightly).
+A {switch} statement will tell the computer to map its input to relevant
+locations (memory addresses of specific instructions) in the code through a jump
+table. For example, the computer sees {{sp}} is 2, looks at the third entry in
+the jump table (0 is the first entry), and moves to the specified location (i.e.
+where the {case 2:} line is, though I'm simplifying slightly).
 
 In this specific case, you might not see much benefit because switch statements
 have to do a little more work up front to do what they need to do, but they will
@@ -300,16 +297,16 @@ time).
 ## How Much Faster are {Switch} Statements?
 
 As far as I can tell, none of the people who said to use {switch} statements
-instead of if else chains actually tested how much faster {switch} statements are,
+instead of if else chains tested how much faster {switch} statements are,
 so I took it upon myself to get a decent estimate.
 
-I wanted to see just how much performance I could get out of a {switch}
-statement vs an {if else} chain, so I wrote some {C} code (I already have {C}
-set up on my computer and compilers don't need to do much to convert {if} and
-{switch} statements to optimal machine code, so it should be a good estimate.)
-that ran a large number of iterations in which the program would pick a random
-number from a list of 16 specified numbers (partly to avoid the {if} statement
-using branch prediction), where the code looked like
+I wanted to see how much performance I could get out of a {switch} statement vs
+an {if else} chain, so I wrote some {C} code (I already have {C} set up on my
+computer and compilers don't need to do much to convert {if} and {switch}
+statements to optimal machine code, so it should be a good estimate) that ran a
+large number of iterations in which the program would pick a random number from
+a list of 16 specified numbers (partly to avoid the {if} statement using branch
+prediction), where the code looked like
 
 \{{code-block c no-line-numbers}}
 
@@ -379,7 +376,7 @@ the next frame within 8.3 milliseconds. For {if} statements to take up a
 significant amount of that time (say 5%), over 130,000 {if} statements would
 have to be executed on at least one thread every frame.o
 
-As I said earlier, {{ur}} has around 1000 {if} statements and there are arount
+As I said earlier, {{ur}} has around 1000 {if} statements and there are around
 100 students, so you might be thinking that we've accounted for around 100,000
 {if} statements. This reasoning fails to consider that the computer will execute
 relatively few {if} statements in the function. For example, if we look back at
@@ -403,8 +400,8 @@ performance boost even at 120 FPS</b>. At the current ~20-50 FPS {{ys}} runs at,
 
 ## But switch Statements Make Your Code Fast!
 
-If your program was just a long chain of {if else} statements in a loop, then
-sure, but <b>most of your program's time isn't going to be in evaluating {if}
+If your program was a long chain of {if else} statements in a loop, then sure,
+but <b>most of your program's time isn't going to be in evaluating {if}
 statements</b>. <a href="https://en.wikipedia.org/wiki/Amdahl's_law">If you want
 to make your code run fast, you need to optimize the slowest parts of your
 program first</a>. As an example, if you have one function that takes up 1
@@ -416,8 +413,8 @@ I would honestly go as far as to assume that using {switch} statements for
 performance is a premature optimization unless you could prove that you would
 get significant performance benefits, and even then you can replace them with an
 array or a map/dictionary most of the time. In my {switch} vs {if else} test
-program, I actually had another test where I just get the value directly from an
-array, like so
+program, I had another test where I get the value directly from an array, like
+so
 
 \{{code-block c no-line-numbers}}
 
@@ -435,12 +432,12 @@ The above code saves me 50 lines of code and the direct array access runs around
 2.5x faster than the {switch} statement.
 
 If you need more proof, YouTuber dyc3 <a
-href="https://www.youtube.com/watch?v=LleJbZ3FOPU">actually profiled the
-code</a> (and did an entire code review with deeper analysis and suggestions
-about coding architecture) and proved that the entire {StudentScript.Update()}
-function (which includes the function we looked at, {UpdateRoutine()} and every
-other update function) took less than a millisecond, which would be around 5% of
-the runtime at 50 FPS. Rendering poorly optimized assets took far more time than
+href="https://www.youtube.com/watch?v=LleJbZ3FOPU">profiled the code</a> (and
+did an entire code review with deeper analysis and suggestions about coding
+architecture) and proved that the entire {StudentScript.Update()} function
+(which includes the function we looked at, {UpdateRoutine()} and every other
+update function) took less than a millisecond, which would be around 5% of the
+runtime at 50 FPS. Rendering poorly optimized assets took far more time than
 anything else, with poorly optimized physics, pathfinding, and UI interactions.
 dyc3 didn't stop there, however. <b><a
 href="https://www.youtube.com/watch?v=LleJbZ3FOPU&feature=youtu.be&t=964">He
@@ -546,49 +543,47 @@ else
 
 \{{\code-block}}
 
-Remember that the long chain of if statements is equivalent to a chain of if
-else statements since the return statements will exit out as soon as one of the
-if statements are satisfied.
+Remember that the long chain of {if} statements is equivalent to a chain of {if
+else} statements since the {return} statements will exit out as soon as one of
+the {if} statements are satisfied.
 
-I think it would be best to separate our analysis into different levels that
-take progressively more information into account.
+It would be best to separate our analysis into different levels that take
+progressively more information into account.
 
 ## First-Level Analysis
 
 Look for the specific feature of the language that would make this code faster
 without considering anything else. In this case, replace the {if else} chain with
 a {switch} statement, netting you a few microseconds (making this replacement a
-literal micro-optimization) for maybe 30 seconds of your time. I think people
-who have suggested using {switch} statements without first proposing architectural
-issues have gotten stuck here.
+literal micro-optimization) for maybe 30 seconds of your time. People who have
+suggested using {switch} statements without first proposing architectural issues
+have gotten stuck here.
 
 ## Second-Level Analysis
 
 Look for the specific feature of the language that would make this code faster
 without considering anything else. In this case, replace the {if else} chain with
 a {switch} statement, netting you a few microseconds (making this replacement a
-literal micro-optimization) for maybe 30 seconds of your time. I think people
-who have suggested using {switch} statements without first proposing architectural
-issues have gotten stuck here.
+literal micro-optimization) for maybe 30 seconds of your time.
 
 ## Third-Level Analysis
 
 Add the intended goal of this code into your analysis. Since you just want each
-student to have the proper {SubtitleType}, just get the rid of the IDs entirely
-and just create a class called {Student} with the field {task_line} with the
-default value {SubtitleType.TaskGenericLine}. When you want to know the
-{SubtitleType} for the student, just ask the student with
-{student.getSubtitleType()}. Doing so removes unnecessary coupling between the
-{task_line} data for all students and some external function and gets rid of any
-operation except fetching a value from a known memory address. Alternatively,
-you could also just use the fact that enums can be converted to integers and
-vice versa to make this entire function unnecessary.
+student to have the proper {SubtitleType}, get the rid of the IDs entirely and
+create a class called {Student} with the field {task_line} with the default
+value {SubtitleType.TaskGenericLine}. When you want to know the {SubtitleType}
+for the student, ask the student with {student.getSubtitleType()}. Doing so
+removes unnecessary coupling between the {task_line} data for all students and
+some external function and gets rid of any operation except fetching a value
+from a known memory address. Alternatively, you could also use the fact that
+enums can be converted to integers and vice versa to make this entire function
+unnecessary.
 
 ## Fourth-Level Analysis
 
 Add the work of other people into your analysis. Third-level analysis is
-sufficient for {TaskLineResponseType()}, but the code of {{ys}} needs just a
-small amount of fourth-level analysis, which would get rid of most of the if
+sufficient for {TaskLineResponseType()}, but the code of {{ys}} needs a small
+amount of fourth-level analysis, which would get rid of most of the if
 statements and clean up the code quickly and easily. Specifically, he's
 implementing a <a
 href="https://medium.com/@mlbors/what-is-a-finite-state-machine-6d8dec727e2c">Finite
@@ -612,8 +607,8 @@ lead to massive amounts of code duplication.
 Despite what you may have read in a dusty tome, writing good code is not about
 trying to trick the computer into running quickly with magic words like {switch}
 or by manually unrolling loops. Instead, good code consists of using the right
-tools for the job, maintaining a modular architecture, general separation of data
-and code, giving things descriptive names, etc.
+tools for the job, maintaining a modular architecture, keeping data and code
+separate, giving things descriptive names, etc.
 
 {if else} chains are usually an architectural issue, but rarely a performance
 issue. {switch} statements generally make minor improvements to performance
