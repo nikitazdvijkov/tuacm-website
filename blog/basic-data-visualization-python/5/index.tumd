@@ -408,7 +408,7 @@ each of the elements of the list provided as its second argument), and the
 <b>{str}</b> function (which converts its argument into a string). None of it is
 relevant to the current project of writing a program to verify Zipf's Law for
 some sample text, but it's the easiest way to print out each word on its own
-line. It also serves as a reminder that python has a lot of features that we
+line. It also serves as a reminder that python has a lot of features and we
 can't cover everything.
 
 \{{spoiler}}
@@ -530,6 +530,22 @@ from scipy.optimize import curve_fit as fit
 As you can imagine, these are the two functions and modules we'll need.
 {scipy.optimize.curve_fit} will allow us to fit a curve to some data and
 {matplotlib.pyplot} will allow us to plot the data.
+
+## Note on Using {pip}
+
+On some distros (notably any distro with the {pacman} installer like Arch or
+Manjaro), it's better to install these libraries using the system wide package
+manager instead. For example, to install {matplotlib} and {scipy}, I would
+instead type the command
+
+\{{terminal}}
+
+{{prompt}} pacman -S python-scipy python-matplotlib
+
+\{{\terminal}}
+
+I won't go into more detail for any specific distro or operating system because
+I want you to know that some distros do it differently.
 
 # What's Next
 

@@ -1,0 +1,768 @@
+templates/article
+Title:		Basic Data Visualization in Python, Pt. 6
+Author:		Joseph Mellor
+Tagline:	We're going to finish this series by writing the program.
+Code Style:	trac+dark
+Import:		aside code-block terminal spoiler
+Scripts:
+
+\{{style}}
+
+ol ul {
+	margin-bottom: 0;
+}
+
+ul ul {
+	margin-bottom: 0;
+}
+
+.terminal pre {
+	color: #AAAAAA;
+}
+
+.terminal .file {
+	color: #295FCC;
+	font-weight: bold;
+}
+
+.terminal .exe {
+	color: #4CE64C;
+	font-weight: bold;
+}
+
+.spoiler *:last-child {
+    margin-bottom: 0em;
+}
+
+\{{\style}}
+
+<i>This is the final article in the series <a href="../index.html">Basic Data
+Visualization in Python</a>. In this article, we're going to use everything we
+learned up to this point to write a program to test the Zipf Hypothesis. If you
+haven't read <a href="../index.html">the previous article</a> yet, I would
+suggest reading it.</i>
+
+# Breaking a Big Task into Smaller Tasks
+
+Right now, we have a big task: test the Zipf Hypothesis on some data. Unless you
+know the exact code to write for this task, you're going to have to break this
+task into smaller tasks. To figure out how to break these tasks apart, I ask
+myself the following questions:
+
+\{{ol}}
+
+<b>Outputs</b>
+\{{ul}}
+
+What information do I want?
+
+How should I format the information I want?
+
+What do I need to know to get this information?
+
+\{{\ul}}
+
+<b>Inputs</b>
+\{{ul}}
+
+What information do I have?
+
+Can I add more information or change the information I have?
+
+How is the information I have formatted?
+
+What can I do with this information?
+
+\{{\ul}}
+
+<b>Implementation</b>
+\{{ul}}
+
+How can I get this information where it needs to be (a function, object, data
+structure, etc.)?
+
+Is there code I can write or use to connect my outputs to my inputs? If not,
+<b>how can I split this task into smaller tasks with their own inputs and
+outputs</b>?
+
+\{{\ul}}
+
+\{{\ol}}
+
+I tend to ask these questions in this order, as knowing where I want to end up
+helps me make sure I'm going in the right direction and knowing what I have
+helps me figure out my next step. Once I know where I am and where I'm going, I
+can then figure out what I need to do to get where I want to be.
+
+# The Top Level Task
+
+At the highest level, we want to test the Zipf Hypothesis, so let's start asking
+the questions above in the list above.
+
+## Outputs
+
+The Zipf Hypothesis says that the <i>n<sup>th</sup></i> most common word in any
+sufficiently large corpus (body of text or collections of bodies of text) is
+<i>1/n</i> times as common as the most common word in the corpus. Therefore, we
+
+\{{ul}}
+
+want an estimation for how well this hypothesis fits a corpus of data and some
+visual representation of this information,
+
+don't particularly care about the format for now,
+
+and will need to know the count of each word and the "deviation" (keeping it
+intentionally vague for now) between the Zipf model and the actual data.
+
+\{{\ul}}
+
+## Inputs
+
+We already took care of some of this in a previous article, but we'll go through
+it again assuming we have nothing.
+
+\{{ul}}
+
+We have no information currently.
+
+We can add more information by downloading a corpus (in this case, the <a
+href="../sample-text.txt"><i>Moby Dick</i> sample text</a>, though we can
+download others if we wanted).
+
+If you downloaded the sample text, your information is formatted like a plain
+text book.
+
+We can read or modify it, but we'll just want to read it.
+
+\{{\ul}}
+
+## Implementation
+
+\{{ul}}
+
+We can get the sample text into our program using the {with open} construct we
+used back in <a href="../4/index.html">part 4 of this series</a>.
+
+As of right now, we don't have code we can use to connect our inputs to our
+outputs, so we're going to split our big task into
+\{{ul}}
+
+getting the counts for each word,
+
+finding the deviation between the Zipf model and the counts,
+
+and getting some visual representation of the information.
+
+\{{\ul}}
+
+\{{\ul}}
+
+\{{aside}}
+
+### What Order Should I do the Tasks in?
+<hr>
+
+By separating tasks out and focusing on the inputs and outputs, <b>you make the
+order of these tasks irrelevant</b>. If you specify the format for the inputs
+for a task, then any other task with matching outputs can send its outputs to
+that task.
+
+Since I want to see proof that my program works, I tend to do the tasks that I
+can use to verify other tasks first. As a practical example, if I wanted to make
+a game engine, I would set up rendering before I set up physics or sound so that
+I can make sure the physics and sound work. If I see the player character
+sliding across the floor when I'm not providing any input, then I know I need to
+fix my physics.
+
+\{{\aside}}
+
+# Getting Word Counts
+
+I won't go through the specific questions for outputs, inputs, and
+implementation for the rest of the article because our path forward will be
+obvious enough that we can see what we need to do without going through the full
+process.
+
+We want to count the words in a file and return some data structure that
+contains the words and their counts. Since we want to map the words to their
+counts, we'll use a dictionary. We need to know which file we're reading from,
+so we'll need to take in either the name of the file or a file handle (the
+output of the {open} function). I have chosen to take in the name of the file
+instead of a file handle since I just want to open the file, get the data, and
+then close it without doing anything else. I have also chosen not to embed the
+filename in this code because this function should do the same thing regardless
+of the file it reads. Lastly, since we want to count the words, we'll call the
+function {count_words}. Try to write the code before you see it in the spoiler
+below.
+
+\{{spoiler}}
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import re
+
+def count_words(filename):
+    word_counts = {}
+    # Do stuff
+    return word_counts
+
+\{{\code-block}}
+
+\{{\spoiler}}
+
+Next, we'll want to open the file, which we can do using the {with open}
+construct.
+
+\{{spoiler}}
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import re
+
+def count_words(filename):
+    word_counts = {}
+hl    with open(filename, "r") as reader:
+        # Need to add code here
+    return word_counts
+
+\{{\code-block}}
+
+I didn't add a {pass} statement because I'm going to replace it immediately.
+
+\{{\spoiler}}
+
+Now that we've created a file handle, we'll want to interact with it. Since we
+can read a file line by line, we'll do that.
+
+\{{spoiler}}
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import re
+
+def count_words(filename):
+    word_counts = {}
+    with open(filename, "r") as reader:
+hl        for line in reader:
+            # Need to add code here
+    return word_counts
+
+\{{\code-block}}
+
+\{{\spoiler}}
+
+Now that we have a line of text as a string, we'll want to get rid of anything
+that isn't a letter, number, or a space, which we can do using the {re} module.
+We'll need to first get access to the {re} module before we can use it in our
+code, then we'll need to come up with a regular expression that means "anything
+that isn't a letter, number, or space", and then we'll need to choose a function
+from {re} that can replace characters.
+
+\{{spoiler}}
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import re
+
+def count_words(filename):
+    word_counts = {}
+    with open(filename, "r") as reader:
+        for line in reader:
+hl            clean_line = re.sub(r"[^a-zA-Z0-9\s]", "", line)
+            # More code here
+    return word_counts
+
+\{{\code-block}}
+
+\{{\spoiler}}
+
+Now that we have a line with just alphanumeric characters and spaces, we'll want
+some way of getting the individual words, which we can do with just one
+function.
+
+\{{spoiler}}
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import re
+
+def count_words(filename):
+    word_counts = {}
+    with open(filename, "r") as reader:
+        for line in reader:
+            clean_line = re.sub(r"[^a-zA-Z0-9\s]", "", line)
+hl            words = clean_line.split()
+            # More code here
+    return word_counts
+
+\{{\code-block}}
+
+\{{\spoiler}}
+
+Now that we have the individual words, we'll want to loop through them. If we
+haven't seen the word before, we'll have to add it to the dictionary. If we have
+seen the word before, it will already be in the dictionary and we have to add
+{1} to its value.
+
+\{{spoiler}}
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import re
+
+def count_words(filename):
+    word_counts = {}
+    with open(filename, "r") as reader:
+        for line in reader:
+            clean_line = re.sub(r"[^a-zA-Z0-9\s]", "", line)
+            words = clean_line.split()
+hl            for word in words:
+hl                if word in word_counts:
+hl                    word_counts[word] += 1
+hl                else:
+hl                    word_counts[word] = 1
+    return word_counts
+
+\{{\code-block}}
+
+\{{\spoiler}}
+
+And we're done with this function.
+
+\{{aside}}
+
+### {default_dict} and {Counter}
+<hr>
+
+We could get rid of the {if else} check in {count_words} if we had instead used
+a {default_dict} and we could have used a {<a
+href="https://docs.python.org/2/library/collections.html#counter-objects">Counter</a>}
+object to do what this function does, but I wanted you to get more practice with
+the fundamentals before you used the fancy stuff.
+
+\{{\aside}}
+
+## Checking Our Work
+
+We wrote a function that gets us a dictionary with word counts and we don't have
+any syntax errors, but the computer understanding what we've written and being
+able to execute it doesn't mean that we don't have any errors. In fact, I've
+intentionally left a <a href="https://en.wikipedia.org/wiki/Logic_error">logic
+error</a> in the code that you won't be able to pick up unless you've done some
+text processing before, you want to analyze the code for way too long, or you
+look at the output and see if you can find anything weird. In almost every case,
+looking at the output will save you the most time most consistently.
+
+To check our work, we'll want to format the output (sort words by their counts)
+and then look at it with human eyes. Then, we'll write it to a file that we can
+scroll through at our leasure. We're going to want to write a few things:
+
+\{{ul}}
+
+some code to sort the words,
+
+some code to write the words and their counts to a file,
+
+a {main} function to connect everything.
+
+\{{\ul}}
+
+I'm going to start with the {main} function and add things to it as they come
+up. I'm going to create the {main} function, call it at the end of the file, and
+add some code to call {count_words}.
+
+\{{spoiler}}
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import re
+
+def count_words(filename):
+    word_counts = {}
+    with open(filename, "r") as reader:
+        for line in reader:
+            clean_line = re.sub(r"[^a-zA-Z0-9\s]", "", line)
+            words = clean_line.split()
+            for word in words:
+                if word in word_counts:
+                    word_counts[word] += 1
+                else:
+                    word_counts[word] = 1
+    return word_counts
+
+hldef main():
+hl    word_counts = count_words("sample-text.txt")
+hl
+hlmain()
+
+\{{\code-block}}
+
+\{{\spoiler}}
+
+We then need to sort them in descending order by their counts. We no longer need
+the dictionary structure and we'll want to get the {items} using
+{word_counts.items()}.
+
+\{{spoiler}}
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import re
+
+def count_words(filename):
+    word_counts = {}
+    with open(filename, "r") as reader:
+        for line in reader:
+            clean_line = re.sub(r"[^a-zA-Z0-9\s]", "", line)
+            words = clean_line.split()
+            for word in words:
+                if word in word_counts:
+                    word_counts[word] += 1
+                else:
+                    word_counts[word] = 1
+    return word_counts
+
+def main():
+    word_counts = count_words("sample-text.txt")
+hl    sorted_word_counts = sorted(word_counts.items(), key = lambda x: -x[1])
+
+main()
+
+\{{\code-block}}
+
+I could have also set {reversed = True} in the parameters, but since I was
+already using a {lambda} function, I decided to just make it negative so it's
+sorted in reverse order.
+
+\{{\spoiler}}
+
+Now, we just need to loop through the {sorted_word_counts} and write them to a
+file. Since {main} should focus on connecting different things together, I'm
+going to make another function called {save_word_counts_to_file} that takes in
+the sorted list of words and the output file, loops through them, and prints
+them out to to a file.
+
+\{{spoiler}}
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import re
+
+hldef save_word_counts_to_file(word_counts, word_count_file):
+hl    with open(word_count_file, "w") as writer:
+hl        for word in word_counts:
+hl            writer.write(word[0] + " " + str(word[1]) + "\n")
+
+def count_words(filename):
+    word_counts = {}
+    with open(filename, "r") as reader:
+        for line in reader:
+            clean_line = re.sub(r"[^a-zA-Z0-9\s]", "", line)
+            words = clean_line.split()
+            for word in words:
+                if word in word_counts:
+                    word_counts[word] += 1
+                else:
+                    word_counts[word] = 1
+    return word_counts
+
+def main():
+    word_counts = count_words("sample-text.txt")
+    sorted_word_counts = sorted(word_counts.items(), key = lambda x: -x[1])
+hl    save_word_counts_to_file(sorted_word_counts, "word-counts.txt")
+
+main()
+
+\{{\code-block}}
+
+\{{\spoiler}}
+
+If we look through {sample-text.txt}, we'll find that {The} and {the} are
+counted as different words because one has capital letters and one doesn't. We
+can handle this problem by just making every word lowercase.
+
+\{{spoiler}}
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import re
+
+def save_word_counts_to_file(word_counts, word_count_file):
+    with open(word_count_file, "w") as writer:
+        for word in word_counts:
+            writer.write(word[0] + " " + str(word[1]) + "\n")
+
+def count_words(filename):
+    word_counts = {}
+    with open(filename, "r") as reader:
+        for line in reader:
+hl            clean_line = re.sub(r"[^a-zA-Z0-9\s]", "", line).lower()
+            words = clean_line.split()
+            for word in words:
+                if word in word_counts:
+                    word_counts[word] += 1
+                else:
+                    word_counts[word] = 1
+    return word_counts
+
+def main():
+    word_counts = count_words("sample-text.txt")
+    sorted_word_counts = sorted(word_counts.items(), key = lambda x: -x[1])
+    save_word_counts_to_file(sorted_word_counts, "word-counts.txt")
+
+main()
+
+\{{\code-block}}
+
+\{{\spoiler}}
+
+If {the} is not the most common word in {word-counts.txt}, then you've made an
+error somewhere (though copying and pasting the code will get you a right
+answer).
+
+# The Zipf Model
+
+We're going to use a continuous version of the Zipf Distribution known as the <a
+href="https://en.wikipedia.org/wiki/Pareto_distribution">Pareto
+distribution</a>. We'll also not normalize it because we don't need to. Anyway,
+I'll just give you most of the code for this section since I'm focusing on the
+code and less on the math and you won't be able to figure out what to do on your
+own from what I've taught you in this series, so you would have to look up the
+right functions. We're going to
+
+\{{ol}}
+
+extract the counts since we don't care about the words,
+
+write the code for the {pareto} function,
+
+generate the {x} values, which refer to the rank in the frequency table (the
+most common word gets 1, the second most common word gets 2, etc.)
+
+use the function {scipy.optimize.curve_fit} to fit the function to the data,
+
+get the parameters of the fit and a measure of their certainty (i.e. the
+diagonal elements of the covariance matrix and take the square root)
+
+find the standard deviation of the parameters relative to the parameters,
+
+and return the parameters of the fit.
+
+\{{\ol}}
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import re
+hlfrom scipy.optimize import curve_fit as fit
+
+def save_word_counts_to_file(word_counts, word_count_file):
+    with open(word_count_file, "w") as writer:
+        for word in word_counts:
+            writer.write(word[0] + " " + str(word[1]) + "\n")
+
+hldef pareto(x, x_m, alpha):
+hl    return (x_m / x) ** alpha
+
+hldef pareto_fit(counts):
+hl    word_ranks = list(range(1, len(counts) + 1))
+hl    popt, pcov = fit(pareto, word_ranks, counts, p0=[counts[0], 1])
+hl    perc_std_dev = lambda var, val: str(100 * var ** 0.5 / val) + "%"
+hl    print("x_m:\t" + str(popt[0]) + u" \u00B1 " + perc_std_dev(pcov[0][0], popt[0]))
+hl    print("alpha:\t" + str(popt[1]) + u" \u00B1 " + perc_std_dev(pcov[1][1], popt[1]))
+hl    return popt
+
+def count_words(filename):
+    word_counts = {}
+    with open(filename, "r") as reader:
+        for line in reader:
+            clean_line = re.sub(r"[^a-zA-Z0-9\s]", "", line).lower()
+            words = clean_line.split()
+            for word in words:
+                if word in word_counts:
+                    word_counts[word] += 1
+                else:
+                    word_counts[word] = 1
+    return word_counts
+
+def main():
+    word_counts = count_words("sample-text.txt")
+    sorted_word_counts = sorted(word_counts.items(), key = lambda x: -x[1])
+    save_word_counts_to_file(sorted_word_counts, "word-counts.txt")
+hl    counts = [k[1] for k in sorted_word_counts]
+hl    popt = pareto_fit(counts)
+
+main()
+
+\{{\code-block}}
+
+If we run this code, we'll get the parameters and other stuff printed out. You
+should get two parameters with a "&pm;_____%" off to the side with a low
+percentage.
+
+# Plotting Data
+
+Now, we're going to bring in {matplotlib.{{zs}}pyplot} so we can plot the values
+and the fit {scipy} generated for us and see how good the fit is. Like with
+{scipy} and the Pareto stuff, most of this is just calling {pyplot} functions
+for which you can find documentation online.
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import re
+from scipy.optimize import curve_fit as fit
+import matplotlib.pyplot as plt
+
+def save_word_counts_to_file(word_counts, word_count_file):
+    with open(word_count_file, "w") as writer:
+        for word in word_counts:
+            writer.write(word[0] + " " + str(word[1]) + "\n")
+
+def pareto(x, x_m, alpha):
+    return (x_m / x) ** alpha
+
+def pareto_fit(counts):
+    word_ranks = list(range(1, len(counts) + 1))
+    popt, pcov = fit(pareto, word_ranks, counts, p0=[counts[0], 1])
+    perc_std_dev = lambda var, val: str(100 * var ** 0.5 / val) + "%"
+    print("x_m:\t" + str(popt[0]) + u" \u00B1 " + perc_std_dev(pcov[0][0], popt[0]))
+    print("alpha:\t" + str(popt[1]) + u" \u00B1 " + perc_std_dev(pcov[1][1], popt[1]))
+    return popt
+
+def count_words(filename):
+    word_counts = {}
+    with open(filename, "r") as reader:
+        for line in reader:
+            clean_line = re.sub(r"[^a-zA-Z0-9\s]", "", line).lower()
+            words = clean_line.split()
+            for word in words:
+                if word in word_counts:
+                    word_counts[word] += 1
+                else:
+                    word_counts[word] = 1
+    return word_counts
+
+
+hldef gen_plot(popt, counts):
+hl    word_ranks = list(range(1, len(counts) + 1))
+hl    plt.xscale('log')
+hl    plt.yscale('log')
+hl    plt.plot(word_ranks, [pareto(k, popt[0], popt[1]) for k in word_ranks], label="Predicted")
+hl    plt.plot(word_ranks, counts, label="Actual")
+hl    plt.legend()
+hl    plt.savefig("word-counts.png")
+
+def main():
+    word_counts = count_words("sample-text.txt")
+    sorted_word_counts = sorted(word_counts.items(), key = lambda x: -x[1])
+    save_word_counts_to_file(sorted_word_counts, "word-counts.txt")
+    counts = [k[1] for k in sorted_word_counts]
+    popt = pareto_fit(counts)
+    gen_plot(popt, counts)
+
+main()
+
+\{{\code-block}}
+
+After running this program, you should be able to open {word-counts.png} and see
+that the line has a decent fit with a little bit of a jagged edge at the less
+frequent words.
+
+# The Complete Code
+
+\{{code-block python}}
+
+#!/usr/bin/env python3
+import re
+from scipy.optimize import curve_fit as fit
+import matplotlib.pyplot as plt
+
+def save_word_counts_to_file(word_counts, word_count_file):
+    with open(word_count_file, "w") as writer:
+        for word in word_counts:
+            writer.write(word[0] + " " + str(word[1]) + "\n")
+
+def pareto(x, x_m, alpha):
+    return (x_m / x) ** alpha
+
+def pareto_fit(counts):
+    word_ranks = list(range(1, len(counts) + 1))
+    popt, pcov = fit(pareto, word_ranks, counts, p0=[counts[0], 1])
+    perc_std_dev = lambda var, val: str(100 * var ** 0.5 / val) + "%"
+    print("x_m:\t" + str(popt[0]) + u" \u00B1 " + perc_std_dev(pcov[0][0], popt[0]))
+    print("alpha:\t" + str(popt[1]) + u" \u00B1 " + perc_std_dev(pcov[1][1], popt[1]))
+    return popt
+
+def count_words(filename):
+    word_counts = {}
+    with open(filename, "r") as reader:
+        for line in reader:
+            clean_line = re.sub(r"[^a-zA-Z0-9\s]", "", line).lower()
+            words = clean_line.split()
+            for word in words:
+                if word in word_counts:
+                    word_counts[word] += 1
+                else:
+                    word_counts[word] = 1
+    return word_counts
+
+
+def gen_plot(popt, counts):
+    word_ranks = list(range(1, len(counts) + 1))
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.plot(word_ranks, [pareto(k, popt[0], popt[1]) for k in word_ranks], label="Predicted")
+    plt.plot(word_ranks, counts, label="Actual")
+    plt.legend()
+    plt.savefig("word-counts.png")
+
+def main():
+    word_counts = count_words("sample-text.txt")
+    sorted_word_counts = sorted(word_counts.items(), key = lambda x: -x[1])
+    save_word_counts_to_file(sorted_word_counts, "word-counts.txt")
+    counts = [k[1] for k in sorted_word_counts]
+    popt = pareto_fit(counts)
+    gen_plot(popt, counts)
+
+main()
+
+\{{\code-block}}
+
+# Where to go from Here
+
+We've written the entire program and we're done, but we've only dipped our feet
+into the depths of {python}. There are a lot of features and libraries we
+haven't covered out there (notably {numpy}, {sympy} and its way faster brother
+{symengine}, {json}, {urllib}, {pygments}, etc.) which you can bring into your
+project. If you want to do something, chances are that someone's already written
+a library you can use. After reading this series, you should be able to search
+online "python do some task", find what you need to know, and integrate it into
+your programs. You can check out projects like <a
+href="https://automatetheboringstuff.com/">Automate the Boring Stuff with
+Python</a> that will go into more detail about specific libraries.
+
+## A Brief Rundown of Different Libraries
+
+I wrote the static site compiler for this website in {python}, which is how I
+know about {pygments} (syntax highlighter) and {urllib} (used to get author
+descriptions). {sympy} is like free {Mathematica} for {python} that I've used a
+lot, though I had to use {symengine} for one project because it's much faster
+than {sympy} ({symengine} is written in {C} while {sympy} is written in pure
+{python}). You can use either in a project, but {symengine} has fewer features.
+{json} makes reading {json} easy. {numpy} does math fast.
+
+# Conclusion
+
+Go find something you want to do, apply the above process, and get it done.

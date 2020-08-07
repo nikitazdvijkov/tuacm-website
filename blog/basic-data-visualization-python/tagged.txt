@@ -4,3 +4,4 @@ Basic Data Visualization in Python, Pt. 2|Joseph Mellor|The basic ways of organi
 Basic Data Visualization in Python, Pt. 3|Joseph Mellor|Implementing control flow with compound statements.|3/
 Basic Data Visualization in Python, Pt. 4|Joseph Mellor|We're going to cover a few features built into python.|4/
 Basic Data Visualization in Python, Pt. 5|Joseph Mellor|We're going to cover how to bring in features not built into python.|5/
+Basic Data Visualization in Python, Pt. 6|Joseph Mellor|We're going to finish this series by writing the program.|6/

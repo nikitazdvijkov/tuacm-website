@@ -867,9 +867,9 @@ Use the sample code below to get started.
 p1 = (1, 2, 3, 4, 5)
 p2 = (2, 3, 4, 5, 6)
 
-def nD_euclidean_dist(p1, p2):
+def nD_euclidean_dist(first_point, second_point):
     # Write your code here
-    for i, j in zip(p1, p2):
+    for i, j in zip(first_point, second_point):
         # Write your code here
     # Write your code here
 
@@ -889,9 +889,9 @@ the two points into one iterable. In the code above, {i} will contain
 p1 = (1, 2, 3, 4, 5)
 p2 = (2, 3, 4, 5, 6)
 
-def nD_cartesian_dist(p1, p2):
+def nD_cartesian_dist(first_point, second_point):
     dist_squared = 0
-    for i, j in zip(p1, p2):
+    for i, j in zip(first_point, second_point):
         dist_squared += (i - j) ** 2
     return dist_squared ** (1 / 2)
 

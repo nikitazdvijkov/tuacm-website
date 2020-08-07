@@ -205,7 +205,7 @@ computer in this case, but it could lead to memory leaks if you coded like this
 all the time, as the computer may not realize that you're done reading the file
 and keep it open. You need a corresponding {close} call, which you can add after
 the for loop. Even adding the {close} has its own problems, so we're going to
-turn to the {with} statemen, which will always clean up the file after we're
+turn to the {with} statement, which will always clean up the file after we're
 done with it. If we were to rewrite the previous code with a {with} statement,
 it would look like
 

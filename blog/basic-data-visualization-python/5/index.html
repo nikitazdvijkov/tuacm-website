@@ -476,7 +476,7 @@ This was printed from example.py!
 					<b><code>str</code></b> function (which converts its argument into a string). None of it is
 					relevant to the current project of writing a program to verify Zipf's Law for
 					some sample text, but it's the easiest way to print out each word on its own
-					line. It also serves as a reminder that python has a lot of features that we
+					line. It also serves as a reminder that python has a lot of features and we
 					can't cover everything.
 				</p>
 				<div class="spoiler">
@@ -589,6 +589,19 @@ chickens
 					<code>scipy.optimize.curve_fit</code> will allow us to fit a curve to some data and
 					<code>matplotlib.pyplot</code> will allow us to plot the data.
 				</p>
+				<h3 id="note-on-using-pip">Note on Using <code>pip</code></h3>
+				<p>On some distros (notably any distro with the <code>pacman</code> installer like Arch or
+					Manjaro), it's better to install these libraries using the system wide package
+					manager instead. For example, to install <code>matplotlib</code> and <code>scipy</code>, I would
+					instead type the command
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">~/dev/py_data_vis</span></b>$ pacman -S python-scipy python-matplotlib</span>
+</pre>
+				</div>
+				<p>I won't go into more detail for any specific distro or operating system because
+					I want you to know that some distros do it differently.
+				</p>
 				<h2 id="whats-next">What's Next</h2>
 				<p>I think we should have enough to actually write <code>word_counter.py</code>, so we're
 					going to write it in the next article <a href="../6/index.html">Basic Data
@@ -621,6 +634,7 @@ chickens
 				<a href="#whats-a-module" style="padding-left:36px;">What's a Module?</a>
 				<a href="#re-and-regular-expressions" style="padding-left:24px;"><code>re</code> and Regular Expressions</a>
 				<a href="#installing-libraries-with-pip3" style="padding-left:24px;">Installing Libraries with <code>pip3</code></a>
+				<a href="#note-on-using-pip" style="padding-left:36px;">Note on Using <code>pip</code></a>
 				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
 			</nav>
 			<div id="sidenav-activator"></div>

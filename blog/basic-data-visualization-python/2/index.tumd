@@ -61,19 +61,6 @@ suggest reading it so you can set up python for this project.</i>
 
 \{{\ul}}
 
-<b>Program Structure</b>
-\{{ul}}
-
-<b>Entry Points</b> (first statement your program reads)
-
-<b>{import} and Modules</b>
-
-\{{\ul}}
-
-<b>{re} and Regular Expressions</b>
-
-<b>Installing Libraries with {pip3}</b>
-
 \{{\ul}}
 
 Since <b>How {python} Handles Statements</b> is a short but necessary topic, I'm
