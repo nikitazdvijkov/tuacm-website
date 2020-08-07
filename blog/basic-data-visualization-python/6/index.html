@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
+		<meta name="description" content="In the final part of this series, we're going to take everything we've learned about python and write a program to test a hypothesis and analyze the data.">
 		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
 		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
 		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
@@ -14,6 +14,12 @@
 		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
 		<link rel="stylesheet" href="https://tuacm.com/css/spoiler.css">
 		<style>
+			img {
+				max-width: 100%;
+				margin: 0 auto;
+				display: block;
+				margin-bottom: 1em;
+			}
 			ol ul {
 				margin-bottom: 0;
 			}
@@ -784,6 +790,13 @@
 					should get two parameters with a "&pm;_____%" off to the side with a low
 					percentage.
 				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">~/dev</span></b>$ ./word_counter.py</span>
+x_m:  73130.301901723 ± 0.7990259669273722%
+alpha:  0.8551217323188273 ± 0.077199829346526%
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@comp</span></b>:<b><span style="color:#295FCC;">~/dev</span></b>$</span>
+</pre>
+				</div>
 				<h2 id="plotting-data">Plotting Data</h2>
 				<p>Now, we're going to bring in <code>matplotlib.&#8203;pyplot</code> so we can plot the values
 					and the fit <code>scipy</code> generated for us and see how good the fit is. Like with
@@ -902,6 +915,11 @@
 				<p>After running this program, you should be able to open <code>word-counts.png</code> and see
 					that the line has a decent fit with a little bit of a jagged edge at the less
 					frequent words.
+				</p>
+				<img src="../word-counts.png">
+				<p>We can clearly see that it's more accurate while for the 100 most common words
+					and less accurate for less common words. Note that since we're doing a log scale
+					on both axes, a large gap on the right means less than a large gap on the left.
 				</p>
 				<h2 id="the-complete-code">The Complete Code</h2>
 				<div class="code-blocktable">

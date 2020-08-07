@@ -1,0 +1,1 @@
+In the final part of this series, we're going to take everything we've learned about python and write a program to test a hypothesis and analyze the data.
