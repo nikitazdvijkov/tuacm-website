@@ -34,7 +34,7 @@ img {
 }
 
 .terminal .file {
-	color: #295FCC;
+	color: #298FDD;
 	font-weight: bold;
 }
 
@@ -415,7 +415,7 @@ See "man sudo_root" for details.
 
 {{user}}:="johndoe"
 {{computer-name}}:="johndoe-comp"
-{{dir-color}}:="#295FCC"
+{{dir-color}}:="#298FDD"
 {{u-and-c-color}}:="#4CE64C"
 {{dir}}:="~"
 {{cursor}}:="<span style="font-size: 1.5em;">&#9646;</span>"

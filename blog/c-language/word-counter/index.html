@@ -17,7 +17,7 @@
 				color: #AAAAAA;
 			}
 			.terminal .file {
-				color: #295FCC;
+				color: #298FDD;
 				font-weight: bold;
 			}
 			.terminal .exe {
@@ -228,9 +228,9 @@
 				<p>The entire process should look like this:
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~/some/random/dir</span></b>$ cd ~</span>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~</span></b>$ mkdir -p dev/c-tutorial</span>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~</span></b>$ ls</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/some/random/dir</span></b>$ cd ~</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~</span></b>$ mkdir -p dev/c-tutorial</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~</span></b>$ ls</span>
  <span class="file">c-tutorial</span>
  <span class="file">Desktop</span>
  <span class="file">Documents</span>
@@ -239,10 +239,10 @@
  <span class="file">Pictures</span>
  <span class="file">Public</span>
  <span class="file">Videos</span>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~</span></b>$ cd dev/c-tutorial</span>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~/dev/c-tutorial</span></b>$ mkdir word-counter</span>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~/dev/c-tutorial</span></b>$ cd word-counter</span>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~/dev/c-tutorial/word-counter</span></b>$</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~</span></b>$ cd dev/c-tutorial</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ mkdir word-counter</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ cd word-counter</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$</span>
 </pre>
 				</div>
 				<div id="creating-a-file">
@@ -1422,7 +1422,7 @@
 					If you go to the terminal and type <code>ls</code>, you should see:
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~/dev/c-tutorial/word-counter</span></b>$ ls</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ ls</span>
 <span class="file">str-operations.c</span>
 <span class="file">str-operations.h</span>
 <span class="file">word-counter.c</span>
@@ -1432,7 +1432,7 @@
 					<code>gcc</code>:
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~/dev/c-tutorial/word-counter</span></b>$ gcc str-operations.c word-counter.c -o word-counter</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ gcc str-operations.c word-counter.c -o word-counter</span>
 </pre>
 				</div>
 				<p>You can then run the program using <code>./word-counter [file-to-read]
@@ -1443,8 +1443,8 @@
 					sample text from this article</a>.
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~/dev/c-tutorial/word-counter</span></b>$ mv ~/Downloads/test-file.txt .</span>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~/dev/c-tutorial/word-counter</span></b>$ ls</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ mv ~/Downloads/test-file.txt .</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ ls</span>
  <span class="file">str-operations.c</span>
  <span class="file">str-operations.h</span>
  <span class="file">test-file.txt</span>
@@ -1462,13 +1462,13 @@
 					If you're using <code>test-file.txt</code>, then these are the results you should get:
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~/dev/c-tutorial/word-counter</span></b>$ ./word-counter</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ ./word-counter</span>
 ./word_counter file_name word_to_find
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~/dev/c-tutorial/word-counter</span></b>$ ./word-counter test-file.txt the</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ ./word-counter test-file.txt the</span>
 20
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~/dev/c-tutorial/word-counter</span></b>$ ./word-counter test-file.txt THE</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ ./word-counter test-file.txt THE</span>
 20
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#295FCC;">~/dev/c-tutorial/word-counter</span></b>$ ./word-counter test-file.txt watermelon</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ ./word-counter test-file.txt watermelon</span>
 0
 </pre>
 				</div>

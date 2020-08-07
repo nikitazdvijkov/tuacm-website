@@ -28,7 +28,7 @@ ul ul {
 }
 
 .terminal .file {
-	color: #295FCC;
+	color: #298FDD;
 	font-weight: bold;
 }
 
@@ -622,7 +622,7 @@ percentage.
 
 {{user}}="user"
 {{computer-name}}="comp"
-{{dir-color}}="#295FCC"
+{{dir-color}}="#298FDD"
 {{u-and-c-color}}="#4CE64C"
 
 {{prompt}} ./word_counter.py

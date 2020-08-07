@@ -13,7 +13,7 @@ Scripts:
 }
 
 .terminal .file {
-	color: #295FCC;
+	color: #298FDD;
 	font-weight: bold;
 }
 

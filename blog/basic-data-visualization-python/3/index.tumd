@@ -17,7 +17,7 @@ ul ul {
 }
 
 .terminal .file {
-	color: #295FCC;
+	color: #298FDD;
 	font-weight: bold;
 }
 
@@ -120,7 +120,7 @@ and run the command
 {{user}}="user"
 {{computer-name}}="comp"
 {{dir}}="~/dev/py_data_vis"
-{{dir-color}}="#295FCC"
+{{dir-color}}="#298FDD"
 {{u-and-c-color}}="#4CE64C"
 {{py}}="{{gt}}{{gt}}{{gt}}"
 {{prompt}} ls -l

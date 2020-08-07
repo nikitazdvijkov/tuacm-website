@@ -17,7 +17,7 @@ ul ul {
 }
 
 .terminal .file {
-	color: #295FCC;
+	color: #298FDD;
 	font-weight: bold;
 }
 
@@ -118,7 +118,7 @@ to set up the Windows Subsystem for Linux) like so:
 
 {{user}}="user"
 {{computer-name}}="comp"
-{{dir-color}}="#295FCC"
+{{dir-color}}="#298FDD"
 {{u-and-c-color}}="#4CE64C"
 {{py}}="{{gt}}{{gt}}{{gt}}"
 
