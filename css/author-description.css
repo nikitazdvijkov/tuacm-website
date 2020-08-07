@@ -4,6 +4,10 @@
 	border-radius: 48px;
 }
 
+#author-description-local a {
+	color: #004CFF;
+}
+
 #author-description-image {
 	float: left;
 	width: 150px;
