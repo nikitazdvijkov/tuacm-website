@@ -702,7 +702,7 @@ that the line has a decent fit with a little bit of a jagged edge at the less
 frequent words.
 
 \{{raw-html}}
-<img src="../word-counts.png">
+<img src="../word-counts.png" alt="A graph of the word counts vs the Pareto Distribution with the fitted parameters.">
 \{{\raw-html}}
 
 We can clearly see that it's more accurate while for the 100 most common words
