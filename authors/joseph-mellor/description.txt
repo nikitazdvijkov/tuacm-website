@@ -1,4 +1,4 @@
-Joseph Mellor is a Junior at TU majoring in Physics, Computer Science, and
+Joseph Mellor is a Senior at TU majoring in Physics, Computer Science, and
 Math.
 He is also the chief editor of the website and the author of the tumd markdown
 compiler.
