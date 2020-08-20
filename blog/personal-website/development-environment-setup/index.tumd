@@ -1,0 +1,116 @@
+templates/article
+Title:		How to Set up Your Webdev Environment
+Author:		Nikita Zdvijkov
+Tagline:	Setting up the tools to make changes to the website.
+Code Style:	trac+dark
+Import:		terminal
+Scripts:
+
+\{{style}}
+
+.terminal pre {
+	color: #AAAAAA;
+}
+
+\{{\style}}
+
+Just as in the last tutorial, we won't go into great depth about why we're doing
+what we're doing. We're just trying to set everything up for now and fill in the
+details later.
+
+Make sure to take good notes of what you do and what tutorials you follow for
+the {git} setup so we can put them in this article later on. Both the author and
+the editor set {git} up a long time ago, so we don't remember what works best
+for you.
+
+# Mac
+
+{{cur-link}}:="https://www.michaeluloth.com/how-to-set-up-a-mac-for-web-development"
+{{link-text}}:="this tutorial to set your Mac up for web development"
+{{link}}:="<a href=\"{{cur-link}}\">{{link-text}}</a>"
+
+Follow {{link}}. You don't have to install NodeJS &mdash you can always do it
+later &mdash; but it won't hurt. Use VSCode for a text editor for now. You might
+want to check out other text editors later, but it won't matter for this
+tutorial.
+
+Once you've finished the tutorial, open up your terminal and type the following
+commands:
+
+\{{terminal mac}}
+
+{{mac-prompt}} git config --global user.name "John Doe"
+{{mac-prompt}} git config --global user.email "johndoe@example.com"
+
+\{{\terminal}}
+
+# Windows
+
+{{wsl}}:="<a href="https://www.dataquest.io/blog/tutorial-install-linux-on-windows-wsl/">Windows Subsystem for Linux</a>"
+First, set up the {{wsl}}. Then, install VSCode. Lastly, run the following
+commands in your terminal.
+
+\{{terminal}}
+
+{{prompt}} git config --global user.name "John Doe"
+{{prompt}} git config --global user.email "johndoe@example.com"
+
+\{{\terminal}}
+
+# Linux
+
+Install VSCode, then run the following commands in your terminal.
+
+\{{terminal}}
+
+{{prompt}} git config --global user.name "John Doe"
+{{prompt}} git config --global user.email "johndoe@example.com"
+
+\{{\terminal}}
+
+# Connect GitHub to Netlify
+
+\{{ol}}
+
+Go to GitHub. Use the website to create a new Git repository. Call it whatever
+you want as long as it doesn't have spaces in the name. It doesn't matter
+whether it's a public or private repo. Don't bother initializing with
+{README.md} or {.gitignore}.
+
+At this point, GitHub will show you instructions for getting started using your
+repo. Follow the first set of instructions (involves cloning the repo).
+
+Put your {index.html} file without the folder containing it into your cloned git
+repo. At this point, your repo should only have one non-hidden file. Type the
+command {ls} in the terminal to list all non-hidden files in the current
+directory. Type the command {ls -a} to list all files.
+
+Go to Netlify and follow the prompts to connect your git repo to Netlify.
+
+\{{\ol}}
+
+# Use {git}
+
+Research what these commands do. As long as you're not collaborating or doing
+anything fancy, these should be all you need:
+
+\{{ul}}
+
+{git clone}
+
+{git add -A}
+
+{git commit -m "Changed this thing"}
+
+{git status}
+
+{git log}
+
+{git push origin master}
+
+\{{\ul}}
+
+# The Next Step
+
+In the next article, we're going to <a href="../html-css-bootstrap">start
+customizing our webpage</a>.

@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<style>
+			.terminal pre {
+				color: #AAAAAA;
+			}
+		</style>
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>Style Your Website with HTML, CSS, and Bootstrap</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="style-your-website-with-html-css-and-bootstrap">Style Your Website with HTML, CSS, and Bootstrap</h1></div>
+				<div id="meta-description">Plain text is boring. Let's add some style.</div>
+				<div id="date-and-tags">Posted 20 August 2020 at 12:25 AM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/nikita-zdvijkov/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Nikita Zdvijkov</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p>Now we're going to finally start going into more detail about how to add some
+					style to your website.
+				</p>
+				<h2 id="html--css">HTML & CSS</h2>
+				<p>Watch <a href="https://youtu.be/bWPMSSsVdPk">this intro to HTML</a>, but don't
+					write your <code>hr</code> tags the way he does. Instead write them as <code>&lt;hr&gt;</code>
+					without a closing tag.
+				</p>
+				<p>Watch <a href="https://youtu.be/0afZj1G0BIE">this intro to CSS</a>.
+				</p>
+				<h3 id="takeaways">Takeaways</h3>
+				<p>Know the following terms:
+				</p>
+				<ul>
+					<li>HTML tag
+					</li>
+					<li>HTML attribute
+					</li>
+					<li>HTML entity
+					</li>
+					<li>CSS property
+					</li>
+					<li>CSS selector
+					</li>
+				</ul>
+				<p>Also note that you use <code>class</code> to refer to multiple parts of a document while
+					you use <code>id</code> to refer to a specific part of the document. For example, if you
+					wanted some of your images to take up the full width of the container and others
+					to not take up the full width, you would create two css classes (maybe call them
+					<code>full-width-img</code> and <code>not-full-width-img</code>). On the other hand, if you wanted one
+					specific format for one specific part of the webpage or you wanted to mess
+					around with <code>JavaScript</code> with that one specific part, you would use an <code>id</code>.
+				</p>
+				<p>In general, check out <a href="https://www.w3schools.com/">w3schools</a> for the
+					most authoritative information about HTML and CSS.
+				</p>
+				<h2 id="bootstrap">Bootstrap</h2>
+				<p>Bootstrap is the most popular HTML, CSS, and JS library in the world. Here's how
+					to get it set up:
+				</p>
+				<ol>
+					<li>Go to <a href="https://getbootstrap.com/">getbootstrap.com</a>.
+					</li>
+					<li>Click the <code>get started</code> button.
+					</li>
+					<li>Scroll down to the starter template. Copy that into a <code>.html</code> file.
+					</li>
+					<li>Save the file. Right click an open it with a browser.
+					</li>
+				</ol>
+				<p>To learn Bootstrap, read the documentation on the website. Here's <a
+					href="https://getbootstrap.com/docs/4.5/components/card/">how to make a card
+					with Bootstrap</a>. You can also search online for anything you want to do, as
+					someone else has already done it.
+				</p>
+				<h2 id="inspiration">Inspiration</h2>
+				<p>For most simple websites, try right clicking on a webpage and selecting the
+					option <code>view source</code> to see the raw <code>html</code>. If you want to go more in-depth, you
+					can also right click and select the option to <code>inspect element</code> to see more
+					information about the <code>html</code>, <code>css</code>, <code>js</code>, etc. Here are a few example projects
+					for you to check out:
+				</p>
+				<ul>
+					<li><a href="https://nznz.me/">Nikita's Website</a>
+					</li>
+					<li><a href="https://josephmellor.xyz/">Joseph's Website</a>
+					</li>
+					<li><a href="https://nikitazdvijkov.com/fred">A sample webpage Nikita made for a
+						company</a>
+					</li>
+					<li>Any webpage on this website. We use a minified version of bootstrap since we're
+						not doing anything special, so we just have the CSS styles.
+					</li>
+				</ul>
+				<h2 id="bonus">Bonus</h2>
+				<p>Try using <a href="https://fonts.google.com/">Google Fonts</a> for fonts and <a
+					href="https://fontawesome.com/">FontAwesome</a> for icons.
+				</p>
+				<p>You might also want to read up on
+				</p>
+				<ul>
+					<li><a href="https://en.wikipedia.org/wiki/Static_web_page">Static Websites</a>
+					</li>
+					<li>Michael Wales discussing the <a
+						href="https://blog.udacity.com/2014/12/front-end-vs-back-end-vs-full-stack-web-developers.html">difference
+						between frontend and backend web development</a>.
+					</li>
+				</ul>
+				<h2 id="multiple-page-website">Multiple Page Website</h2>
+				<p>You can make multiple webpages by adding a directory within your website
+					directory. To illustrate this process, we start from scratch:
+				</p>
+				<ol>
+					<li>Make a directory called <code>my-website</code>.
+					</li>
+					<li>Put a file in <code>my-website/</code> named <code>index.html</code>. When someone visits
+						<a href="#">https://your-website.com/</a>, they will see this file rendered as a
+						webpage.
+					</li>
+					<li>Within <code>my-website</code>, make a directory named <code>about</code>.
+					</li>
+					<li>Put a file in <code>my-website/about/</code> named <code>index.html</code>. When someone visits <a
+						href="#">https://your-website.com/about/</a>, they will see this file rendered
+						as a webpage.
+					</li>
+				</ol>
+				<p>After following the above steps, your file structure should look like
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="code-block"><pre><span></span>my-website
+├── index.html
+└── about
+    └── index.html
+</pre></div>
+</td></tr></table>				
+				</div>
+				<h3 id="linking-to-pages-on-the-same-domain">Linking to Pages on the Same Domain</h3>
+				<p>For portability (you can move your website to another domain without breaking
+					links) and development (you can use http://localhost without breaking links),
+					omit the domain name from the beginning of the <code>href</code> attribute if you're
+					linking to the same website. For example, use
+				</p>
+<div class="code-block"><pre><span></span><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/about/&quot;</span><span class="p">&gt;</span>My about page.<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</pre></div>
+				
+				<p>instead of
+				</p>
+<div class="code-block"><pre><span></span><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;http://example.com/about/index.html&quot;</span><span class="p">&gt;</span>My about page.<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</pre></div>
+				
+				<p>Also, don't include the <code>index.html</code> in links either, as your browser will
+					automatically figure it out.
+				</p>
+				<h2 id="the-next-step">The Next Step</h2>
+				<p>We don't currently have an article for the next step.
+				</p>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/nikita-zdvijkov/large.jpg" id="author-description-image" alt="A picture of Nikita Zdvijkov, the author.">
+					<div id="author-description-text">
+						<p>Nikita Zdvijkov &ndash; junior, electrical engineering, TUACM president &ndash;
+							<a href="http://nikitazdvijkov.com">my website</a>.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#style-your-website-with-html-css-and-bootstrap" style="padding-left:12px;">Style Your Website with HTML, CSS, and Bootstrap</a>
+				<a href="#html--css" style="padding-left:24px;">HTML & CSS</a>
+				<a href="#takeaways" style="padding-left:36px;">Takeaways</a>
+				<a href="#bootstrap" style="padding-left:24px;">Bootstrap</a>
+				<a href="#inspiration" style="padding-left:24px;">Inspiration</a>
+				<a href="#bonus" style="padding-left:24px;">Bonus</a>
+				<a href="#multiple-page-website" style="padding-left:24px;">Multiple Page Website</a>
+				<a href="#linking-to-pages-on-the-same-domain" style="padding-left:36px;">Linking to Pages on the Same Domain</a>
+				<a href="#the-next-step" style="padding-left:24px;">The Next Step</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>

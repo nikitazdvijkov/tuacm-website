@@ -1,0 +1,176 @@
+templates/article
+Title:		Style Your Website with HTML, CSS, and Bootstrap
+Author:		Nikita Zdvijkov
+Tagline:	Plain text is boring. Let's add some style.
+Code Style:	trac+dark
+Import:		code-block
+Scripts:
+
+\{{style}}
+
+.terminal pre {
+	color: #AAAAAA;
+}
+
+\{{\style}}
+
+Now we're going to finally start going into more detail about how to add some
+style to your website.
+
+# HTML & CSS
+
+Watch <a href="https://youtu.be/bWPMSSsVdPk">this intro to HTML</a>, but don't
+write your {hr} tags the way he does. Instead write them as {{{lt}}hr{{gt}}}
+without a closing tag.
+
+Watch <a href="https://youtu.be/0afZj1G0BIE">this intro to CSS</a>.
+
+## Takeaways
+
+Know the following terms:
+
+\{{ul}}
+
+HTML tag
+
+HTML attribute
+
+HTML entity
+
+CSS property
+
+CSS selector
+
+\{{\ul}}
+
+Also note that you use {class} to refer to multiple parts of a document while
+you use {id} to refer to a specific part of the document. For example, if you
+wanted some of your images to take up the full width of the container and others
+to not take up the full width, you would create two css classes (maybe call them
+{full-width-img} and {not-full-width-img}). On the other hand, if you wanted one
+specific format for one specific part of the webpage or you wanted to mess
+around with {JavaScript} with that one specific part, you would use an {id}.
+
+In general, check out <a href="https://www.w3schools.com/">w3schools</a> for the
+most authoritative information about HTML and CSS.
+
+# Bootstrap
+
+Bootstrap is the most popular HTML, CSS, and JS library in the world. Here's how
+to get it set up:
+
+\{{ol}}
+
+Go to <a href="https://getbootstrap.com/">getbootstrap.com</a>.
+
+Click the {get started} button.
+
+Scroll down to the starter template. Copy that into a {.html} file.
+
+Save the file. Right click an open it with a browser.
+
+\{{\ol}}
+
+To learn Bootstrap, read the documentation on the website. Here's <a
+href="https://getbootstrap.com/docs/4.5/components/card/">how to make a card
+with Bootstrap</a>. You can also search online for anything you want to do, as
+someone else has already done it.
+
+# Inspiration
+
+For most simple websites, try right clicking on a webpage and selecting the
+option {view source} to see the raw {html}. If you want to go more in-depth, you
+can also right click and select the option to {inspect element} to see more
+information about the {html}, {css}, {js}, etc. Here are a few example projects
+for you to check out:
+
+\{{ul}}
+
+<a href="https://nznz.me/">Nikita's Website</a>
+
+<a href="https://josephmellor.xyz/">Joseph's Website</a>
+
+<a href="https://nikitazdvijkov.com/fred">A sample webpage Nikita made for a
+company</a>
+
+Any webpage on this website. We use a minified version of bootstrap since we're
+not doing anything special, so we just have the CSS styles.
+
+\{{\ul}}
+
+# Bonus
+
+Try using <a href="https://fonts.google.com/">Google Fonts</a> for fonts and <a
+href="https://fontawesome.com/">FontAwesome</a> for icons.
+
+You might also want to read up on
+
+\{{ul}}
+
+<a href="https://en.wikipedia.org/wiki/Static_web_page">Static Websites</a>
+
+Michael Wales discussing the <a
+href="https://blog.udacity.com/2014/12/front-end-vs-back-end-vs-full-stack-web-developers.html">difference
+between frontend and backend web development</a>.
+
+\{{\ul}}
+
+# Multiple Page Website
+
+You can make multiple webpages by adding a directory within your website
+directory. To illustrate this process, we start from scratch:
+
+\{{ol}}
+
+Make a directory called {my-website}.
+
+Put a file in {my-website/} named {index.html}. When someone visits
+<a href="#">https://your-website.com/</a>, they will see this file rendered as a
+webpage.
+
+Within {my-website}, make a directory named {about}.
+
+Put a file in {my-website/about/} named {index.html}. When someone visits <a
+href="#">https://your-website.com/about/</a>, they will see this file rendered
+as a webpage.
+
+\{{\ol}}
+
+After following the above steps, your file structure should look like
+
+\{{code-block text}}
+
+my-website
+├── index.html
+└── about
+    └── index.html
+
+\{{\code-block}}
+
+## Linking to Pages on the Same Domain
+
+For portability (you can move your website to another domain without breaking
+links) and development (you can use http://localhost without breaking links),
+omit the domain name from the beginning of the {href} attribute if you're
+linking to the same website. For example, use
+
+\{{code-block html no-line-numbers}}
+
+<a href="/about/">My about page.</a>
+
+\{{\code-block}}
+
+instead of
+
+\{{code-block html no-line-numbers}}
+
+<a href="http://example.com/about/index.html">My about page.</a>
+
+\{{\code-block}}
+
+Also, don't include the {index.html} in links either, as your browser will
+automatically figure it out.
+
+# The Next Step
+
+We don't currently have an article for the next step.

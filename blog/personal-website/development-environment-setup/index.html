@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
+		<style>
+			.terminal pre {
+				color: #AAAAAA;
+			}
+		</style>
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<title>How to Set up Your Webdev Environment</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="how-to-set-up-your-webdev-environment">How to Set up Your Webdev Environment</h1></div>
+				<div id="meta-description">Setting up the tools to make changes to the website.</div>
+				<div id="date-and-tags">Posted 19 August 2020 at 11:42 PM </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/nikita-zdvijkov/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Nikita Zdvijkov</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p>Just as in the last tutorial, we won't go into great depth about why we're doing
+					what we're doing. We're just trying to set everything up for now and fill in the
+					details later.
+				</p>
+				<p>Make sure to take good notes of what you do and what tutorials you follow for
+					the <code>git</code> setup so we can put them in this article later on. Both the author and
+					the editor set <code>git</code> up a long time ago, so we don't remember what works best
+					for you.
+				</p>
+				<h2 id="mac">Mac</h2>
+				<p>Follow <a href=\"https://www.michaeluloth.com/how-to-set-up-a-mac-for-web-development\">this tutorial to set your Mac up for web development</a>. You don't have to install NodeJS &mdash you can always do it
+					later &mdash; but it won't hurt. Use VSCode for a text editor for now. You might
+					want to check out other text editors later, but it won't matter for this
+					tutorial.
+				</p>
+				<p>Once you've finished the tutorial, open up your terminal and type the following
+					commands:
+				</p>
+				<div class="mac-terminal"><pre>
+<span class="terminal-oneline">computer:~ user$ git config --global user.name "John Doe"</span>
+<span class="terminal-oneline">computer:~ user$ git config --global user.email "johndoe@example.com"</span>
+</pre>
+				</div>
+				<h2 id="windows">Windows</h2>
+				First, set up the <a href="https://www.dataquest.io/blog/tutorial-install-linux-on-windows-wsl/">Windows Subsystem for Linux</a>. Then, install VSCode. Lastly, run the following
+				commands in your terminal.
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ git config --global user.name "John Doe"</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ git config --global user.email "johndoe@example.com"</span>
+</pre>
+				</div>
+				<h2 id="linux">Linux</h2>
+				<p>Install VSCode, then run the following commands in your terminal.
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ git config --global user.name "John Doe"</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ git config --global user.email "johndoe@example.com"</span>
+</pre>
+				</div>
+				<h2 id="connect-github-to-netlify">Connect GitHub to Netlify</h2>
+				<ol>
+					<li>Go to GitHub. Use the website to create a new Git repository. Call it whatever
+						you want as long as it doesn't have spaces in the name. It doesn't matter
+						whether it's a public or private repo. Don't bother initializing with
+						<code>README.md</code> or <code>.gitignore</code>.
+					</li>
+					<li>At this point, GitHub will show you instructions for getting started using your
+						repo. Follow the first set of instructions (involves cloning the repo).
+					</li>
+					<li>Put your <code>index.html</code> file without the folder containing it into your cloned git
+						repo. At this point, your repo should only have one non-hidden file. Type the
+						command <code>ls</code> in the terminal to list all non-hidden files in the current
+						directory. Type the command <code>ls -a</code> to list all files.
+					</li>
+					<li>Go to Netlify and follow the prompts to connect your git repo to Netlify.
+					</li>
+				</ol>
+				<h2 id="use-git">Use <code>git</code></h2>
+				<p>Research what these commands do. As long as you're not collaborating or doing
+					anything fancy, these should be all you need:
+				</p>
+				<ul>
+					<li><code>git clone</code>
+					</li>
+					<li><code>git add -A</code>
+					</li>
+					<li><code>git commit -m "Changed this thing"</code>
+					</li>
+					<li><code>git status</code>
+					</li>
+					<li><code>git log</code>
+					</li>
+					<li><code>git push origin master</code>
+					</li>
+				</ul>
+				<h2 id="the-next-step">The Next Step</h2>
+				<p>In the next article, we're going to <a href="../html-css-bootstrap">start
+					customizing our webpage</a>.
+				</p>
+			</div>
+			<div class="article">
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/nikita-zdvijkov/large.jpg" id="author-description-image" alt="A picture of Nikita Zdvijkov, the author.">
+					<div id="author-description-text">
+						<p>Nikita Zdvijkov &ndash; junior, electrical engineering, TUACM president &ndash;
+							<a href="http://nikitazdvijkov.com">my website</a>.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+				<a href="#how-to-set-up-your-webdev-environment" style="padding-left:12px;">How to Set up Your Webdev Environment</a>
+				<a href="#mac" style="padding-left:24px;">Mac</a>
+				<a href="#windows" style="padding-left:24px;">Windows</a>
+				<a href="#linux" style="padding-left:24px;">Linux</a>
+				<a href="#connect-github-to-netlify" style="padding-left:24px;">Connect GitHub to Netlify</a>
+				<a href="#use-git" style="padding-left:24px;">Use <code>git</code></a>
+				<a href="#the-next-step" style="padding-left:24px;">The Next Step</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>

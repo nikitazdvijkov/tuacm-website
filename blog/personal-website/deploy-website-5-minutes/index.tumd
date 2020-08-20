@@ -1,0 +1,180 @@
+templates/article
+Title:		How to Deploy a Website in 5 Minutes
+Author:		Nikita Zdvijkov
+Tagline:	Taking the first steps to build a website.
+Code Style:	trac+dark
+Import:		code-block
+Scripts:
+
+\{{style}}
+
+img {
+	width: 100%;
+	margin-bottom: 1em;
+}
+
+\{{\style}}
+
+At this point, we just want a website up and running, so this tutorial will have
+some {html} code that we won't explain for now, but we will explain in the next
+tutorial.
+
+{{cur-link}}:="https://www.w3schools.com/html/html_editors.asp"
+{{link-text}}:="#"
+{{link}}:="<a href=\"{{cur-link}}\">{{link-text}}</a>"
+
+# Writing the {HTML}
+
+\{{ol}}
+
+Make a new folder (a.k.a. a directory) on your desktop called
+{my-first-website}.
+
+Within that folder, make a file named {index.html} with the following code. Make
+sure to use a text editor that allows you to edit the text without adding
+anything like formatting information. In general, if you can change the font of
+parts of the text like in Microsoft Word or Pages, then it's not a text editor.
+If you can't name your text editor, follow these instructions on
+{{link-text}}:="how to use the default text editor on your system"
+{{link}}. You'll install a proper text editor in the next tutorial.
+\{{code-block html}}
+
+<!doctype html>
+<html>
+    <head>
+        <title>this will show up in the tab name</title>
+    </head>
+    <body>
+        <h1>Hello, world!</h1>
+        <p>
+            Firstname Lastname
+            made this HTML document
+            while following 
+            <a href="https://go.nznz.me/acm-summer-mentorship-nz">this tutorial</a>.
+        </p>
+    </body>
+</html>
+
+\{{\code-block}}
+
+Replace {Firstname} with your first name and {Lastname} with your last name.
+
+Open the file in a web browser, such as Google Chrome or Firefox. In general,
+right click on the file and select the option to {open with}, then look for your
+browser.
+
+\{{\ol}}
+
+This file is not currently on the internet &mdash; it's still sitting on your
+computer. We still have to buy a domain and put it up on a server.
+
+# Buying a Domain
+
+Only this step will cost you money, but you can find cheap domain names for less
+than three bucks a year. For example, <a href="josephmellor.xyz">the editor's
+website</a> only cost a little over a dollar.
+
+From what I've read, most pro webdevs use NameCheap to register names. I've used
+{{cur-link}}:="https://go.nznz.me/namecheap"
+{{link-text}}:="affiliate link to NameCheap"
+it without any problems, so I'll recommend it. Here's my {{link}} &mdash;
+meaning I get a kickback. Once you're on NameCheap, use <i>beast mode</i> domain
+search and search up your website name. You should see something that looks like
+
+\{{raw-html}}
+{{img-src}}:="namecheap-beast-mode-demo-personal-website.png"
+{{img-alt}}:="A list of domains with different extensions and different prices."
+{{img}}:="<img src="{{img-src}}" alt="{{img-alt}}">"
+
+{{img}}
+\{{\raw-html}}
+
+At checkout, keep <i>WhoisGuard</i> on, as it's free forever. Don't buy
+<i>Premium DNS</i>, <i>Web Hosting</i>, <i>Positive SSL</i>, or <i>Email
+Hosting</i>. We'll show you free alternatives.
+
+# Create Accounts
+
+Sign up for <a href="https://github.com/">Github</a> and <a
+href="https://www.netlify.com/">Netlify</a>. I recommend signing up for Netlify
+<b>using your GitHub account</b> instead of email or anything else.
+
+# Deploy to Netlify Without Custom Domain
+
+Before we can deploy to the custom domain, we have to drag and drop the
+{my-first-website} folder into Netlify.
+
+\{{raw-html}}
+{{img-src}}:="netlify06.png"
+{{img-alt}}:="Netlify asking if you want to deploy a new site without connecting to git."
+
+{{img}}
+\{{\raw-html}}
+
+At this point, Netlify will automatically give you a link of the form
+{https://example.netlify.app} where your {html} document is published.
+
+# Connect to Custom Domain
+
+At this point, we have to go through a bunch of menus, so follow the
+screenshots.
+
+\{{raw-html}}
+{{img-src}}:="netlify01.png"
+{{img-alt}}:="An arrow pointing to the button to add or register domain."
+
+{{img}}
+\{{\raw-html}}
+
+Enter the domain you just bought, click verify, then click yes.
+
+\{{raw-html}}
+{{img-src}}:="netlify03.png"
+{{img-alt}}:="An arrow pointing to the domain field in the form and another arrow pointing to the button Yes, add domain."
+
+{{img}}
+\{{\raw-html}}
+
+Skip adding a new record for now. If you want, you can add it later.
+
+\{{raw-html}}
+{{img-src}}:="netlify04.png"
+{{img-alt}}:="A red X through the option to add a new record."
+
+{{img}}
+\{{\raw-html}}
+
+Copy the nameservers Netlify gives you and paste them into NameCheap. NameCheap
+might give you different nameservers that it gave me. The nameservers should be
+the same in Netlify and NameCheap &mdash; it's a mistake that they're different
+in the screenshots.
+
+\{{raw-html}}
+{{img-src}}:="netlify05.png"
+{{img-alt}}:="A red box around four nameservers of the form dns1.p04.nsone.net at netlify.com."
+
+{{img}}
+\{{\raw-html}}
+
+You'll have to switch from <i>NameCheap Basic DNS</i> to <i>Custom DNS</i>.
+<b>Make sure to hit the green check mark to save</b>.
+
+\{{raw-html}}
+{{img-src}}:="namecheap-custom-nameservers.png"
+{{img-alt}}:="A red circle around four nameservers of the form dns1.p04.nsone.net at namecheap.com."
+
+{{img}}
+\{{\raw-html}}
+
+Go back to Netlify and check to see if it worked. It can take up to a day for
+these changes to take effect, so don't worry if it doesn't happen immediately.
+
+After this, visitors to your custom domain will see your {index.html} file. Note
+that they <i>don't</i> have to go to <i>example.com/index.html</i> &mdash; just
+the domain name by itself will work.
+
+# The Next Step
+
+In the next article, we're going to <a
+href="../development-environment-setup">set you your development
+environment</a>.
