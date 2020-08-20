@@ -125,11 +125,11 @@
 						<li>Every backslash in the command in step 2 can be removed and you can put
 							everything on one line.
 							<span class="normal">
-							<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ name="$(getent passwd $(whoami) | awk -F: '{print $5}')"</span>
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ out_dir='/root/module-signing'</span>
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ sudo mkdir ${out_dir}</span>
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ sudo openssl req -new -x509 -newkey rsa:2048 -keyout ${out_dir}/MOK.priv -outform DER -out ${out_dir}/MOK.der -days 36500 -subj "/CN=${name}/"</span>
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ sudo chmod 600 ${out_dir}/MOK*</span>
+							<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ name="$(getent passwd $(whoami) | awk -F: '{print $5}')"</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ out_dir='/root/module-signing'</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ sudo mkdir ${out_dir}</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ sudo openssl req -new -x509 -newkey rsa:2048 -keyout ${out_dir}/MOK.priv -outform DER -out ${out_dir}/MOK.der -days 36500 -subj "/CN=${name}/"</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ sudo chmod 600 ${out_dir}/MOK*</span>
 </pre>
 							</div>
 							</span>

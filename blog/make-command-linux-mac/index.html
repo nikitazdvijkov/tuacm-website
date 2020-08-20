@@ -167,21 +167,21 @@
 					NAME including aliases, builtins, and functions.
 					For example:
 				</p>
-				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ which cd</span>
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ type -a cd</span>
+				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ which cd</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ type -a cd</span>
 cd is a function
 cd ()
 {
     builtin cd "$@" && chpwd
 }
 cd is a shell builtin
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ which mv</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ which mv</span>
 /bin/mv
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ which cp</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ which cp</span>
 /bin/cp
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ which sudo</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ which sudo</span>
 /usr/bin/sudo
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ which python</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ which python</span>
 /usr/bin/python
 </pre>
 				</div>
@@ -222,7 +222,7 @@ cd is a shell builtin
 					the <code>PATH</code> environment variable.
 					To see the full list, type <code>echo $PATH</code> into your terminal.
 				</p>
-				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ echo $PATH</span>
+				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ echo $PATH</span>
 /home/joseph/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
 </pre>
 				</div>
@@ -308,7 +308,7 @@ cd is a shell builtin
 						If you mess up and don't record the value of <code>PATH</code>, record its current value
 						using <code>echo $PATH</code>, then run the command:
 					</p>
-					<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ export PATH="$(echo $PATH | sed "s/:[^:]*\/dev\/minit//g")"</span>
+					<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ export PATH="$(echo $PATH | sed "s/:[^:]*\/dev\/minit//g")"</span>
 </pre>
 					</div>
 					<p>This command will search your <code>PATH</code> variable for any string starting with a
@@ -319,7 +319,7 @@ cd is a shell builtin
 				</div>
 				<p>Add the directory to your PATH variable using the syntax:
 				</p>
-				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ export PATH=$PATH:~/dev/minit</span>
+				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ export PATH=$PATH:~/dev/minit</span>
 </pre>
 				</div>
 				<p>It's that simple.
@@ -437,19 +437,19 @@ cd is a shell builtin
 					We're going to use the <code>touch</code> command, which creates an empty file if the file
 					doesn't exist and does nothing if the file already exists.
 				</p>
-				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ type hello-world</span>
+				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ type hello-world</span>
 bash: type: hello-world: not found
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ sudo touch /usr/games/hello-world</span>
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ sudo chmod 755 /usr/games/hello-world</span>
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ sudo touch /usr/local/games/hello-world</span>
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ sudo chmod 755 /usr/local/games/hello-world</span>
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ type -a hello-world</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ sudo touch /usr/games/hello-world</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ sudo chmod 755 /usr/games/hello-world</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ sudo touch /usr/local/games/hello-world</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ sudo chmod 755 /usr/local/games/hello-world</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ type -a hello-world</span>
 hello-world is /usr/games/hello-world
 hello-world is /usr/local/games/hello-world
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ which hello-world</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ which hello-world</span>
 /usr/games/hello-world
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ sudo rm /usr/games/hello-world</span>
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ sudo rm /usr/local/games/hello-world</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ sudo rm /usr/games/hello-world</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ sudo rm /usr/local/games/hello-world</span>
 </pre>
 				</div>
 				<p>Notice that <code>/usr/games/hello-world</code> shows up before
@@ -490,7 +490,7 @@ hello-world is /usr/local/games/hello-world
 					Since they have the same exact syntax, I'll use <code>cp</code>.
 					If you've run <code>./install.sh tutorial</code>, then the script should still work.
 				</p>
-				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ sudo cp minit/minit.sh /usr/local/bin/</span>
+				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ sudo cp minit/minit.sh /usr/local/bin/</span>
 </pre>
 				</div>
 				<p>This solution is much better than adding your whole directory to <code>PATH</code>, as you
@@ -592,7 +592,7 @@ hello-world is /usr/local/games/hello-world
 					a symlink if you move the linked executable.
 					To create our symlink for this command, use
 				</p>
-				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ sudo ln -s ~/dev/minit/minit.sh /usr/local/bin/minit</span>
+				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ sudo ln -s ~/dev/minit/minit.sh /usr/local/bin/minit</span>
 </pre>
 				</div>
 				<p>Note that we used an absolute path and not a relative path since we want to run
@@ -646,7 +646,7 @@ hello-world is /usr/local/games/hello-world
 					package manager, <code>apt</code>, like so:
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ sudo apt install [executable]</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ sudo apt install [executable]</span>
 </pre>
 				</div>
 				<p>If you aren't using Ubuntu, search for <code>[distro] package manager</code> online (where
@@ -658,7 +658,7 @@ hello-world is /usr/local/games/hello-world
 					on setting up brew for Mac</a>) like so:
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><b><span style="color:#3734E2;">joseph@tutorials</span></b>:<b><span style="color:#FF0070;">~/dev</span></b>$ brew install [executable]</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ brew install [executable]</span>
 </pre>
 				</div>
 				<p>Furthermore, there are sometimes package managers specific to languages, such as
