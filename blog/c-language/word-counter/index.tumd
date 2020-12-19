@@ -560,16 +560,18 @@ find, and we're going to return an {int} to get the proper count, which means
 
 \{{code-block c no-line-numbers}}
 
-int count_word_in_line(const char * line, const char * word);
+int count_word_in_line(char * line, const char * word);
 
 \{{\code-block}}
 
-We add the {const}s because we'll modify neither the {word} nor the {line}.
-Since we just need {{{cwil}}}, {str-operations.h} will look like
+We add the {const} because we won't modify the {word}. We will need to modify
+the line to remove punctuation, so it's up to the user if they want to keep a
+copy. Since we just need {{{cwil}}} in our {main} funciton, {str-operations.h}
+will look like
 
 \{{code-block c}}
 
-hlint count_word_in_line(const char * line, const char * word);
+hlint count_word_in_line(char * line, const char * word);
 
 \{{\code-block}}
 
@@ -781,10 +783,11 @@ int check_if_strings_differ(const char * str1, const char * str2) {
     return str1[i] != str2[i];
 }
 
-hlint count_word_in_line(const char * line, const char * word) {
+hlint count_word_in_line(char * line, const char * word) {
 hl    int count = 0;
 hl    // TODO: Copy word into a local buffer so we can convert it to
 hl    //       uppercase
+hl    //       Remove punctuation from line
 hl    //       Convert the local copy of word to uppercase
 hl    //       Create a local buffer to store the current word
 hl    //       Set up something to keep track of where we are in the
@@ -860,7 +863,8 @@ industry standards.
 {{nats}} will be almost identical to {to_upper} but with a longer condition in
 the {if} statement and the conversion from lower to upper being replaced.
 Since the condition in the {if} statement is going to be longer, I'm going to
-calculate it outside of the parentheses for the {if} statement.
+calculate it outside of the parentheses for the {if} statement. I'm also going
+to call the function inside {{{cwil}}}.
 
 \{{code-block c}}
 
@@ -904,8 +908,9 @@ int check_if_strings_differ(const char * str1, const char * str2) {
     return str1[i] != str2[i];
 }
 
-int count_word_in_line(const char * line, const char * word) {
+int count_word_in_line(char * line, const char * word) {
     int count = 0;
+hl    non_alphanumeric_to_spaces(line);
     // TODO: Copy word into a local buffer so we can convert it to
     //       uppercase
     //       Convert the local copy of word to uppercase
@@ -958,8 +963,9 @@ we'll be able to provide a positive integer argument without any problem.
 
 \{{code-block c no-line-numbers}}
 
-int count_word_in_line(const char * line, const char * word) {
+int count_word_in_line(char * line, const char * word) {
     int count = 0;
+    non_alphanumeric_to_spaces(line);
     const int buff_sz = 1024;
     char word_to_count[buff_sz];
     char current_word[buff_sz];
@@ -1063,8 +1069,9 @@ characters in the text, meaning we should expect a return value of {1} since
 
 \{{code-block c no-line-numbers}}
 
-int count_word_in_line(const char * line, const char * word) {
+int count_word_in_line(char * line, const char * word) {
     int count = 0;
+    non_alphanumeric_to_spaces(line);
     const int buff_sz = 1024;
     char word_to_count[buff_sz];
     char current_word[buff_sz];
@@ -1134,8 +1141,9 @@ int check_if_strings_differ(const char * str1, const char * str2) {
     return str1[i] != str2[i];
 }
 
-int count_word_in_line(const char * line, const char * word) {
+int count_word_in_line(char * line, const char * word) {
     int count = 0;
+    non_alphanumeric_to_spaces(line);
     const int buff_sz = 1024;
     char word_to_count[buff_sz];
     char current_word[buff_sz];
@@ -1191,7 +1199,7 @@ and {str-operations.h}:
 
 \{{code-block c}}
 
-int count_word_in_line(const char * line, const char * word);
+int count_word_in_line(char * line, const char * word);
 
 \{{\code-block}}
 
@@ -1269,6 +1277,122 @@ shows up twenty times in {test-file.txt}, the third test was to make sure that
 searching was case insensitive, and the last test was to make sure that words
 that do not show up in {test-file.txt} return a result of zero.
 
+# Note About Accuracy and a Challenge
+
+If you have a line that has more characters than the buffer size (in this case,
+hardcoded to be {4096}), then there is a chance that a word is split between two
+buffers. If that happens, the count for a word will be off. For example, if the
+word "apple" is split into "app" and "le", the count for "apple" will be one
+lower and the counts for "app" and "le" will be one higher.
+
+For the following questions, try to think in terms of memory and algorithms like
+a computer. Some of these questions may be quite easy for you and some might
+sound weird, but I'm trying to make sure that people have as many chances for
+it to click as possible. For example, the computer can only read data from
+variables defined before the {while} loop and your answers should take that into
+account.
+
+\{{ul}}
+
+What data can you read? Name specific variables.
+
+Say you read a line from the file that was longer than {4095} bytes (remember
+{fgets} adds a null terminator {\0}). What specific section of memory would you
+be able to look at to know if you've read the entire line? How would you be able
+to tell if you've read the entire line?
+
+If you've read the entire line, do you have to worry about splitting a word?
+
+If you haven't read the entire line, do you have to worry about splitting a
+word?
+
+Should you check if you split a word before or after running {{{cwil}}}?
+
+If you split a word, you will have two parts of the word. If you leave the
+program as is, what happens to the first half of the word in the next iteration
+of the {while} loop? How can you prevent that? Feel free to create another
+variable or allocate a small array.
+
+If you're looking for the word "apple" and the word is split into "app" and
+"le", how would you prevent the word "app" from being counted by {{{cwil}}}? How
+would you prevent the word "le" from being counted by {{{cwil}}}?
+
+Using your answers to the previous questions, how could you fix the problem of
+the buffer splitting a word? Make sure you include how to recognize and fix the
+problem. To test out your code, switch the buffer size to something smaller like
+{60} and then write a file with long lines.
+
+\{{\ul}}
+
+Hardcoding the array to be larger could lead to some weird performance problems,
+could mess with systems with weird stack sizes, wastes memory for programs that
+don't need it, and only makes the problem less likely without solving it.
+
+Mouse over the box below to see my answer.
+
+\{{spoiler}}
+
+I check the last character in the buffer and see if it's set to {'\0'}, which
+means that {fgets} read {line_sz - 1} number of characters and could split the
+line. To prevent it from happening the first time, I set it to a space
+character. If I see a {'\0'}, I find where the word starts by moving from the
+end of the buffer until I hit a space character. I then copy from that space
+character until the end of the buffer into another local buffer while replacing
+those characters in {line} with space characters. Lastly, I make sure to replace
+the {'\0'} at the end with a space character again. At that point, I can pass it
+into {{{cwil}}} and I don't have to worry about the first part of the word being
+counted as something else. I then copy the first part of the word to the front
+of the {line} buffer and then read the next line, making sure to not read the
+full {line_sz} number of characters since we've already added some characters to
+the front of the buffer.
+
+\{{code-block c}}
+
+#include "str-operations.h"
+#include {{lt}}stdio.h{{gt}}
+
+int main(int argc, char ** argv) {
+    if (3 {{gt}} argc) {
+        fprintf(stderr, "./word_counter file_name word_to_count\n");
+        return -1;
+    }
+    char * program_name = argv[0];
+    char * file_name = argv[1];
+    char * word = argv[2];
+    unsigned int count = 0;
+    FILE * reader = fopen(file_name, "r");
+    const int line_sz = 4096;           // There are better ways to do this
+    char line[line_sz];                 // but we need features we haven't
+                                        // gone over yet.
+hl   unsigned int offset;
+hl   const int temp_word_sz = line_sz;
+hl   char temp_word[temp_word_sz];
+hl   line[line_sz - 1] = ' ';
+hl   while (fgets(line + offset, line_sz - offset, reader)) {
+hl       offset = 0;
+hl       if (line[line_sz - 1] == '\0') {
+hl           while (line[(line_sz - 1) - (offset + 1)] != ' ') {
+hl               offset += 1;
+hl           }
+hl           for (int i = 0; i {{lt}} offset; i += 1) {
+hl               int cur_char_index = (line_sz - 1) - (offset - i);
+hl               temp_word[i] = line[cur_char_index];
+hl               line[cur_char_index] = ' ';
+hl           }
+hl           line[line_sz - 1] = ' ';
+hl       }
+        count += count_word_in_line(line, word);
+hl        strncpy(line, temp_word, offset);
+    }
+    fclose(reader);
+    printf("%d\n", count);
+    return 0;
+}
+
+\{{\code-block}}
+
+\{{\spoiler}}
+
 # Summary
 
 In this article, we wrote and compiled a complete, functioning, nontrivial
@@ -1279,9 +1403,5 @@ program from scratch using the tools we've introduced.
 In the next article, <a href="../print-lines-with-words">Printing Lines
 Containing a Specific Word</a>we're going to start discussing the next program,
 which will print out every line from a file that contains a word the user
-specifies.
-In doing so, we're going to need to set up a few new concepts, most specifically
-dynamic memory allocation, build systems, and compiler flags to deal with
-multiple programs reusing the same source files.
-My plan is to write the code for the next program, then come up with the build
-system, as the build system just automates the commands we're going to write.
+specifies. In doing so, we're going to need to come up with what is known as a
+build system.
