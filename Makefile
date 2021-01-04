@@ -2,7 +2,7 @@ TUMD_FILES = $(shell find . -type f -name 'index.tumd')
 HTML_FILES = $(patsubst %.tumd, %.html, $(TUMD_FILES))
 META_FILES = $(patsubst %/index.tumd, %/meta-description.txt, $(TUMD_FILES))
 ROOT = ${CURDIR}
-MD = /home/joseph/dev/tuacm-articles/tumd/
+MD = /home/joseph/dev/mdxx/tumd/
 
 .PHONY: all
 all: $(HTML_FILES)

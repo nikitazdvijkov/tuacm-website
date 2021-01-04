@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
 		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
 		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/spoiler.css">
 		<style>
 			.terminal pre {
 				color: #AAAAAA;
@@ -365,7 +366,7 @@
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
 <span class="hll">    <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
 </span><span class="hll">        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./word_counter file_name word_to_count</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class="hll">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class="hll">        <span class="k">return</span> <span class="mi">-1</span><span class="p">;</span>
 </span><span class="hll">    <span class="p">}</span>
 </span>    <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
@@ -408,7 +409,7 @@
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./word_counter file_name word_to_count</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">-1</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
@@ -468,7 +469,7 @@
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./word_counter file_name word_to_count</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">-1</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
@@ -531,7 +532,7 @@
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./word_counter file_name word_to_count</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">-1</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
@@ -587,7 +588,7 @@
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./word_counter file_name word_to_count</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">-1</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
@@ -626,14 +627,16 @@
 					find, and we're going to return an <code>int</code> to get the proper count, which means
 					<code>count_word_&#8203;in_line</code> has the syntax:
 				</p>
-<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">);</span>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">);</span>
 </pre></div>
 				
-				<p>We add the <code>const</code>s because we'll modify neither the <code>word</code> nor the <code>line</code>.
-					Since we just need <code>count_word_&#8203;in_line</code>, <code>str-operations.h</code> will look like
+				<p>We add the <code>const</code> because we won't modify the <code>word</code>. We will need to modify
+					the line to remove punctuation, so it's up to the user if they want to keep a
+					copy. Since we just need <code>count_word_&#8203;in_line</code> in our <code>main</code> funciton, <code>str-operations.h</code>
+					will look like
 				</p>
 				<div class="code-blocktable">
-<table><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="hll"><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">);</span>
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="hll"><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">);</span>
 </span></pre></div>
 </td></tr></table>				
 				</div>
@@ -670,7 +673,7 @@
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./word_counter file_name word_to_count</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">-1</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
@@ -880,7 +883,8 @@
 31
 32
 33
-34</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;str-operations.h&quot;</span><span class="cp"></span>
+34
+35</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;str-operations.h&quot;</span><span class="cp"></span>
 
 <span class="kt">void</span> <span class="nf">to_upper</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">string</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -900,10 +904,11 @@
     <span class="k">return</span> <span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
 <span class="p">}</span>
 
-<span class="hll"><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
+<span class="hll"><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
 </span><span class="hll">    <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span><span class="hll">    <span class="c1">// TODO: Copy word into a local buffer so we can convert it to</span>
 </span><span class="hll">    <span class="c1">//       uppercase</span>
+</span><span class="hll">    <span class="c1">//       Remove punctuation from line</span>
 </span><span class="hll">    <span class="c1">//       Convert the local copy of word to uppercase</span>
 </span><span class="hll">    <span class="c1">//       Create a local buffer to store the current word</span>
 </span><span class="hll">    <span class="c1">//       Set up something to keep track of where we are in the</span>
@@ -974,7 +979,8 @@
 				<p><code>non_alphanumeric&#8203;_to_spaces</code> will be almost identical to <code>to_upper</code> but with a longer condition in
 					the <code>if</code> statement and the conversion from lower to upper being replaced.
 					Since the condition in the <code>if</code> statement is going to be longer, I'm going to
-					calculate it outside of the parentheses for the <code>if</code> statement.
+					calculate it outside of the parentheses for the <code>if</code> statement. I'm also going
+					to call the function inside <code>count_word_&#8203;in_line</code>.
 				</p>
 				<div class="code-blocktable">
 <table><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -1030,7 +1036,8 @@
 51
 52
 53
-54</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;str-operations.h&quot;</span><span class="cp"></span>
+54
+55</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;str-operations.h&quot;</span><span class="cp"></span>
 
 <span class="kt">void</span> <span class="nf">to_upper</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">string</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -1070,9 +1077,10 @@
     <span class="k">return</span> <span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
 <span class="p">}</span>
 
-<span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
+<span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="c1">// TODO: Copy word into a local buffer so we can convert it to</span>
+<span class="hll">    <span class="n">non_alphanumeric_to_spaces</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
+</span>    <span class="c1">// TODO: Copy word into a local buffer so we can convert it to</span>
     <span class="c1">//       uppercase</span>
     <span class="c1">//       Convert the local copy of word to uppercase</span>
     <span class="c1">//       Create a local buffer to store the current word</span>
@@ -1118,8 +1126,9 @@
 					It's used mainly in the standard library to represent sizes and counts, and
 					we'll be able to provide a positive integer argument without any problem.
 				</p>
-<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">non_alphanumeric_to_spaces</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
     <span class="k">const</span> <span class="kt">int</span> <span class="n">buff_sz</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">;</span>
     <span class="kt">char</span> <span class="n">word_to_count</span><span class="p">[</span><span class="n">buff_sz</span><span class="p">];</span>
     <span class="kt">char</span> <span class="n">current_word</span><span class="p">[</span><span class="n">buff_sz</span><span class="p">];</span>
@@ -1209,8 +1218,9 @@
 					characters in the text, meaning we should expect a return value of <code>1</code> since
 					<code>%n</code> isn't filled with characters from the text.
 				</p>
-<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
+<div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">non_alphanumeric_to_spaces</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
     <span class="k">const</span> <span class="kt">int</span> <span class="n">buff_sz</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">;</span>
     <span class="kt">char</span> <span class="n">word_to_count</span><span class="p">[</span><span class="n">buff_sz</span><span class="p">];</span>
     <span class="kt">char</span> <span class="n">current_word</span><span class="p">[</span><span class="n">buff_sz</span><span class="p">];</span>
@@ -1295,7 +1305,8 @@
 54
 55
 56
-57</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;str-operations.h&quot;</span><span class="cp"></span>
+57
+58</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;str-operations.h&quot;</span><span class="cp"></span>
 <span class="hll"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 </span><span class="hll"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
 </span>
@@ -1333,8 +1344,9 @@
     <span class="k">return</span> <span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">str2</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
 <span class="p">}</span>
 
-<span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
+<span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">non_alphanumeric_to_spaces</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
     <span class="k">const</span> <span class="kt">int</span> <span class="n">buff_sz</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">;</span>
     <span class="kt">char</span> <span class="n">word_to_count</span><span class="p">[</span><span class="n">buff_sz</span><span class="p">];</span>
     <span class="kt">char</span> <span class="n">current_word</span><span class="p">[</span><span class="n">buff_sz</span><span class="p">];</span>
@@ -1387,7 +1399,7 @@
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./word_counter file_name word_to_count</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">-1</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
@@ -1410,7 +1422,7 @@
 				<p>and <code>str-operations.h</code>:
 				</p>
 				<div class="code-blocktable">
-<table><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">);</span>
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="kt">int</span> <span class="nf">count_word_in_line</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span><span class="p">);</span>
 </pre></div>
 </td></tr></table>				
 				</div>
@@ -1478,20 +1490,166 @@
 					searching was case insensitive, and the last test was to make sure that words
 					that do not show up in <code>test-file.txt</code> return a result of zero.
 				</p>
+				<h2 id="note-about-accuracy-and-a-challenge">Note About Accuracy and a Challenge</h2>
+				<p>If you have a line that has more characters than the buffer size (in this case,
+					hardcoded to be <code>4096</code>), then there is a chance that a word is split between two
+					buffers. If that happens, the count for a word will be off. For example, if the
+					word "apple" is split into "app" and "le", the count for "apple" will be one
+					lower and the counts for "app" and "le" will be one higher.
+				</p>
+				<p>For the following questions, try to think in terms of memory and algorithms like
+					a computer. Some of these questions may be quite easy for you and some might
+					sound weird, but I'm trying to make sure that people have as many chances for
+					it to click as possible. For example, the computer can only read data from
+					variables defined before the <code>while</code> loop and your answers should take that into
+					account.
+				</p>
+				<ul>
+					<li>What data can you read? Name specific variables.
+					</li>
+					<li>Say you read a line from the file that was longer than <code>4095</code> bytes (remember
+						<code>fgets</code> adds a null terminator <code>\0</code>). What specific section of memory would you
+						be able to look at to know if you've read the entire line? How would you be able
+						to tell if you've read the entire line?
+					</li>
+					<li>If you've read the entire line, do you have to worry about splitting a word?
+					</li>
+					<li>If you haven't read the entire line, do you have to worry about splitting a
+						word?
+					</li>
+					<li>Should you check if you split a word before or after running <code>count_word_&#8203;in_line</code>?
+					</li>
+					<li>If you split a word, you will have two parts of the word. If you leave the
+						program as is, what happens to the first half of the word in the next iteration
+						of the <code>while</code> loop? How can you prevent that? Feel free to create another
+						variable or allocate a small array.
+					</li>
+					<li>If you're looking for the word "apple" and the word is split into "app" and
+						"le", how would you prevent the word "app" from being counted by <code>count_word_&#8203;in_line</code>? How
+						would you prevent the word "le" from being counted by <code>count_word_&#8203;in_line</code>?
+					</li>
+					<li>Using your answers to the previous questions, how could you fix the problem of
+						the buffer splitting a word? Make sure you include how to recognize and fix the
+						problem. To test out your code, switch the buffer size to something smaller like
+						<code>60</code> and then write a file with long lines.
+					</li>
+				</ul>
+				<p>Hardcoding the array to be larger could lead to some weird performance problems,
+					could mess with systems with weird stack sizes, wastes memory for programs that
+					don't need it, and only makes the problem less likely without solving it.
+				</p>
+				<p>Mouse over the box below to see my answer.
+				</p>
+				<div class="spoiler">
+					<div class="content">
+					I check the last character in the buffer and see if it's set to <code>'\0'</code>, which
+					means that <code>fgets</code> read <code>line_sz - 1</code> number of characters and could split the
+					line. To prevent it from happening the first time, I set it to a space
+					character. If I see a <code>'\0'</code>, I find where the word starts by moving from the
+					end of the buffer until I hit a space character. I then copy from that space
+					character until the end of the buffer into another local buffer while replacing
+					those characters in <code>line</code> with space characters. Lastly, I make sure to replace
+					the <code>'\0'</code> at the end with a space character again. At that point, I can pass it
+					into <code>count_word_&#8203;in_line</code> and I don't have to worry about the first part of the word being
+					counted as something else. I then copy the first part of the word to the front
+					of the <code>line</code> buffer and then read the next line, making sure to not read the
+					full <code>line_sz</code> number of characters since we've already added some characters to
+					the front of the buffer.
+					<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;str-operations.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./word_counter file_name word_to_count</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">-1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">FILE</span> <span class="o">*</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">);</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">line_sz</span> <span class="o">=</span> <span class="mi">4096</span><span class="p">;</span>           <span class="c1">// There are better ways to do this</span>
+    <span class="kt">char</span> <span class="n">line</span><span class="p">[</span><span class="n">line_sz</span><span class="p">];</span>                 <span class="c1">// but we need features we haven&#39;t</span>
+                                        <span class="c1">// gone over yet.</span>
+<span class="hll">   <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">offset</span><span class="p">;</span>
+</span><span class="hll">   <span class="k">const</span> <span class="kt">int</span> <span class="n">temp_word_sz</span> <span class="o">=</span> <span class="n">line_sz</span><span class="p">;</span>
+</span><span class="hll">   <span class="kt">char</span> <span class="n">temp_word</span><span class="p">[</span><span class="n">temp_word_sz</span><span class="p">];</span>
+</span><span class="hll">   <span class="n">line</span><span class="p">[</span><span class="n">line_sz</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+</span><span class="hll">   <span class="k">while</span> <span class="p">(</span><span class="n">fgets</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="n">offset</span><span class="p">,</span> <span class="n">line_sz</span> <span class="o">-</span> <span class="n">offset</span><span class="p">,</span> <span class="n">reader</span><span class="p">))</span> <span class="p">{</span>
+</span><span class="hll">       <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="hll">       <span class="k">if</span> <span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">line_sz</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;\0&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll">           <span class="k">while</span> <span class="p">(</span><span class="n">line</span><span class="p">[(</span><span class="n">line_sz</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">!=</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll">               <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="hll">           <span class="p">}</span>
+</span><span class="hll">           <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">offset</span><span class="p">;</span> <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll">               <span class="kt">int</span> <span class="n">cur_char_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">line_sz</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="n">i</span><span class="p">);</span>
+</span><span class="hll">               <span class="n">temp_word</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">cur_char_index</span><span class="p">];</span>
+</span><span class="hll">               <span class="n">line</span><span class="p">[</span><span class="n">cur_char_index</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+</span><span class="hll">           <span class="p">}</span>
+</span><span class="hll">           <span class="n">line</span><span class="p">[</span><span class="n">line_sz</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+</span><span class="hll">       <span class="p">}</span>
+</span>        <span class="n">count</span> <span class="o">+=</span> <span class="n">count_word_in_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">word</span><span class="p">);</span>
+<span class="hll">        <span class="n">strncpy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">temp_word</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+</span>    <span class="p">}</span>
+    <span class="n">fclose</span><span class="p">(</span><span class="n">reader</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>					
+					</div>
+					</div>
+				</div>
 				<h2 id="summary">Summary</h2>
 				<p>In this article, we wrote and compiled a complete, functioning, nontrivial
 					program from scratch using the tools we've introduced.
 				</p>
 				<h2 id="whats-next">What's Next</h2>
-				<p>In the next article, <a href="../print-lines-with-words">Printing Lines
+				<p>In the next article, <a href="../print-lines-with-word">Printing Lines
 					Containing a Specific Word</a>we're going to start discussing the next program,
 					which will print out every line from a file that contains a word the user
-					specifies.
-					In doing so, we're going to need to set up a few new concepts, most specifically
-					dynamic memory allocation, build systems, and compiler flags to deal with
-					multiple programs reusing the same source files.
-					My plan is to write the code for the next program, then come up with the build
-					system, as the build system just automates the commands we're going to write.
+					specifies. In doing so, we're going to need to come up with what is known as a
+					build system.
 				</p>
 			</div>
 			<div class="article">
@@ -1537,6 +1695,7 @@
 				<a href="#the-home-stretch" style="padding-left:36px;">The Home Stretch</a>
 				<a href="#compiling-the-program" style="padding-left:24px;">Compiling the Program</a>
 				<a href="#running-tests" style="padding-left:24px;">Running Tests</a>
+				<a href="#note-about-accuracy-and-a-challenge" style="padding-left:24px;">Note About Accuracy and a Challenge</a>
 				<a href="#summary" style="padding-left:24px;">Summary</a>
 				<a href="#whats-next" style="padding-left:24px;">What's Next</a>
 			</nav>

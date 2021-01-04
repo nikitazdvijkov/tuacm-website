@@ -3,7 +3,7 @@ Title:		Making a Word Counter in C
 Author:		Joseph Mellor
 Tagline:	We're going to write our first nontrivial program.
 Code Style:	trac+dark
-Import:		code-block terminal aside
+Import:		code-block terminal aside spoiler
 Scripts:	highlight-internal-link
 
 \{{style}}
@@ -506,8 +506,8 @@ hl    }
 Now, we need a function to count the number of times the word shows up in the
 line.
 We can then add it to the {count}.
-{{cwil}}="count_word_{{zs}}in_line"
-For now, we're going to create a function called {{{cwil}}} that takes
+{{cwil}}="{count_word_{{zs}}in_line}"
+For now, we're going to create a function called {{cwil}} that takes
 in a line and the word we want to count and return the number of times the word
 shows up in the line.
 
@@ -538,12 +538,12 @@ hl        count += count_word_in_line(line, word);
 
 \{{\code-block}}
 
-Now, we have to write {{{cwil}}}, but before we do that, we're going
+Now, we have to write {{cwil}}, but before we do that, we're going
 to take care of a few string operations first.
 
-# Setting Up {{{cwil}}}
+# Setting Up {{cwil}}
 
-Since {{{cwil}}} is going to be useful later in other programs, we
+Since {{cwil}} is going to be useful later in other programs, we
 might as well put it in another file so we can reuse it.
 Because we're going to put it in another file, we're going to have to also make
 another header file.
@@ -554,9 +554,9 @@ onclick="highlight_link(this, '#EEAAEE')">the same process in which you created
 the {word-counter.c} file</a>.
 <b>Make sure to create these files in the same directory as {word-counter.c}.</b>
 
-For {{{cwil}}}, we're going to need the line, the word we want to
+For {{cwil}}, we're going to need the line, the word we want to
 find, and we're going to return an {int} to get the proper count, which means
-{{{cwil}}} has the syntax:
+{{cwil}} has the syntax:
 
 \{{code-block c no-line-numbers}}
 
@@ -566,7 +566,7 @@ int count_word_in_line(char * line, const char * word);
 
 We add the {const} because we won't modify the {word}. We will need to modify
 the line to remove punctuation, so it's up to the user if they want to keep a
-copy. Since we just need {{{cwil}}} in our {main} funciton, {str-operations.h}
+copy. Since we just need {{cwil}} in our {main} funciton, {str-operations.h}
 will look like
 
 \{{code-block c}}
@@ -576,7 +576,7 @@ hlint count_word_in_line(char * line, const char * word);
 \{{\code-block}}
 
 Furthermore, we're going to want to {#include {{zs}}"str-operations.h"} in
-{word-counter.c} so that we can use {{{cwil}}} in
+{word-counter.c} so that we can use {{cwil}} in
 {word-counter.c}.
 
 \{{code-block c}}
@@ -612,7 +612,7 @@ be working on {str-operations.c} and {str-operations.h}.
 
 # String Operations
 
-Before we continue with {{{cwil}}}, we're going to work on a few string
+Before we continue with {{cwil}}, we're going to work on a few string
 {{cisd}}="check_if_{{zs}}strings_differ"
 operations we need to implement: including {{{cisd}}} and {to_upper}.
 
@@ -734,7 +734,7 @@ int check_if_strings_differ(const char * str1, const char * str2) {
 
 \{{\code-block}}
 
-# {{{cwil}}}
+# {{cwil}}
 
 Now, we're going to come up with the algorithm to count the word in the line.
 
@@ -864,7 +864,7 @@ industry standards.
 the {if} statement and the conversion from lower to upper being replaced.
 Since the condition in the {if} statement is going to be longer, I'm going to
 calculate it outside of the parentheses for the {if} statement. I'm also going
-to call the function inside {{{cwil}}}.
+to call the function inside {{cwil}}.
 
 \{{code-block c}}
 
@@ -931,15 +931,15 @@ You can read everything except the generic while loop stuff (anything involving
 letter nor an uppercase letter nor a digit nor an apostrophe nor a dash, then
 set it to a space".
 
-Now that we have everything set up, we can finish {{{cwil}}}.
+Now that we have everything set up, we can finish {{cwil}}.
 
-## Finishing {{{cwil}}}
+## Finishing {{cwil}}
 
 First, we have to create two local buffers: one for the current word and one for
 the word we're looking for.
 Then, we need to convert the word we're looking for to uppercase.
 Since the file is getting kind of big, we're going to just focus on
-{{{cwil}}}.
+{{cwil}}.
 We're also going to introduce a new function called <a
 href="http://www.cplusplus.com/reference/cstring/strncpy/">{strncpy}</a>, which
 copies up to {n} characters of a string.
@@ -1306,7 +1306,7 @@ If you've read the entire line, do you have to worry about splitting a word?
 If you haven't read the entire line, do you have to worry about splitting a
 word?
 
-Should you check if you split a word before or after running {{{cwil}}}?
+Should you check if you split a word before or after running {{cwil}}?
 
 If you split a word, you will have two parts of the word. If you leave the
 program as is, what happens to the first half of the word in the next iteration
@@ -1314,8 +1314,8 @@ of the {while} loop? How can you prevent that? Feel free to create another
 variable or allocate a small array.
 
 If you're looking for the word "apple" and the word is split into "app" and
-"le", how would you prevent the word "app" from being counted by {{{cwil}}}? How
-would you prevent the word "le" from being counted by {{{cwil}}}?
+"le", how would you prevent the word "app" from being counted by {{cwil}}? How
+would you prevent the word "le" from being counted by {{cwil}}?
 
 Using your answers to the previous questions, how could you fix the problem of
 the buffer splitting a word? Make sure you include how to recognize and fix the
@@ -1332,6 +1332,7 @@ Mouse over the box below to see my answer.
 
 \{{spoiler}}
 
+{{cwil}}="{count_word_{{zs}}in_line}"
 I check the last character in the buffer and see if it's set to {'\0'}, which
 means that {fgets} read {line_sz - 1} number of characters and could split the
 line. To prevent it from happening the first time, I set it to a space
@@ -1340,7 +1341,7 @@ end of the buffer until I hit a space character. I then copy from that space
 character until the end of the buffer into another local buffer while replacing
 those characters in {line} with space characters. Lastly, I make sure to replace
 the {'\0'} at the end with a space character again. At that point, I can pass it
-into {{{cwil}}} and I don't have to worry about the first part of the word being
+into {{cwil}} and I don't have to worry about the first part of the word being
 counted as something else. I then copy the first part of the word to the front
 of the {line} buffer and then read the next line, making sure to not read the
 full {line_sz} number of characters since we've already added some characters to
@@ -1400,7 +1401,7 @@ program from scratch using the tools we've introduced.
 
 # What's Next
 
-In the next article, <a href="../print-lines-with-words">Printing Lines
+In the next article, <a href="../print-lines-with-word">Printing Lines
 Containing a Specific Word</a>we're going to start discussing the next program,
 which will print out every line from a file that contains a word the user
 specifies. In doing so, we're going to need to come up with what is known as a
