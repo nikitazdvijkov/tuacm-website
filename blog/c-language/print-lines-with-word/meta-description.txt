@@ -1,0 +1,1 @@
+In this article, we're going to first write our second program within the same project, then use make and cmake to automate our build system.

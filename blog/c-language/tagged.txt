@@ -15,3 +15,4 @@ Files in C, Pt. 1|Joseph Mellor|We're going to get files from our hard drive int
 Files in C, Pt. 2|Joseph Mellor|Now that we can open files in our program, let's interact with them|files-2/
 Compilers and IDEs for C|Joseph Mellor|We're going to compile our first program!|compilers-and-ides/
 Making a Word Counter in C|Joseph Mellor|We're going to write our first serious program.|word-counter/
+Printing Lines Containing a Specific Word|Joseph Mellor|Our first experience with build systems.|print-lines-with-word/
