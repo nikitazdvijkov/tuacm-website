@@ -3,7 +3,7 @@ Title:		Header Files in C
 Author:		Joseph Mellor
 Tagline:	The Glue of C Programs
 Code Style:	trac+dark
-Import:		code-block terminal aside
+Import:		code-block terminal aside spoiler
 Scripts:
 
 \{{style}}
@@ -408,10 +408,7 @@ What would you, as a compiler, need to know to determine if {a = some_func(a,
 sample_string, array)} is a valid line of code?
 Try to find out on your own, then mouse over the box below to reveal the answer.
 
-\{{raw-html}}
-<div class="spoiler">
-{{tupu}}<div class="content">
-\{{\raw-html}}
+\{{spoiler}}
 
 In order to know if a function is going to be used properly, the compiler needs
 to know
@@ -426,10 +423,7 @@ and <b>the name of the function</b>.
 
 \{{\ul}}
 
-\{{raw-html}}
-</div>
-{{tupo}}</div>
-\{{\raw-html}}
+\{{\spoiler}}
 
 If we know these details about the function, we should be able to add the
 function to our symbol table, so we just need to find a way to tell this

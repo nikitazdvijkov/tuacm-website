@@ -37,5 +37,4 @@ THE
 ThE
 The
 
-There should be twenty instances of "the_" (underscores added so this instance
-doesn't count).
+There should be twenty-one instances of "the."

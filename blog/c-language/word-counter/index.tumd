@@ -181,7 +181,7 @@ approaches will work and which won't.
 
 {{o-path}}="path/to/{{zs}}other/{{zs}}directory/{{zs}}c-tutorial"
 {{win-home}}="/mnt/c/Users/{{zs}}[your username]"
-{{wc-dir}}="dev/{{zs}}c-tutorial/{{zs}}word-counter"
+{{wc-dir}}="dev/{{zs}}c-tutorial/"
 
 This is a short step, but you'll want to create two new directories: one for
 all the {C} tutorials in this series and one inside that one for the word
@@ -207,8 +207,6 @@ You can see a list of all the directories in your current folder by typing {ls}.
 From there, type {cd c-tutorial} to move into the {c-tutorial} directory.
 <span style="color: #5500FF"><b>If you put your code in another directory, you
 can use {cd {{o-path}}} instead</b></span>.
-Lastly, create a new directory called {word-counter} using {mkdir word-counter}
-and move into it with {cd word-counter}.
 
 The entire process should look like this:
 
@@ -226,7 +224,7 @@ The entire process should look like this:
 {{prompt}} ls
 {{file}}:="<span class="file">{{rest-of-line}}</span>{{end-of-line}}"
 {{exe}}:="<span class="exe">{{rest-of-line}}</span>{{end-of-line}}"
- {{file}}c-tutorial
+ {{file}}dev
  {{file}}Desktop
  {{file}}Documents
  {{file}}Downloads
@@ -236,9 +234,6 @@ The entire process should look like this:
  {{file}}Videos
 {{prompt}} cd dev/c-tutorial
 {{dir}}:="~/dev/c-tutorial"
-{{prompt}} mkdir word-counter
-{{prompt}} cd word-counter
-{{dir}}="{{dir}}/word-counter"
 {{cursor}}:="<span style="font-size: 1.5em;">&#9646;</span>"
 {{prompt}}
 
@@ -251,8 +246,8 @@ The entire process should look like this:
 Now that you're here, create a file called {word-counter.c}, which you can do
 using your IDE, a text editor, or the command line.
 If you're using an IDE or a text editor, go to <b>File</b> {{gt}} <b>Open</b>
-{{gt}} <b>Folder</b>, navigate to the {word-counter} folder, and click on it.
-Then, right click on the {word-counter} folder and click <b>New File</b>.
+{{gt}} <b>Folder</b>, navigate to the {c-tutorial} folder, and click on it.
+Then, right click on the {c-tutorial} folder and click <b>New File</b>.
 If you're using a command line text editor like {vim} or {nano}, then just type
 {vim word-counter.c} or {nano word-counter.c} and the text editor should pop up
 with a new file.
@@ -1214,9 +1209,9 @@ If you go to the terminal and type {ls}, you should see:
 \{{terminal}}
 
 {{prompt}} ls
-{{file}}str-operations.c
-{{file}}str-operations.h
-{{file}}word-counter.c
+str-operations.c
+str-operations.h
+word-counter.c
 
 \{{\terminal}}
 
@@ -1241,11 +1236,11 @@ sample text from this article</a>.
 
 {{prompt}} mv ~/Downloads/test-file.txt .
 {{prompt}} ls
- {{file}}str-operations.c
- {{file}}str-operations.h
- {{file}}test-file.txt
+ str-operations.c
+ str-operations.h
+ test-file.txt
  {{exe}}word-counter
- {{file}}word-counter.c
+ word-counter.c
 
 \{{\terminal}}
 
@@ -1263,9 +1258,9 @@ If you're using {test-file.txt}, then these are the results you should get:
 {{prompt}} ./word-counter
 ./word_counter file_name word_to_find
 {{prompt}} ./word-counter test-file.txt the
-20
+21
 {{prompt}} ./word-counter test-file.txt THE
-20
+21
 {{prompt}} ./word-counter test-file.txt watermelon
 0
 

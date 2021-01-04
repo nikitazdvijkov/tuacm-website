@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
 		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
 		<link rel="stylesheet" href="https://tuacm.com/css/aside.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/spoiler.css">
 		<style>
 			ol .code-block {
 				margin-bottom: 0;
@@ -329,7 +330,7 @@
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="nf">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">val</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
@@ -373,7 +374,7 @@
 10
 11
 12
-13</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="nf">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+13</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">val</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
@@ -381,7 +382,7 @@
     <span class="k">return</span> <span class="n">val</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+<span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">triangular_number</span> <span class="o">=</span> <span class="n">nth_triangular_num</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
@@ -452,13 +453,13 @@
 				
 				<p>For <code>nth_triangular_num</code>, we would use
 				</p>
-<div class="code-block"><pre><span></span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="nf">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="p">);</span>
+<div class="code-block"><pre><span></span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="p">);</span>
 </pre></div>
 				
 				<p>Even though it isn't strictly necessary to put the parameter names, I do so I
 					can look back and figure out what the arguments should be.
 				</p>
-<div class="code-block"><pre><span></span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="nf">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
+<div class="code-block"><pre><span></span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
 </pre></div>
 				
 				<p>In our code, we can use
@@ -478,7 +479,7 @@
 12
 13
 14
-15</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="nf">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
+15</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">300</span><span class="p">;</span>
@@ -486,7 +487,7 @@
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="nf">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">val</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
@@ -501,7 +502,7 @@
 					As a shortcut, just copy the first line of the definition of the function and
 					replace everything after <code>)</code> with a semicolon (<code>;</code>).
 				</p>
-<div class="code-block"><pre><span></span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="nf">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// Definition</span>
+<div class="code-block"><pre><span></span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// Definition</span>
 <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>   <span class="c1">// Declaration</span>
 </pre></div>
 				
@@ -592,7 +593,7 @@
 <span class="c1">// going to neglect them for now and bring them back later in the tutorial</span>
 <span class="c1">// since showing people things before they have a clear application will</span>
 <span class="c1">// often just confuse them.</span>
-<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="nf">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">);</span>
 </pre></div>
 </td></tr></table>				
 				</div>
@@ -609,7 +610,7 @@
 8
 9</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="c1">// triangular_numbers.c</span>
 
-<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="nf">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">val</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
@@ -684,7 +685,7 @@
 4
 5</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="c1">//triangular_numbers.c</span>
 
-<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="nf">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+<span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">nth_triangular_num</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">((</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">n</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
@@ -711,7 +712,7 @@
 6
 7
 8
-9</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="n">_IO_FILE</span> <span class="kt">FILE</span><span class="p">;</span>
+9</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="nc">_IO_FILE</span> <span class="kt">FILE</span><span class="p">;</span>
 <span class="kt">int</span> <span class="nf">fscanf</span><span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">,</span> <span class="p">...);</span>
 <span class="kt">int</span> <span class="nf">fclose</span><span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="p">);</span>
 <span class="kt">FILE</span> <span class="o">*</span> <span class="nf">fopen</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">);</span>
@@ -789,7 +790,7 @@
     <span class="kt">char</span> <span class="o">*</span> <span class="n">program_name</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// TODO: Print Usage Message</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">-1</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">word</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>

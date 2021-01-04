@@ -223,8 +223,6 @@
 					From there, type <code>cd c-tutorial</code> to move into the <code>c-tutorial</code> directory.
 					<span style="color: #5500FF"><b>If you put your code in another directory, you
 					can use <code>cd path/to/&#8203;other/&#8203;directory/&#8203;c-tutorial</code> instead</b></span>.
-					Lastly, create a new directory called <code>word-counter</code> using <code>mkdir word-counter</code>
-					and move into it with <code>cd word-counter</code>.
 				</p>
 				<p>The entire process should look like this:
 				</p>
@@ -232,7 +230,7 @@
 <span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/some/random/dir</span></b>$ cd ~</span>
 <span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~</span></b>$ mkdir -p dev/c-tutorial</span>
 <span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~</span></b>$ ls</span>
- <span class="file">c-tutorial</span>
+ <span class="file">dev</span>
  <span class="file">Desktop</span>
  <span class="file">Documents</span>
  <span class="file">Downloads</span>
@@ -241,17 +239,15 @@
  <span class="file">Public</span>
  <span class="file">Videos</span>
 <span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~</span></b>$ cd dev/c-tutorial</span>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ mkdir word-counter</span>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ cd word-counter</span>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$</span>
 </pre>
 				</div>
 				<div id="creating-a-file">
 				<p>Now that you're here, create a file called <code>word-counter.c</code>, which you can do
 					using your IDE, a text editor, or the command line.
 					If you're using an IDE or a text editor, go to <b>File</b> &gt; <b>Open</b>
-					&gt; <b>Folder</b>, navigate to the <code>word-counter</code> folder, and click on it.
-					Then, right click on the <code>word-counter</code> folder and click <b>New File</b>.
+					&gt; <b>Folder</b>, navigate to the <code>c-tutorial</code> folder, and click on it.
+					Then, right click on the <code>c-tutorial</code> folder and click <b>New File</b>.
 					If you're using a command line text editor like <code>vim</code> or <code>nano</code>, then just type
 					<code>vim word-counter.c</code> or <code>nano word-counter.c</code> and the text editor should pop up
 					with a new file.
@@ -273,8 +269,8 @@
 				<p><b>Do not close the terminal, as we will use it later to compile and run our
 					code.</b>
 					If you do close the terminal, you can just type <code>cd
-					~/dev/&#8203;c-tutorial/&#8203;word-counter</code> on Linux or Mac or <code>cd
-					/mnt/c/Users/&#8203;[your username]/dev/&#8203;c-tutorial/&#8203;word-counter</code>.
+					~/dev/&#8203;c-tutorial/</code> on Linux or Mac or <code>cd
+					/mnt/c/Users/&#8203;[your username]/dev/&#8203;c-tutorial/</code>.
 				</p>
 				<p>From here, we can start typing our code into our new file.
 				</p>
@@ -1434,17 +1430,17 @@
 					If you go to the terminal and type <code>ls</code>, you should see:
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ ls</span>
-<span class="file">str-operations.c</span>
-<span class="file">str-operations.h</span>
-<span class="file">word-counter.c</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ ls</span>
+str-operations.c
+str-operations.h
+word-counter.c
 </pre>
 				</div>
 				<p>If you see these three files, then you can compile them into a program using
 					<code>gcc</code>:
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ gcc str-operations.c word-counter.c -o word-counter</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ gcc str-operations.c word-counter.c -o word-counter</span>
 </pre>
 				</div>
 				<p>You can then run the program using <code>./word-counter [file-to-read]
@@ -1455,32 +1451,32 @@
 					sample text from this article</a>.
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ mv ~/Downloads/test-file.txt .</span>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ ls</span>
- <span class="file">str-operations.c</span>
- <span class="file">str-operations.h</span>
- <span class="file">test-file.txt</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ mv ~/Downloads/test-file.txt .</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ ls</span>
+ str-operations.c
+ str-operations.h
+ test-file.txt
  <span class="exe">word-counter</span>
- <span class="file">word-counter.c</span>
+ word-counter.c
 </pre>
 				</div>
 				<p>The <code>mv</code> command is what you would get by opening up your file manager GUI,
 					moving to <code>~/Downloads</code> (or <code>/mnt/c/Users/&#8203;[your username]/Downloads</code> on Windows), right-clicking
 					on <code>~/Downloads/test-file.txt</code> in your file manager GUI, selecting <b>Cut</b>,
-					moving to <code>~/dev/&#8203;c-tutorial/&#8203;word-counter</code> (or <code>/mnt/c/Users/&#8203;[your username]/dev/&#8203;c-tutorial/&#8203;word-counter</code> on Windows), then
+					moving to <code>~/dev/&#8203;c-tutorial/</code> (or <code>/mnt/c/Users/&#8203;[your username]/dev/&#8203;c-tutorial/</code> on Windows), then
 					right-clicking and hitting <b>Paste</b>.
 				</p>
 				<p>Anyway, now that we're here, we can run some tests.
 					If you're using <code>test-file.txt</code>, then these are the results you should get:
 				</p>
 				<div class="terminal"><pre>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ ./word-counter</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ ./word-counter</span>
 ./word_counter file_name word_to_find
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ ./word-counter test-file.txt the</span>
-20
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ ./word-counter test-file.txt THE</span>
-20
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/word-counter</span></b>$ ./word-counter test-file.txt watermelon</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ ./word-counter test-file.txt the</span>
+21
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ ./word-counter test-file.txt THE</span>
+21
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ ./word-counter test-file.txt watermelon</span>
 0
 </pre>
 				</div>

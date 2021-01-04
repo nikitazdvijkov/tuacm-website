@@ -24,6 +24,24 @@
 				color: #4CE64C;
 				font-weight: bold;
 			}
+			ol, ul {
+				margin-bottom: 0;
+			}
+			.terminal .scanning {
+				color: #FF55FF;
+				font-weight: bold;
+			}
+			.terminal .building {
+				color: #00AA00;
+			}
+			.terminal .linking {
+				color: #55FF55;
+				font-weight: bold;
+			}
+			.terminal .error {
+				color: #FF5555;
+				font-weight: bold;
+			}
 		</style>
 		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
 		<title>Printing Lines Containing a Specific Word</title>
@@ -65,12 +83,11 @@
 					dynamically allocate memory so we could print out the entire line or we could
 					just print out the section of the line with an ellipsis before and after, e.g.
 				</p>
-				<div class="terminal"><pre>
-<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev</span></b>$ ./print-lines-with-word the</span>
+				<div class="terminal"><pre><span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ ./print-lines-with-word file.txt the</span>
 200:    ... which I had given to the last individual I had found ...
 </pre>
 				</div>
-				<h2 id="part-one-writing-the-code">Part One: Writing the Code</h2>
+				<h2 id="writing-the-code">Writing the Code</h2>
 				<p>As always, we need to start with our goal and break it up into high-level tasks.
 					Just like the last article, we need to know the word and the file to read from.
 					Then, if we find the word in a line, we need to print out the line number and
@@ -173,7 +190,8 @@
 				<h3 id="printing-out-lines">Printing Out Lines</h3>
 				We already have the mechanism for checking if a word is in a line with count_word_&#8203;in_line.
 				If count_word_&#8203;in_line is greater than zero, it means we found the word at least once in
-				the line. Now, since count_word_&#8203;in_line changes the line, we need to create a copy.
+				the line. Now, since count_word_&#8203;in_line changes the line, we need to create a copy, which
+				we can do with <code>strncpy</code>. We'll need to include <code>string.h</code> to do so.
 				<div class="code-blocktable">
 <table><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -200,9 +218,11 @@
 23
 24
 25
-26</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;str-operations.h&quot;</span><span class="cp"></span>
+26
+27</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;str-operations.h&quot;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
-
+<span class="hll"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+</span>
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&gt;</span> <span class="n">argc</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;./print_lines_with_word file_name word_to_count</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
@@ -231,10 +251,10 @@
 				</div>
 				<h3 id="line-numbers">Line Numbers</h3>
 				<p>We need to keep count of the line we're on and print it out. We also want to add
-					a bit of whitespace to the left so the numbers align. We'll assume that the
+					a bit of white space to the left so the numbers align. We'll assume that the
 					number of lines is less than 100000, which means that we need 5 digits of
 					padding. We can use the format string <code>%5u</code> to print out the line number with
-					the necessary padding.
+					the necessary padding. I added a <code>:</code> to delineate the line and the number.
 				</p>
 				<div class="code-blocktable">
 <table><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -285,7 +305,7 @@
     <span class="k">while</span> <span class="p">(</span><span class="n">fgets</span><span class="p">(</span><span class="n">unmodified_line</span><span class="p">,</span> <span class="n">line_sz</span><span class="p">,</span> <span class="n">reader</span><span class="p">))</span> <span class="p">{</span>
         <span class="n">strncpy</span><span class="p">(</span><span class="n">modified_line</span><span class="p">,</span> <span class="n">unmodified_line</span><span class="p">,</span> <span class="n">line_sz</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">count_word_in_line</span><span class="p">(</span><span class="n">modified_line</span><span class="p">,</span> <span class="n">word</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-<span class="hll">            <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%5u%s&quot;</span><span class="p">,</span> <span class="n">line_num</span><span class="p">,</span> <span class="n">unmodified_line</span><span class="p">);</span>
+<span class="hll">            <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%5u: %s&quot;</span><span class="p">,</span> <span class="n">line_num</span><span class="p">,</span> <span class="n">unmodified_line</span><span class="p">);</span>
 </span>        <span class="p">}</span>
 <span class="hll">        <span class="n">line_num</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
 </span>    <span class="p">}</span>
@@ -297,9 +317,632 @@
 				</div>
 				<p>And we're done with the code.
 				</p>
-				<h2 id="part-two-a-basic-build-system">Part Two: A Basic Build System</h2>
-				<p>If we try to compile it with the command we used last time, we'll get the
-					following error.
+				<h3 id="compiling-and-running-the-code">Compiling and Running the Code</h3>
+				<p>We could compile the code using
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ gcc print-lines-with-word.c str-operation.c -o print-lines-with-word</span>
+</pre>
+				</div>
+				<p>and we could use it with
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ ./print-lines-with-word test-file.txt the</span>
+    3: trivial using regular expressions. In fact, we could replace a lot of the things
+    5: including functions in the standard library such as toupper and strcmp. In fact,
+    6: if I were tasked to write a program that counts the number of times a word shows
+   13: Put simply, you have to have something round and roll it on the ground before
+   16: You might be expected to solve the integral  manually in a Calculus class, but
+   17: in any other class, you would look it up. At this part of the tutorial, we're
+   22: starting out neither at the fundamental rules of the field nor at the level of
+   26: the middle and spread towards both ends.
+   28: The quick brown fox jumped over the lazy dog.
+   30: the
+   31: 	thE
+   32:  tHE
+   33: tHe
+   35: THe
+   36: THE
+   37: ThE
+   38: The
+   40: There should be twenty-one instances of "the."
+</pre>
+				</div>
+				just as we did last time.
+				<h2 id="the-problem">The Problem</h2>
+				<p>If we want to compile like this manually, we have to recompile every <code>.c</code> file
+					involved in an executable (or library, which we haven't covered yet) every time
+					we run <code>gcc</code>. While this problem might not sound like a big deal for us since we
+					have two small files, something like the <a
+					href="https://github.com/torvalds/linux/tree/master/kernel">Linux kernel</a> has
+					hundreds of <code>C</code> files, maybe even thousands. Taking an hour and a half to
+					recompile the entire project every time you make a change is unacceptable from
+					both an efficiency and an emotional standpoint (Imagine getting an error an hour
+					in because you forgot a semicolon.).
+				</p>
+				<p>This scenario gets even worse when you consider that we're redoing work that we
+					shouldn't need to do. If a file doesn't change, then the compiler is going to
+					compile it in exactly the same way. As you can imagine, we should be able to
+					store the output of that compilation.
+				</p>
+				<h3 id="object-files">Object Files</h3>
+				<p><code>gcc</code> has exactly the feature we're looking for. If we add a <code>-c</code>, it will
+					produce the output of the compilation of the file instead of an executable (or
+					library). So now, we can do
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ gcc print-lines-with-word.c -c -o print-lines-with-word.o</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ gcc str-operations.c -c -o str-operations.o</span>
+</pre>
+				</div>
+				<p>where the <code>.o</code> stands for an <b>object file</b>. If you type <code>ls</code>, you'll notice
+					that there are two new files: <code>print-lines-&#8203;with-word.o</code> and <code>str-operations.o</code>. These two
+					files are the output of compiling the files without trying to link them. If we
+					want our program, we can then use the object files instead of the <code>C</code> source
+					code files like so
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ gcc print-lines-with-word.o str-operations.o -o print-lines-with-word</span>
+</pre>
+				</div>
+				<p>Now, let's say we make a change to <code>word-counter.c</code>. In this case, we can
+					recompile it and link it using the commands
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ gcc word-counter.c -c -o word-counter.o</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ gcc word-counter.o str-operations.o -o word-counter</span>
+</pre>
+				</div>
+				<p>Note that we only had to compile <code>word-counter.c</code> because <code>str-operations.o</code> had
+					already been compiled when we made <code>print-lines-&#8203;with-word</code>. If we were working on the Linux
+					kernel, we'd only have to wait an hour and a half when we first compile it. If
+					we only change ~10 files and then recompile, we'd only have to wait a few
+					minutes to see our changes.
+				</p>
+				<p>So, we seem to have solved the problem. If we want to recompile a project, we
+					recompile <b>every <code>.c</code> file we modified</b> and <b>every <code>.c</code> file that
+					includes a header file that we modified</b> since we last compiled the project
+					into object files, and then we link all the relevant object files. Remember that
+					the <code>#include</code> directive pastes the contents of the <code>.h</code> file into the <code>.c</code>
+					file. The <code>.o</code> file needs to therefore reflect the <code>.c</code> file and any included
+					<code>.h</code> files.
+				</p>
+				<h3 id="cleaning-up">Cleaning Up</h3>
+				<p>Before we move on, we're going to remove all the <code>.o</code> files from the folder
+					since they'll interfere with our build system demos in the next part. We can do
+					so with a simple <code>rm *.o</code> in the terminal.
+				</p>
+				<h2 id="build-systems">Build Systems</h2>
+				<p>As programmers, we like to automate as much work as possible because we're lazy
+					and computers don't make dumb mistakes like forgetting to compile certain files.
+					We should only have to tell the computer which output files depend on which
+					input files and we're done. The program that figures out what to compile, the
+					project file, and the organization of files up what is known as a <b>build
+					system</b>. People can organize their projects in different ways and all build
+					system programs can work with them, so I'm not going to focus on the
+					organization. Instead, I'm going to focus on two programs used in build systems:
+					<code>make</code> and <code>cmake</code>. We're going to start with <code>make</code> since it's a bit simpler,
+					but then we're going to move to <code>cmake</code> since it's cross-platform and it takes
+					care of a lot of little issues.
+				</p>
+				<h3 id="make"><code>make</code></h3>
+				<p><code>make</code> is simple to start, but a little complex to automate. Luckily for us, we
+					can hard-code everything to get the basic principles and then move to <code>cmake</code>.
+					The basic premise behind <code>make</code> is that you write a file called <code>Makefile</code> with
+					a bunch of rules of the form
+				</p>
+<div class="code-block"><pre><span></span><span class="nf">target</span><span class="o">:</span> <span class="n">dependency_one</span> <span class="n">dependency_two</span>
+	<span class="nb">command</span> <span class="o">(</span>optional<span class="o">)</span>
+	<span class="nb">command</span> <span class="o">(</span>optional<span class="o">)</span>
+</pre></div>
+				
+				<p>and <code>make</code> will create a file named <code>target</code> from the <code>command</code>s if
+					<code>dependency_one</code> or <code>dependency_two</code> have been modified since <code>target</code> was last
+					modified. For example, the rules for <code>print-lines-with-word</code> would look like
+				</p>
+<div class="code-block"><pre><span></span><span class="nf">print-lines-with-word</span><span class="o">:</span> <span class="n">print</span>-<span class="n">lines</span>-<span class="n">with</span>-<span class="n">word</span>.<span class="n">o</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">o</span>
+	gcc print-lines-with-word.o str-operations.o -o print-lines-with-word
+</pre></div>
+				
+				<p>This would be gross for us to write everywhere, so we can actually <b>automatic
+					variables</b> to simplify the above code. In this case, we'll want to use <code>$@</code>
+					for the <code>target</code> and <code>$^</code> for all dependencies. We can replace the above line
+					with
+				</p>
+<div class="code-block"><pre><span></span><span class="nf">print-lines-with-word</span><span class="o">:</span> <span class="n">print</span>-<span class="n">lines</span>-<span class="n">with</span>-<span class="n">word</span>.<span class="n">o</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">o</span>
+	gcc $^ -o <span class="nv">$@</span>
+</pre></div>
+				
+				<p>and it will work identically to the previous version. Since the rest of the
+					<code>Makefile</code> looks exactly like the rule above, I'll just give it to you.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="nf">print-lines-with-word</span><span class="o">:</span> <span class="n">print</span>-<span class="n">lines</span>-<span class="n">with</span>-<span class="n">word</span>.<span class="n">o</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">o</span>
+	gcc $^ -o <span class="nv">$@</span>
+
+<span class="nf">word-counter</span><span class="o">:</span> <span class="n">word</span>-<span class="n">counter</span>.<span class="n">o</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">o</span>
+	gcc $^ -o <span class="nv">$@</span>
+
+<span class="nf">print-lines-with-word.o</span><span class="o">:</span> <span class="n">print</span>-<span class="n">lines</span>-<span class="n">with</span>-<span class="n">word</span>.<span class="n">c</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">h</span>
+	gcc print-lines-with-word.c -c -o <span class="nv">$@</span>
+
+<span class="nf">str-operations.o</span><span class="o">:</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">c</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">h</span>
+	gcc str-operations.c -c -o <span class="nv">$@</span>
+
+<span class="nf">word-counter.o</span><span class="o">:</span> <span class="n">word</span>-<span class="n">counter</span>.<span class="n">c</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">h</span>
+	gcc word-counter.c -c -o <span class="nv">$@</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>Note that I had to add the <code>.c</code> file into the command since we don't compile
+					<code>.h</code> files. If we then go to the terminal we can run <code>make</code> with the command
+					<code>make</code> followed by the <code>target</code>, like so
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ make print-lines-with-word</span>
+gcc print-lines-with-word.c -c -o print-lines-with-word.o
+gcc str-operations.c -c -o str-operations.o
+gcc print-lines-with-word.o str-operations.o -o print-lines-with-word
+</pre>
+				</div>
+				<p>As you can see, <code>make</code> will print out all the commands that ran. In this case,
+					to make <code>print-lines-&#8203;with-word</code>, it had to first make <code>print-lines-&#8203;with-word.o</code> and <code>str-operations.o</code>,
+					which it did by following the corresponding rules. Note that it did not compile
+					<code>word-counter</code> or even <code>word-counter.o</code> since we did not need it to make
+					<code>print-lines-&#8203;with-word</code>. We can then make the <code>word-counter</code> with
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ make word-counter</span>
+gcc word-counter.c -c -o word-counter.o
+gcc word-counter.o str-operations.o -o word-counter
+</pre>
+				</div>
+				<p>Note that <code>make</code> did not recompile <code>str-operation.o</code> since it was already
+					compiled when we made <code>print-lines-with-word</code>.
+				</p>
+				<p>If you want, you can test <code>make</code> by changing one of the files and running <code>make</code>
+					again. If you run <code>make</code> without changing any of the files, it will tell you
+					everything is up to date.
+				</p>
+				<h4 id="phony-targets"><code>.PHONY</code> Targets</h4>
+				<p>It's a bit annoying to make both projects manually, so <code>make</code> has a solution. If
+					you declare a <code>.PHONY target</code>, <code>make</code> won't treat the <code>target</code> like a file. So
+					now, we can modify the <code>Makefile</code> to look like
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="nf">.PHONY</span><span class="o">:</span> <span class="n">all</span>
+
+<span class="nf">all</span><span class="o">:</span> <span class="n">word</span>-<span class="n">counter</span> <span class="n">print</span>-<span class="n">lines</span>-<span class="n">with</span>-<span class="n">word</span>
+
+<span class="nf">print-lines-with-word</span><span class="o">:</span> <span class="n">print</span>-<span class="n">lines</span>-<span class="n">with</span>-<span class="n">word</span>.<span class="n">o</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">o</span>
+	gcc $^ -o <span class="nv">$@</span>
+
+<span class="nf">word-counter</span><span class="o">:</span> <span class="n">word</span>-<span class="n">counter</span>.<span class="n">o</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">o</span>
+	gcc $^ -o <span class="nv">$@</span>
+
+<span class="nf">print-lines-with-word.o</span><span class="o">:</span> <span class="n">print</span>-<span class="n">lines</span>-<span class="n">with</span>-<span class="n">word</span>.<span class="n">c</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">h</span>
+	gcc print-lines-with-word.c -c -o <span class="nv">$@</span>
+
+<span class="nf">str-operations.o</span><span class="o">:</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">c</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">h</span>
+	gcc str-operations.c -c -o <span class="nv">$@</span>
+
+<span class="nf">word-counter.o</span><span class="o">:</span> <span class="n">word</span>-<span class="n">counter</span>.<span class="n">c</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">h</span>
+	gcc word-counter.c -c -o <span class="nv">$@</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>Furthermore, if you don't give <code>make</code> a target, it will assume you wanted the
+					first target in the <code>Makefile</code>, which is <code>all</code> in this case. Before we can show
+					off <code>make</code> with the new <code>all</code> rule, we have to first remove all the <code>.o</code> files
+					(and it's good practice to remove the targets too, so we'll do that). As it's a
+					little inconvenient to do so manually, we can have <code>make</code> do it for us using
+					another <code>target</code>, which we'll call <code>clean</code>.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="nf">.PHONY</span><span class="o">:</span> <span class="n">all</span>
+
+<span class="nf">all</span><span class="o">:</span> <span class="n">word</span>-<span class="n">counter</span> <span class="n">print</span>-<span class="n">lines</span>-<span class="n">with</span>-<span class="n">word</span>
+
+<span class="nf">print-lines-with-word</span><span class="o">:</span> <span class="n">print</span>-<span class="n">lines</span>-<span class="n">with</span>-<span class="n">word</span>.<span class="n">o</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">o</span>
+	gcc $^ -o <span class="nv">$@</span>
+
+<span class="nf">word-counter</span><span class="o">:</span> <span class="n">word</span>-<span class="n">counter</span>.<span class="n">o</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">o</span>
+	gcc $^ -o <span class="nv">$@</span>
+
+<span class="nf">print-lines-with-word.o</span><span class="o">:</span> <span class="n">print</span>-<span class="n">lines</span>-<span class="n">with</span>-<span class="n">word</span>.<span class="n">c</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">h</span>
+	gcc print-lines-with-word.c -c -o <span class="nv">$@</span>
+
+<span class="nf">str-operations.o</span><span class="o">:</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">c</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">h</span>
+	gcc str-operations.c -c -o <span class="nv">$@</span>
+
+<span class="nf">word-counter.o</span><span class="o">:</span> <span class="n">word</span>-<span class="n">counter</span>.<span class="n">c</span> <span class="n">str</span>-<span class="n">operations</span>.<span class="n">h</span>
+	gcc word-counter.c -c -o <span class="nv">$@</span>
+
+<span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
+
+<span class="nf">clean</span><span class="o">:</span>
+	rm -f *.o print-lines-with-word word-counter
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>Note that we used <code>rm -f</code> to force removal so that we don't get an error if
+					there are no files to remove. Now, run <code>make clean</code> first to remove all the
+					output, then run <code>make</code>.
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ make clean</span>
+rm -f *.o print-lines-with-word word-counter
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ make</span>
+gcc word-counter.c -c -o word-counter.o
+gcc str-operations.c -c -o str-operations.o
+gcc word-counter.o str-operations.o -o word-counter
+gcc print-lines-with-word.c -c -o print-lines-with-word.o
+gcc print-lines-with-word.o str-operations.o -o print-lines-with-word
+</pre>
+				</div>
+				<h4 id="parallelism">Parallelism</h4>
+				<p>You can run <code>make -j [num-threads]</code> to compile multiple files in parallel, which
+					can decrease compilation time.
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ make -j 4</span>
+</pre>
+				</div>
+				<p>Since we have a small project, we won't get any noticeable benefit. Compiling
+					multiple files at the same time can also lead to warnings and errors getting
+					mixed up and being harder to read and I haven't been in a situation where
+					compiling the program took a long enough time for me to care, so I normally
+					compile the files without parallelism.
+				</p>
+				<h3 id="cmake"><code>cmake</code></h3>
+				<p>Now that we know how to write a <code>Makefile</code>, let's talk about <code>cmake</code>.
+					<code>Makefiles</code> tend to either be tedious to write or <a
+					href="https://github.com/TheLandfill/minit/blob/b0f9e413860f072f0f8456f3eefc134d65b45475/Makefile">annoyingly
+					complex</a>. This one just requires you to put your <code>.c</code> files in <code>src</code>, your
+					<code>.h</code> files in <code>include</code>, external includes in <code>external_includes</code>, and external
+					libraries in <code>libs</code>, and it will take care of everything else. Furthermore, they
+					aren't cross-platform, so you can't use them on a Windows system without some
+					extra work. <code>cmake</code> tries to solve both problems by generating the right project
+					file for you no matter what platform you're on. Run <code>make clean</code> again to clean
+					up and delete the old <code>Makefile</code>, since we're going to use <code>cmake</code> in the
+					future.
+				</p>
+				<h4 id="installing-cmake">Installing <code>cmake</code></h4>
+				<p>Just in case you haven't yet or don't remember how to, the commands are
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ sudo apt update</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ sudo apt install cmake</span>
+</pre>
+				</div>
+				<p>on Ubuntu, Linux Mint, and the Windows Subsystem for Linux and
+				</p>
+				<div class="mac-terminal"><pre>
+<span class="terminal-oneline">computer:~ user$ brew update</span>
+<span class="terminal-oneline">computer:~ user$ brew install cmake</span>
+</pre>
+				</div>
+				<p>on Mac computers. Now might also be a good time to upgrade your system by
+					running <code>sudo apt upgrade</code> or <code>brew upgrade</code>.
+				</p>
+				<h4 id="file-organization">File Organization</h4>
+				<p>Right now, everything is kind of gross since the output and the input are in the
+					same folder, meaning you might end up accidentally deleting everything and you
+					don't care about the <code>.o</code> files, so they should be hidden away. With those facts
+					in mind, I have two main build systems I like to use:
+				</p>
+				<ol>
+					<li>Single-Project
+						<ul>
+							<li><code>src</code>: Contains <code>.c</code> files.
+							</li>
+							<li><code>include</code>: Contains <code>.h</code> files.
+							</li>
+							<li><code>bin</code>: Contains output and intermediate files like object files.
+							</li>
+							<li><code>CMakeLists.txt</code>
+							</li>
+						</ul>
+					</li>
+					<li>Multi-Project
+						<ul>
+							<li><code>project1</code>
+								<ul>
+									<li><code>src</code>
+									</li>
+									<li><code>include</code>
+									</li>
+									<li><code>CMakeLists.txt</code>
+									</li>
+								</ul>
+							</li>
+							<li><code>project2</code>
+								<ul>
+									<li><code>src</code>
+									</li>
+									<li><code>include</code>
+									</li>
+									<li><code>CMakeLists.txt</code>
+									</li>
+								</ul>
+							</li>
+							<li><code>bin</code>
+							</li>
+							<li><code>CMakeLists.txt</code>
+							</li>
+						</ul>
+					</li>
+				</ol>
+				<p>I separate <code>include</code> and <code>src</code> because it's annoying when I end up editing the
+					header file when I wanted to edit the source file, but you could honestly dump
+					them all in the same directory for project files. That being said, I recommend
+					that all your output be separated from your input by at least one directory
+					(e.g. put all your output in <code>bin</code> and all your input in <code>src</code> where both are in
+					the same directory) and your project file (in this case, <code>CMakeLists.txt</code>) be at
+					the root directory of your project. For now, we're doing a single project and
+					we're going to go with separating <code>include</code> and <code>src</code> simply because there's an
+					option in <code>CMake</code> to specify the <code>include</code> directory and I want to use it.
+					First, we'll need to create the directories, then move our files into the proper
+					directory, then we'll go from there.
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ mkdir src include bin</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ make clean</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ mv *.c src</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ mv *.h include</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ rm Makefile</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ ls *</span>
+test-file.txt
+
+bin:
+
+include:
+str-operations.h
+
+src:
+print-lines-with-word.c  str-operations.c  word-counter.c
+</pre>
+				</div>
+				<p>Now, we'll need to make the <code>cmake</code> project file, which is known as
+					<code>CMakeLists.txt</code>. Create the new file in <code>~/dev/&#8203;c-tutorial/</code> as you did
+					earlier with the previous files before you moved them. It should be in the same
+					directory as <code>bin</code>, <code>include</code>, and <code>src</code>.
+				</p>
+				<h4 id="cmakeliststxt"><code>CMakeLists.txt</code></h4>
+				<p>First, we specify the minimum version of <code>cmake</code> we want to use based on the
+					functions we're using. In this case, we'll go with <code>3.0.0</code> because we're not
+					using anything fancy and <code>2.X.X</code> is outdated. We can do this with the command
+					<code>cmake_minimum_version</code> like so
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.0.0</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>Let's also give it a project name like <code>c-tutorial</code>, which we can do with the
+					<code>project</code> command like so
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.0.0</span><span class="p">)</span>
+<span class="hll"><span class="nb">project</span><span class="p">(</span><span class="s">c-tutorial</span><span class="p">)</span>
+</span></pre></div>
+</td></tr></table>				
+				</div>
+				<p>We don't need to give the project a name, but it's nice to have. We could also
+					use it later. Anyway, let's add the executables. Unlike with <code>make</code> where we
+					specify rules, with <code>cmake</code>, we specify just which <code>.c</code> files are involved with
+					which target. In our case, we want to create two executables, so we'll use the
+					<code>add_executable</code> command.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.0.0</span><span class="p">)</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">c-tutorial</span><span class="p">)</span>
+
+<span class="hll"><span class="nb">add_executable</span><span class="p">(</span><span class="s">word-counter</span>
+</span><span class="hll">	<span class="s">src/word-counter.c</span>
+</span><span class="hll">	<span class="s">src/str-operations.c</span>
+</span><span class="hll"><span class="p">)</span>
+</span><span class="hll">
+</span><span class="hll"><span class="nb">add_executable</span><span class="p">(</span><span class="s">print-lines-with-word</span>
+</span><span class="hll">	<span class="s">src/print-lines-with-word.c</span>
+</span><span class="hll">	<span class="s">src/str-operations.c</span>
+</span><span class="hll"><span class="p">)</span>
+</span></pre></div>
+</td></tr></table>				
+				</div>
+				<p>As you might be able to guess, the first argument is the name of the executable
+					and the other arguments are the source files needed for it to compile. Note that
+					we had to specify the path relative to the directory containing
+					<code>CMakeLists.txt</code>.
+				</p>
+				<h4 id="cmake-directories"><code>cmake</code> Directories</h4>
+				<p>In <code>cmake</code>, there are two main directories: <code>CMAKE_SOURCE_DIR</code> and
+					<code>CMAKE_BINARY_DIR</code>. The first one is wherever the <code>CMakeLists.txt</code> file is
+					located. The second is wherever you run the <code>cmake</code> command. Generally, you want
+					these two directories to be different so that you don't get build files mixed in
+					with your code files. For this reason, we're going to be doing what is known as
+					an <b>out of source build</b>. At this point, all we need to do is move into the
+					<code>bin</code> directory and run <code>cmake</code> with the location of <code>CMakeLists.txt</code> passed in
+					as the argument. This process will look like
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial</span></b>$ cd bin</span>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/bin</span></b>$ cmake ..</span>
+-- The C compiler identification is GNU 10.2.0
+-- The CXX compiler identification is GNU 10.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to:
+~/dev/c-tutorial/bin/bin
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/bin</span></b>$ ls</span>
+CMakeCache.txt
+<span class="file">CMakeFiles</span>
+cmake_install.cmake
+Makefile
+</pre>
+				</div>
+				<p>You'll be using an earlier version of <code>gcc</code> than me because we're using
+					different distros of Linux, but that should be the only difference. If you look
+					at all the files in the current directory, you'll see the <code>Makefile</code> that
+					<code>cmake</code> created for us. If we then type <code>make</code>, we'll get output that looks like
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/bin</span></b>$ make</span>
+<span class="scanning">Scanning dependencies of target print-lines-with-word</span>
+[ 16%] <span class="building">Building C object CMakeFiles/print-lines-with-word.dir/src/print-lines-with-word.c.o</span>
+<b>~/dev/c-tutorial/bin/src/print-lines-with-word.c:1:10:</b> <span class="error">fatal error: </span>str-operations.h: No such file or directory
+    1 | #include <span class="error">&quot;str-operations.h&quot;</span>
+      |          <span class="error">^~~~~~~~~~~~~~~~~~</span>
+compilation terminated.
+make[2]: *** [CMakeFiles/print-lines-with-word.dir/build.make:82: CMakeFiles/print-lines-with-word.dir/src/print-lines-with-word.c.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:97: CMakeFiles/print-lines-with-word.dir/all] Error 2
+make: *** [Makefile:103: all] Error 2
+</pre>
+				</div>
+				<p>We're getting this error because our compiler has no idea where the file
+					<code>str-operations.h</code> is since it's not in the same directory as the file it's
+					compiling, so we need to tell it where it is using the
+					<code>include_&#8203;directories</code> command, which we can do by changing the
+					<code>CMakeLists.txt</code> file to
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.0.0</span><span class="p">)</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">c-tutorial</span><span class="p">)</span>
+
+<span class="hll"><span class="nb">include_directories</span><span class="p">(</span><span class="s2">&quot;${CMAKE_SOURCE_DIR}/include&quot;</span><span class="p">)</span>
+</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">word-counter</span>
+	<span class="s">src/word-counter.c</span>
+	<span class="s">src/str-operations.c</span>
+<span class="p">)</span>
+
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">print-lines-with-word</span>
+	<span class="s">src/print-lines-with-word.c</span>
+	<span class="s">src/str-operations.c</span>
+<span class="p">)</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>Now, we need to rerun <code>cmake</code> as before.
+				</p>
+				<div class="terminal"><pre>
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/bin</span></b>$ cmake ..</span>
+-- Configuring done
+-- Generating done
+-- Build files have been written to: ~/dev/c-tutorial/bin/bin
+<span class="terminal-oneline"><b><span style="color:#4CE64C;">user@computer</span></b>:<b><span style="color:#298FDD;">~/dev/c-tutorial/bin</span></b>$ make</span>
+<span class="scanning">Scanning dependencies of target print-lines-with-word</span>
+[ 16%] <span class="building">Building C object CMakeFiles/print-lines-with-word.dir/src/print-lines-with-word.c.o</span>
+[ 33%] <span class="building">Building C object CMakeFiles/print-lines-with-word.dir/src/str-operations.c.o</span>
+[ 50%] <span class="linking">Linking C executable print-lines-with-word</span>
+[ 50%] Built target print-lines-with-word
+<span class="scanning">Scanning dependencies of target word-counter</span>
+[ 66%] <span class="building">Building C object CMakeFiles/word-counter.dir/src/word-counter.c.o</span>
+[ 83%] <span class="building">Building C object CMakeFiles/word-counter.dir/src/str-operations.c.o</span>
+[100%] <span class="linking">Linking C executable word-counter</span>
+[100%] Built target word-counter
+</pre>
+				</div>
+				<p>As you can see, <code>cmake</code> by default comes with a lot more color, is a bit easier
+					to use, and takes care of figuring out the header file dependencies.
+				</p>
+				<h2 id="summary">Summary</h2>
+				<p>While there are other build systems (<code>ninja</code>, <code>premake</code>, whatever Windows uses,
+					etc.), <code>make</code> and <code>cmake</code> should be enough to set you up for <code>C/C++</code> development
+					in the future. If something more complicated comes up, I'll discuss the build
+					system in more depth. Otherwise, I'm content with this introduction.
+				</p>
+				<p>In the next article, <a href="../compiler-flags">Compiler Flags</a>, we're going
+					to discuss the flags of <code>gcc</code> and how you can use them to do things from
+					optimize your code to including debugging information to checking for illegal
+					memory accesses.
 				</p>
 			</div>
 			<div class="article">
@@ -321,12 +964,25 @@
 			<nav id="sidenav">
 				<a href="#printing-lines-containing-a-specific-word" style="padding-left:12px;">Printing Lines Containing a Specific Word</a>
 				<a href="#disclaimer" style="padding-left:24px;">Disclaimer</a>
-				<a href="#part-one-writing-the-code" style="padding-left:24px;">Part One: Writing the Code</a>
+				<a href="#writing-the-code" style="padding-left:24px;">Writing the Code</a>
 				<a href="#boilerplate-and-trivial-code" style="padding-left:36px;">Boilerplate and Trivial Code</a>
 				<a href="#file-stuff" style="padding-left:36px;">File Stuff</a>
 				<a href="#printing-out-lines" style="padding-left:36px;">Printing Out Lines</a>
 				<a href="#line-numbers" style="padding-left:36px;">Line Numbers</a>
-				<a href="#part-two-a-basic-build-system" style="padding-left:24px;">Part Two: A Basic Build System</a>
+				<a href="#compiling-and-running-the-code" style="padding-left:36px;">Compiling and Running the Code</a>
+				<a href="#the-problem" style="padding-left:24px;">The Problem</a>
+				<a href="#object-files" style="padding-left:36px;">Object Files</a>
+				<a href="#cleaning-up" style="padding-left:36px;">Cleaning Up</a>
+				<a href="#build-systems" style="padding-left:24px;">Build Systems</a>
+				<a href="#make" style="padding-left:36px;"><code>make</code></a>
+				<a href="#phony-targets" style="padding-left:48px;"><code>.PHONY</code> Targets</a>
+				<a href="#parallelism" style="padding-left:48px;">Parallelism</a>
+				<a href="#cmake" style="padding-left:36px;"><code>cmake</code></a>
+				<a href="#installing-cmake" style="padding-left:48px;">Installing <code>cmake</code></a>
+				<a href="#file-organization" style="padding-left:48px;">File Organization</a>
+				<a href="#cmakeliststxt" style="padding-left:48px;"><code>CMakeLists.txt</code></a>
+				<a href="#cmake-directories" style="padding-left:48px;"><code>cmake</code> Directories</a>
+				<a href="#summary" style="padding-left:24px;">Summary</a>
 			</nav>
 			<div id="sidenav-activator"></div>
 		</div>

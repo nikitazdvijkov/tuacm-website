@@ -22,6 +22,29 @@ Scripts:
 	font-weight: bold;
 }
 
+ol, ul {
+	margin-bottom: 0;
+}
+
+.terminal .scanning {
+	color: #FF55FF;
+	font-weight: bold;
+}
+
+.terminal .building {
+	color: #00AA00;
+}
+
+.terminal .linking {
+	color: #55FF55;
+	font-weight: bold;
+}
+
+.terminal .error {
+	color: #FF5555;
+	font-weight: bold;
+}
+
 \{{\style}}
 <i>This is the seventeenth article in the </i>Making Sense of C<i> series.
 In this article, we're going to write some new code and combine it with the code
@@ -39,12 +62,16 @@ just print out the section of the line with an ellipsis before and after, e.g.
 
 \{{terminal}}
 
-{{prompt}} ./print-lines-with-word the
+{{plww}}="print-lines-with-word"
+{{directory}}:="<span class="file">{{rest-of-line}}</span>{{end-of-line}}"
+{{exe}}:="<span class="exe">{{rest-of-line}}</span>{{end-of-line}}"
+{{dir}}="{{dir}}/c-tutorial"
+{{prompt}} ./{{plww}} file.txt the
 200:    ... which I had given to the last individual I had found ...
 
 \{{\terminal}}
 
-# Part One: Writing the Code
+# Writing the Code
 
 As always, we need to start with our goal and break it up into high-level tasks.
 Just like the last article, we need to know the word and the file to read from.
@@ -124,12 +151,14 @@ hl    fclose(reader);
 {{cwil}}="count_word_{{zs}}in_line"
 We already have the mechanism for checking if a word is in a line with {{cwil}}.
 If {{cwil}} is greater than zero, it means we found the word at least once in
-the line. Now, since {{cwil}} changes the line, we need to create a copy.
+the line. Now, since {{cwil}} changes the line, we need to create a copy, which
+we can do with {strncpy}. We'll need to include {string.h} to do so.
 
 \{{code-block c}}
 
 #include "str-operations.h"
 #include {{lt}}stdio.h{{gt}}
+hl#include {{lt}}string.h{{gt}}
 
 int main(int argc, char ** argv) {
     if (3 {{gt}} argc) {
@@ -160,10 +189,10 @@ hl    }
 ## Line Numbers
 
 We need to keep count of the line we're on and print it out. We also want to add
-a bit of whitespace to the left so the numbers align. We'll assume that the
+a bit of white space to the left so the numbers align. We'll assume that the
 number of lines is less than 100000, which means that we need 5 digits of
 padding. We can use the format string {%5u} to print out the line number with
-the necessary padding.
+the necessary padding. I added a {:} to delineate the line and the number.
 
 \{{code-block c}}
 
@@ -188,7 +217,7 @@ hl    unsigned int line_num = 1;
     while (fgets(unmodified_line, line_sz, reader)) {
         strncpy(modified_line, unmodified_line, line_sz - 1);
         if (count_word_in_line(modified_line, word) {{gt}} 0) {
-hl            printf("%5u%s", line_num, unmodified_line);
+hl            printf("%5u: %s", line_num, unmodified_line);
         }
 hl        line_num += 1;
     }
@@ -200,7 +229,621 @@ hl        line_num += 1;
 
 And we're done with the code.
 
-# Part Two: A Basic Build System
+## Compiling and Running the Code
 
-If we try to compile it with the command we used last time, we'll get the
-following error.
+We could compile the code using
+
+\{{terminal}}
+
+{{prompt}} gcc {{plww}}.c str-operation.c -o {{plww}}
+
+\{{\terminal}}
+
+and we could use it with
+
+\{{terminal}}
+
+{{prompt}} ./{{plww}} test-file.txt the
+    3: trivial using regular expressions. In fact, we could replace a lot of the things
+    5: including functions in the standard library such as toupper and strcmp. In fact,
+    6: if I were tasked to write a program that counts the number of times a word shows
+   13: Put simply, you have to have something round and roll it on the ground before
+   16: You might be expected to solve the integral  manually in a Calculus class, but
+   17: in any other class, you would look it up. At this part of the tutorial, we're
+   22: starting out neither at the fundamental rules of the field nor at the level of
+   26: the middle and spread towards both ends.
+   28: The quick brown fox jumped over the lazy dog.
+   30: the
+   31: 	thE
+   32:  tHE
+   33: tHe
+   35: THe
+   36: THE
+   37: ThE
+   38: The
+   40: There should be twenty-one instances of "the."
+
+\{{\terminal}}
+
+{{plww}}="print-lines-{{zs}}with-word"
+just as we did last time.
+
+# The Problem
+
+If we want to compile like this manually, we have to recompile every {.c} file
+involved in an executable (or library, which we haven't covered yet) every time
+we run {gcc}. While this problem might not sound like a big deal for us since we
+have two small files, something like the <a
+href="https://github.com/torvalds/linux/tree/master/kernel">Linux kernel</a> has
+hundreds of {C} files, maybe even thousands. Taking an hour and a half to
+recompile the entire project every time you make a change is unacceptable from
+both an efficiency and an emotional standpoint (Imagine getting an error an hour
+in because you forgot a semicolon.).
+
+This scenario gets even worse when you consider that we're redoing work that we
+shouldn't need to do. If a file doesn't change, then the compiler is going to
+compile it in exactly the same way. As you can imagine, we should be able to
+store the output of that compilation.
+
+## Object Files
+
+{gcc} has exactly the feature we're looking for. If we add a {-c}, it will
+produce the output of the compilation of the file instead of an executable (or
+library). So now, we can do
+
+\{{terminal}}
+
+{{prompt}} gcc {{plww}}.c -c -o {{plww}}.o
+{{prompt}} gcc str-operations.c -c -o str-operations.o
+
+\{{\terminal}}
+
+where the {.o} stands for an <b>object file</b>. If you type {ls}, you'll notice
+that there are two new files: {{{plww}}.o} and {str-operations.o}. These two
+files are the output of compiling the files without trying to link them. If we
+want our program, we can then use the object files instead of the {C} source
+code files like so
+
+\{{terminal}}
+
+{{prompt}} gcc {{plww}}.o str-operations.o -o {{plww}}
+
+\{{\terminal}}
+
+Now, let's say we make a change to {word-counter.c}. In this case, we can
+recompile it and link it using the commands
+
+\{{terminal}}
+
+{{prompt}} gcc word-counter.c -c -o word-counter.o
+{{prompt}} gcc word-counter.o str-operations.o -o word-counter
+
+\{{\terminal}}
+
+Note that we only had to compile {word-counter.c} because {str-operations.o} had
+already been compiled when we made {{{plww}}}. If we were working on the Linux
+kernel, we'd only have to wait an hour and a half when we first compile it. If
+we only change ~10 files and then recompile, we'd only have to wait a few
+minutes to see our changes.
+
+So, we seem to have solved the problem. If we want to recompile a project, we
+recompile <b>every {.c} file we modified</b> and <b>every {.c} file that
+includes a header file that we modified</b> since we last compiled the project
+into object files, and then we link all the relevant object files. Remember that
+the {#include} directive pastes the contents of the {.h} file into the {.c}
+file. The {.o} file needs to therefore reflect the {.c} file and any included
+{.h} files.
+
+## Cleaning Up
+
+Before we move on, we're going to remove all the {.o} files from the folder
+since they'll interfere with our build system demos in the next part. We can do
+so with a simple {rm *.o} in the terminal.
+
+# Build Systems
+
+As programmers, we like to automate as much work as possible because we're lazy
+and computers don't make dumb mistakes like forgetting to compile certain files.
+We should only have to tell the computer which output files depend on which
+input files and we're done. The program that figures out what to compile, the
+project file, and the organization of files up what is known as a <b>build
+system</b>. People can organize their projects in different ways and all build
+system programs can work with them, so I'm not going to focus on the
+organization. Instead, I'm going to focus on two programs used in build systems:
+{make} and {cmake}. We're going to start with {make} since it's a bit simpler,
+but then we're going to move to {cmake} since it's cross-platform and it takes
+care of a lot of little issues.
+
+## {make}
+
+{make} is simple to start, but a little complex to automate. Luckily for us, we
+can hard-code everything to get the basic principles and then move to {cmake}.
+The basic premise behind {make} is that you write a file called {Makefile} with
+a bunch of rules of the form
+
+\{{code-block make no-line-numbers}}
+
+target: dependency_one dependency_two
+	command (optional)
+	command (optional)
+
+\{{\code-block}}
+
+and {make} will create a file named {target} from the {command}s if
+{dependency_one} or {dependency_two} have been modified since {target} was last
+modified. For example, the rules for {print-lines-with-word} would look like
+
+\{{code-block make no-line-numbers}}
+
+print-lines-with-word: print-lines-with-word.o str-operations.o
+	gcc print-lines-with-word.o str-operations.o -o print-lines-with-word
+
+\{{\code-block}}
+
+This would be gross for us to write everywhere, so we can actually <b>automatic
+variables</b> to simplify the above code. In this case, we'll want to use {$@}
+for the {target} and {$^} for all dependencies. We can replace the above line
+with
+
+\{{code-block make no-line-numbers}}
+
+print-lines-with-word: print-lines-with-word.o str-operations.o
+	gcc $^ -o $@
+
+\{{\code-block}}
+
+and it will work identically to the previous version. Since the rest of the
+{Makefile} looks exactly like the rule above, I'll just give it to you.
+
+\{{code-block make}}
+
+print-lines-with-word: print-lines-with-word.o str-operations.o
+	gcc $^ -o $@
+
+word-counter: word-counter.o str-operations.o
+	gcc $^ -o $@
+
+print-lines-with-word.o: print-lines-with-word.c str-operations.h
+	gcc print-lines-with-word.c -c -o $@
+
+str-operations.o: str-operations.c str-operations.h
+	gcc str-operations.c -c -o $@
+
+word-counter.o: word-counter.c str-operations.h
+	gcc word-counter.c -c -o $@
+
+\{{\code-block}}
+
+Note that I had to add the {.c} file into the command since we don't compile
+{.h} files. If we then go to the terminal we can run {make} with the command
+{make} followed by the {target}, like so
+
+\{{terminal}}
+
+{{prompt}} make print-lines-with-word
+gcc print-lines-with-word.c -c -o print-lines-with-word.o
+gcc str-operations.c -c -o str-operations.o
+gcc print-lines-with-word.o str-operations.o -o print-lines-with-word
+
+\{{\terminal}}
+
+As you can see, {make} will print out all the commands that ran. In this case,
+to make {{{plww}}}, it had to first make {{{plww}}.o} and {str-operations.o},
+which it did by following the corresponding rules. Note that it did not compile
+{word-counter} or even {word-counter.o} since we did not need it to make
+{{{plww}}}. We can then make the {word-counter} with
+
+\{{terminal}}
+
+{{prompt}} make word-counter
+gcc word-counter.c -c -o word-counter.o
+gcc word-counter.o str-operations.o -o word-counter
+
+\{{\terminal}}
+
+Note that {make} did not recompile {str-operation.o} since it was already
+compiled when we made {print-lines-with-word}.
+
+If you want, you can test {make} by changing one of the files and running {make}
+again. If you run {make} without changing any of the files, it will tell you
+everything is up to date.
+
+### {.PHONY} Targets
+
+It's a bit annoying to make both projects manually, so {make} has a solution. If
+you declare a {.PHONY target}, {make} won't treat the {target} like a file. So
+now, we can modify the {Makefile} to look like
+
+\{{code-block make}}
+
+.PHONY: all
+
+all: word-counter print-lines-with-word
+
+print-lines-with-word: print-lines-with-word.o str-operations.o
+	gcc $^ -o $@
+
+word-counter: word-counter.o str-operations.o
+	gcc $^ -o $@
+
+print-lines-with-word.o: print-lines-with-word.c str-operations.h
+	gcc print-lines-with-word.c -c -o $@
+
+str-operations.o: str-operations.c str-operations.h
+	gcc str-operations.c -c -o $@
+
+word-counter.o: word-counter.c str-operations.h
+	gcc word-counter.c -c -o $@
+
+\{{\code-block}}
+
+Furthermore, if you don't give {make} a target, it will assume you wanted the
+first target in the {Makefile}, which is {all} in this case. Before we can show
+off {make} with the new {all} rule, we have to first remove all the {.o} files
+(and it's good practice to remove the targets too, so we'll do that). As it's a
+little inconvenient to do so manually, we can have {make} do it for us using
+another {target}, which we'll call {clean}.
+
+\{{code-block make}}
+
+.PHONY: all
+
+all: word-counter print-lines-with-word
+
+print-lines-with-word: print-lines-with-word.o str-operations.o
+	gcc $^ -o $@
+
+word-counter: word-counter.o str-operations.o
+	gcc $^ -o $@
+
+print-lines-with-word.o: print-lines-with-word.c str-operations.h
+	gcc print-lines-with-word.c -c -o $@
+
+str-operations.o: str-operations.c str-operations.h
+	gcc str-operations.c -c -o $@
+
+word-counter.o: word-counter.c str-operations.h
+	gcc word-counter.c -c -o $@
+
+.PHONY: clean
+
+clean:
+	rm -f *.o print-lines-with-word word-counter
+
+\{{\code-block}}
+
+Note that we used {rm -f} to force removal so that we don't get an error if
+there are no files to remove. Now, run {make clean} first to remove all the
+output, then run {make}.
+
+\{{terminal}}
+
+{{prompt}} make clean
+rm -f *.o print-lines-with-word word-counter
+{{prompt}} make
+gcc word-counter.c -c -o word-counter.o
+gcc str-operations.c -c -o str-operations.o
+gcc word-counter.o str-operations.o -o word-counter
+gcc print-lines-with-word.c -c -o print-lines-with-word.o
+gcc print-lines-with-word.o str-operations.o -o print-lines-with-word
+
+\{{\terminal}}
+
+### Parallelism
+
+You can run {make -j [num-threads]} to compile multiple files in parallel, which
+can decrease compilation time.
+
+\{{terminal}}
+
+{{prompt}} make -j 4
+
+\{{\terminal}}
+
+Since we have a small project, we won't get any noticeable benefit. Compiling
+multiple files at the same time can also lead to warnings and errors getting
+mixed up and being harder to read and I haven't been in a situation where
+compiling the program took a long enough time for me to care, so I normally
+compile the files without parallelism.
+
+## {cmake}
+
+Now that we know how to write a {Makefile}, let's talk about {cmake}.
+{Makefiles} tend to either be tedious to write or <a
+href="https://github.com/TheLandfill/minit/blob/b0f9e413860f072f0f8456f3eefc134d65b45475/Makefile">annoyingly
+complex</a>. This one just requires you to put your {.c} files in {src}, your
+{.h} files in {include}, external includes in {external_includes}, and external
+libraries in {libs}, and it will take care of everything else. Furthermore, they
+aren't cross-platform, so you can't use them on a Windows system without some
+extra work. {cmake} tries to solve both problems by generating the right project
+file for you no matter what platform you're on. Run {make clean} again to clean
+up and delete the old {Makefile}, since we're going to use {cmake} in the
+future.
+
+### Installing {cmake}
+
+Just in case you haven't yet or don't remember how to, the commands are
+
+\{{terminal}}
+
+{{prompt}} sudo apt update
+{{prompt}} sudo apt install cmake
+
+\{{\terminal}}
+
+on Ubuntu, Linux Mint, and the Windows Subsystem for Linux and
+
+\{{terminal mac}}
+
+{{mac-prompt}} brew update
+{{mac-prompt}} brew install cmake
+
+\{{\terminal}}
+
+on Mac computers. Now might also be a good time to upgrade your system by
+running {sudo apt upgrade} or {brew upgrade}.
+
+### File Organization
+
+Right now, everything is kind of gross since the output and the input are in the
+same folder, meaning you might end up accidentally deleting everything and you
+don't care about the {.o} files, so they should be hidden away. With those facts
+in mind, I have two main build systems I like to use:
+
+\{{ol}}
+
+Single-Project
+\{{ul}}
+
+{src}: Contains {.c} files.
+
+{include}: Contains {.h} files.
+
+{bin}: Contains output and intermediate files like object files.
+
+{CMakeLists.txt}
+
+\{{\ul}}
+
+Multi-Project
+\{{ul}}
+
+{project1}
+\{{ul}}
+
+{src}
+
+{include}
+
+{CMakeLists.txt}
+
+\{{\ul}}
+
+{project2}
+\{{ul}}
+
+{src}
+
+{include}
+
+{CMakeLists.txt}
+
+\{{\ul}}
+
+{bin}
+
+{CMakeLists.txt}
+
+\{{\ul}}
+
+\{{\ol}}
+
+I separate {include} and {src} because it's annoying when I end up editing the
+header file when I wanted to edit the source file, but you could honestly dump
+them all in the same directory for project files. That being said, I recommend
+that all your output be separated from your input by at least one directory
+(e.g. put all your output in {bin} and all your input in {src} where both are in
+the same directory) and your project file (in this case, {CMakeLists.txt}) be at
+the root directory of your project. For now, we're doing a single project and
+we're going to go with separating {include} and {src} simply because there's an
+option in {CMake} to specify the {include} directory and I want to use it.
+First, we'll need to create the directories, then move our files into the proper
+directory, then we'll go from there.
+
+\{{terminal}}
+
+{{prompt}} mkdir src include bin
+{{prompt}} make clean
+{{prompt}} mv *.c src
+{{prompt}} mv *.h include
+{{prompt}} rm Makefile
+{{prompt}} ls *
+test-file.txt
+
+bin:
+
+include:
+str-operations.h
+
+src:
+print-lines-with-word.c  str-operations.c  word-counter.c
+
+\{{\terminal}}
+
+Now, we'll need to make the {cmake} project file, which is known as
+{CMakeLists.txt}. Create the new file in {~/dev/{{zs}}c-tutorial/} as you did
+earlier with the previous files before you moved them. It should be in the same
+directory as {bin}, {include}, and {src}.
+
+### {CMakeLists.txt}
+
+First, we specify the minimum version of {cmake} we want to use based on the
+functions we're using. In this case, we'll go with {3.0.0} because we're not
+using anything fancy and {2.X.X} is outdated. We can do this with the command
+{cmake_minimum_version} like so
+
+\{{code-block cmake}}
+
+cmake_minimum_required(VERSION 3.0.0)
+
+\{{\code-block}}
+
+Let's also give it a project name like {c-tutorial}, which we can do with the
+{project} command like so
+
+\{{code-block cmake}}
+
+cmake_minimum_required(VERSION 3.0.0)
+hlproject(c-tutorial)
+
+\{{\code-block}}
+
+We don't need to give the project a name, but it's nice to have. We could also
+use it later. Anyway, let's add the executables. Unlike with {make} where we
+specify rules, with {cmake}, we specify just which {.c} files are involved with
+which target. In our case, we want to create two executables, so we'll use the
+{add_executable} command.
+
+\{{code-block cmake}}
+
+cmake_minimum_required(VERSION 3.0.0)
+project(c-tutorial)
+
+hladd_executable(word-counter
+hl	src/word-counter.c
+hl	src/str-operations.c
+hl)
+hl
+hladd_executable(print-lines-with-word
+hl	src/print-lines-with-word.c
+hl	src/str-operations.c
+hl)
+
+\{{\code-block}}
+
+As you might be able to guess, the first argument is the name of the executable
+and the other arguments are the source files needed for it to compile. Note that
+we had to specify the path relative to the directory containing
+{CMakeLists.txt}.
+
+### {cmake} Directories
+
+In {cmake}, there are two main directories: {CMAKE_SOURCE_DIR} and
+{CMAKE_BINARY_DIR}. The first one is wherever the {CMakeLists.txt} file is
+located. The second is wherever you run the {cmake} command. Generally, you want
+these two directories to be different so that you don't get build files mixed in
+with your code files. For this reason, we're going to be doing what is known as
+an <b>out of source build</b>. At this point, all we need to do is move into the
+{bin} directory and run {cmake} with the location of {CMakeLists.txt} passed in
+as the argument. This process will look like
+
+\{{terminal}}
+
+{{prompt}} cd bin
+{{dir}}="{{dir}}/bin"
+{{prompt}} cmake ..
+-- The C compiler identification is GNU 10.2.0
+-- The CXX compiler identification is GNU 10.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to:
+{{dir}}/bin
+{{prompt}} ls
+CMakeCache.txt
+{{directory}}CMakeFiles
+cmake_install.cmake
+Makefile
+
+\{{\terminal}}
+
+You'll be using an earlier version of {gcc} than me because we're using
+different distros of Linux, but that should be the only difference. If you look
+at all the files in the current directory, you'll see the {Makefile} that
+{cmake} created for us. If we then type {make}, we'll get output that looks like
+
+\{{terminal}}
+
+{{prompt}} make
+<span class="scanning">Scanning dependencies of target print-lines-with-word</span>
+[ 16%] <span class="building">Building C object CMakeFiles/print-lines-with-word.dir/src/print-lines-with-word.c.o</span>
+<b>{{dir}}/src/print-lines-with-word.c:1:10:</b> <span class="error">fatal error: </span>str-operations.h: No such file or directory
+    1 | #include <span class="error">&quot;str-operations.h&quot;</span>
+      |          <span class="error">^~~~~~~~~~~~~~~~~~</span>
+compilation terminated.
+make[2]: *** [CMakeFiles/print-lines-with-word.dir/build.make:82: CMakeFiles/print-lines-with-word.dir/src/print-lines-with-word.c.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:97: CMakeFiles/print-lines-with-word.dir/all] Error 2
+make: *** [Makefile:103: all] Error 2
+
+\{{\terminal}}
+
+We're getting this error because our compiler has no idea where the file
+{str-operations.h} is since it's not in the same directory as the file it's
+compiling, so we need to tell it where it is using the
+{include_{{zs}}directories} command, which we can do by changing the
+{CMakeLists.txt} file to
+
+\{{code-block cmake}}
+
+cmake_minimum_required(VERSION 3.0.0)
+project(c-tutorial)
+
+hlinclude_directories("${CMAKE_SOURCE_DIR}/include")
+
+add_executable(word-counter
+	src/word-counter.c
+	src/str-operations.c
+)
+
+add_executable(print-lines-with-word
+	src/print-lines-with-word.c
+	src/str-operations.c
+)
+
+\{{\code-block}}
+
+Now, we need to rerun {cmake} as before.
+
+\{{terminal}}
+
+{{prompt}} cmake ..
+-- Configuring done
+-- Generating done
+-- Build files have been written to: {{dir}}/bin
+{{prompt}} make
+<span class="scanning">Scanning dependencies of target print-lines-with-word</span>
+[ 16%] <span class="building">Building C object CMakeFiles/print-lines-with-word.dir/src/print-lines-with-word.c.o</span>
+[ 33%] <span class="building">Building C object CMakeFiles/print-lines-with-word.dir/src/str-operations.c.o</span>
+[ 50%] <span class="linking">Linking C executable print-lines-with-word</span>
+[ 50%] Built target print-lines-with-word
+<span class="scanning">Scanning dependencies of target word-counter</span>
+[ 66%] <span class="building">Building C object CMakeFiles/word-counter.dir/src/word-counter.c.o</span>
+[ 83%] <span class="building">Building C object CMakeFiles/word-counter.dir/src/str-operations.c.o</span>
+[100%] <span class="linking">Linking C executable word-counter</span>
+[100%] Built target word-counter
+
+\{{\terminal}}
+
+As you can see, {cmake} by default comes with a lot more color, is a bit easier
+to use, and takes care of figuring out the header file dependencies.
+
+# Summary
+
+While there are other build systems ({ninja}, {premake}, whatever Windows uses,
+etc.), {make} and {cmake} should be enough to set you up for {C/C++} development
+in the future. If something more complicated comes up, I'll discuss the build
+system in more depth. Otherwise, I'm content with this introduction.
+
+In the next article, <a href="../compiler-flags">Compiler Flags</a>, we're going
+to discuss the flags of {gcc} and how you can use them to do things from
+optimize your code to including debugging information to checking for illegal
+memory accesses.
