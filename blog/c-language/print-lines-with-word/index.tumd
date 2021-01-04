@@ -1,0 +1,206 @@
+templates/article
+Title:		Printing Lines Containing a Specific Word
+Author:		Joseph Mellor
+Tagline:	Our first experience with build systems.
+Code Style:	trac+dark
+Import:		code-block terminal aside
+Scripts:
+
+\{{style}}
+
+.terminal pre {
+	color: #AAAAAA;
+}
+
+.terminal .file {
+	color: #298FDD;
+	font-weight: bold;
+}
+
+.terminal .exe {
+	color: #4CE64C;
+	font-weight: bold;
+}
+
+\{{\style}}
+<i>This is the seventeenth article in the </i>Making Sense of C<i> series.
+In this article, we're going to write some new code and combine it with the code
+we've written in the last article to create a new program that prints out every
+line in a user specified file that contains a user-specified word.</i>
+
+# Disclaimer
+
+Since the focus for this article will be on build systems, we won't spend extra
+effort on making sure that we can handle lines of arbitrary lengths. For this
+article, we're going to assume that all lines are guaranteed to be less than
+{4095} characters. To deal with longer lines, we'd have to know how to
+dynamically allocate memory so we could print out the entire line or we could
+just print out the section of the line with an ellipsis before and after, e.g.
+
+\{{terminal}}
+
+{{prompt}} ./print-lines-with-word the
+200:    ... which I had given to the last individual I had found ...
+
+\{{\terminal}}
+
+# Part One: Writing the Code
+
+As always, we need to start with our goal and break it up into high-level tasks.
+Just like the last article, we need to know the word and the file to read from.
+Then, if we find the word in a line, we need to print out the line number and
+the line.
+
+Our algorithm currently looks like
+
+\{{ol}}
+
+Get the user input.
+
+Read through each line and print out the line and the line number if it contains
+the word.
+
+\{{\ol}}
+
+## Boilerplate and Trivial Code
+
+I decided to reuse the name of the <a
+href="../word-counter/#boilerplate-and-trivial-code">section from the last
+article</a> because what we're going to write here will be almost identical to
+the last program since we're taking in the same exact info in the exact same
+way. In fact, I'm just going to copy a part of the program from last time.
+
+\{{code-block c}}
+
+#include {{lt}}stdio.h{{gt}}
+
+int main(int argc, char ** argv) {
+    if (3 {{gt}} argc) {
+        fprintf(stderr, "./print-lines-with-word file_name word_to_count\n");
+        return -1;
+    }
+    char * program_name = argv[0];
+    char * file_name = argv[1];
+    char * word = argv[2];
+    // TODO: Loop through the file and print out lines containing the word
+    return 0;
+}
+
+\{{\code-block}}
+
+## File Stuff
+
+Again, we can do the exact same thing with the file stuff that we did with the
+word counter.
+
+\{{code-block c}}
+
+#include "str-operations.h"
+#include {{lt}}stdio.h{{gt}}
+
+int main(int argc, char ** argv) {
+    if (3 {{gt}} argc) {
+        fprintf(stderr, "./print_lines_with_word file_name word_to_count\n");
+        return -1;
+    }
+    char * program_name = argv[0];
+    char * file_name = argv[1];
+    char * word = argv[2];
+hl    FILE * reader = fopen(file_name, "r");
+hl    const int line_sz = 4096;
+hl    char line[line_sz];
+hl
+hl    while (fgets(line, line_sz, reader)) {
+hl        // TODO: Print line if word is found
+hl    }
+hl    fclose(reader);
+    return 0;
+}
+
+\{{\code-block}}
+
+## Printing Out Lines
+
+{{cwil}}="count_word_{{zs}}in_line"
+We already have the mechanism for checking if a word is in a line with {{cwil}}.
+If {{cwil}} is greater than zero, it means we found the word at least once in
+the line. Now, since {{cwil}} changes the line, we need to create a copy.
+
+\{{code-block c}}
+
+#include "str-operations.h"
+#include {{lt}}stdio.h{{gt}}
+
+int main(int argc, char ** argv) {
+    if (3 {{gt}} argc) {
+        fprintf(stderr, "./print_lines_with_word file_name word_to_count\n");
+        return -1;
+    }
+    char * program_name = argv[0];
+    char * file_name = argv[1];
+    char * word = argv[2];
+    unsigned int count = 0;
+    FILE * reader = fopen(file_name, "r");
+    const int line_sz = 4096;
+hl    char modified_line[line_sz];
+hl    char unmodified_line[line_sz];
+hl
+hl    while (fgets(unmodified_line, line_sz, reader)) {
+hl        strncpy(modified_line, unmodified_line, line_sz - 1);
+hl        if (count_word_in_line(modified_line, word) {{gt}} 0) {
+hl            printf("%s", unmodified_line);
+hl        }
+hl    }
+    fclose(reader);
+    return 0;
+}
+
+\{{\code-block}}
+
+## Line Numbers
+
+We need to keep count of the line we're on and print it out. We also want to add
+a bit of whitespace to the left so the numbers align. We'll assume that the
+number of lines is less than 100000, which means that we need 5 digits of
+padding. We can use the format string {%5u} to print out the line number with
+the necessary padding.
+
+\{{code-block c}}
+
+#include "str-operations.h"
+#include {{lt}}stdio.h{{gt}}
+
+int main(int argc, char ** argv) {
+    if (3 {{gt}} argc) {
+        fprintf(stderr, "./print_lines_with_word file_name word_to_count\n");
+        return -1;
+    }
+    char * program_name = argv[0];
+    char * file_name = argv[1];
+    char * word = argv[2];
+    unsigned int count = 0;
+    FILE * reader = fopen(file_name, "r");
+    const int line_sz = 4096;
+    char modified_line[line_sz];
+    char unmodified_line[line_sz];
+hl    unsigned int line_num = 1;
+
+    while (fgets(unmodified_line, line_sz, reader)) {
+        strncpy(modified_line, unmodified_line, line_sz - 1);
+        if (count_word_in_line(modified_line, word) {{gt}} 0) {
+hl            printf("%5u%s", line_num, unmodified_line);
+        }
+hl        line_num += 1;
+    }
+    fclose(reader);
+    return 0;
+}
+
+\{{\code-block}}
+
+And we're done with the code.
+
+# Part Two: A Basic Build System
+
+If we try to compile it with the command we used last time, we'll get the
+following error.
