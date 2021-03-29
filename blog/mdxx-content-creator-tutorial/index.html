@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="MDXX is a fast, easy to use, and extensible static site generator. In this article, we cover how content creators can use mdxx to generate their own webpages.">
+		<link rel="icon" type="image/x-icon" href="https://tuacm.com/resources/favicon.png">
+		<link rel="stylesheet" href="https://tuacm.com/css/nanobs.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/general.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/article.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/author-description.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/terminal.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-block.css">
+		<link rel="stylesheet" href="https://tuacm.com/css/code-style/trac+dark.css">
+		<title>MDXX for Content Creators</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-146716017-1');
+		</script>
+	</head>
+	<body id="body-handle">
+		<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+			<img src="https://tuacm.com/resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+			<div>
+				<a href="https://tuacm.com/blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+			</div>
+		</div>
+		<div>
+			<div class="article">
+				<div id="article-title"><h1 id="mdxx-for-content-creators">MDXX for Content Creators</h1></div>
+				<div id="meta-description">All you need to know to create content with mdxx.</div>
+				<div id="date-and-tags">Posted March 26, 2021 </div>
+				<div id="author-box">
+					<div id="author-image" style="background: url(https://tuacm.com/authors/joseph-mellor/large.jpg) 50% 50% no-repeat; background-size: auto 50px;"></div>
+					<div id="author-name">By Joseph Mellor</div>
+				</div>
+				<hr style="border: 3px solid black;">
+				<p>While originally setting up <a href="http://tuacm.com">tuacm.com</a>, I hand-wrote all the html.
+					Eventually, I got so annoyed with having to copy the same text over and over to
+					every webpage, so I made a basic python script. Originally, I just wanted to
+					copy everything in the <code>&lt;head&gt;</code> tag and various stuff like the banner at the
+					top of the webpage, the bottom of the webpage, etc. Eventually, the python
+					script got too big, slow, etc. Since I had also hard-coded a bunch of stuff and
+					I needed to basically rewrite it anyway, I decided to rewrite it in <code>C++</code>.
+					After a bunch of work, I'm now able to release an alpha version.
+				</p>
+				<p>MDXX has three customizable components that various users can interact with:
+				</p>
+				<ul>
+					<li><b>The Template:</b> The template controls how the webpage looks, how it
+						functions, etc. It has everything but the content. If you want to change the
+						way the webpage looks or feels, you want to modify this.
+					</li>
+					<li><b>The Content:</b> The content controls all the user-generated content on the
+						webpage, which is the focus of this article. If you just want to create content
+						and have someone else handle the design, you'll modify the content file. This
+						tutorial will focus on what you need to do to use all the features of mdxx.
+					</li>
+					<li><b>Plugins:</b> Say there's a feature in mdxx that you would like to have, but
+						currently don't. You can create a shared library (<code>libplugin.so</code> on Linux and
+						<code>plugin.dll</code> on Windows), put in the plugin dir, and then load it dynamically.
+					</li>
+				</ul>
+				<p><h2 id="downloads-and-installation">Downloads and Installation</h2>
+				</p>
+				<ul>
+					<li><a href="http://tuacm.com/blog/mdxx-downloads/md++_0.9-alpha_x86_64.deb">Download Debian, Ubuntu, Linux Mint, and any Debian-based distribution package here</a>
+						From there, you can install it with
+						<div class="terminal "><pre>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev</span></b>$ sudo apt install ~/Downloads/md++_0.9-alpha_x86_64.deb</span>
+</pre>
+						</div>
+						
+						on Ubuntu-based distributions and
+						<div class="terminal "><pre>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev</span></b>$ sudo dpkg -i MY_DEB_PACKAGE.deb</span>
+</pre>
+						</div>
+						
+						on Debian-based distributions that don't use the <code>apt</code> package manager.
+					</li>
+					<li>Windows download (not yet implemented)
+					</li>
+					<li>Mac download (not yet implemented)
+					</li>
+					<li><a href="https://github.com/TheLandfill/mdxx">The Source Code</a>
+					</li>
+				</ul>
+				<p><h2 id="syntax">Syntax</h2>
+				</p>
+				<p>I can summarize <code>md++</code> for the user in a few simple rules:
+				</p>
+				<ol>
+					<li>The name of the template you want to use is the first line of the file.
+					</li>
+					<li>Blank lines separate paragraphs and elements of a list.
+					</li>
+					<li>Single curly braces are how you insert common style html tags like <code>&lt;b&gt;&lt;/b&gt;</code>
+						or <code>&lt;code&gt;&lt;/code&gt;</code>.
+					</li>
+					<li>Double curly braces are how you interface with variables and functions
+						(functions include things like links, images, etc.).
+					</li>
+					<li>The variables that are available to you depend on the context you're in.
+					</li>
+					<li><code>md++</code> reads your <code>.mdxx</code> file from the top to the bottom without going
+						back up, meaning that you must define a variable before you use it.
+					</li>
+				</ol>
+				<p>The first two are simple enough, so I won't go into any more detail. The other
+					three rules will be the meat of the syntax.
+				</p>
+				<p><h3 id="single-curly-braces">Single Curly Braces</h3>
+				</p>
+				<p>As the general rule for single curly braces, <code>_{</code> inserts the opening tag and
+					<code>}_</code> inserts the closing tag, where <code>_</code> is one option from the following
+					list:
+				</p>
+				<ul>
+					<li><code>b{bold}b</code> outputs <b>bold</b>
+					</li>
+					<li><code>i{italics}i</code> outputs <em>italics</em>
+					</li>
+					<li><code>B{bold and italics}B</code> outputs <b><em>bold and italics</em></b>
+					</li>
+					<li><code>c{code}c</code> outputs <code>code</code>
+					</li>
+					<li><code>text^{superscript}^</code> outputs<sup>superscript</sup>
+					</li>
+					<li><code>textv{subscript}v</code> outputs<sub>subscript</sub>
+					</li>
+					<li><code>~{strikethrough}~</code> outputs <del>strikethrough</del>
+					</li>
+					<li><code>q{quote}q</code> outputs <q>quote</q>
+					</li>
+					<li><code>Q{blockquote}Q</code> outputs <blockquote>blockquote</blockquote>
+					</li>
+					<li><code>!{spoiler}!</code> outputs <span class="spoiler">spoiler</span>
+					</li>
+					<li><code>\{curly braces}\</code> outputs {curly braces}, and it's useful when you have to
+						put a curly brace up against a non-space character like I had to for all the
+						examples above.
+					</li>
+				</ul>
+				<p>MDXX also supports for headings 1 - 6 using <code>X{heading X}X</code>, but you
+					shouldn't use that on TUACM or else the sidenav won't have access to that
+					header. I'll introduce the alternative later.
+				</p>
+				<p><h3 id="double-curly-braces">Double Curly Braces</h3>
+				</p>
+				<p>Now here's where the real power of <code>md++</code> comes from. The first two rules are
+					almost boilerplate and handling the single curly braces only requires simple
+					substitutions. This rule, however, allows you to create variables and call
+					functions.
+				</p>
+				<p><h4 id="variables">Variables</h4>
+				</p>
+				<p>To start, we have two ways of creating a variable:
+				</p>
+				<div class="terminal "><pre>
+{{variable}}="value"
+{{variable}}:="value"
+</pre>
+				</div>
+				<p>The difference between the two is simple: the <code>:=</code> one will expand out
+					whatever is in the quotes every time it shows up while the <code>=</code> one will
+					expand out whatever is in the quotes immediately. Here's an example that should
+					clear everything up:
+				</p>
+				<div class="terminal "><pre>
+{{var}}:="supercalifragilisticexpialadocious"
+{{immediate}}="{{var}} {{var}}"
+{{delayed}}:="{{var}} {{var}}"
+
+Since {{var}} is plain text text, it doesn't actually matter whether we use
+":=" or "=".  I chose ":=" to save a bit of computing power, but it would be on
+the order of nanoseconds. Futhermore, both {{immediate}} and {{delayed}}
+expand out to "supercalifragilisticexpialadocious supercalifragilisticexpialadocious". If we change {{var}} to something else, say
+
+{{var}}="lol"
+
+then {{immediate}} will stay "supercalifragilisticexpialadocious supercalifragilisticexpialadocious", but {{delayed}} will
+turn into "lol lol". To make it even more clear, {{immediate}} will be
+replaced with "supercalifragilisticexpialadocious supercalifragilisticexpialadocious" while {{delayed}} will be replaced with
+"{{var}} {{var}}".
+</pre>
+				</div>
+				<p>Moving on, functions are a special kind of variable that take in arguments and
+					pass them to <code>C++</code> functions, either defined within <code>md++</code> or a plugin like
+					the <code>tuacm</code> plugin. They have the syntax
+				</p>
+				<div class="terminal "><pre>
+{{func arg1 arg2 arg3}}
+</pre>
+				</div>
+				<p>Where <code>arg1</code> to <code>arg3</code> are treated as text (<code>arg0</code> is <code>func</code>). If you
+					want to provide a variable to a function, put it in parentheses like so:
+				</p>
+				<div class="terminal "><pre>
+{{func (arg1) arg2 (arg3)}}
+</pre>
+				</div>
+				<p>There are a few important things to note here:
+				</p>
+				<ul>
+					<li>You cannot put curly braces inside a function variable. To get around this, you
+						can define an immediate variable before the function, like so
+						<div class="terminal "><pre>
+{{mdxx}}:="c{mdxx}c"
+
+{{h 2 Compiling an (md++) File}}
+</pre>
+						</div>
+						
+					</li>
+					<li>While all variables can expand out to empty text, functions tend to expand out
+						as empty text quite often, so you'll rarely want a function on its own line.
+					</li>
+					<li>The general algorithm of <code>md++</code> reads a line from an <code>md++</code> file, expands
+						out all the variables in that line, then gives the line to the current
+						<code>context</code> to do whatever it wants with the line. This algorithm means that
+						all functions in a line that modify the state of <code>md++</code> are evaluated before
+						the line is handed off. Knowing this fact shouldn't affect you as much as it
+						would plugin and template authors, but I just want to make sure you know about
+						it in case anything weird happens.
+					</li>
+				</ul>
+				<p><h4 id="basic-markdown-functions-in-cmdxxc">Basic Markdown Functions in <code>mdxx</code></h4>
+				</p>
+				<p>When combined with the single curly braces, these functions comprise all the
+					standard features of markdown except for lists, which are handled differently.
+				</p>
+				<ul>
+					<li><code>{{a url text more text}}</code> will expand out to <code>&lt;a href="url"&gt;text more
+						text&lt;/a&gt;</code>. If you just provide the url, it will display the url as the text
+						with the protocol (basically the <code>http://</code> stuff) removed.
+					</li>
+					<li><code>{{img url text more text}}</code> will exit the paragraph and expand out to
+						<code>&lt;img src="url" alt="text more text"&gt;</code>.
+					</li>
+					<li><code>{{img-a link-url src-url text more text}}</code> will exit the paragraph and
+						expand out to <code>&lt;a href="link-url"&gt;&lt;img src="src-url" alt="text more text"&gt;</code>.
+					</li>
+					<li>If you want either <code>img</code> or <code>img-a</code> to not exit the paragraph, add the word
+						<code>inline</code> immediately after <code>img</code> or <code>img-a</code>.
+					</li>
+				</ul>
+				<p><h4 id="debugging-functions-in-cmdxxc">Debugging Functions in <code>mdxx</code></h4>
+				</p>
+				<p>Sometimes, <code>md++</code> doesn't produce the output you think it should. In that
+					case, you can use one of several debugging functions:
+				</p>
+				<ul>
+					<li>If you want to see how <code>md++</code> expands the text, you can toggle printing with
+						the <code>{{print}}</code> function. Note that if you use <code>{{print}}</code> function
+						once, it will continue printing out the expansion for the rest of the file. For
+						example, here's the expansion for this element:
+						<div class="terminal "><pre>
+{\{print}\}If you want to see how c{md++}c expands the text, you can toggle printing --&gt;
+    If you want to see how &lt;code&gt;md++&lt;/code&gt; expands the text, you can toggle printing
+
+with the c{{\{print}\}}c function. Note that if you use c{{\{print}\}}c --&gt;
+    with the &lt;code&gt;{\{print}\}&lt;/code&gt; function. Note that if you use &lt;code&gt;{\{print}\}&lt;/code&gt;
+
+function once, it will continue printing out the expansion for the rest of the --&gt;
+    function once, it will continue printing out the expansion for the rest of the
+
+file. For example, here's the expansion for this element:{\{print}\} --&gt;
+    file. For example, here's the expansion for this element:{\{print}\}
+</pre>
+						</div>
+						
+						This function is quite useful for debugging when you get output different from
+						what you expected.
+					</li>
+					<li>If you want to see all the variables available to you, you can use the
+						<code>{{print-vars}}</code> function.
+					</li>
+					<li>If you want to see the current context stack and all the available contexts,
+						you can use the <code>{{print-con}}</code> function.
+					</li>
+				</ul>
+				<p><h3 id="contexts">Contexts</h3>
+				</p>
+				<p>You may notice that I've been able to put things inside a box that looks like a
+					terminal. There are two special functions I haven't told you about: <code>open</code>
+					and <code>close</code>. <code>{{open terminal}}</code> will open the context named <code>terminal</code>.
+					While in the context, <code>md++</code> will take your input and do what it needs to do
+					to generate the expected output. For example, the <code>{{code-block}}</code> context
+					will send everything typed within it to <code>pygments</code> to do syntax highlighting
+					while the <code>{{terminal}}</code> context will make sure everything looks and feels
+					like a terminal.
+				</p>
+				<p><h4 id="single-curly-braces-context">Single Curly Braces Context</h4>
+				</p>
+				<p>Contexts that don't involve normal text (e.g. <code>terminal</code> and <code>code-block</code>)
+					don't support the <a href="http://tuacm.com/blog/mdxx-content-creator-tutorial/index.html">single curly braces</a> stuff mentioned earlier, since
+					the contexts take care of all the formatting.
+				</p>
+				<p><h4 id="variables-within-contexts">Variables Within Contexts</h4>
+				</p>
+				<p>Every context has its own set of variables. When you define a variable in a
+					context, that variable is available to that context for the rest of the
+					<code>.mdxx</code> file and to any context you open while in that context. For example,
+					I defined the variable <code>delayed</code> in the <code>terminal</code> context above when I was
+					demonstrating the difference between the two ways to define variables. If I open
+					the <code>terminal</code> context, we can see that the variable <code>delayed</code> is still
+					there.
+				</p>
+				<div class="terminal "><pre>
+Here's the output of the "delayed" variable: `lol lol`
+I can then redefine the lol variable and delayed will still expand as it did
+before.
+Here's the output of the "delayed" variable: `lol lol`
+
+Furthermore, any variables defined in the default context are also are defined
+in this context, such as {{print-vars}}.
+</pre>
+				</div>
+				<p>Also of note is that some contexts have variables introduced by default, such as
+					the <code>terminal</code>, which you can see if you use type the {{print-vars}}
+					variable in the terminal.
+				</p>
+				<p><h4 id="bulit-in-user-contexts">Bulit-In User Contexts</h4>
+				</p>
+				<p>There are three user contexts that come with mdxx by default:
+				</p>
+				<ul>
+					<li><b><code>default</code>:</b> The <code>default</code> context works just like you would normally
+						expect. You cannot open the <code>default</code> context, but since you're always in it,
+						it shouldn't matter.
+					</li>
+					<li><b><code>ol</code>:</b> The <code>ol</code> (short for <code>o</code>rdered <code>l</code>ist) context works like the
+						default context, except each blank line goes onto the next element in the list.
+						If you wanted to list your top ten favorite things, you would use this context.
+					</li>
+					<li><b><code>ul</code>:</b> The <code>ul</code> (short for <code>u</code>nordered <code>l</code>ist) context works like
+						the <code>ol</code> context, except it uses bullet points instead of numbers. The list
+						you're currently reading is an unordered list.
+					</li>
+				</ul>
+				<p><h3 id="using-plugins">Using Plugins</h3>
+				</p>
+				<p>Plugins can be imported using the <code>plugin</code> function, where you list the
+					plugins you want as arguments to the function, e.g.
+				</p>
+				<div class="terminal "><pre>
+c{{{plugin terminal code-block}}}c.
+</pre>
+				</div>
+				<p>These plugins can provide extra contexts like the <code>terminal</code> context or
+					variables/functions like the <code>{{h}}</code> functions for headings from the
+					<code>tuacm</code> plugin.
+				</p>
+				<p><h2 id="compiling-an-cmdxxc-file">Compiling an <code>mdxx</code> File</h2>
+				</p>
+				<p>Once you've installed <code>md++</code>, compiling a file is as simple as
+				</p>
+				<div class="terminal "><pre>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev</span></b>$ md++ path/to/templates mdxx-files</span>
+</pre>
+				</div>
+				<p>For example, on my computer, all of the tuacm website exists in the directory
+					<code>~/dev/&#8203;tuacm-website/</code>, the templates are in <code>~/dev/&#8203;tuacm-website/&#8203;templates</code>, and
+					this webpage is "<code>~/dev/&#8203;tuacm-website/&#8203;blog/&#8203;mdxx-content-creator-tutorial/&#8203;index.mdxx</code>", so I would type the following commands to
+					generate this webpage:
+				</p>
+				<div class="terminal "><pre>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev</span></b>$ cd ~/dev/&#8203;tuacm-website/</span>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index.mdxx</span>
+ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
+md++:       gcc version 1014.
+tuacm:      gcc version 1014.
+terminal:   gcc version 1014.
+code-block: gcc version 1014.
+1/1 finished.
+Generated 1 webpages in 130.194 ms
+Average time per webpage was 130.194 ms
+</pre>
+				</div>
+				<p><h3 id="performance">Performance</h3>
+				</p>
+				<p>Right now, the <code>mdxx</code> I'm using to generate this webpage has around ~16,000
+					characters, which is quite large for a webpage.
+				</p>
+				<p>The <code>code-block</code> plugin uses the python package <code>pygments</code> to generate the
+					beautiful syntax highlighting you see below.
+				</p>
+				<div class="code-blocktable">
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>				
+				</div>
+				<p>This is all well and good, but the problem is that <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/which-programs-are-fastest.html">python is much slower than c++</a>, meaning
+					that using any python plugins can lead to a massive slowdown. If we use pure
+					C++ plugins (or any language like C or Rust that cares about performance), then
+					<code>md++</code> runs much faster, even on an old computer using an Intel i5-5200U (4)
+					@ 2.700GHz. For example, here's what it looks like when I don't use python
+					plugins:
+				</p>
+				<div class="terminal "><pre>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index.mdxx</span>
+ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
+
+md++:       gcc version 1014.
+tuacm:      gcc version 1014.
+terminal:   gcc version 1014.
+1/1 finished.
+Generated 1 webpages in 20.6227 ms
+Average time per webpage was 20.6227 ms
+</pre>
+				</div>
+				<p><h3 id="multithreading">Multithreading</h3>
+				</p>
+				<p>If you look carefully, you'll see that the last three lines seem to indicate
+					that you can compile multiple files when you run <code>md++</code>, which is correct.
+					While <code>md++</code> has to compile each file sequentually for variables to work
+					properly, it can compile multiple files at the sametime. To do so, simply
+					provide all the files on the command line after the path to the template
+					directory. On the same exact computer, if I were to compile four at a time
+					(again, ~16 kilobytes on a relatively slow CPU with only a few threads), I get
+					the results:
+				</p>
+				<div class="terminal "><pre>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index*.mdxx</span>
+ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
+
+md++:       gcc version 1014.
+tuacm:      gcc version 1014.
+terminal:   gcc version 1014.
+4/4 finished.
+Generated 4 webpages in 28.937 ms
+Average time per webpage was 7.23425 ms
+</pre>
+				</div>
+				<p>Even if I add the <code>code-block</code> plugin back in, we can see that compiling four
+					at a time still speeds up compilation.
+				</p>
+				<div class="terminal "><pre>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index*.mdxx</span>
+ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
+
+md++:        gcc version 1014.
+tuacm:       gcc version 1014.
+terminal:    gcc version 1014.
+code-block:  gcc version 1014.
+4/4 finished.
+Generated 4 webpages in 121.978 ms
+Average time per webpage was 30.4945 ms
+</pre>
+				</div>
+				<p>Plus, on a computer with a good CPU and more cores (AMD Ryzen 7), it normally
+					takes less than a millisecond per webpage without python plugins.
+				</p>
+				<p><h2 id="summary">Summary</h2>
+				</p>
+				<p>That's most of what you need to know to get <code>md++</code> working properly. If you
+					want to see how I did anything in this article, you can
+					<a href="http://tuacm.com/blog/mdxx-content-creator-tutorial/index.mdxx">download the <code>mdxx</code> file for this webpage</a>
+					and its associated
+					<a href="http://tuacm.com/blog/mdxx-content-creator-tutorial/index.json">json file with metadata</a>
+					If you have any qusetions, you can either ask me through a DM or email me at
+					<a href="mailto:joseph.mellor1999@gmail.com">joseph.mellor1999@gmail.com</a>. I plan to update this article and add
+					a few more articles explaining different aspects of <code>md++</code> soon.
+				</p>
+				<div id="author-description-local">
+					<img src="https://tuacm.com/authors/joseph-mellor/large.jpg" id="author-description-image" alt="A picture of Joseph Mellor, the author.">
+					<div id="author-description-text">
+						<p>Joseph Mellor is a Senior at TU majoring in Physics, Computer Science, and
+						Math.
+						He is also the chief editor of the website and the author of the tumd markdown
+						compiler.
+						If you want to see more of his work, check out his <a
+						href="https://josephmellor.xyz">personal website</a>.
+						<br>
+						Credit to Allison Pennybaker for the picture.
+						</p>
+					</div>
+				</div>
+			</div>
+			<nav id="sidenav">
+			<a href="#mdxx-for-content-creators" style="padding-left: 12px;">MDXX for Content Creators</a>
+			<a href="#downloads-and-installation" style="padding-left: 24px;">Downloads and Installation</a>
+			<a href="#syntax" style="padding-left: 24px;">Syntax</a>
+			<a href="#single-curly-braces" style="padding-left: 36px;">Single Curly Braces</a>
+			<a href="#double-curly-braces" style="padding-left: 36px;">Double Curly Braces</a>
+			<a href="#variables" style="padding-left: 48px;">Variables</a>
+			<a href="#basic-markdown-functions-in-cmdxxc" style="padding-left: 48px;">Basic Markdown Functions in mdxx</a>
+			<a href="#debugging-functions-in-cmdxxc" style="padding-left: 48px;">Debugging Functions in mdxx</a>
+			<a href="#contexts" style="padding-left: 36px;">Contexts</a>
+			<a href="#single-curly-braces-context" style="padding-left: 48px;">Single Curly Braces Context</a>
+			<a href="#variables-within-contexts" style="padding-left: 48px;">Variables Within Contexts</a>
+			<a href="#bulit-in-user-contexts" style="padding-left: 48px;">Bulit-In User Contexts</a>
+			<a href="#using-plugins" style="padding-left: 36px;">Using Plugins</a>
+			<a href="#compiling-an-cmdxxc-file" style="padding-left: 24px;">Compiling an mdxx File</a>
+			<a href="#performance" style="padding-left: 36px;">Performance</a>
+			<a href="#multithreading" style="padding-left: 36px;">Multithreading</a>
+			<a href="#summary" style="padding-left: 24px;">Summary</a>
+			</nav>
+			<div id="sidenav-activator"></div>
+		</div>
+		<div id="footer" class="mt-5 py-5 text-center px-4">
+			<div id="footer-links">
+				<a href="#">Blog</a>
+				<a href="#">Get Involved</a>
+				<a href="http://hacktulsa.com">Hackathon</a>
+				<a href="#">GitHub</a>
+			</div>
+		</div>
+		<script src="https://tuacm.com/js/sidenav.js"></script>
+	</body>
+</html>

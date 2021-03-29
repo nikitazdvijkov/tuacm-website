@@ -1,0 +1,463 @@
+actual-tuacm-article.mdxx
+{{plugin terminal code-block}}
+
+{{md++}}="c{mdxx}c"
+{{ldb}}:="{{{empty}}{"
+
+While originally setting up {{a tuacm.com}}, I hand-wrote all the html.
+Eventually, I got so annoyed with having to copy the same text over and over to
+every webpage, so I made a basic python script. Originally, I just wanted to
+copy everything in the c{<head>}c tag and various stuff like the banner at the
+top of the webpage, the bottom of the webpage, etc. Eventually, the python
+script got too big, slow, etc. Since I had also hard-coded a bunch of stuff and
+I needed to basically rewrite it anyway, I decided to rewrite it in c{C++}c.
+After a bunch of work, I'm now able to release an alpha version.
+
+MDXX has three customizable components that various users can interact with:
+
+{{open ul}}
+
+b{The Template:}b The template controls how the webpage looks, how it
+functions, etc. It has everything but the content. If you want to change the
+way the webpage looks or feels, you want to modify this.
+
+b{The Content:}b The content controls all the user-generated content on the
+webpage, which is the focus of this article. If you just want to create content
+and have someone else handle the design, you'll modify the content file. This
+tutorial will focus on what you need to do to use all the features of mdxx.
+
+b{Plugins:}b Say there's a feature in mdxx that you would like to have, but
+currently don't. You can create a shared library (c{libplugin.so}c on Linux and
+c{plugin.dll}c on Windows), put in the plugin dir, and then load it dynamically.
+
+{{close ul}}
+
+{{h 2 Downloads and Installation}}
+
+{{debian-downloads}}="Download Debian, Ubuntu, Linux Mint, and any Debian-based distribution package here"
+
+{{open ul}}
+
+{{a tuacm.com/blog/mdxx-downloads/md++_0.9-alpha_x86_64.deb (debian-downloads)}}
+From there, you can install it with
+{{open terminal}}
+{{prompt sudo apt install ~/Downloads/md++_0.9-alpha_x86_64.deb}}
+{{close terminal}}
+on Ubuntu-based distributions and
+{{open terminal}}
+{{prompt sudo dpkg -i MY_DEB_PACKAGE.deb}}
+{{close terminal}}
+on Debian-based distributions that don't use the c{apt}c package manager.
+
+{{windows-downloads}}="tuacm.com/blog/mdxx-downloads/md++_0.9-alpha_x84_64.deb"
+Windows download (not yet implemented)
+
+Mac download (not yet implemented)
+
+{{a https://github.com/TheLandfill/mdxx The Source Code}}
+
+{{close ul}}
+
+{{h 2 Syntax}}
+
+I can summarize c{md++}c for the user in a few simple rules:
+
+{{open ol}}
+
+The name of the template you want to use is the first line of the file.
+
+Blank lines separate paragraphs and elements of a list.
+
+Single curly braces are how you insert common style html tags like c{<b></b>}c
+or c{<code></code>}c.
+
+Double curly braces are how you interface with variables and functions
+(functions include things like links, images, etc.).
+
+The variables that are available to you depend on the context you're in.
+
+c{md++}c reads your c{.mdxx}c file from the top to the bottom without going
+back up, meaning that you must define a variable before you use it.
+
+{{close ol}}
+
+The first two are simple enough, so I won't go into any more detail. The other
+three rules will be the meat of the syntax.
+
+{{h 3 Single Curly Braces}}
+
+As the general rule for single curly braces, c{_{}c inserts the opening tag and
+c{}_}c inserts the closing tag, where c{_}c is one option from the following
+list:
+
+{{open ul}}
+
+c{b\{bold}\b}c outputs b{bold}b
+
+c{i\{italics}\i}c outputs i{italics}i
+
+c{B\{bold and italics}\B}c outputs B{bold and italics}B
+
+c{c\{code}\c}c outputs c{code}c
+
+c{text^\{superscript}\^}c outputs^{superscript}^
+
+c{textv\{subscript}\v}c outputsv{subscript}v
+
+c{~\{strikethrough}\~}c outputs ~{strikethrough}~
+
+c{q\{quote}\q}c outputs q{quote}q
+
+c{Q\{blockquote}\Q}c outputs Q{blockquote}Q
+
+c{!\{spoiler}\!}c outputs !{spoiler}!
+
+c{\\{curly braces}\\}c outputs {curly braces}, and it's useful when you have to
+put a curly brace up against a non-space character like I had to for all the
+examples above.
+
+{{close ul}}
+
+MDXX also supports for headings 1 - 6 using c{X\{heading X}\X}c, but you
+shouldn't use that on TUACM or else the sidenav won't have access to that
+header. I'll introduce the alternative later.
+
+{{h 3 Double Curly Braces}}
+
+Now here's where the real power of c{md++}c comes from. The first two rules are
+almost boilerplate and handling the single curly braces only requires simple
+substitutions. This rule, however, allows you to create variables and call
+functions.
+
+{{h 4 Variables}}
+
+To start, we have two ways of creating a variable:
+
+{{open terminal}}
+{{ldb}}variable}}="value"
+{{ldb}}variable}}:="value"
+{{close terminal}}
+
+The difference between the two is simple: the c{:=}c one will expand out
+whatever is in the quotes every time it shows up while the c{=}c one will
+expand out whatever is in the quotes immediately. Here's an example that should
+clear everything up:
+
+{{open terminal}}
+{{ldb}}var}}:="supercalifragilisticexpialadocious"
+{{var}}="supercalifragilisticexpialadocious"
+{{ldb}}immediate}}="{{ldb}}var}} {{ldb}}var}}"
+{{immediate}}="{{var}} {{var}}"
+{{ldb}}delayed}}:="{{ldb}}var}} {{ldb}}var}}"
+{{delayed}}:="{{var}} {{var}}"
+
+Since {{ldb}}var}} is plain text text, it doesn't actually matter whether we use
+":=" or "=".  I chose ":=" to save a bit of computing power, but it would be on
+the order of nanoseconds. Futhermore, both {{ldb}}immediate}} and {{ldb}}delayed}}
+expand out to "{{delayed}}". If we change {{ldb}}var}} to something else, say
+
+{{ldb}}var}}="lol"
+{{var}}="lol"
+
+then {{ldb}}immediate}} will stay "{{immediate}}", but {{ldb}}delayed}} will
+turn into "{{delayed}}". To make it even more clear, {{ldb}}immediate}} will be
+replaced with "{{immediate}}" while {{ldb}}delayed}} will be replaced with
+"{{ldb}}var}} {{ldb}}var}}".
+{{close terminal}}
+
+Moving on, functions are a special kind of variable that take in arguments and
+pass them to c{C++}c functions, either defined within c{md++}c or a plugin like
+the c{tuacm}c plugin. They have the syntax
+
+{{open terminal}}
+{{ldb}}func arg1 arg2 arg3}}
+{{close terminal}}
+
+Where c{arg1}c to c{arg3}c are treated as text (c{arg0}c is c{func}c). If you
+want to provide a variable to a function, put it in parentheses like so:
+
+{{open terminal}}
+{{ldb}}func (arg1) arg2 (arg3)}}
+{{close terminal}}
+
+There are a few important things to note here:
+
+{{open ul}}
+
+You cannot put curly braces inside a function variable. To get around this, you
+can define an immediate variable before the function, like so
+{{open terminal}}
+{{ldb}}mdxx}}:="c{mdxx}c"
+
+{{ldb}}h 2 Compiling an (md++) File}}
+{{close terminal}}
+
+While all variables can expand out to empty text, functions tend to expand out
+as empty text quite often, so you'll rarely want a function on its own line.
+
+The general algorithm of c{md++}c reads a line from an c{md++}c file, expands
+out all the variables in that line, then gives the line to the current
+c{context}c to do whatever it wants with the line. This algorithm means that
+all functions in a line that modify the state of c{md++}c are evaluated before
+the line is handed off. Knowing this fact shouldn't affect you as much as it
+would plugin and template authors, but I just want to make sure you know about
+it in case anything weird happens.
+
+{{close ul}}
+
+{{h 4 Basic Markdown Functions in (md++)}}
+
+When combined with the single curly braces, these functions comprise all the
+standard features of markdown except for lists, which are handled differently.
+
+{{open ul}}
+
+c{{\{a url text more text}\}}c will expand out to c{<a href="url">text more
+text</a>}c. If you just provide the url, it will display the url as the text
+with the protocol (basically the c{http://}c stuff) removed.
+
+c{{\{img url text more text}\}}c will exit the paragraph and expand out to
+c{<img src="url" alt="text more text">}c.
+
+c{{\{img-a link-url src-url text more text}\}}c will exit the paragraph and
+expand out to c{<a href="link-url"><img src="src-url" alt="text more text">}c.
+
+If you want either c{img}c or c{img-a}c to not exit the paragraph, add the word
+c{inline}c immediately after c{img}c or c{img-a}c.
+
+{{close ul}}
+
+{{h 4 Debugging Functions in (md++)}}
+
+Sometimes, c{md++}c doesn't produce the output you think it should. In that
+case, you can use one of several debugging functions:
+
+{{open ul}}
+
+If you want to see how c{md++}c expands the text, you can toggle printing with
+the c{{\{print}\}}c function. Note that if you use c{{\{print}\}}c function
+once, it will continue printing out the expansion for the rest of the file. For
+example, here's the expansion for this element:
+{{open terminal}}
+{\{print}\}If you want to see how c{md++}c expands the text, you can toggle printing -->
+    If you want to see how <code>md++</code> expands the text, you can toggle printing
+
+with the c{{\{print}\}}c function. Note that if you use c{{\{print}\}}c -->
+    with the <code>{\{print}\}</code> function. Note that if you use <code>{\{print}\}</code>
+
+function once, it will continue printing out the expansion for the rest of the -->
+    function once, it will continue printing out the expansion for the rest of the
+
+file. For example, here's the expansion for this element:{\{print}\} -->
+    file. For example, here's the expansion for this element:{\{print}\}
+{{close terminal}}
+This function is quite useful for debugging when you get output different from
+what you expected.
+
+If you want to see all the variables available to you, you can use the
+c{{\{print-vars}\}}c function.
+
+If you want to see the current context stack and all the available contexts,
+you can use the c{{\{print-con}\}}c function.
+
+{{close ul}}
+
+{{h 3 Contexts}}
+
+You may notice that I've been able to put things inside a box that looks like a
+terminal. There are two special functions I haven't told you about: c{open}c
+and c{close}c. c{{\{open terminal}\}}c will open the context named c{terminal}c.
+While in the context, c{md++}c will take your input and do what it needs to do
+to generate the expected output. For example, the c{{\{code-block}\}}c context
+will send everything typed within it to c{pygments}c to do syntax highlighting
+while the c{{\{terminal}\}}c context will make sure everything looks and feels
+{{scb}}:="tuacm.com/blog/mdxx-content-creator-tutorial/index.html"
+like a terminal.
+
+{{h 4 Single Curly Braces Context}}
+
+Contexts that don't involve normal text (e.g. c{terminal}c and c{code-block}c)
+don't support the {{a (scb) single curly braces}} stuff mentioned earlier, since
+the contexts take care of all the formatting.
+
+{{h 4 Variables Within Contexts}}
+
+Every context has its own set of variables. When you define a variable in a
+context, that variable is available to that context for the rest of the
+c{.mdxx}c file and to any context you open while in that context. For example,
+I defined the variable c{delayed}c in the c{terminal}c context above when I was
+demonstrating the difference between the two ways to define variables. If I open
+the c{terminal}c context, we can see that the variable c{delayed}c is still
+there.
+
+{{open terminal}}
+Here's the output of the "delayed" variable: `{{delayed}}`
+I can then redefine the lol variable and delayed will still expand as it did
+before.
+{{lol}}="See, I told you delayed would change."
+Here's the output of the "delayed" variable: `{{delayed}}`
+
+Furthermore, any variables defined in the default context are also are defined
+in this context, such as {{ldb}}print-vars}}.
+{{close terminal}}
+
+Also of note is that some contexts have variables introduced by default, such as
+the c{terminal}c, which you can see if you use type the {\{print-vars}\}
+variable in the terminal.
+
+{{h 4 Bulit-In User Contexts}}
+
+There are three user contexts that come with mdxx by default:
+
+{{open ul}}
+
+b{c{default}c:}b The c{default}c context works just like you would normally
+expect. You cannot open the c{default}c context, but since you're always in it,
+it shouldn't matter.
+
+b{c{ol}c:}b The c{ol}c (short for c{o}crdered c{l}cist) context works like the
+default context, except each blank line goes onto the next element in the list.
+If you wanted to list your top ten favorite things, you would use this context.
+
+b{c{ul}c:}b The c{ul}c (short for c{u}cnordered c{l}cist) context works like
+the c{ol}c context, except it uses bullet points instead of numbers. The list
+you're currently reading is an unordered list.
+
+{{close ul}}
+
+{{h 3 Using Plugins}}
+
+Plugins can be imported using the c{plugin}c function, where you list the
+plugins you want as arguments to the function, e.g.
+
+{{open terminal}}
+c{{{ldb}}plugin terminal code-block}}}c.
+
+{{close terminal}}
+
+These plugins can provide extra contexts like the c{terminal}c context or
+variables/functions like the c{{\{h}\}}c functions for headings from the
+c{tuacm}c plugin.
+
+{{h 2 Compiling an (md++) File}}
+
+Once you've installed c{md++}c, compiling a file is as simple as
+
+{{open terminal}}
+{{prompt md++ path/to/templates mdxx-files}}
+{{close terminal}}
+
+{{tuacm-dir}}="~/dev/{{zs}}tuacm-website/"
+{{this-mdxx}}="{{tuacm-dir}}{{zs}}blog/{{zs}}mdxx-content-creator-tutorial/{{zs}}index.mdxx"
+For example, on my computer, all of the tuacm website exists in the directory
+c{{{tuacm-dir}}}c, the templates are in c{{{tuacm-dir}}{{zs}}templates}c, and
+this webpage is "c{{{this-mdxx}}}c", so I would type the following commands to
+generate this webpage:
+
+{{open terminal}}
+{{prompt cd (tuacm-dir)}}
+{{dir}}="{{tuacm-dir}}"
+{{prompt md++ templates/ blog/mdxx-content-creator-tutorial/index.mdxx}}
+ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
+md++:       gcc version 1014.
+tuacm:      gcc version 1014.
+terminal:   gcc version 1014.
+code-block: gcc version 1014.
+1/1 finished.
+Generated 1 webpages in 130.194 ms
+Average time per webpage was 130.194 ms
+{{close terminal}}
+
+{{h 3 Performance}}
+
+Right now, the c{mdxx}c I'm using to generate this webpage has around ~16,000
+characters, which is quite large for a webpage.
+
+The c{code-block}c plugin uses the python package c{pygments}c to generate the
+beautiful syntax highlighting you see below.
+
+{{open code-block c++ trac}}
+
+#include <iostream>
+
+int main() {
+    std::cout << "Hello, World!\n";
+    return 0;
+}
+
+{{close code-block}}
+
+{{benchmarks}}="https://benchmarksgame-team.pages.debian.net/benchmarksgame/which-programs-are-fastest.html"
+{{python-speed}}="{{a (benchmarks) python is much slower than c++}}"
+This is all well and good, but the problem is that {{python-speed}}, meaning
+that using any python plugins can lead to a massive slowdown. If we use pure
+C++ plugins (or any language like C or Rust that cares about performance), then
+c{md++}c runs much faster, even on an old computer using an Intel i5-5200U (4)
+@ 2.700GHz. For example, here's what it looks like when I don't use python
+plugins:
+
+{{open terminal}}
+{{prompt md++ templates/ blog/mdxx-content-creator-tutorial/index.mdxx}}
+ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
+
+md++:       gcc version 1014.
+tuacm:      gcc version 1014.
+terminal:   gcc version 1014.
+1/1 finished.
+Generated 1 webpages in 20.6227 ms
+Average time per webpage was 20.6227 ms
+{{close terminal}}
+
+{{h 3 Multithreading}}
+
+If you look carefully, you'll see that the last three lines seem to indicate
+that you can compile multiple files when you run c{md++}c, which is correct.
+While c{md++}c has to compile each file sequentually for variables to work
+properly, it can compile multiple files at the sametime. To do so, simply
+provide all the files on the command line after the path to the template
+directory. On the same exact computer, if I were to compile four at a time
+(again, ~16 kilobytes on a relatively slow CPU with only a few threads), I get
+the results:
+
+{{open terminal}}
+{{prompt md++ templates/ blog/mdxx-content-creator-tutorial/index*.mdxx}}
+ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
+
+md++:       gcc version 1014.
+tuacm:      gcc version 1014.
+terminal:   gcc version 1014.
+4/4 finished.
+Generated 4 webpages in 28.937 ms
+Average time per webpage was 7.23425 ms
+
+{{close terminal}}
+
+Even if I add the c{code-block}c plugin back in, we can see that compiling four
+at a time still speeds up compilation.
+
+{{open terminal}}
+{{prompt md++ templates/ blog/mdxx-content-creator-tutorial/index*.mdxx}}
+ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
+
+md++:        gcc version 1014.
+tuacm:       gcc version 1014.
+terminal:    gcc version 1014.
+code-block:  gcc version 1014.
+4/4 finished.
+Generated 4 webpages in 121.978 ms
+Average time per webpage was 30.4945 ms
+{{close terminal}}
+
+Plus, on a computer with a good CPU and more cores (AMD Ryzen 7), it normally
+takes less than a millisecond per webpage without python plugins.
+
+{{h 2 Summary}}
+
+That's most of what you need to know to get c{md++}c working properly. If you
+want to see how I did anything in this article, you can
+{{a tuacm.com/blog/mdxx-content-creator-tutorial/index.mdxx download the (md++) file for this webpage}}
+and its associated
+{{a tuacm.com/blog/mdxx-content-creator-tutorial/index.json json file with metadata}}
+If you have any qusetions, you can either ask me through a DM or email me at
+{{a mailto:joseph.mellor1999@gmail.com}}. I plan to update this article and add
+a few more articles explaining different aspects of c{md++}c soon.

@@ -1,0 +1,70 @@
+{{root}}="https://tuacm.com/"
+{{css}}="{{root}}css/"
+{{js}}="{{root}}js/"
+{{author-dir}}="/home/joseph/dev/tuacm-website/authors/"
+
+{{metadata (metafile) default title author date tagline description stylesheets scripts tags}}<!doctype html>{{t-plugin tuacm}}
+<html lang="en-US">
+{{mdpu}}<head>
+{{mdpu}}<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="{{description}}">
+<link rel="icon" type="image/x-icon" href="{{root}}resources/favicon.png">
+<link rel="stylesheet" href="{{css}}nanobs.css">
+<link rel="stylesheet" href="{{css}}general.css">
+<link rel="stylesheet" href="{{css}}article.css">
+<link rel="stylesheet" href="{{css}}author-description.css">
+{{style}}<title>{{title}}</title>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146716017-1"></script>
+<script>
+{{mdpu}}window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'UA-146716017-1');
+{{mdpo}}</script>
+{{mdpo}}</head>
+<body id="body-handle">
+{{mdpu}}<div id="webpage-header" class="text-center py-5 mb-5 bg-yellow" style="background: black;">
+{{mdpu}}<img src="{{root}}resources/tuacm-logo.svg?sanitize=True" alt="TU ACM logo." style="width: calc(30% + 150px);">
+<div>
+{{mdpu}}<a href="{{root}}blog" class="font-weight-bolder" style="color: #DC144C; font-size: calc(1.5em + 1vw);">blog</a>
+{{mdpo}}</div>
+{{mdpo}}</div>
+<div>
+
+{{mdpu}}<div class="article">
+{{mdpu}}<div id="article-title">{{h 1 (title)}}</div>
+<div id="meta-description">{{tagline}}</div>
+<div id="date-and-tags">Posted {{date}} {{tags}}</div>
+<div id="author-box">
+{{author-url}}="{{urlify (author)}}"
+{{author-image}}="{{root}}authors/{{author-url}}/large.jpg"
+{{mdpu}}<div id="author-image" style="background: url({{author-image}}) 50% 50% no-repeat; background-size: auto 50px;"></div>
+<div id="author-name">By {{author}}</div>
+{{mdpo}}</div>
+
+<hr style="border: 3px solid black;">
+{{switch_to_content}}<div id="author-description-local">
+{{mdpu}}<img src="{{author-image}}" id="author-description-image" alt="A picture of {{author}}, the author.">
+<div id="author-description-text">
+{{mdpu}}<p>{{author-description (author-dir) (author) 330}}
+</p>
+{{mdpo}}</div>
+{{mdpo}}</div>
+{{mdpo}}</div>
+{{sidenav}}{{mdpo}}</div>
+
+<div id="footer" class="mt-5 py-5 text-center px-4">
+{{mdpu}}<div id="footer-links">
+{{mdpu}}<a href="#">Blog</a>
+<a href="#">Get Involved</a>
+<a href="http://hacktulsa.com">Hackathon</a>
+<a href="#">GitHub</a>
+{{mdpo}}</div>
+{{mdpo}}</div>
+
+<script src="{{js}}sidenav.js"></script>
+{{write-scripts}}{{mdpo}}</body>
+{{mdpo}}</html>
