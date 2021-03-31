@@ -331,7 +331,7 @@ Plugins can be imported using the c{plugin}c function, where you list the
 plugins you want as arguments to the function, e.g.
 
 {{open terminal}}
-c{{{ldb}}plugin terminal code-block}}}c.
+c{{{ldb}}plugin terminal code-block}}}c
 
 {{close terminal}}
 
@@ -371,10 +371,27 @@ Average time per webpage was 130.194 ms
 {{h 3 Performance}}
 
 Right now, the c{mdxx}c I'm using to generate this webpage has around ~16,000
-characters, which is quite large for a webpage.
+characters, which is quite large for a webpage. Furthermore, I'm using a slow,
+old computer to get this speed (the CPU is an Intel i5-5200U (4) @ 2.700GHz). On
+a more modern computer with an AMD Ryzen 7 2700X (16) @ 3.700GHz, c{mdxx}c runs
+much faster:
 
-The c{code-block}c plugin uses the python package c{pygments}c to generate the
-beautiful syntax highlighting you see below.
+{{open terminal}}
+{{prompt md++ templates/ blog/mdxx-content-creator-tutorial/index.mdxx}}
+ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
+
+md++:       gcc version 1014.
+tuacm:      gcc version 1014.
+terminal:   gcc version 1014.
+code-block: gcc version 1014.
+1/1 finished.
+Generated 1 webpages in 61.25 ms
+Average time per webpage was 61.25 ms
+{{close terminal}}
+
+Most of this time, however, comes from the c{code-block}c plugin, which uses the
+python package c{pygments}c to generate the beautiful syntax highlighting you
+see below:
 
 {{open code-block c++ trac}}
 
@@ -386,15 +403,13 @@ int main() {
 }
 
 {{close code-block}}
-
 {{benchmarks}}="https://benchmarksgame-team.pages.debian.net/benchmarksgame/which-programs-are-fastest.html"
 {{python-speed}}="{{a (benchmarks) python is much slower than c++}}"
 This is all well and good, but the problem is that {{python-speed}}, meaning
 that using any python plugins can lead to a massive slowdown. If we use pure
 C++ plugins (or any language like C or Rust that cares about performance), then
-c{md++}c runs much faster, even on an old computer using an Intel i5-5200U (4)
-@ 2.700GHz. For example, here's what it looks like when I don't use python
-plugins:
+c{md++}c runs much faster, even on an old computer. For example, here's what it
+looks like on my old computer when I don't use python plugins:
 
 {{open terminal}}
 {{prompt md++ templates/ blog/mdxx-content-creator-tutorial/index.mdxx}}
@@ -407,6 +422,8 @@ terminal:   gcc version 1014.
 Generated 1 webpages in 20.6227 ms
 Average time per webpage was 20.6227 ms
 {{close terminal}}
+
+I get similar speeds on my modern computer.
 
 {{h 3 Multithreading}}
 
@@ -448,8 +465,8 @@ Generated 4 webpages in 121.978 ms
 Average time per webpage was 30.4945 ms
 {{close terminal}}
 
-Plus, on a computer with a good CPU and more cores (AMD Ryzen 7), it normally
-takes less than a millisecond per webpage without python plugins.
+Plus, on a computer with a good CPU and more cores, it normally takes less than
+a millisecond per webpage without python plugins.
 
 {{h 2 Summary}}
 

@@ -349,7 +349,7 @@ in this context, such as {{print-vars}}.
 					plugins you want as arguments to the function, e.g.
 				</p>
 				<div class="terminal "><pre>
-c{{{plugin terminal code-block}}}c.
+c{{{plugin terminal code-block}}}c
 </pre>
 				</div>
 				<p>These plugins can provide extra contexts like the <code>terminal</code> context or
@@ -385,18 +385,35 @@ Average time per webpage was 130.194 ms
 				<p><h3 id="performance">Performance</h3>
 				</p>
 				<p>Right now, the <code>mdxx</code> I'm using to generate this webpage has around ~16,000
-					characters, which is quite large for a webpage.
+					characters, which is quite large for a webpage. Furthermore, I'm using a slow,
+					old computer to get this speed (the CPU is an Intel i5-5200U (4) @ 2.700GHz). On
+					a more modern computer with an AMD Ryzen 7 2700X (16) @ 3.700GHz, <code>mdxx</code> runs
+					much faster:
 				</p>
-				<p>The <code>code-block</code> plugin uses the python package <code>pygments</code> to generate the
-					beautiful syntax highlighting you see below.
+				<div class="terminal "><pre>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index.mdxx</span>
+ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
+
+md++:       gcc version 1014.
+tuacm:      gcc version 1014.
+terminal:   gcc version 1014.
+code-block: gcc version 1014.
+1/1 finished.
+Generated 1 webpages in 61.25 ms
+Average time per webpage was 61.25 ms
+</pre>
+				</div>
+				<p>Most of this time, however, comes from the <code>code-block</code> plugin, which uses the
+					python package <code>pygments</code> to generate the beautiful syntax highlighting you
+					see below:
 				</p>
 				<div class="code-blocktable">
-<table><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<table><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
@@ -405,13 +422,11 @@ Average time per webpage was 130.194 ms
 </pre></div>
 </td></tr></table>				
 				</div>
-				<p>This is all well and good, but the problem is that <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/which-programs-are-fastest.html">python is much slower than c++</a>, meaning
-					that using any python plugins can lead to a massive slowdown. If we use pure
-					C++ plugins (or any language like C or Rust that cares about performance), then
-					<code>md++</code> runs much faster, even on an old computer using an Intel i5-5200U (4)
-					@ 2.700GHz. For example, here's what it looks like when I don't use python
-					plugins:
-				</p>
+				This is all well and good, but the problem is that <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/which-programs-are-fastest.html">python is much slower than c++</a>, meaning
+				that using any python plugins can lead to a massive slowdown. If we use pure
+				C++ plugins (or any language like C or Rust that cares about performance), then
+				<code>md++</code> runs much faster, even on an old computer. For example, here's what it
+				looks like on my old computer when I don't use python plugins:
 				<div class="terminal "><pre>
 <span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index.mdxx</span>
 ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
@@ -424,6 +439,8 @@ Generated 1 webpages in 20.6227 ms
 Average time per webpage was 20.6227 ms
 </pre>
 				</div>
+				<p>I get similar speeds on my modern computer.
+				</p>
 				<p><h3 id="multithreading">Multithreading</h3>
 				</p>
 				<p>If you look carefully, you'll see that the last three lines seem to indicate
@@ -463,8 +480,8 @@ Generated 4 webpages in 121.978 ms
 Average time per webpage was 30.4945 ms
 </pre>
 				</div>
-				<p>Plus, on a computer with a good CPU and more cores (AMD Ryzen 7), it normally
-					takes less than a millisecond per webpage without python plugins.
+				<p>Plus, on a computer with a good CPU and more cores, it normally takes less than
+					a millisecond per webpage without python plugins.
 				</p>
 				<p><h2 id="summary">Summary</h2>
 				</p>
