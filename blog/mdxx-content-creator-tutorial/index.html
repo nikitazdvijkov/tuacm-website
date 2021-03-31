@@ -71,13 +71,14 @@
 					<li><a href="http://tuacm.com/blog/mdxx-downloads/md++_0.9-alpha_x86_64.deb">Download Debian, Ubuntu, Linux Mint, and any Debian-based distribution package here</a>
 						From there, you can install it with
 						<div class="terminal "><pre>
-<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev</span></b>$ sudo apt install ~/Downloads/md++_0.9-alpha_x86_64.deb</span>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev</span></b>$ cd ~/Downloads</span>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ sudo apt install ./md++_0.9-alpha_x86_64.deb</span>
 </pre>
 						</div>
 						
 						on Ubuntu-based distributions and
 						<div class="terminal "><pre>
-<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev</span></b>$ sudo dpkg -i MY_DEB_PACKAGE.deb</span>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ sudo dpkg -i MY_DEB_PACKAGE.deb</span>
 </pre>
 						</div>
 						
@@ -361,7 +362,7 @@ c{{{plugin terminal code-block}}}c.
 				<p>Once you've installed <code>md++</code>, compiling a file is as simple as
 				</p>
 				<div class="terminal "><pre>
-<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev</span></b>$ md++ path/to/templates mdxx-files</span>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ md++ path/to/templates mdxx-files</span>
 </pre>
 				</div>
 				<p>For example, on my computer, all of the tuacm website exists in the directory
@@ -370,7 +371,7 @@ c{{{plugin terminal code-block}}}c.
 					generate this webpage:
 				</p>
 				<div class="terminal "><pre>
-<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev</span></b>$ cd ~/dev/&#8203;tuacm-website/</span>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ cd ~/dev/&#8203;tuacm-website/</span>
 <span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index.mdxx</span>
 ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
 md++:       gcc version 1014.
