@@ -8,6 +8,7 @@
 	padding-bottom: 20px;
 	overflow-y: hidden;
 	background: #E0E0E0;
+	display: hidden;
 }
 
 #sidenav-activator {
