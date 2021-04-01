@@ -41,7 +41,9 @@ c{plugin.dll}c on Windows), put in the plugin dir, and then load it dynamically.
 {{a tuacm.com/blog/mdxx-downloads/md++_0.9-alpha_x86_64.deb (debian-downloads)}}
 From there, you can install it with
 {{open terminal}}
-{{prompt sudo apt install ~/Downloads/md++_0.9-alpha_x86_64.deb}}
+{{prompt cd ~/Downloads}}
+{{dir}}="~/Downloads"
+{{prompt sudo apt install ./md++_0.9-alpha_x86_64.deb}}
 {{close terminal}}
 on Ubuntu-based distributions and
 {{open terminal}}
