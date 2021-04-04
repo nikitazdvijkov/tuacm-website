@@ -117,7 +117,7 @@ c{q\{quote}\q}c outputs q{quote}q
 
 c{Q\{blockquote}\Q}c outputs Q{blockquote}Q
 
-c{!\{spoiler}\!}c outputs !{spoiler}!
+c{!\{spoiler}\!}c outputs !{spoiler}! (Mouse over to see the effect.)
 
 c{\\{curly braces}\\}c outputs \{curly braces}\, and it's useful when you have
 to put a curly brace up against a non-space character like I had to for all the
