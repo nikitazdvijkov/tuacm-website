@@ -67,27 +67,28 @@
 				</ul>
 				<p><h2 id="downloads-and-installation">Downloads and Installation</h2>
 				</p>
+				<p>You can find the most recent releases
+					<a href="https://github.com/TheLandfill/mdxx/releases">on the releases page for the project</a> and
+					<a href="https://github.com/TheLandfill/mdxx">the source code at the repo</a>.
+					Instructions to install are below:
+				</p>
 				<ul>
-					<li><a href="http://tuacm.com/blog/mdxx-downloads/md++_0.9.1-alpha_amd64.deb">Download Debian, Ubuntu, Linux Mint, and any Debian-based distribution package here</a>
-						From there, you can install it with
+					<li><b>Ubuntu, Linux Mint, and Any Ubuntu-based Linux Systems:</b> After downloading
+						the <code>.deb</code> file, run the following commands
 						<div class="terminal "><pre><span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev</span></b>$ cd ~/Downloads</span>
 <span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ sudo apt install ./(cur-debian-release)</span>
 </pre>
 						</div>
-						on Ubuntu-based distributions and
-						<div class="terminal "><pre><span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ sudo dpkg -i md++_0.9.1-alpha_amd64.deb</span>
+						These commands will simply move you to the correct directory and install
+					</li>
+					<li><b>Debian-based distributions:</b> In a similar manner to the Ubuntu installation:
+						<div class="terminal "><pre><span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~</span></b>$ cd ~/Downloads</span>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ sudo dpkg -i md++_0.9.1-alpha_amd64.deb</span>
 </pre>
 						</div>
-						on Debian-based distributions that don't use the <code>apt</code> package manager.
-					</li>
-					<li>Windows download (not yet implemented)
-					</li>
-					<li>Mac download (not yet implemented)
 					</li>
 					<li>It's also currently in the Arch User Repository under the name <code>mdxx-git</code>, so
 						you can install it from there.
-					</li>
-					<li><a href="https://github.com/TheLandfill/mdxx">The Source Code</a>
 					</li>
 				</ul>
 				<p><h2 id="syntax">Syntax</h2>
@@ -116,8 +117,8 @@
 				</p>
 				<p><h3 id="single-curly-braces">Single Curly Braces</h3>
 				</p>
-				<p>As the general rule for single curly braces, <code>_{</code> inserts the opening tag and
-					<code>}_</code> inserts the closing tag, where <code>_</code> is one option from the following
+				<p>As the general rule for single curly braces, <code>X{</code> inserts the opening tag and
+					<code>}X</code> inserts the closing tag, where <code>X</code> is one option from the following
 					list:
 				</p>
 				<ul>
@@ -141,14 +142,14 @@
 					</li>
 					<li><code>!{spoiler}!</code> outputs <span class="spoiler">spoiler</span>
 					</li>
-					<li><code>\{curly braces}\</code> outputs {curly braces}, and it's useful when you have to
-						put a curly brace up against a non-space character like I had to for all the
+					<li><code>\{curly braces}\</code> outputs {curly braces}, and it's useful when you have
+						to put a curly brace up against a non-space character like I had to for all the
 						examples above.
 					</li>
 				</ul>
 				<p>MDXX also supports for headings 1 - 6 using <code>X{heading X}X</code>, but you
-					shouldn't use that on TUACM or else the sidenav won't have access to that
-					header. I'll introduce the alternative later.
+					shouldn't use that feature on TUACM or else the sidenav will skip that heading.
+					I'll introduce the alternative later in this article.
 				</p>
 				<p><h3 id="double-curly-braces">Double Curly Braces</h3>
 				</p>
@@ -287,10 +288,10 @@ file. For example, here's the expansion for this element:{\{print}\} --&gt;
 					while the <code>{{terminal}}</code> context will make sure everything looks and feels
 					like a terminal.
 				</p>
-				<p><h4 id="single-curly-braces-context">Single Curly Braces Context</h4>
+				<p><h4 id="single-curly-braces-in-contexts">Single Curly Braces in Contexts</h4>
 				</p>
 				<p>Contexts that don't involve normal text (e.g. <code>terminal</code> and <code>code-block</code>)
-					don't support the <a href="http://tuacm.com/blog/mdxx-content-creator-tutorial/index.html">single curly braces</a> stuff mentioned earlier, since
+					don't support the <a href="http://#single-curly-braces">single curly braces</a> stuff mentioned earlier, since
 					the contexts take care of all the formatting.
 				</p>
 				<p><h4 id="variables-within-contexts">Variables Within Contexts</h4>
@@ -503,7 +504,7 @@ Average time per webpage was 30.4945 ms
 			<a href="#basic-markdown-functions-in-cmdxxc" style="padding-left: 48px;">Basic Markdown Functions in mdxx</a>
 			<a href="#debugging-functions-in-cmdxxc" style="padding-left: 48px;">Debugging Functions in mdxx</a>
 			<a href="#contexts" style="padding-left: 36px;">Contexts</a>
-			<a href="#single-curly-braces-context" style="padding-left: 48px;">Single Curly Braces Context</a>
+			<a href="#single-curly-braces-in-contexts" style="padding-left: 48px;">Single Curly Braces in Contexts</a>
 			<a href="#variables-within-contexts" style="padding-left: 48px;">Variables Within Contexts</a>
 			<a href="#bulit-in-user-contexts" style="padding-left: 48px;">Bulit-In User Contexts</a>
 			<a href="#using-plugins" style="padding-left: 36px;">Using Plugins</a>
