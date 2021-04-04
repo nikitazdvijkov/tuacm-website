@@ -4,7 +4,7 @@
 	"date"              : "March 26, 2021",
 	"tagline"           : "All you need to know to create content with mdxx.",
 	"description"       : "MDXX is a fast, easy to use, and extensible static site generator. In this article, we cover how content creators can use mdxx to generate their own webpages.",
-	"stylesheets"       : "terminal code-block code-style/trac+dark",
+	"stylesheets"       : "terminal code-block code-style/trac+dark spoiler",
 	"scripts"           : "",
 	"tags"              : ""
 }

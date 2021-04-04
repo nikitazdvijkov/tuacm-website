@@ -2,8 +2,16 @@
 	border: 3px solid #B0B0B0;
 	padding: 1em;
 	border-radius: 8px;
-	background: #E6E6FA;
 	margin-bottom: 1em;
+	background: #E6E6FA;
+}
+
+span .spoiler {
+	border: 0;
+	padding: 0 0.5ch;
+	border-radius: 0;
+	background: #B0B0B0;
+	margin-bottom: 0;
 }
 
 .spoiler .content {
