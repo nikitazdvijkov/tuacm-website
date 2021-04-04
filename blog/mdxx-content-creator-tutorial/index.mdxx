@@ -34,31 +34,31 @@ c{plugin.dll}c on Windows), put in the plugin dir, and then load it dynamically.
 
 {{h 2 Downloads and Installation}}
 
-{{debian-downloads}}="Download Debian, Ubuntu, Linux Mint, and any Debian-based distribution package here"
+You can find the most recent releases
+{{a https://github.com/TheLandfill/mdxx/releases on the releases page for the project}} and
+{{a https://github.com/TheLandfill/mdxx the source code at the repo}}.
+Instructions to install are below:
+
 {{cur-debian-release}}="md++_0.9.1-alpha_amd64.deb"
-{{debian-link}}="tuacm.com/blog/mdxx-downloads/{{cur-debian-release}}"
 
 {{open ul}}
 
-{{a (debian-link) (debian-downloads)}}
-From there, you can install it with
+b{Ubuntu, Linux Mint, and Any Ubuntu-based Linux Systems:}b After downloading
+the c{.deb}c file, run the following commands
 {{open terminal}}
 {{prompt cd ~/Downloads}}
 {{dir}}="~/Downloads"
 {{prompt sudo apt install ./(cur-debian-release)}}
 {{close terminal}}
-on Ubuntu-based distributions and
+These commands will simply move you to the correct directory and install
+
+b{Debian-based distributions:}b In a similar manner to the Ubuntu installation:
 {{open terminal}}
+{{dir}}="~"
+{{prompt cd ~/Downloads}}
+{{dir}}="~/Downloads"
 {{prompt sudo dpkg -i (cur-debian-release)}}
 {{close terminal}}
-on Debian-based distributions that don't use the c{apt}c package manager.
-
-{{windows-downloads}}="tuacm.com/blog/mdxx-downloads/md++_0.9-alpha_x84_64.deb"
-Windows download (not yet implemented)
-
-Mac download (not yet implemented)
-
-{{a https://github.com/TheLandfill/mdxx The Source Code}}
 
 {{close ul}}
 
@@ -90,8 +90,8 @@ three rules will be the meat of the syntax.
 
 {{h 3 Single Curly Braces}}
 
-As the general rule for single curly braces, c{_{}c inserts the opening tag and
-c{}_}c inserts the closing tag, where c{_}c is one option from the following
+As the general rule for single curly braces, c{X{}c inserts the opening tag and
+c{}X}c inserts the closing tag, where c{X}c is one option from the following
 list:
 
 {{open ul}}
@@ -116,15 +116,15 @@ c{Q\{blockquote}\Q}c outputs Q{blockquote}Q
 
 c{!\{spoiler}\!}c outputs !{spoiler}!
 
-c{\\{curly braces}\\}c outputs {curly braces}, and it's useful when you have to
-put a curly brace up against a non-space character like I had to for all the
+c{\\{curly braces}\\}c outputs \{curly braces}\, and it's useful when you have
+to put a curly brace up against a non-space character like I had to for all the
 examples above.
 
 {{close ul}}
 
 MDXX also supports for headings 1 - 6 using c{X\{heading X}\X}c, but you
-shouldn't use that on TUACM or else the sidenav won't have access to that
-header. I'll introduce the alternative later.
+shouldn't use that feature on TUACM or else the sidenav will skip that heading.
+I'll introduce the alternative later in this article.
 
 {{h 3 Double Curly Braces}}
 
@@ -275,10 +275,10 @@ While in the context, c{md++}c will take your input and do what it needs to do
 to generate the expected output. For example, the c{{\{code-block}\}}c context
 will send everything typed within it to c{pygments}c to do syntax highlighting
 while the c{{\{terminal}\}}c context will make sure everything looks and feels
-{{scb}}:="tuacm.com/blog/mdxx-content-creator-tutorial/index.html"
+{{scb}}:="#single-curly-braces"
 like a terminal.
 
-{{h 4 Single Curly Braces Context}}
+{{h 4 Single Curly Braces in Contexts}}
 
 Contexts that don't involve normal text (e.g. c{terminal}c and c{code-block}c)
 don't support the {{a (scb) single curly braces}} stuff mentioned earlier, since
