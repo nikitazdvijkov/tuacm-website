@@ -68,20 +68,16 @@
 				<p><h2 id="downloads-and-installation">Downloads and Installation</h2>
 				</p>
 				<ul>
-					<li><a href="http://tuacm.com/blog/mdxx-downloads/md++_0.9-alpha_x86_64.deb">Download Debian, Ubuntu, Linux Mint, and any Debian-based distribution package here</a>
+					<li><a href="http://tuacm.com/blog/mdxx-downloads/md++_0.9.1-alpha_amd64.deb">Download Debian, Ubuntu, Linux Mint, and any Debian-based distribution package here</a>
 						From there, you can install it with
-						<div class="terminal "><pre>
-<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev</span></b>$ cd ~/Downloads</span>
-<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ sudo apt install ./md++_0.9-alpha_x86_64.deb</span>
+						<div class="terminal "><pre><span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev</span></b>$ cd ~/Downloads</span>
+<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ sudo apt install ./(cur-debian-release)</span>
 </pre>
 						</div>
-						
 						on Ubuntu-based distributions and
-						<div class="terminal "><pre>
-<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ sudo dpkg -i MY_DEB_PACKAGE.deb</span>
+						<div class="terminal "><pre><span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ sudo dpkg -i md++_0.9.1-alpha_amd64.deb</span>
 </pre>
 						</div>
-						
 						on Debian-based distributions that don't use the <code>apt</code> package manager.
 					</li>
 					<li>Windows download (not yet implemented)
@@ -162,8 +158,7 @@
 				</p>
 				<p>To start, we have two ways of creating a variable:
 				</p>
-				<div class="terminal "><pre>
-{{variable}}="value"
+				<div class="terminal "><pre>{{variable}}="value"
 {{variable}}:="value"
 </pre>
 				</div>
@@ -172,8 +167,7 @@
 					expand out whatever is in the quotes immediately. Here's an example that should
 					clear everything up:
 				</p>
-				<div class="terminal "><pre>
-{{var}}:="supercalifragilisticexpialadocious"
+				<div class="terminal "><pre>{{var}}:="supercalifragilisticexpialadocious"
 {{immediate}}="{{var}} {{var}}"
 {{delayed}}:="{{var}} {{var}}"
 
@@ -194,15 +188,13 @@ replaced with "supercalifragilisticexpialadocious supercalifragilisticexpialadoc
 					pass them to <code>C++</code> functions, either defined within <code>md++</code> or a plugin like
 					the <code>tuacm</code> plugin. They have the syntax
 				</p>
-				<div class="terminal "><pre>
-{{func arg1 arg2 arg3}}
+				<div class="terminal "><pre>{{func arg1 arg2 arg3}}
 </pre>
 				</div>
 				<p>Where <code>arg1</code> to <code>arg3</code> are treated as text (<code>arg0</code> is <code>func</code>). If you
 					want to provide a variable to a function, put it in parentheses like so:
 				</p>
-				<div class="terminal "><pre>
-{{func (arg1) arg2 (arg3)}}
+				<div class="terminal "><pre>{{func (arg1) arg2 (arg3)}}
 </pre>
 				</div>
 				<p>There are a few important things to note here:
@@ -210,13 +202,11 @@ replaced with "supercalifragilisticexpialadocious supercalifragilisticexpialadoc
 				<ul>
 					<li>You cannot put curly braces inside a function variable. To get around this, you
 						can define an immediate variable before the function, like so
-						<div class="terminal "><pre>
-{{mdxx}}:="c{mdxx}c"
+						<div class="terminal "><pre>{{mdxx}}:="c{mdxx}c"
 
 {{h 2 Compiling an (md++) File}}
 </pre>
 						</div>
-						
 					</li>
 					<li>While all variables can expand out to empty text, functions tend to expand out
 						as empty text quite often, so you'll rarely want a function on its own line.
@@ -260,8 +250,7 @@ replaced with "supercalifragilisticexpialadocious supercalifragilisticexpialadoc
 						the <code>{{print}}</code> function. Note that if you use <code>{{print}}</code> function
 						once, it will continue printing out the expansion for the rest of the file. For
 						example, here's the expansion for this element:
-						<div class="terminal "><pre>
-{\{print}\}If you want to see how c{md++}c expands the text, you can toggle printing --&gt;
+						<div class="terminal "><pre>{\{print}\}If you want to see how c{md++}c expands the text, you can toggle printing --&gt;
     If you want to see how &lt;code&gt;md++&lt;/code&gt; expands the text, you can toggle printing
 
 with the c{{\{print}\}}c function. Note that if you use c{{\{print}\}}c --&gt;
@@ -274,7 +263,6 @@ file. For example, here's the expansion for this element:{\{print}\} --&gt;
     file. For example, here's the expansion for this element:{\{print}\}
 </pre>
 						</div>
-						
 						This function is quite useful for debugging when you get output different from
 						what you expected.
 					</li>
@@ -312,8 +300,7 @@ file. For example, here's the expansion for this element:{\{print}\} --&gt;
 					the <code>terminal</code> context, we can see that the variable <code>delayed</code> is still
 					there.
 				</p>
-				<div class="terminal "><pre>
-Here's the output of the "delayed" variable: `lol lol`
+				<div class="terminal "><pre>Here's the output of the "delayed" variable: `lol lol`
 I can then redefine the lol variable and delayed will still expand as it did
 before.
 Here's the output of the "delayed" variable: `lol lol`
@@ -349,8 +336,7 @@ in this context, such as {{print-vars}}.
 				<p>Plugins can be imported using the <code>plugin</code> function, where you list the
 					plugins you want as arguments to the function, e.g.
 				</p>
-				<div class="terminal "><pre>
-c{{{plugin terminal code-block}}}c
+				<div class="terminal "><pre>c{{{plugin terminal code-block}}}c
 </pre>
 				</div>
 				<p>These plugins can provide extra contexts like the <code>terminal</code> context or
@@ -361,8 +347,7 @@ c{{{plugin terminal code-block}}}c
 				</p>
 				<p>Once you've installed <code>md++</code>, compiling a file is as simple as
 				</p>
-				<div class="terminal "><pre>
-<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ md++ path/to/templates mdxx-files</span>
+				<div class="terminal "><pre><span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ md++ path/to/templates mdxx-files</span>
 </pre>
 				</div>
 				<p>For example, on my computer, all of the tuacm website exists in the directory
@@ -370,8 +355,7 @@ c{{{plugin terminal code-block}}}c
 					this webpage is "<code>~/dev/&#8203;tuacm-website/&#8203;blog/&#8203;mdxx-content-creator-tutorial/&#8203;index.mdxx</code>", so I would type the following commands to
 					generate this webpage:
 				</p>
-				<div class="terminal "><pre>
-<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ cd ~/dev/&#8203;tuacm-website/</span>
+				<div class="terminal "><pre><span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/Downloads</span></b>$ cd ~/dev/&#8203;tuacm-website/</span>
 <span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index.mdxx</span>
 ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
 md++:       gcc version 1014.
@@ -391,8 +375,7 @@ Average time per webpage was 130.194 ms
 					a more modern computer with an AMD Ryzen 7 2700X (16) @ 3.700GHz, <code>mdxx</code> runs
 					much faster:
 				</p>
-				<div class="terminal "><pre>
-<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index.mdxx</span>
+				<div class="terminal "><pre><span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index.mdxx</span>
 ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
 
 md++:       gcc version 1014.
@@ -409,12 +392,12 @@ Average time per webpage was 61.25 ms
 					see below:
 				</p>
 				<div class="code-blocktable">
-<table><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span></pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<table><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="code-block"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello, World!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
@@ -428,8 +411,7 @@ Average time per webpage was 61.25 ms
 				C++ plugins (or any language like C or Rust that cares about performance), then
 				<code>md++</code> runs much faster, even on an old computer. For example, here's what it
 				looks like on my old computer when I don't use python plugins:
-				<div class="terminal "><pre>
-<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index.mdxx</span>
+				<div class="terminal "><pre><span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index.mdxx</span>
 ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
 
 md++:       gcc version 1014.
@@ -453,8 +435,7 @@ Average time per webpage was 20.6227 ms
 					(again, ~16 kilobytes on a relatively slow CPU with only a few threads), I get
 					the results:
 				</p>
-				<div class="terminal "><pre>
-<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index*.mdxx</span>
+				<div class="terminal "><pre><span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index*.mdxx</span>
 ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
 
 md++:       gcc version 1014.
@@ -468,8 +449,7 @@ Average time per webpage was 7.23425 ms
 				<p>Even if I add the <code>code-block</code> plugin back in, we can see that compiling four
 					at a time still speeds up compilation.
 				</p>
-				<div class="terminal "><pre>
-<span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index*.mdxx</span>
+				<div class="terminal "><pre><span class="terminal-oneline"><b><span style="color: #4CE64C;">user@computer</span></b>:<b><span style="color: #298FDD;">~/dev/&#8203;tuacm-website/</span></b>$ md++ templates/ blog/mdxx-content-creator-tutorial/index*.mdxx</span>
 ABI info below. If md++ has a problem, check to make sure compiler versions are compatible.
 
 md++:        gcc version 1014.
