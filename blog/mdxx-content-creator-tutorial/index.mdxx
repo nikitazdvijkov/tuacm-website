@@ -58,6 +58,9 @@ Windows download (not yet implemented)
 
 Mac download (not yet implemented)
 
+It's also currently in the Arch User Repository under the name c{mdxx-git}c, so
+you can install it from there.
+
 {{a https://github.com/TheLandfill/mdxx The Source Code}}
 
 {{close ul}}
