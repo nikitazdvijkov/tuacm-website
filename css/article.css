@@ -80,7 +80,6 @@
 	margin-bottom: 0.1em;
 }
 
-
 #author-name {
 	padding-left: 1ch;
 	padding-right: 2ch;
@@ -145,4 +144,8 @@
 		width: 90%;
 		margin: 0 auto;
 	}
+}
+
+.warning {
+	color: #FF0000;
 }

@@ -50,7 +50,7 @@ the c{.deb}c file, run the following commands
 {{dir}}="~/Downloads"
 {{prompt sudo apt install ./(cur-debian-release)}}
 {{close terminal}}
-These commands will simply move you to the correct directory and install
+These commands will simply move you to the correct directory and install.
 
 b{Debian-based distributions:}b In a similar manner to the Ubuntu installation:
 {{open terminal}}
@@ -62,6 +62,16 @@ b{Debian-based distributions:}b In a similar manner to the Ubuntu installation:
 
 It's also currently in the Arch User Repository under the name c{mdxx-git}c, so
 you can install it from there.
+
+b{Windows:}b Since I currently haven't written an installer for c{mdxx}c yet,
+you will have to install python (making sure to add it to your PATH as specified
+in the installer for python), then you will have to install c{pygments}c, which
+you can do using
+{{a https://tex.stackexchange.com/a/369602 these instructions}}. You'll also
+only be able to use it from the directory where the file c{mdxx}c is, unlike
+with Linux. Eventually, I'll figure out how to make an installer for Windows.
+{{span warning}}DO NOT MOVE ANY OF THE FILES OR FOLDERS AROUND ONCE YOU'VE
+EXTRACTED THE ZIP FILE{{/span}}.
 
 {{close ul}}
 
